@@ -4,6 +4,8 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class Program extends Canvas implements Runnable{
 
@@ -11,27 +13,31 @@ public class Program extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running;
 	private Handler handler;
+	public static Lock objListLock = new ReentrantLock();
 	
-	public final int HEIGHT = 600;
-	public final int WIDTH = 800;
+	public static final int HEIGHT = 600;
+	public static final int WIDTH = 800;
 	
 	
 	public Program() {
 		handler = new Handler();
+
+		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30));
 		
-		this.addKeyListener(new KeyInput(handler));
-		this.setFocusable(true);
-		
+		addKeyListener(new KeyInput(handler));
+		addMouseListener(new MouseInput(handler));
+		addMouseMotionListener(new MouseMotionInput(handler));
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
-		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30));
+				
 	}
 	
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
 		running = true;
+		//run();
 	}
 	
 	public synchronized void stop() {
@@ -55,6 +61,7 @@ public class Program extends Canvas implements Runnable{
 	 * prints the frame rate to console every second. 
 	 */
 	public void run() {
+		this.requestFocus();
 		long lastTime = System.nanoTime();
 		long currTime = System.nanoTime();
         double ticksPerSec = 60.0;
@@ -109,5 +116,13 @@ public class Program extends Canvas implements Runnable{
 		handler.tick();
 	}
 	
+	/*
+	 * This method makes sure the input 'val' is within
+	 * the bounds on 'min' and 'max'. I think it's a rather
+	 * clever one-line implementation.
+	 */
+	public static int clamp(int val, int min, int max) {
+		return (val > min) ? ((val < max) ? val : max) : min;
+	}
 
 }

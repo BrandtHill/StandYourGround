@@ -2,6 +2,7 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import static java.lang.Math.round;
 
 public class PlayerObject extends GameObject{
 
@@ -11,8 +12,17 @@ public class PlayerObject extends GameObject{
 	}
 
 	public void tick() {
-		x+=velX;
-		y+=velY;
+		
+		if(velX != 0 && velY != 0) {
+			x+=(int)round(HALFSQRT2*velX);
+			y+=(int)round(HALFSQRT2*velY);
+		}
+		else {
+			x+=velX;
+			y+=velY;
+		}
+		x = Program.clamp(x, 0, Program.WIDTH-26);
+		y = Program.clamp(y, 0, Program.HEIGHT-48);
 	}
 
 	public void render(Graphics g) {

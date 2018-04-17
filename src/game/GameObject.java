@@ -1,10 +1,12 @@
 package game;
 
 import java.awt.Graphics;
+import static java.lang.Math.sqrt;
 
 public abstract class GameObject {
 	protected int x, y, velX, velY;
 	protected ObjectType type;
+	public static final double HALFSQRT2 = sqrt(2)/2;
 	
 	public GameObject(int xPos, int yPos, ObjectType objType) {
 		x = xPos;
