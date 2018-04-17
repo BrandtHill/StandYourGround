@@ -107,7 +107,7 @@ public class Program extends Canvas implements Runnable{
 		Graphics g = bs.getDrawGraphics();
 		
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, 800, 600);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		handler.render(g);
 		
@@ -124,7 +124,7 @@ public class Program extends Canvas implements Runnable{
 	 * the bounds on 'min' and 'max'. I think it's a rather
 	 * clever one-line implementation.
 	 */
-	public static int clamp(int val, int min, int max) {
+	public static double clamp(double val, double min, double max) {
 		return (val > min) ? ((val < max) ? val : max) : min;
 	}
 

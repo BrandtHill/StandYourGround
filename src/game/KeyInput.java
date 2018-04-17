@@ -8,6 +8,7 @@ public class KeyInput extends KeyAdapter{
 	private Handler handler;
 	private boolean w, a, s, d;
 	private GameObject player;
+	private final double speed = 2;
 	
 	public KeyInput(Handler h) {
 		handler = h;
@@ -52,11 +53,11 @@ public class KeyInput extends KeyAdapter{
 	private void changeVelocity() {
 
 				if((w && s) || !(w || s))	player.setVelY(0);
-				if(w && !s) 				player.setVelY(-3);
-				if(!w && s)					player.setVelY(3);
+				if(w && !s) 				player.setVelY(-1*speed);
+				if(!w && s)					player.setVelY(speed);
 				if((a && d) || !(a || d))	player.setVelX(0);
-				if(a && !d)					player.setVelX(-3);
-				if(!a && d)					player.setVelX(3);
+				if(a && !d)					player.setVelX(-1*speed);
+				if(!a && d)					player.setVelX(speed);
 
 	}
 }

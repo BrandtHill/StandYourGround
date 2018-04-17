@@ -18,10 +18,6 @@ public class Handler{
 		for(int i = 0; i < gameObjs.size(); i++) {
 			GameObject obj = getObjectAt(i);
 			obj.tick();
-			if (obj.getType() == ObjectType.Projectile) {
-				ProjectileObject projectile = (ProjectileObject) obj;
-				if (projectile.old) removeObject(projectile);
-			} 
 		}
 	}
 	
@@ -34,9 +30,9 @@ public class Handler{
 	
 	public void addZombie() {
 		Random r = new Random();
-		int x,y = 0;
-		int xPlayer = gameObjs.get(0).getX();
-		int yPlayer = gameObjs.get(0).getY();
+		double x,y = 0;
+		double xPlayer = gameObjs.get(0).getX();
+		double yPlayer = gameObjs.get(0).getY();
 		do {
 			x = r.nextInt(750);
 			y = r.nextInt(550);

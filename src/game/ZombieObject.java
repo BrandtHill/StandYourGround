@@ -8,25 +8,24 @@ import java.util.Random;
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
-import static java.lang.Math.round;
 
 public class ZombieObject extends GameObject{
 
 	
-	public ZombieObject(int xPos, int yPos, Handler h) {
+	public ZombieObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Zombie, h);
 		
 	}
 
 	public void tick() {
-		int xPlayer = handler.getObjectAt(0).getX()+10;
-		int yPlayer = handler.getObjectAt(0).getY()+10;
+		double xPlayer = handler.getObjectAt(0).getX()+10;
+		double yPlayer = handler.getObjectAt(0).getY()+10;
 		double angle = atan2(xPlayer-x, yPlayer-y);
-		int xBias = (int)round(sin(angle));
-		int yBias = (int)round(cos(angle));
+		double xBias = sin(angle);
+		double yBias = cos(angle);
 		Random r = new Random();
-		velX = r.nextInt(7) - 3 + xBias;
-		velY = r.nextInt(7) - 3 + yBias;
+		velX = r.nextInt(61)/10.0 - 3 + xBias;
+		velY = r.nextInt(61)/10.0 - 3 + yBias;
 		
 		x += velX;
 		y += velY;
@@ -37,7 +36,7 @@ public class ZombieObject extends GameObject{
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 20, 20);
+		return new Rectangle((int)x, (int)y, 20, 20);
 	}
 
 	public void render(Graphics g) {
@@ -46,7 +45,7 @@ public class ZombieObject extends GameObject{
 		g2d.setColor(Color.GREEN);
 		//g2d.draw(getBounds());
 		g.setColor(Color.RED);
-		g.fillRect(x, y, 20, 20);
+		g.fillRect((int)x, (int)y, 20, 20);
 	}
 
 }

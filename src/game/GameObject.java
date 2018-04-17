@@ -4,12 +4,12 @@ import java.awt.Graphics;
 import static java.lang.Math.sqrt;
 
 public abstract class GameObject {
-	protected int x, y, velX, velY;
+	protected double x, y, velX, velY;
 	protected ObjectType type;
 	public static final double HALFSQRT2 = sqrt(2)/2;
 	protected Handler handler;
 	
-	public GameObject(int xPos, int yPos, ObjectType objType, Handler h) {
+	public GameObject(double xPos, double yPos, ObjectType objType, Handler h) {
 		x = xPos;
 		y = yPos;
 		type = objType;
@@ -22,13 +22,13 @@ public abstract class GameObject {
 	
 	
 	//Getters and setters
-	public void setX(int val) 		{x = val;}
-	public void setY(int val) 		{y = val;}
-	public void setVelX(int val) 	{velX = val;}
-	public void setVelY(int val) 	{velY = val;}
-	public int getX() 				{return x;}
-	public int getY() 				{return y;}
-	public int getVelX() 			{return velX;}
-	public int getVelY() 			{return velY;}
+	public void setX(double val) 		{x = val;}
+	public void setY(double val) 		{y = val;}
+	public void setVelX(double val) 	{velX = val;}
+	public void setVelY(double val) 	{velY = val;}
+	public double getX() 				{return x;}
+	public double getY() 				{return y;}
+	public double getVelX() 			{return velX;}
+	public double getVelY() 			{return velY;}
 	public ObjectType getType() 	{return type;}
 }

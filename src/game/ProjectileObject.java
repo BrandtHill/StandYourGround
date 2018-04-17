@@ -4,18 +4,15 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
-
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
-import static java.lang.Math.round;
 
 public class ProjectileObject extends GameObject {
 
-	private int velMag;
-	private double velAng, xScale, yScale;
-	public boolean old;
+	private double velMag, velAng, xScale, yScale;
+	private boolean old;
 	
-	public ProjectileObject(int xPos, int yPos, int magnitude, double angle, Handler h) {
+	public ProjectileObject(double xPos, double yPos, double magnitude, double angle, Handler h) {
 		super(xPos, yPos, ObjectType.Projectile, h);
 		velMag = magnitude;
 		velAng = angle;
@@ -24,18 +21,20 @@ public class ProjectileObject extends GameObject {
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 4, 4);
+		return new Rectangle((int)x, (int)y, 4, 4);
 	}
 
 	public void tick() {
-		velX = (int)round(xScale*velMag);
-		velY = (int)round(yScale*velMag);
+		velX = xScale*velMag;
+		velY = yScale*velMag;
 		
 		x += velX;
 		y += velY;
 		
 		if(x<0 || x>Program.WIDTH || y<0 || y>Program.HEIGHT)
 			old = true;
+		if(old)
+			handler.removeObject(this);
 		detectCollision();
 	}
 	
@@ -60,7 +59,7 @@ public class ProjectileObject extends GameObject {
 		g2d.setColor(Color.GREEN);
 		//g2d.draw(getBounds());
 		g.setColor(Color.YELLOW);
-		g.fillOval(x, y, 4, 4);
+		g.fillOval((int)x, (int)y, 4, 4);
 	}
 
 	

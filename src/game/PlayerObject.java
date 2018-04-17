@@ -5,29 +5,28 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-import static java.lang.Math.round;
-
 public class PlayerObject extends GameObject{
 
-	public PlayerObject(int xPos, int yPos, Handler h) {
+	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
-		//velX=4;
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle(x, y, 20, 20);
+		return new Rectangle((int)x, (int)y, 20, 20);
 	}
 
 	public void tick() {
 		
 		if(velX != 0 && velY != 0) {
-			x+=(int)round(HALFSQRT2*velX);
-			y+=(int)round(HALFSQRT2*velY);
+			x += (HALFSQRT2*velX);
+			y += (HALFSQRT2*velY);
 		}
-		else {
-			x+=velX;
-			y+=velY;
+		
+		else{
+			x += velX;
+			y += velY;
 		}
+		
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-48);
 		detectCollision();
@@ -52,7 +51,7 @@ public class PlayerObject extends GameObject{
 		g2d.setColor(Color.GREEN);
 		//g2d.draw(getBounds());
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect(x, y, 20, 20);
+		g.fillRect((int)x, (int)y, 20, 20);
 	}
 
 }
