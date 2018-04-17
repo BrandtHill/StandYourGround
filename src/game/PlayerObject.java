@@ -2,13 +2,20 @@ package game;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Rectangle;
+
 import static java.lang.Math.round;
 
 public class PlayerObject extends GameObject{
 
-	public PlayerObject(int xPos, int yPos) {
-		super(xPos, yPos, ObjectType.Player);
+	public PlayerObject(int xPos, int yPos, Handler h) {
+		super(xPos, yPos, ObjectType.Player, h);
 		//velX=4;
+	}
+	
+	public Rectangle getBounds() {
+		return new Rectangle(x, y, 20, 20);
 	}
 
 	public void tick() {
@@ -23,11 +30,29 @@ public class PlayerObject extends GameObject{
 		}
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-48);
+		detectCollision();
+	}
+	
+	public void detectCollision()
+	{
+		for(int i = 1; i < handler.getObjList().size(); i++) {
+			GameObject obj = handler.getObjectAt(i);
+			if(obj.getType() == ObjectType.Zombie) {
+				ZombieObject zomb = (ZombieObject)obj;
+				if(zomb.getBounds().intersects(this.getBounds())) {
+					handler.removeObject(this);
+				}
+			}
+		}
 	}
 
 	public void render(Graphics g) {
+		Graphics2D g2d = (Graphics2D)g;
+		
+		g2d.setColor(Color.GREEN);
+		//g2d.draw(getBounds());
 		g.setColor(Color.LIGHT_GRAY);
-		g.fillOval(x, y, 20, 20);
+		g.fillRect(x, y, 20, 20);
 	}
 
 }

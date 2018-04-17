@@ -28,7 +28,7 @@ public class MouseInput extends MouseAdapter{
 		if(button == MouseEvent.BUTTON1) {
 			point = e.getPoint();
 			angle = atan2(point.getX()-player.getX(), point.getY()-player.getY());
-			handler.addObject(new ProjectileObject(player.getX() + 10, player.getY() + 10, 20, angle));
+			handler.addObject(new ProjectileObject(player.getX() + 10, player.getY() + 10, 20, angle, handler));
 		}
 	}
 }

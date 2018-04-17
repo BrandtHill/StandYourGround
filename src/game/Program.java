@@ -4,8 +4,6 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 public class Program extends Canvas implements Runnable{
 
@@ -13,7 +11,6 @@ public class Program extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running;
 	private Handler handler;
-	public static Lock objListLock = new ReentrantLock();
 	
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
@@ -22,7 +19,7 @@ public class Program extends Canvas implements Runnable{
 	public Program() {
 		handler = new Handler();
 
-		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30));
+		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
@@ -68,6 +65,7 @@ public class Program extends Canvas implements Runnable{
         double nsPerTick = 1000000000 / ticksPerSec;
         double delta = 0;
         long timer = System.currentTimeMillis();
+        int sec = 0;
         int frames = 0;
         while(running)
         {
@@ -85,9 +83,14 @@ public class Program extends Canvas implements Runnable{
 	        
 	        if(System.currentTimeMillis() - timer > 1000)
 	        {
+	        	sec++;
 	            timer += 1000;
 	            System.out.println("FPS: "+ frames);
 	            frames = 0;
+	            if(sec>2) {
+	            	handler.addZombie();
+	            	sec = 0;
+	            }
 	        }
         
         }
