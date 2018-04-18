@@ -4,12 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
+
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
 public class ProjectileObject extends GameObject {
 
-	private double velMag, velAng, xScale, yScale;
+	private double velMag, velAng, xScale, yScale, xPrev, yPrev;
 	private boolean old;
 	
 	public ProjectileObject(double xPos, double yPos, double magnitude, double angle, Handler h) {
@@ -18,15 +20,21 @@ public class ProjectileObject extends GameObject {
 		velAng = angle;
 		xScale = sin(velAng);
 		yScale = cos(velAng);
+		xPrev = x;
+		yPrev = y;
 	}
 	
-	public Rectangle getBounds() {
-		return new Rectangle((int)x, (int)y, 4, 4);
+	public Line2D.Double getBounds() {
+		//return new Rectangle((int)x-2, (int)y-2, 4, 4);
+		return new Line2D.Double(x, y, xPrev, yPrev);
 	}
 
 	public void tick() {
 		velX = xScale*velMag;
 		velY = yScale*velMag;
+		
+		xPrev = x;
+		yPrev = y;
 		
 		x += velX;
 		y += velY;
@@ -44,7 +52,7 @@ public class ProjectileObject extends GameObject {
 			GameObject obj = handler.getObjectAt(i);
 			if(obj.getType() == ObjectType.Zombie) {
 				ZombieObject zomb = (ZombieObject)obj;
-				if(zomb.getBounds().intersects(this.getBounds())) {
+				if(zomb.getBounds().intersectsLine(this.getBounds())) {
 					handler.removeObject(zomb);
 					old = true;
 				}
@@ -59,7 +67,8 @@ public class ProjectileObject extends GameObject {
 		g2d.setColor(Color.GREEN);
 		//g2d.draw(getBounds());
 		g.setColor(Color.YELLOW);
-		g.fillOval((int)x, (int)y, 4, 4);
+		g.fillOval((int)x-1, (int)y-1, 2, 2);
+		g.drawLine((int)x, (int)y, (int)xPrev, (int)yPrev);
 	}
 
 	

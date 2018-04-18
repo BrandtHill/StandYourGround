@@ -15,19 +15,31 @@ public class Program extends Canvas implements Runnable{
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	
+	public enum STATE {
+		Game,
+		Menu
+	}
+	
+	public STATE gameState;
 	
 	public Program() {
+		
 		handler = new Handler();
 
 		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
 		addMouseMotionListener(new MouseMotionInput(handler));
 		
-		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
+		gameState = STATE.Menu;
+		AudioPlayer.load();
+		AudioPlayer.getMusic("Husk").loop(1f, 0.25f);
 		
-				
+		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
+		  				
 	}
 	
 	public synchronized void start() {
@@ -87,7 +99,7 @@ public class Program extends Canvas implements Runnable{
 	            timer += 1000;
 	            System.out.println("FPS: "+ frames);
 	            frames = 0;
-	            if(sec>2) {
+	            if(sec>0) {
 	            	handler.addZombie();
 	            	sec = 0;
 	            }

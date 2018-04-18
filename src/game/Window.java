@@ -1,6 +1,8 @@
 package game;
 import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JFrame;
 
@@ -19,6 +21,8 @@ public class Window extends Canvas{
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		frame.setCursor( frame.getToolkit().createCustomCursor
+				(new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),new Point(),null ) );
 		frame.add(p);
 		p.start();
 	}

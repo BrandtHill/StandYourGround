@@ -48,7 +48,7 @@ public class PlayerObject extends GameObject{
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
-		g2d.setColor(Color.GREEN);
+		//g2d.setColor(Color.GREEN);
 		//g2d.draw(getBounds());
 		g.setColor(Color.LIGHT_GRAY);
 		g.fillRect((int)x, (int)y, 20, 20);
