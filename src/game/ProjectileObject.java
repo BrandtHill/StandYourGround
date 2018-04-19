@@ -3,7 +3,6 @@ package game;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 
 import static java.lang.Math.sin;
@@ -11,10 +10,10 @@ import static java.lang.Math.cos;
 
 public class ProjectileObject extends GameObject {
 
-	private double velMag, velAng, xScale, yScale, xPrev, yPrev;
+	private double velMag, velAng, xScale, yScale, xPrev, yPrev, damage, knockBack;
 	private boolean old;
 	
-	public ProjectileObject(double xPos, double yPos, double magnitude, double angle, Handler h) {
+	public ProjectileObject(double xPos, double yPos, double magnitude, double angle, double dmg, double knock, Handler h) {
 		super(xPos, yPos, ObjectType.Projectile, h);
 		velMag = magnitude;
 		velAng = angle;
@@ -22,10 +21,11 @@ public class ProjectileObject extends GameObject {
 		yScale = cos(velAng);
 		xPrev = x;
 		yPrev = y;
+		damage = dmg;
+		knockBack = knock;
 	}
 	
 	public Line2D.Double getBounds() {
-		//return new Rectangle((int)x-2, (int)y-2, 4, 4);
 		return new Line2D.Double(x, y, xPrev, yPrev);
 	}
 
@@ -53,7 +53,7 @@ public class ProjectileObject extends GameObject {
 			if(obj.getType() == ObjectType.Zombie) {
 				ZombieObject zomb = (ZombieObject)obj;
 				if(zomb.getBounds().intersectsLine(this.getBounds())) {
-					handler.removeObject(zomb);
+					zomb.damageMe(damage, velAng, knockBack);
 					old = true;
 				}
 			}

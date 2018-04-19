@@ -14,10 +14,12 @@ public class Program extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running;
 	private Handler handler;
-	//private PlayerObject player;
+	private HUD hud;
+	private SpawnSystem spawnSys;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public Music song;
+	public int level;
 	
 	public static enum STATE{
 		InGame,
@@ -36,6 +38,8 @@ public class Program extends Canvas implements Runnable{
 		handler = new Handler();
 		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		hud = new HUD(handler);
+		spawnSys = new SpawnSystem(handler);
 		
 		
 		addKeyListener(new KeyInput(handler));
@@ -43,6 +47,7 @@ public class Program extends Canvas implements Runnable{
 		addMouseMotionListener(new MouseMotionInput(handler));
 		
 		gameState = STATE.StartMenu;
+		level = 1;
 		AudioPlayer.load();
 		song = AudioPlayer.getMusic("Husk");
 		song.loop(1f, 0.25f);
@@ -109,7 +114,7 @@ public class Program extends Canvas implements Runnable{
 				if (currMilli - timer > 1000) {
 					//timer += 1000;
 					timer = System.currentTimeMillis();
-					//System.out.println("FPS: " + frames);
+					System.out.println("FPS: " + frames);
 					frames = 0;
 
 					sec++;
@@ -144,10 +149,11 @@ public class Program extends Canvas implements Runnable{
 		
 		if (gameState == STATE.InGame) {
 			handler.render(g);
+			hud.render(g);
 		}
 		else if (gameState == STATE.PauseMenu) {
 			g.setColor(new Color(115,48,168));
-			g.fill3DRect(100, 100, WIDTH-200, HEIGHT-200, true);
+			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 48));
 			g.drawString("GAME PAUSED", 180, 200);
@@ -155,11 +161,11 @@ public class Program extends Canvas implements Runnable{
 			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
 		}
 		else if (gameState == STATE.StartMenu) {
-			g.setColor(new Color(175,48,79));
-			g.fill3DRect(100, 100, WIDTH-200, HEIGHT-200, true);
+			g.setColor(new Color(150,48,30));
+			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("Stand Your Ground", 180, 200);
+			g.setFont(new Font("Arial", 1, 42));
+			g.drawString("STAND YOUR GROUND", 160, 200);
 			g.setFont(new Font("Arial", 1, 36));
 			g.drawString("PRESS ANY KEY TO BEGIN", 150, 400);
         }
@@ -171,6 +177,7 @@ public class Program extends Canvas implements Runnable{
 	private void tick() {
 		if (gameState == STATE.InGame) {
 			handler.tick();
+			hud.tick();
 		}
 		else if (gameState == STATE.PauseMenu)
 		{

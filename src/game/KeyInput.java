@@ -32,6 +32,9 @@ public class KeyInput extends KeyAdapter{
 			if (key == KeyEvent.VK_A) a = true;
 			if (key == KeyEvent.VK_S) s = true;
 			if (key == KeyEvent.VK_D) d = true;
+			if (key == KeyEvent.VK_1) player.switchToPrimary();
+			if (key == KeyEvent.VK_2) player.switchToSecondary();
+			if (key == KeyEvent.VK_3) player.switchToSidearm();
 			
 			changeVelocity();
 

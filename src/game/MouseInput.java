@@ -4,12 +4,8 @@ package game;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Random;
 
 import game.Program.STATE;
-
-import static java.lang.Math.atan2;
-import static java.lang.Math.PI;
 
 
 public class MouseInput extends MouseAdapter{
@@ -18,7 +14,6 @@ public class MouseInput extends MouseAdapter{
 	private PlayerObject player;
 	private Point point;
 	private double angle;
-	private Random r = new Random();
 	
 	public MouseInput(Handler h) {
 		handler = h;
@@ -37,9 +32,9 @@ public class MouseInput extends MouseAdapter{
 			if (button == MouseEvent.BUTTON1) {
 				
 				point = e.getPoint();
-				angle = atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10));
+				//angle = atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10));
+				angle = player.getAngle();
 				player.getGun().shoot(angle);
-				//System.out.println("Angle: " + angle*180/PI + " Spread: " + spread*180/PI);
 			}
 		}
 		else if(Program.gameState == STATE.GameOver){

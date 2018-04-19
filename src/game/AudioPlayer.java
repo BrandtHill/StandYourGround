@@ -16,8 +16,9 @@ public class AudioPlayer {
 		try {
 			musicMap.put("Husk", new Music("res/Husk.ogg"));
 			soundMap.put("Pistol", new Sound("res/PistolSound.wav"));
-			//soundMap.put("Rifle", new Sound("res/RifleSound.wav"));
-			//soundMap.put("Shotgun", new Sound("res/ShotgunSound.wav"));
+			soundMap.put("Rifle", new Sound("res/RifleSound.wav"));
+			soundMap.put("Shotgun", new Sound("res/ShotgunSound.wav"));
+			soundMap.put("ReloadPistol", new Sound("res/ReloadPistolSound.wav"));
 		} catch (SlickException e) {
 			e.getMessage();
 		}

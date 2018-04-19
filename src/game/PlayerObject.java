@@ -5,13 +5,22 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
+import game.Gun.GUN;
+
 public class PlayerObject extends GameObject{
 	
-	private Gun gun;
-
+	private Gun gunWeilded;
+	private Gun gunPrimary;
+	private Gun gunSecondary;
+	private Gun gunSidearm;
+	private double angle;
+	
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
-		gun = new Gun("Titan", 7, 105, 22, this, h);
+		gunSidearm = new Gun("Titan", GUN.Pistol, 7, 105, 22, this, h);
+		gunPrimary = new Gun("AR-15", GUN.Rifle, 30, 90, 35, this, h); 
+		gunSecondary = new Gun("Over-Under", GUN.Shotgun, 2, 18, 40, this, h);
+		gunWeilded = gunPrimary;
 	}
 	
 	public Rectangle getBounds() {
@@ -33,7 +42,7 @@ public class PlayerObject extends GameObject{
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-48);
 		detectCollision();
-		gun.tick();
+		gunWeilded.tick();
 	}
 	
 	public void detectCollision()
@@ -52,13 +61,30 @@ public class PlayerObject extends GameObject{
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		
-		//g2d.setColor(Color.GREEN);
-		//g2d.draw(getBounds());
-		g.setColor(Color.LIGHT_GRAY);
-		g.fillRect((int)x, (int)y, 20, 20);
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.rotate(-angle, x+10, y+10);
+		g2d.fillRect((int)x, (int)y, 20, 20);
+		g2d.rotate(angle, x+10, y+10);
 	}
 
 	public Gun getGun() {
-		return gun;
+		return gunWeilded;
 	}
+	public void switchToPrimary() {
+		if(gunWeilded != gunPrimary) 
+			gunWeilded = gunPrimary;
+	}
+	public void switchToSecondary() {
+		if(gunWeilded != gunSecondary)
+			gunWeilded = gunSecondary;
+	}
+	public void switchToSidearm() {
+		if(gunWeilded != gunSidearm)
+			gunWeilded = gunSidearm;
+	}
+
+	
+	public double getAngle() {return angle;}
+
+	public void setAngle(double a) {angle = a;}
 }

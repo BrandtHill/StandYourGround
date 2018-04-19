@@ -11,19 +11,32 @@ import static java.lang.Math.cos;
 
 public class ZombieObject extends GameObject{
 
+	private double health, xPlayer, yPlayer, xBias, yBias, angle;
+	private PlayerObject player;
+	private Random r;
 	
 	public ZombieObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Zombie, h);
 		
+		try {
+			player = (PlayerObject)handler.getObjectAt(0);
+		}catch(Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		r = new Random();
+		health = r.nextInt(51) + 50;
+		
+		xPlayer = yPlayer = xBias = yBias = angle = 0;
 	}
 
 	public void tick() {
-		double xPlayer = handler.getObjectAt(0).getX()+10;
-		double yPlayer = handler.getObjectAt(0).getY()+10;
-		double angle = atan2(xPlayer-x, yPlayer-y);
-		double xBias = sin(angle);
-		double yBias = cos(angle);
-		Random r = new Random();
+		xPlayer = handler.getObjectAt(0).getX()+10;
+		yPlayer = handler.getObjectAt(0).getY()+10;
+		angle = atan2(xPlayer-x, yPlayer-y);
+		xBias = sin(angle);
+		yBias = cos(angle);
+		r = new Random();
 		velX = r.nextInt(61)/10.0 - 3 + xBias;
 		velY = r.nextInt(61)/10.0 - 3 + yBias;
 		
@@ -41,11 +54,20 @@ public class ZombieObject extends GameObject{
 
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-		
-		g2d.setColor(Color.GREEN);
-		//g2d.draw(getBounds());
-		g.setColor(Color.RED);
-		g.fillRect((int)x, (int)y, 20, 20);
+
+		g2d.setColor(Color.RED);
+		g2d.rotate(-angle, x+10, y+10);
+		g2d.fillRect((int)x, (int)y, 20, 20);
+		g2d.rotate(angle, x+10, y+10);
+	}
+	
+	public void damageMe(double damage, double angle, double knock) {
+		health -= damage;
+		x += sin(angle)*knock;
+		y += cos(angle)*knock;
+		if(health<= 0) {
+			handler.removeObject(this);
+		}
 	}
 
 }
