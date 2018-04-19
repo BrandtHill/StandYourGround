@@ -2,8 +2,11 @@ package game;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+
+import org.newdawn.slick.Music;
 
 public class Program extends Canvas implements Runnable{
 
@@ -11,21 +14,26 @@ public class Program extends Canvas implements Runnable{
 	private Thread thread;
 	private boolean running;
 	private Handler handler;
-	
+	//private PlayerObject player;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
+	public Music song;
 	
-	public enum STATE {
-		Game,
-		Menu
+	public static enum STATE{
+		InGame,
+		StoreMenu,
+		StartMenu,
+		GameOver,
+		PauseMenu;
+		
 	}
 	
-	public STATE gameState;
+	public static STATE gameState;
+	private STATE prevState;
 	
 	public Program() {
 		
 		handler = new Handler();
-
 		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		
@@ -34,9 +42,10 @@ public class Program extends Canvas implements Runnable{
 		addMouseListener(new MouseInput(handler));
 		addMouseMotionListener(new MouseMotionInput(handler));
 		
-		gameState = STATE.Menu;
+		gameState = STATE.InGame;
 		AudioPlayer.load();
-		AudioPlayer.getMusic("Husk").loop(1f, 0.25f);
+		song = AudioPlayer.getMusic("Husk");
+		song.loop(1f, 0.25f);
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		  				
@@ -77,6 +86,7 @@ public class Program extends Canvas implements Runnable{
         double nsPerTick = 1000000000 / ticksPerSec;
         double delta = 0;
         long timer = System.currentTimeMillis();
+        long currMilli;
         int sec = 0;
         int frames = 0;
         while(running)
@@ -93,16 +103,24 @@ public class Program extends Canvas implements Runnable{
 	        render();
 	        frames++;
 	        
-	        if(System.currentTimeMillis() - timer > 1000)
-	        {
-	        	sec++;
-	            timer += 1000;
-	            System.out.println("FPS: "+ frames);
-	            frames = 0;
-	            if(sec>0) {
-	            	handler.addZombie();
-	            	sec = 0;
-	            }
+	        if (gameState == STATE.InGame) {
+	        	
+	        	currMilli = System.currentTimeMillis();
+				if (currMilli - timer > 1000) {
+					//timer += 1000;
+					timer = System.currentTimeMillis();
+					System.out.println("FPS: " + frames);
+					frames = 0;
+
+					sec++;
+					if (sec > 0) {
+						handler.addZombie();
+						sec = 0;
+					}
+				}
+			}
+	        else if (gameState == STATE.PauseMenu) {
+	        	
 	        }
         
         }
@@ -121,14 +139,61 @@ public class Program extends Canvas implements Runnable{
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		handler.render(g);
+		if (gameState == STATE.InGame) {
+			handler.render(g);
+		}
+		else if (gameState == STATE.PauseMenu) {
+			g.setColor(new Color(115,48,168));
+			g.fill3DRect(100, 100, WIDTH-200, HEIGHT-200, true);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 48));
+			g.drawString("GAME PAUSED", 180, 200);
+			g.setFont(new Font("Arial", 1, 36));
+			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
+		}
 		
 		g.dispose();
 		bs.show();
 	}
 
 	private void tick() {
-		handler.tick();
+		if (gameState == STATE.InGame) {
+			handler.tick();
+		}
+		else if (gameState == STATE.PauseMenu)
+		{
+			
+		}
+		
+		if(prevState != gameState) {
+			stateChange();
+		}
+		prevState = gameState;
+	}
+	
+	private void stateChange() {
+		musicChange();
+		if (gameState == STATE.InGame) {
+			
+		}
+		else {
+			
+		}
+	}
+	
+	private void musicChange() {
+		if (gameState == STATE.PauseMenu){
+			float pos = song.getPosition();
+			song.stop();
+			song.loop(0.65f, 0.25f);
+			song.setPosition(pos);
+		}
+		else if (gameState == STATE.InGame){
+			float pos = song.getPosition();
+			song.stop();
+			song.loop(1f, 0.25f);
+			song.setPosition(pos);
+		}
 	}
 	
 	/*

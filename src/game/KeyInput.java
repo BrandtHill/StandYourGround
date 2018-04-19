@@ -3,11 +3,13 @@ package game;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+import game.Program.STATE;
+
 public class KeyInput extends KeyAdapter{
 	
 	private Handler handler;
 	private boolean w, a, s, d;
-	private GameObject player;
+	private PlayerObject player;
 	private final double speed = 2;
 	
 	public KeyInput(Handler h) {
@@ -24,12 +26,38 @@ public class KeyInput extends KeyAdapter{
 	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
-		//System.out.println("Key Pressed: " + key);
-		if(key == KeyEvent.VK_W) w = true;
-		if(key == KeyEvent.VK_A) a = true;
-		if(key == KeyEvent.VK_S) s = true;
-		if(key == KeyEvent.VK_D) d = true;
-		changeVelocity();
+		
+		if (Program.gameState == STATE.InGame) {
+			if (key == KeyEvent.VK_W) w = true;
+			if (key == KeyEvent.VK_A) a = true;
+			if (key == KeyEvent.VK_S) s = true;
+			if (key == KeyEvent.VK_D) d = true;
+			
+			changeVelocity();
+
+			if (key == KeyEvent.VK_ESCAPE) {
+				Program.gameState = STATE.PauseMenu;
+				w = a = s = d = false;
+			}
+			if (key == KeyEvent.VK_R) {
+				player.getGun().reload();
+			}
+			
+		}
+		else if (Program.gameState == STATE.GameOver) {
+			
+		}
+		else if (Program.gameState == STATE.StartMenu) {
+			
+		}
+		else if (Program.gameState == STATE.PauseMenu) {
+			if (key == KeyEvent.VK_ESCAPE) {
+				Program.gameState = STATE.InGame;
+			}
+		}
+		else if (Program.gameState == STATE.StoreMenu) {
+			
+		}
 	}
 	
 	/*
@@ -37,7 +65,7 @@ public class KeyInput extends KeyAdapter{
 	 */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-		//System.out.println("Key Released: " + key);		
+			
 		if(key == KeyEvent.VK_W) w = false;
 		if(key == KeyEvent.VK_A) a = false;
 		if(key == KeyEvent.VK_S) s = false;

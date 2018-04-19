@@ -6,9 +6,12 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
 public class PlayerObject extends GameObject{
+	
+	private Gun gun;
 
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
+		gun = new Gun("Titan", 7, 105, 22, this, h);
 	}
 	
 	public Rectangle getBounds() {
@@ -30,6 +33,7 @@ public class PlayerObject extends GameObject{
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-48);
 		detectCollision();
+		gun.tick();
 	}
 	
 	public void detectCollision()
@@ -54,4 +58,7 @@ public class PlayerObject extends GameObject{
 		g.fillRect((int)x, (int)y, 20, 20);
 	}
 
+	public Gun getGun() {
+		return gun;
+	}
 }

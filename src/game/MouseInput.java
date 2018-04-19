@@ -5,6 +5,9 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
+
+import game.Program.STATE;
+
 import static java.lang.Math.atan2;
 import static java.lang.Math.PI;
 
@@ -12,7 +15,7 @@ import static java.lang.Math.PI;
 public class MouseInput extends MouseAdapter{
 	
 	private Handler handler;
-	private GameObject player;
+	private PlayerObject player;
 	private Point point;
 	private double angle;
 	private Random r = new Random();
@@ -27,14 +30,37 @@ public class MouseInput extends MouseAdapter{
 	}
 	
 	public void mousePressed(MouseEvent e) {
+		
 		int button = e.getButton();
-		if(button == MouseEvent.BUTTON1) {
-			double spread = (r.nextDouble()-0.5)*7*PI/180;
-			point = e.getPoint();
-			angle = atan2(point.getX()-(player.getX()+10), point.getY()-(player.getY()+10));
-			//System.out.println("Angle: " + angle*180/PI + " Spread: " + spread*180/PI);
-			handler.addObject(new ProjectileObject(player.getX() + 10, player.getY() + 10, 20, angle+spread, handler));
-			AudioPlayer.getSound("Pistol").play(1.0f, 0.25f);
+		
+		if(Program.gameState == STATE.InGame){
+			if (button == MouseEvent.BUTTON1) {
+				
+				point = e.getPoint();
+				angle = atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10));
+				player.getGun().shoot(angle);
+				//System.out.println("Angle: " + angle*180/PI + " Spread: " + spread*180/PI);
+			}
+		}
+		else if(Program.gameState == STATE.GameOver){
+			if (button == MouseEvent.BUTTON1) {
+				point = e.getPoint();
+			}
+		}
+		else if(Program.gameState == STATE.PauseMenu){
+			if (button == MouseEvent.BUTTON1) {
+				point = e.getPoint();
+			}
+		}
+		else if(Program.gameState == STATE.StartMenu){
+			if (button == MouseEvent.BUTTON1) {
+				point = e.getPoint();
+			}
+		}
+		else if(Program.gameState == STATE.StoreMenu){
+			if (button == MouseEvent.BUTTON1) {
+				point = e.getPoint();
+			}
 		}
 	}
 }
