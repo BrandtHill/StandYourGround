@@ -48,7 +48,7 @@ public class KeyInput extends KeyAdapter{
 			
 		}
 		else if (Program.gameState == STATE.StartMenu) {
-			
+			Program.gameState = STATE.InGame;
 		}
 		else if (Program.gameState == STATE.PauseMenu) {
 			if (key == KeyEvent.VK_ESCAPE) {
