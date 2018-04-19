@@ -33,7 +33,7 @@ public class Gun {
 	}
 	
 	public void shoot(double angle) {
-		if (ammoLoaded>0 && !waitingOnReload) {
+		if (!waitingOnReload) {
 			Random r = new Random();
 			double spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
 			handler.addObject(
@@ -41,7 +41,8 @@ public class Gun {
 			AudioPlayer.getSound("Pistol").play(1.0f, 0.25f);
 			ammoLoaded--;
 		}
-		else reload();
+		else if (ammoExtra > 0)
+			reload();
 	}
 	
 	public void reload() {
@@ -66,8 +67,12 @@ public class Gun {
 	}
 	
 	public void tick() {
+		if(!(ammoLoaded > 0) && !(waitingOnReload))
+			reload();
+		
 		if(waitingOnReload) {
-			if((System.currentTimeMillis() - timer) > 0) {				
+			long timeElapsed = System.currentTimeMillis() - timer;
+			if((timeElapsed) > reloadTime) {				
 				reloadFinish();
 			}
 		}
