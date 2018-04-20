@@ -44,12 +44,13 @@ public class Handler{
 		}
 		while(abs(x-xPlayer)<200 && abs(y-yPlayer)<200);
 		
-		addObject(new ZombieObject(x,y,this));
+		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1));
 		
 	}
 	
 	public void addZombie(double x, double y) {
-		addObject(new ZombieObject(x,y,this));
+		Random r = new Random();
+		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1.2));
 	}
 	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}

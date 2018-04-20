@@ -219,8 +219,7 @@ public class Program extends Canvas implements Runnable{
 	private void stateChange() {
 		musicChange();
 		if (gameState == STATE.InGame) {
-			player.setX(WIDTH/2-10);
-			player.setY(HEIGHT/2-30);
+
 		}
 		else {
 			
@@ -258,6 +257,8 @@ public class Program extends Canvas implements Runnable{
 	}
 	
 	public void commenceLevel() {
+		player.setX(WIDTH/2-10);
+		player.setY(HEIGHT/2-30);
 		spawnSys.commenceLevel();
 	}
 

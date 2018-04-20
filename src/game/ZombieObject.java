@@ -14,13 +14,13 @@ import static java.lang.Math.cos;
 
 public class ZombieObject extends GameObject{
 
-	private double health, xPlayer, yPlayer, xBias, yBias, angle;
+	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	private PlayerObject player;
 	private Random r;
 	private byte tickDivider;
 	//private boolean i;
 	
-	public ZombieObject(double xPos, double yPos, Handler h) {
+	public ZombieObject(double xPos, double yPos, Handler h, double spd) {
 		super(xPos, yPos, ObjectType.Zombie, h);
 		
 		try {
@@ -32,6 +32,7 @@ public class ZombieObject extends GameObject{
 		r = new Random();
 		health = r.nextInt(21) + 60;
 		
+		speed = spd;
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
 	}
@@ -40,8 +41,8 @@ public class ZombieObject extends GameObject{
 		xPlayer = player.getX()+10;
 		yPlayer = player.getY()+10;
 		angle = atan2(xPlayer-x, yPlayer-y);
-		xBias = sin(angle);
-		yBias = cos(angle);
+		xBias = speed*sin(angle);
+		yBias = speed*cos(angle);
 		r = new Random();
 		velX = r.nextInt(61)/10.0 - 3 + xBias;
 		velY = r.nextInt(61)/10.0 - 3 + yBias;
