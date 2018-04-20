@@ -1,5 +1,7 @@
 package game;
 
+import static java.lang.Math.atan2;
+
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,10 +18,12 @@ public class Program extends Canvas implements Runnable{
 	private Handler handler;
 	private HUD hud;
 	private SpawnSystem spawnSys;
+	private PlayerObject player;
+	private ReticleObject reticle;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public Music song;
-	public int level;
+	private byte tickDivider;
 	
 	public static enum STATE{
 		InGame,
@@ -35,25 +39,26 @@ public class Program extends Canvas implements Runnable{
 	
 	public Program() {
 		
-		handler = new Handler();
+		handler = new Handler(this);
 		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
-		hud = new HUD(handler);
 		spawnSys = new SpawnSystem(handler);
-		
+		hud = new HUD(handler, spawnSys);
+		player = (PlayerObject)handler.getObjectAt(0);
+		reticle = (ReticleObject)handler.getObjectAt(1);
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
 		addMouseMotionListener(new MouseMotionInput(handler));
 		
 		gameState = STATE.StartMenu;
-		level = 1;
 		AudioPlayer.load();
 		song = AudioPlayer.getMusic("Husk");
 		song.loop(1f, 0.25f);
+		tickDivider = 0;
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
-		  				
+		
 	}
 	
 	public synchronized void start() {
@@ -92,7 +97,6 @@ public class Program extends Canvas implements Runnable{
         double delta = 0;
         long timer = System.currentTimeMillis();
         long currMilli;
-        int sec = 0;
         int frames = 0;
         while(running)
         {
@@ -117,17 +121,15 @@ public class Program extends Canvas implements Runnable{
 					System.out.println("FPS: " + frames);
 					frames = 0;
 
-					sec++;
-					if (sec > 0) {
-						handler.addZombie();
-						sec = 0;
-					}
 				}
 			}
 	        else if (gameState == STATE.PauseMenu) {
 	        	
 	        }
 	        else if (gameState == STATE.StartMenu) {
+	        	
+	        }
+	        else if (gameState == STATE.StoreMenu) {
 	        	
 	        }
         
@@ -167,7 +169,25 @@ public class Program extends Canvas implements Runnable{
 			g.setFont(new Font("Arial", 1, 42));
 			g.drawString("STAND YOUR GROUND", 160, 200);
 			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS ANY KEY TO BEGIN", 150, 400);
+			g.drawString("PRESS SPACE TO BEGIN", 180, 400);
+        }
+		else if (gameState == STATE.StoreMenu) {
+			g.setColor(new Color(30,128,205));
+			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 42));
+			g.drawString("STORE COMING SOON", 160, 200);
+			g.setFont(new Font("Arial", 1, 28));
+			g.drawString("PRESS SPACE TO COMMENCE LEVEL " + spawnSys.getLevel(), 120, 400);
+        }
+		else if (gameState == STATE.GameOver) {
+			g.setColor(new Color(30,60,30));
+			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 42));
+			g.drawString("GAME OVER", 250, 200);
+			g.setFont(new Font("Arial", 1, 36));
+			g.drawString("RELAUNCH TO PLAY AGAIN", 150, 400);
         }
 		
 		g.dispose();
@@ -177,7 +197,13 @@ public class Program extends Canvas implements Runnable{
 	private void tick() {
 		if (gameState == STATE.InGame) {
 			handler.tick();
-			hud.tick();
+			
+			if (tickDivider % 16 == 0) {
+				player.setAngle(atan2(reticle.getX() - (player.getX() + 10), reticle.getY() - (player.getY() + 10)));
+				hud.tick();
+				spawnSys.tick();
+			}
+			tickDivider++;
 		}
 		else if (gameState == STATE.PauseMenu)
 		{
@@ -193,7 +219,8 @@ public class Program extends Canvas implements Runnable{
 	private void stateChange() {
 		musicChange();
 		if (gameState == STATE.InGame) {
-			
+			player.setX(WIDTH/2-10);
+			player.setY(HEIGHT/2-30);
 		}
 		else {
 			
@@ -213,6 +240,12 @@ public class Program extends Canvas implements Runnable{
 			song.loop(1f, 0.25f);
 			song.setPosition(pos);
 		}
+		else if (gameState == STATE.StoreMenu){
+			float pos = song.getPosition();
+			song.stop();
+			song.loop(1.35f, 0.25f);
+			song.setPosition(pos);
+		}
 	}
 	
 	/*
@@ -222,6 +255,10 @@ public class Program extends Canvas implements Runnable{
 	 */
 	public static double clamp(double val, double min, double max) {
 		return (val > min) ? ((val < max) ? val : max) : min;
+	}
+	
+	public void commenceLevel() {
+		spawnSys.commenceLevel();
 	}
 
 }

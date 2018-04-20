@@ -47,7 +47,7 @@ public class Gun {
 				double spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
 				handler.addObject(
 						new ProjectileObject(player.getX() + 10, player.getY() + 10, 20, angle + spread, damage, 5, handler));
-				AudioPlayer.getSound("Pistol").play(1.0f, 0.25f);
+				AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
 			}
 			else if (gunType == GUN.Rifle) {
 				double spread = (r.nextDouble() - 0.5) * 3 * PI / 180;
@@ -61,7 +61,7 @@ public class Gun {
 					handler.addObject(
 							new ProjectileObject(player.getX() + 10, player.getY() + 10, 15, angle + spread, damage, 6,handler));
 				}
-				AudioPlayer.getSound("Shotgun").play(1.0f, 0.25f);
+				AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
 			}
 			
 			ammoLoaded--;

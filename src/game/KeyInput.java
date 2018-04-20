@@ -51,7 +51,10 @@ public class KeyInput extends KeyAdapter{
 			
 		}
 		else if (Program.gameState == STATE.StartMenu) {
-			Program.gameState = STATE.InGame;
+			if (key == KeyEvent.VK_SPACE) {
+				Program.gameState = STATE.InGame;
+				handler.getProgram().commenceLevel();
+			}
 		}
 		else if (Program.gameState == STATE.PauseMenu) {
 			if (key == KeyEvent.VK_ESCAPE) {
@@ -59,7 +62,10 @@ public class KeyInput extends KeyAdapter{
 			}
 		}
 		else if (Program.gameState == STATE.StoreMenu) {
-			
+			if (key == KeyEvent.VK_SPACE) {
+				Program.gameState = STATE.InGame;
+				handler.getProgram().commenceLevel();
+			}
 		}
 	}
 	

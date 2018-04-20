@@ -10,9 +10,14 @@ import static java.lang.Math.abs;
  * and renders each them.
  */
 public class Handler{
-	LinkedList<GameObject> gameObjs = new LinkedList<GameObject>();
 	
+	private LinkedList<GameObject> gameObjs; 
+	private Program program;
 	
+	public Handler(Program p) {
+		gameObjs = new LinkedList<GameObject>();
+		program = p;
+	}
 	
 	public void tick() {
 		for(int i = 0; i < gameObjs.size(); i++) {
@@ -43,9 +48,14 @@ public class Handler{
 		
 	}
 	
+	public void addZombie(double x, double y) {
+		addObject(new ZombieObject(x,y,this));
+	}
+	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
 	public LinkedList<GameObject> getObjList()	{return gameObjs;}
+	public Program getProgram()					{return program;}
 
 }

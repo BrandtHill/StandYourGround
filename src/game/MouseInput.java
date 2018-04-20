@@ -1,6 +1,8 @@
 package game;
 
 
+import static java.lang.Math.atan2;
+
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -33,8 +35,8 @@ public class MouseInput extends MouseAdapter{
 				
 				point = e.getPoint();
 				//angle = atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10));
-				angle = player.getAngle();
-				player.getGun().shoot(angle);
+				player.setAngle(atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10)));
+				player.getGun().shoot(player.getAngle());
 			}
 		}
 		else if(Program.gameState == STATE.GameOver){

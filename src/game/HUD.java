@@ -8,22 +8,26 @@ public class HUD {
 	
 	private Handler handler;
 	private PlayerObject player;
-	private String info;
+	private SpawnSystem spawnSys;
+	private String gunInfo, levelInfo;
 	
-	public HUD(Handler h) {
+	
+	public HUD(Handler h, SpawnSystem s) {
 		handler = h;
 		try {
 			player = (PlayerObject)handler.getObjectAt(0);
 		}catch(Exception e) {
 			e.getMessage();
 		}
-		info = new String();
+		spawnSys = s;
+		gunInfo = levelInfo = new String();
 	}
 	
 
 	public void tick() {
 		Gun gun = player.getGun();
-		info = gun.getName() + "    " + gun.getAmmoLoaded() + "/" + gun.getMagSize() + "   " + gun.getAmmoExtra();
+		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + "/" + gun.getMagSize() + "   " + gun.getAmmoExtra();
+		levelInfo = "Level " + spawnSys.getLevel() + "    " + "Zombies Remaining: " + spawnSys.getRemaining() + "     $"+ spawnSys.getMoney();
 	}
 	
 	public void render(Graphics g) {
@@ -31,6 +35,10 @@ public class HUD {
 		g.setColor(new Color(170,170,170));
 		g.draw3DRect(20, 20, 250, 30, true);
 		g.setFont(new Font("Arial", 1, 16));
-		g.drawString(info, 40, 42);
+		g.drawString(gunInfo, 40, 42);
+		g.setColor(new Color(100,20,20));
+		g.draw3DRect(350, 20, 350, 30, true);
+		g.setFont(new Font("Arial", 1, 16));
+		g.drawString(levelInfo, 370, 42);
 	}
 }
