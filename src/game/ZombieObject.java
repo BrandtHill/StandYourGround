@@ -88,6 +88,8 @@ public class ZombieObject extends GameObject{
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
 		if(health<= 0) {
+			int money = player.getMoney();
+			player.setMoney(20+r.nextInt(11) + money);
 			handler.removeObject(this);
 		}
 	}

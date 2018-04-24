@@ -36,7 +36,10 @@ public class MouseInput extends MouseAdapter{
 				point = e.getPoint();
 				//angle = atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10));
 				player.setAngle(atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10)));
-				player.getGun().shoot(player.getAngle());
+				if(player.getGun().getFullAuto())
+					player.getGun().setShooting(true);
+				else
+					player.getGun().shoot(player.getAngle());
 			}
 		}
 		else if(Program.gameState == STATE.GameOver){
@@ -59,5 +62,15 @@ public class MouseInput extends MouseAdapter{
 				point = e.getPoint();
 			}
 		}
+	}
+	
+	public void mouseReleased(MouseEvent e) {
+		
+		int button = e.getButton();
+		
+		if(Program.gameState == STATE.InGame) {
+			player.getGun().setShooting(false);
+		}
+		
 	}
 }

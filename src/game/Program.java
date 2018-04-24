@@ -20,6 +20,7 @@ public class Program extends Canvas implements Runnable{
 	private SpawnSystem spawnSys;
 	private PlayerObject player;
 	private ReticleObject reticle;
+	private Store store;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public Music song;
@@ -39,6 +40,7 @@ public class Program extends Canvas implements Runnable{
 	
 	public Program() {
 		
+		AudioPlayer.load();
 		handler = new Handler(this);
 		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
 		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
@@ -46,13 +48,14 @@ public class Program extends Canvas implements Runnable{
 		hud = new HUD(handler, spawnSys);
 		player = (PlayerObject)handler.getObjectAt(0);
 		reticle = (ReticleObject)handler.getObjectAt(1);
+		store = new Store(handler);
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
+		addMouseListener(store);
 		addMouseMotionListener(new MouseMotionInput(handler));
 		
 		gameState = STATE.StartMenu;
-		AudioPlayer.load();
 		song = AudioPlayer.getMusic("Husk");
 		song.loop(1f, 0.25f);
 		tickDivider = 0;
@@ -155,34 +158,34 @@ public class Program extends Canvas implements Runnable{
 		}
 		else if (gameState == STATE.PauseMenu) {
 			g.setColor(new Color(115,48,168));
-			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 48));
 			g.drawString("GAME PAUSED", 180, 200);
 			g.setFont(new Font("Arial", 1, 36));
 			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
+			
+			reticle.render(g);
 		}
 		else if (gameState == STATE.StartMenu) {
 			g.setColor(new Color(150,48,30));
-			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 42));
 			g.drawString("STAND YOUR GROUND", 160, 200);
 			g.setFont(new Font("Arial", 1, 36));
 			g.drawString("PRESS SPACE TO BEGIN", 180, 400);
+
+			reticle.render(g);
         }
 		else if (gameState == STATE.StoreMenu) {
-			g.setColor(new Color(30,128,205));
-			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("STORE COMING SOON", 160, 200);
-			g.setFont(new Font("Arial", 1, 28));
-			g.drawString("PRESS SPACE TO COMMENCE LEVEL " + spawnSys.getLevel(), 120, 400);
+			store.render(g);
+			
+			reticle.render(g);
         }
 		else if (gameState == STATE.GameOver) {
 			g.setColor(new Color(30,60,30));
-			g.fill3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 42));
 			g.drawString("GAME OVER", 250, 200);
@@ -198,7 +201,7 @@ public class Program extends Canvas implements Runnable{
 		if (gameState == STATE.InGame) {
 			handler.tick();
 			
-			if (tickDivider % 16 == 0) {
+			if (tickDivider % 8 == 0) {
 				player.setAngle(atan2(reticle.getX() - (player.getX() + 10), reticle.getY() - (player.getY() + 10)));
 				hud.tick();
 				spawnSys.tick();
@@ -207,9 +210,16 @@ public class Program extends Canvas implements Runnable{
 		}
 		else if (gameState == STATE.PauseMenu)
 		{
-			
+			reticle.tick();
 		}
-		
+		else if (gameState == STATE.StoreMenu)
+		{
+			reticle.tick();
+		}
+		else if (gameState == STATE.StartMenu)
+		{
+			reticle.tick();
+		}
 		if(prevState != gameState) {
 			stateChange();
 		}
@@ -218,11 +228,15 @@ public class Program extends Canvas implements Runnable{
 	
 	private void stateChange() {
 		musicChange();
+		hud.tick();
 		if (gameState == STATE.InGame) {
-
+			//player.resetAllAmmo();
+			player.resetAllAmmo();
+			handler.removeProjectiles();
 		}
 		else {
-			
+			player.resetAllAmmo();
+			handler.removeProjectiles();
 		}
 	}
 	

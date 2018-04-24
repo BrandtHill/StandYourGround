@@ -26,8 +26,12 @@ public class HUD {
 
 	public void tick() {
 		Gun gun = player.getGun();
-		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + "/" + gun.getMagSize() + "   " + gun.getAmmoExtra();
-		levelInfo = "Level " + spawnSys.getLevel() + "    " + "Zombies Remaining: " + spawnSys.getRemaining() + "     $"+ spawnSys.getMoney();
+		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + 
+				"/" + gun.getMagSize() + 
+				"   " + gun.getAmmoExtra();
+		levelInfo = "Level " + spawnSys.getLevel() + 
+				"    " + "Zombies Remaining: " + spawnSys.getRemaining() + 
+				"     $"+ player.getMoney();
 	}
 	
 	public void render(Graphics g) {

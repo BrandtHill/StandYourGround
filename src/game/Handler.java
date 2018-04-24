@@ -32,6 +32,17 @@ public class Handler{
 			obj.render(g);
 		}
 	}
+
+	public void removeProjectiles() {
+		for(int i = 0; i < gameObjs.size(); i++) {
+			GameObject obj = getObjectAt(i);
+			if(obj.getType() == ObjectType.Projectile) {
+				ProjectileObject projectile = (ProjectileObject)obj;
+				projectile.setOld();
+				removeObject(projectile);
+			}
+		}
+	}
 	
 	public void addZombie() {
 		Random r = new Random();

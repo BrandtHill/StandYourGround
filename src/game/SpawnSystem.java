@@ -8,7 +8,7 @@ public class SpawnSystem {
 	private PlayerObject player;
 	private int zombiesLeft;
 	private long timer;
-	private int level, money;
+	private int level;//, money;
 	
 	public SpawnSystem(Handler h) {
 		handler = h;
@@ -19,7 +19,7 @@ public class SpawnSystem {
 			System.out.println(e.getMessage());
 		}
 		zombiesLeft = 0;
-		money = 0;
+		//money = 0;
 	}
 	
 	public void tick() {
@@ -83,6 +83,6 @@ public class SpawnSystem {
 	
 	public int getRemaining() {return zombiesLeft;}
 	public int getLevel() {return level;}
-	public int getMoney() {return money;}
+	//public int getMoney() {return money;}
 
 }
