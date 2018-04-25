@@ -24,10 +24,10 @@ public class PlayerObject extends GameObject{
 	private double angle;
 	private double speed;
 	private byte tickDivider;
-	private BufferedImage img;
-	private BufferedImage[] images;
+	private BufferedImage spriteSheet;
+	private BufferedImage[][] playerSprites;
 	private int money;
-	private int spriteNum;
+	private int spriteNum, gunNum;
 	
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
@@ -44,18 +44,22 @@ public class PlayerObject extends GameObject{
 		money = 0;
 		speed = 2;
 		
-		images = new BufferedImage[8];
+		playerSprites = new BufferedImage[8][3];
+		//gunSprites = new BufferedImage[3];
 		
 		try {
-			img = ImageIO.read(new File("res/PlayerSprite.png"));
+			spriteSheet = ImageIO.read(new File("res/PlayerSprite.png"));
 
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
 		
 		for(int i = 0; i < 8; i++) {
-			images[i] = img.getSubimage(20 * i, 0, 20, 20);
+			for(int j = 0; j < 3; j++) {
+				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
+			}
 		}
+		
 	}
 	
 	public Rectangle getBounds() {
@@ -81,7 +85,17 @@ public class PlayerObject extends GameObject{
 		
 		if (tickDivider%8 == 0) {
 			detectCollision();
-			spriteNum++;
+			
+			switch(gunWeilded.getName()) {
+			case "Titan": gunNum = 0; 		break;
+			case "AR-15": gunNum = 1; 		break;
+			case "Over-Under": gunNum = 2;	break;
+			default: gunNum = 0; 			break;
+			}
+			
+			if(velX != 0 || velY != 0)
+				spriteNum++;
+			
 			spriteNum = spriteNum % 8;
 		}
 		
@@ -108,7 +122,7 @@ public class PlayerObject extends GameObject{
 			g2d.setColor(Color.LIGHT_GRAY);
 			g2d.rotate(-angle, x + 10, y + 10);
 			//g2d.fillRect((int)x, (int)y, 20, 20);
-			g2d.drawImage(images[spriteNum], (int)x, (int)y, null);
+			g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 			//g2d.drawImage(img, (int)x, (int)y, null);
 			g2d.rotate(angle, x + 10, y + 10);
 	}
