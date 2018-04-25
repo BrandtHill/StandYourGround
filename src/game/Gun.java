@@ -21,6 +21,7 @@ public class Gun {
 	private PlayerObject player;
 	private Handler handler;
 	private long timer;
+	private long tickDivider;
 	private GUN gunType;
 	private Sound reloadSound;
 	public static enum GUN{
@@ -116,9 +117,12 @@ public class Gun {
 			}
 		}
 		
-		if(shooting && isFullAuto) {
-			shoot(player.getAngle());
+		if (tickDivider%4 == 0) {
+			if (shooting && isFullAuto) {
+				shoot(player.getAngle());
+			} 
 		}
+		tickDivider++;
 	}
 	
 	public void resetAmmo() {
@@ -150,5 +154,6 @@ public class Gun {
 	public void setAmmoExtra(int ammo) {ammoExtra = ammo;}
 	public void setAmmoCapacity(int ammo) {ammoCapacity = ammo;}
 	public void setShooting(boolean s) {shooting = s;}
+	public void setTickDivider(int t) {tickDivider = t;}
 	
 }

@@ -7,6 +7,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 import org.newdawn.slick.Music;
 
@@ -21,6 +26,9 @@ public class Program extends Canvas implements Runnable{
 	private PlayerObject player;
 	private ReticleObject reticle;
 	private Store store;
+	private MouseMotionInput mmi;
+	private StoreMotion storeMotion;
+	private BufferedImage background;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	public Music song;
@@ -49,11 +57,19 @@ public class Program extends Canvas implements Runnable{
 		player = (PlayerObject)handler.getObjectAt(0);
 		reticle = (ReticleObject)handler.getObjectAt(1);
 		store = new Store(handler);
+		storeMotion = new StoreMotion(store);
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
 		addMouseListener(store);
 		addMouseMotionListener(new MouseMotionInput(handler));
+		
+		try {
+			background = ImageIO.read(new File("res/GrassBackground.png"));
+
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
 		
 		gameState = STATE.StartMenu;
 		song = AudioPlayer.getMusic("Husk");
@@ -115,16 +131,17 @@ public class Program extends Canvas implements Runnable{
 	        render();
 	        frames++;
 	        
+        	currMilli = System.currentTimeMillis();
+			if (currMilli - timer > 1000) {
+				//timer += 1000;
+				timer = System.currentTimeMillis();
+				System.out.println("FPS: " + frames);
+				frames = 0;
+
+			}
+	        
 	        if (gameState == STATE.InGame) {
 	        	
-	        	currMilli = System.currentTimeMillis();
-				if (currMilli - timer > 1000) {
-					//timer += 1000;
-					timer = System.currentTimeMillis();
-					System.out.println("FPS: " + frames);
-					frames = 0;
-
-				}
 			}
 	        else if (gameState == STATE.PauseMenu) {
 	        	
@@ -153,10 +170,12 @@ public class Program extends Canvas implements Runnable{
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		if (gameState == STATE.InGame) {
+			g.drawImage(background, 0, 0, null);
 			handler.render(g);
 			hud.render(g);
 		}
 		else if (gameState == STATE.PauseMenu) {
+			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(115,48,168));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -168,6 +187,7 @@ public class Program extends Canvas implements Runnable{
 			reticle.render(g);
 		}
 		else if (gameState == STATE.StartMenu) {
+			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(150,48,30));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -179,11 +199,14 @@ public class Program extends Canvas implements Runnable{
 			reticle.render(g);
         }
 		else if (gameState == STATE.StoreMenu) {
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			
 			store.render(g);
 			
 			reticle.render(g);
         }
 		else if (gameState == STATE.GameOver) {
+			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(30,60,30));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -233,6 +256,10 @@ public class Program extends Canvas implements Runnable{
 			//player.resetAllAmmo();
 			player.resetAllAmmo();
 			handler.removeProjectiles();
+			removeMouseMotionListener(storeMotion);
+		}
+		else if (gameState == STATE.StoreMenu) {
+			addMouseMotionListener(storeMotion);
 		}
 		else {
 			player.resetAllAmmo();

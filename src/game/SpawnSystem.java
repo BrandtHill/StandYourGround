@@ -19,7 +19,6 @@ public class SpawnSystem {
 			System.out.println(e.getMessage());
 		}
 		zombiesLeft = 0;
-		//money = 0;
 	}
 	
 	public void tick() {
@@ -43,6 +42,10 @@ public class SpawnSystem {
 				handler.addZombie(-(i+1)*50, i*200);
 				zombiesLeft++;
 			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombie((i+1)*50+1500, i*200);
+				zombiesLeft++;
+			}
 			break;
 		
 		case 2:
@@ -54,14 +57,22 @@ public class SpawnSystem {
 				handler.addZombie(100+(i*100), (Program.HEIGHT+200+(i*150)));
 				zombiesLeft++;
 			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombie(-500-(i*50), (300+(i*25)));
+				zombiesLeft++;
+			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombie(Program.WIDTH+700+(i*100), (150+(i*100)));
+				zombiesLeft++;
+			}
 			break;
 		
 		case 3:
-			for(int i = 0; i < 10; i++) {
+			for(int i = 0; i < 12; i++) {
 				handler.addZombie(Program.WIDTH+(i*20), (50+(i*50)));
 				zombiesLeft++;
 			}
-			for(int i = 0; i < 10; i++) {
+			for(int i = 0; i < 12; i++) {
 				handler.addZombie(-(i*20), (550-(i*50)));
 				zombiesLeft++;
 			}	
