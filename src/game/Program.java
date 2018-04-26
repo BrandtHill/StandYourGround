@@ -31,7 +31,9 @@ public class Program extends Canvas implements Runnable{
 	private BufferedImage background;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
+	//public Music songHusk, songMystic, songFat;
 	public Music song;
+	//private float posHusk, posMystic, posFat = 0f;
 	private byte tickDivider;
 	
 	public static enum STATE{
@@ -72,8 +74,13 @@ public class Program extends Canvas implements Runnable{
 		}
 		
 		gameState = STATE.StartMenu;
+		
 		song = AudioPlayer.getMusic("Husk");
+		//songHusk = AudioPlayer.getMusic("Husk");
+		//songMystic = AudioPlayer.getMusic("Mystic");
+		//songFat = AudioPlayer.getMusic("Fat");
 		song.loop(1f, 0.25f);
+		
 		tickDivider = 0;
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);

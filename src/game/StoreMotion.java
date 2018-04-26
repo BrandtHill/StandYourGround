@@ -21,6 +21,8 @@ public class StoreMotion extends MouseMotionAdapter{
 		if (Program.gameState == STATE.StoreMenu) {
 			for (int i = 0; i < 4; i++) {
 				if (store.inBounds(e.getPoint(), i)) {
+					if (store.colors[i] == Color.WHITE)
+						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
 					store.colors[i] = Color.GREEN;
 				}
 				else store.colors[i] = Color.WHITE;
@@ -32,6 +34,8 @@ public class StoreMotion extends MouseMotionAdapter{
 		if (Program.gameState == STATE.StoreMenu) {
 			for (int i = 0; i < 4; i++) {
 				if (store.inBounds(e.getPoint(), i)) {
+					if (store.colors[i] == Color.WHITE)
+						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);	
 					store.colors[i] = Color.CYAN;
 				}
 				else store.colors[i] = Color.WHITE;

@@ -116,6 +116,7 @@ public class Store extends MouseAdapter{
 
 		int cap = gun.getAmmoCapacity();
 		if(player.getMoney() >= money) {
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 			gun.setAmmoCapacity(ammo+cap);
 			player.setMoney(player.getMoney() - money);
 		}
@@ -133,6 +134,7 @@ public class Store extends MouseAdapter{
 		}
 		
 		if(player.getMoney() >= money) {
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 			int mag = gun.getMagSize();
 			int cap = gun.getAmmoCapacity();
 			int m = player.getMoney();

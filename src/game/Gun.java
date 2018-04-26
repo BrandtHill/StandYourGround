@@ -61,20 +61,20 @@ public class Gun {
 			if (gunType == GUN.Pistol) {
 				double spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
 				handler.addObject(
-						new ProjectileObject(player.getX() + 10 - 3*cos(player.getAngle()), player.getY() + 10 + 4*sin(player.getAngle()), 20, angle + spread, damage, 5, handler));
+						new ProjectileObject(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 20, angle + spread, damage, 5, handler));
 				AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
 			}
 			else if (gunType == GUN.Rifle) {
 				double spread = (r.nextDouble() - 0.5) * 3 * PI / 180;
 				handler.addObject(
-						new ProjectileObject(player.getX() + 10 - 3*cos(player.getAngle()), player.getY() + 10 + 4*sin(player.getAngle()), 30, angle + spread, damage, 17.5, handler));
+						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 30, angle + spread, damage, 17.5, handler));
 				AudioPlayer.getSound("Rifle").play(1.0f, 0.25f);
 			}
 			else if (gunType == GUN.Shotgun) {
 				for (int i = 0; i < 9; i++) {
 					double spread = (r.nextDouble() - 0.5) * 9 * PI / 180;
 					handler.addObject(
-							new ProjectileObject(player.getX() + 10 - 3*cos(player.getAngle()), player.getY() + 10 + 4*sin(player.getAngle()), 15, angle + spread, damage, 6,handler));
+							new ProjectileObject(muzzlePointX(-3, 21), muzzlePointY(-3, 21), 15, angle + spread, damage, 6,handler));
 				}
 				AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
 			}
@@ -139,6 +139,24 @@ public class Gun {
 		if(reloadSound.playing())
 			reloadSound.stop();
 		waitingOnReload = false;
+	}
+	
+	/*
+	 * This function takes in the location of the muzzle of the gun 
+	 * relative to the center of the player sprite and returns the
+	 * X value corrected for player rotation.
+	 */
+	private double muzzlePointX(int relX, int relY) {
+		return player.getX() + 10 + relX*cos(player.getAngle()) + relY*sin(player.getAngle());
+	}
+	
+	/*
+	 * This function takes in the location of the muzzle of the gun 
+	 * relative to the center of the player sprite and returns the
+	 * X value corrected for player rotation.
+	 */
+	private double muzzlePointY(int relX, int relY) {
+		return player.getY() + 10 + relY*cos(player.getAngle()) - relX*sin(player.getAngle());
 	}
 	
 	public double getDamage() {return damage;}

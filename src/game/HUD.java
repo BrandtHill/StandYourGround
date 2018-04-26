@@ -36,13 +36,17 @@ public class HUD {
 	
 	public void render(Graphics g) {
 		//Graphics2D g2d = (Graphics2D)g;
-		g.setColor(new Color(170,170,170));
+		g.setColor(new Color(100,20,20,127));
+		g.fillRect(20, 20, 250, 30);
+		g.fillRect(350, 20, 350, 30);
+		
+		g.setColor(new Color(100,20,20));
 		g.draw3DRect(20, 20, 250, 30, true);
+		g.draw3DRect(350, 20, 350, 30, true);
+		
+		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 16));
 		g.drawString(gunInfo, 40, 42);
-		g.setColor(new Color(100,20,20));
-		g.draw3DRect(350, 20, 350, 30, true);
-		g.setFont(new Font("Arial", 1, 16));
 		g.drawString(levelInfo, 370, 42);
 	}
 }

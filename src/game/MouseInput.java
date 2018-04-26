@@ -3,7 +3,6 @@ package game;
 
 import static java.lang.Math.atan2;
 
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -14,7 +13,6 @@ public class MouseInput extends MouseAdapter{
 	
 	private Handler handler;
 	private PlayerObject player;
-	private Point point;
 	private double angle;
 	
 	public MouseInput(Handler h) {
@@ -32,10 +30,8 @@ public class MouseInput extends MouseAdapter{
 		
 		if(Program.gameState == STATE.InGame){
 			if (button == MouseEvent.BUTTON1) {
-				
-				point = e.getPoint();
 				Gun gun = player.getGun();
-				player.setAngle(atan2(point.getX() - (player.getX() + 10), point.getY() - (player.getY() + 10)));
+				player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
 				
 				gun.setTickDivider(0);
 				
@@ -47,22 +43,18 @@ public class MouseInput extends MouseAdapter{
 		}
 		else if(Program.gameState == STATE.GameOver){
 			if (button == MouseEvent.BUTTON1) {
-				point = e.getPoint();
 			}
 		}
 		else if(Program.gameState == STATE.PauseMenu){
 			if (button == MouseEvent.BUTTON1) {
-				point = e.getPoint();
 			}
 		}
 		else if(Program.gameState == STATE.StartMenu){
 			if (button == MouseEvent.BUTTON1) {
-				point = e.getPoint();
 			}
 		}
 		else if(Program.gameState == STATE.StoreMenu){
 			if (button == MouseEvent.BUTTON1) {
-				point = e.getPoint();
 			}
 		}
 	}
@@ -72,7 +64,9 @@ public class MouseInput extends MouseAdapter{
 		int button = e.getButton();
 		
 		if(Program.gameState == STATE.InGame) {
-			player.getGun().setShooting(false);
+			if (button == MouseEvent.BUTTON1) {
+				player.getGun().setShooting(false);
+			}
 		}
 		
 	}
