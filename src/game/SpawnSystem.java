@@ -4,10 +4,10 @@ import game.Program.STATE;
 
 public class SpawnSystem {
 
-	private Handler handler;
-	private PlayerObject player;
+	private static Handler handler;
+	private static PlayerObject player;
+	private boolean doneCommencing;
 	private int zombiesLeft;
-	private long timer;
 	private int level;//, money;
 	
 	public SpawnSystem(Handler h) {
@@ -18,23 +18,34 @@ public class SpawnSystem {
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
+		doneCommencing = false;
 		zombiesLeft = 0;
 	}
 	
 	public void tick() {
-		int numZomb = 0;
-		for(int i = 2; i < handler.getObjList().size(); i++) {
-			if(handler.getObjectAt(i).getType() == ObjectType.Zombie)
-				numZomb++;
-		}
-		zombiesLeft = numZomb;
-		if(zombiesLeft == 0) {
-			Program.gameState = STATE.StoreMenu;
-			level++;
+		if (doneCommencing) {
+			int numZomb = 0;
+			for (int i = 2; i < handler.getObjList().size(); i++) {
+				if (handler.getObjectAt(i).getType() == ObjectType.Zombie)
+					numZomb++;
+			}
+			zombiesLeft = numZomb;
+			if (zombiesLeft == 0) {
+				doneCommencing = false;
+				Program.gameState = STATE.StoreMenu;
+				level++;
+				player.resetAllAmmo();
+				handler.removeProjectiles();
+				player.setLevel(level);
+				player.setMoneyAtRoundStart(player.getMoney());
+				//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getMoney());
+			}
 		}
 	}
 	
 	public void commenceLevel() {
+		//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getLevel());
+		player.setMoneyAtRoundStart(player.getMoney());
 		switch(level) {
 		
 		case 1: 
@@ -89,11 +100,13 @@ public class SpawnSystem {
 			}
 			break;
 		}
+		doneCommencing = true;
 		
 	}
 	
 	public int getRemaining() {return zombiesLeft;}
 	public int getLevel() {return level;}
+	public void setLevel(int l) {level = l;}
 	//public int getMoney() {return money;}
 
 }

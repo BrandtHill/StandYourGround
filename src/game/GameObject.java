@@ -1,13 +1,17 @@
 package game;
 
 import java.awt.Graphics;
+import java.io.Serializable;
+
 import static java.lang.Math.sqrt;
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable{
+
+	private static final long serialVersionUID = 3699691857953926475L;
 	protected double x, y, velX, velY;
 	protected ObjectType type;
 	public static final double HALFSQRT2 = sqrt(2)/2;
-	protected Handler handler;
+	protected static Handler handler;
 	
 	public GameObject(double xPos, double yPos, ObjectType objType, Handler h) {
 		x = xPos;
@@ -15,6 +19,10 @@ public abstract class GameObject {
 		type = objType;
 		velX = velY = 0;
 		handler = h;
+	}
+	
+	public GameObject() {
+		
 	}
 	
 	public abstract void tick();

@@ -7,9 +7,9 @@ import game.Program.STATE;
 
 public class KeyInput extends KeyAdapter{
 	
-	private Handler handler;
+	private static Handler handler;
+	private static PlayerObject player;
 	private boolean w, a, s, d;
-	private PlayerObject player;
 	private double speed = 2;
 	
 	public KeyInput(Handler h) {
@@ -53,8 +53,18 @@ public class KeyInput extends KeyAdapter{
 		else if (Program.gameState == STATE.StartMenu) {
 			if (key == KeyEvent.VK_SPACE) {
 				Program.gameState = STATE.InGame;
-				handler.getProgram().commenceLevel();
+				Program.commenceLevel();
 			}
+			if (key == KeyEvent.VK_1) {
+				Program.loadsave.loadFromFile("res/saves/save1.syg");
+			}
+			if (key == KeyEvent.VK_2) {
+				Program.loadsave.loadFromFile("res/saves/save2.syg");
+			}
+			if (key == KeyEvent.VK_3) {
+				Program.loadsave.loadFromFile("res/saves/save3.syg");
+			}
+	
 		}
 		else if (Program.gameState == STATE.PauseMenu) {
 			if (key == KeyEvent.VK_ESCAPE) {
@@ -62,12 +72,17 @@ public class KeyInput extends KeyAdapter{
 			}
 		}
 		else if (Program.gameState == STATE.StoreMenu) {
-			if (key == KeyEvent.VK_1) {
-			}
+			
 			if (key == KeyEvent.VK_SPACE) {
 				Program.gameState = STATE.InGame;
-				handler.getProgram().commenceLevel();
+				Program.commenceLevel();
 			}
+			if (key == KeyEvent.VK_1) {
+				Program.loadsave.saveToFile("res/saves/save1.syg");
+				Program.loadsave.loadFromFile("res/saves/save1.syg");
+			}
+			if (key == KeyEvent.VK_2) Program.loadsave.saveToFile("res/saves/save2.syg");
+			if (key == KeyEvent.VK_3) Program.loadsave.saveToFile("res/saves/save3.syg");
 		}
 	}
 	

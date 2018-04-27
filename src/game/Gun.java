@@ -2,14 +2,18 @@ package game;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
+
+import java.io.Serializable;
+
 import static java.lang.Math.cos;
 
 import java.util.Random;
 
 import org.newdawn.slick.Sound;
 
-public class Gun {
+public class Gun implements Serializable {
 
+	private static final long serialVersionUID = 1906685545236886613L;
 	private double damage;
 	private int ammoLoaded;
 	private int ammoCapacity;
@@ -20,12 +24,12 @@ public class Gun {
 	private boolean shooting;
 	private long reloadTime;
 	private String gunName;
-	private PlayerObject player;
-	private Handler handler;
+	private static PlayerObject player;
+	private static Handler handler;
+	private transient Sound reloadSound;
 	private long timer;
 	private long tickDivider;
 	private GUN gunType;
-	private Sound reloadSound;
 	public static enum GUN{
 		Pistol,
 		Rifle,
@@ -131,8 +135,10 @@ public class Gun {
 		ammoLoaded = magSize;
 		ammoExtra = ammoCapacity;
 		shooting = false;
-		if(reloadSound.playing())
-			reloadSound.stop();
+		if (reloadSound != null) {
+			if (reloadSound.playing())
+				reloadSound.stop();
+		}
 	}
 	
 	public void swapGun() {

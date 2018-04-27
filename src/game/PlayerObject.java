@@ -6,7 +6,9 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -14,8 +16,9 @@ import javax.imageio.ImageIO;
 import game.Gun.GUN;
 import game.Program.STATE;
 
-public class PlayerObject extends GameObject{
+public class PlayerObject extends GameObject{// implements Serializable{
 	
+	private static final long serialVersionUID = 2544512233426538755L;
 	private Gun gunWeilded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
@@ -24,10 +27,11 @@ public class PlayerObject extends GameObject{
 	private double angle;
 	private double speed;
 	private byte tickDivider;
-	private BufferedImage spriteSheet;
-	private BufferedImage[][] playerSprites;
-	private int money;
+	private static transient BufferedImage spriteSheet;
+	private static transient BufferedImage[][] playerSprites = new BufferedImage [8][3];
+	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
+	private int level;
 	
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
@@ -35,31 +39,18 @@ public class PlayerObject extends GameObject{
 		gunPrimary = new Gun("AR-15", GUN.Rifle, 30, 30, 35, false, this, h); 
 		gunSecondary = new Gun("Over-Under", GUN.Shotgun, 2, 10, 40, false, this, h);
 		arsenal = new LinkedList<Gun>();
-		arsenal.add(gunSidearm);
 		arsenal.add(gunPrimary);
 		arsenal.add(gunSecondary);
+		arsenal.add(gunSidearm);
 		gunWeilded = gunSidearm;
 		tickDivider = 0;
 		spriteNum = 0;
 		money = 0;
+		moneyAtRoundStart = 0;
 		speed = 2;
+		loadSprites();
 		
-		playerSprites = new BufferedImage[8][3];
-		//gunSprites = new BufferedImage[3];
-		
-		try {
-			spriteSheet = ImageIO.read(new File("res/PlayerSprite.png"));
-
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		}
-		
-		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 3; j++) {
-				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
-			}
-		}
-		
+	
 	}
 	
 	public Rectangle getBounds() {
@@ -100,6 +91,7 @@ public class PlayerObject extends GameObject{
 		}
 		
 		tickDivider++;
+		
 	}
 	
 	public void detectCollision()
@@ -110,7 +102,7 @@ public class PlayerObject extends GameObject{
 				ZombieObject zomb = (ZombieObject)obj;
 				if(zomb.getBounds().intersects(this.getBounds())) {
 					Program.gameState = STATE.GameOver;
-					handler.removeObject(this);
+					//handler.removeObject(this);
 				}
 			}
 		}
@@ -130,11 +122,24 @@ public class PlayerObject extends GameObject{
 	public Gun getGun() {return gunWeilded;}
 	public LinkedList<Gun> getArsenal() {return arsenal;}
 	public double getAngle() {return angle;}
-	public void setAngle(double a) {angle = a;}
-	public int getMoney() {return money;}
-	public void setMoney(int m) {money = m;}
 	public double getSpeed() {return speed;}
+	public int getMoney() {return money;}
+	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
+	public int getLevel() {return level;}
+	
+	public void setAngle(double a) {angle = a;}
+	public void setArsenal(LinkedList<Gun> l) {arsenal = l;}
 	public void setSpeed(double s) {speed = s;}
+	public void setMoney(int m) {money = m;}
+	public void setMoneyAtRoundStart(int m) {moneyAtRoundStart = m;}
+	public void setLevel(int l) {level = l;}
+	
+	public void setGuns() {
+		gunPrimary = arsenal.get(0);
+		gunSecondary = arsenal.get(1);
+		gunSidearm = arsenal.get(2);
+		gunWeilded = gunSidearm;
+	}
 	
 	public void switchToPrimary() {
 		if(gunWeilded != gunPrimary) 
@@ -156,6 +161,19 @@ public class PlayerObject extends GameObject{
 			arsenal.get(i).resetAmmo();
 		}
 	}
-
-
+	
+	public void loadSprites() {
+		try {
+			FileInputStream file = new FileInputStream("res/PlayerSprite.png");
+			spriteSheet = ImageIO.read(file);
+			file.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		for(int i = 0; i < 8; i++) {
+			for(int j = 0; j < 3; j++) {
+				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
+			}
+		}
+	}
 }

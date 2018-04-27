@@ -14,9 +14,8 @@ import static java.lang.Math.round;
 
 public class Store extends MouseAdapter{
 
-	private PlayerObject player;
-	private String str;
-	private Handler handler;
+	private static PlayerObject player;
+	private static Handler handler;
 	private int mX, mY;
 	public Color colors [] = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
 	private int buttonX [] = {100, 260, 420, 580};
@@ -31,7 +30,6 @@ public class Store extends MouseAdapter{
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
-		str = new String();
 		
 		buttonW = 120;
 		buttonH = 80;
@@ -49,13 +47,15 @@ public class Store extends MouseAdapter{
 				upgradeCapacity("Titan", 14, 200);
 			else if (inBounds(buttonX[3], buttonY[3], buttonW, buttonH))
 				upgradeMagSize("AR-15", 10, 500);
+			
+			player.setMoneyAtRoundStart(player.getMoney());
 		}
 	}
 	
 	public void render(Graphics g) {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 24));
-		g.drawString("MONEY: " + player.getMoney(), 340, 50);
+		g.drawString("MONEY: $" + player.getMoney(), 340, 50);
 		g.drawString("PRESS SPACE TO COMMENCE NEXT LEVEL", 120, 450);
 		g.setFont(new Font("Arial", 1, 12));
 		

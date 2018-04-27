@@ -7,9 +7,9 @@ import static java.lang.Math.atan2;
 
 public class MouseMotionInput extends MouseMotionAdapter {
 
-	private Handler handler;
-	private PlayerObject player; 
-	private GameObject reticle; 
+	private static Handler handler;
+	private static PlayerObject player; 
+	private static GameObject reticle; 
 	private double angle;
 	
 	public MouseMotionInput(Handler h) {

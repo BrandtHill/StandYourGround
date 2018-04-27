@@ -15,7 +15,7 @@ import static java.lang.Math.cos;
 public class ZombieObject extends GameObject{
 
 	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	private PlayerObject player;
+	private static PlayerObject player;
 	private Random r;
 	private byte tickDivider;
 	//private boolean i;

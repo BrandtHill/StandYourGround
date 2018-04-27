@@ -14,9 +14,10 @@ public class AudioPlayer {
 	
 	public static void load() {
 		try {
-			musicMap.put("Husk", new Music("res/Husk.ogg"));
+			//musicMap.put("Husk", new Music("res/Husk.ogg"));
 			//musicMap.put("Mystic", new Music("res/Mystic Beat.ogg"));
 			//musicMap.put("Fat", new Music("res/Fat Beat.ogg"));
+			musicMap.put("Dying", new Music("res/Dying.ogg"));
 			soundMap.put("Pistol", new Sound("res/PistolSound.wav"));
 			soundMap.put("Rifle", new Sound("res/RifleSound.wav"));
 			soundMap.put("Shotgun", new Sound("res/ShotgunSound.wav"));

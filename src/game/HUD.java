@@ -6,8 +6,8 @@ import java.awt.Graphics;
 
 public class HUD {
 	
-	private Handler handler;
-	private PlayerObject player;
+	private static Handler handler;
+	private static PlayerObject player;
 	private SpawnSystem spawnSys;
 	private String gunInfo, levelInfo;
 	

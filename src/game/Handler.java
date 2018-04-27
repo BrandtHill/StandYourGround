@@ -1,6 +1,7 @@
 package game;
 
 import java.awt.Graphics;
+import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 import static java.lang.Math.abs;
@@ -9,14 +10,13 @@ import static java.lang.Math.abs;
  * This class contains the list of game objects and ticks
  * and renders each them.
  */
-public class Handler{
+public class Handler implements Serializable{
 	
+	private static final long serialVersionUID = 6279890344869152420L;
 	private LinkedList<GameObject> gameObjs; 
-	private Program program;
 	
-	public Handler(Program p) {
+	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
-		program = p;
 	}
 	
 	public void tick() {
@@ -64,10 +64,17 @@ public class Handler{
 		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1.2));
 	}
 	
+	public void loadInPlayer(PlayerObject p) {
+		if (gameObjs.peekFirst().getType() == ObjectType.Player) {
+			
+			gameObjs.peek();
+			gameObjs.addFirst(p);
+		}
+	}
+	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
 	public LinkedList<GameObject> getObjList()	{return gameObjs;}
-	public Program getProgram()					{return program;}
 
 }

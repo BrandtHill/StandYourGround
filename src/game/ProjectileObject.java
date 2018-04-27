@@ -4,11 +4,10 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
-
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
-public class ProjectileObject extends GameObject {
+public class ProjectileObject extends GameObject{
 
 	private double velMag, velAng, xScale, yScale, xPrev, yPrev, damage, knockBack;
 	private boolean old;

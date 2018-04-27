@@ -11,8 +11,8 @@ import game.Program.STATE;
 
 public class MouseInput extends MouseAdapter{
 	
-	private Handler handler;
-	private PlayerObject player;
+	private static Handler handler;
+	private static PlayerObject player;
 	private double angle;
 	
 	public MouseInput(Handler h) {

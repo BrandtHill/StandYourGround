@@ -20,15 +20,16 @@ public class Program extends Canvas implements Runnable{
 	private static final long serialVersionUID = -1499886446881465910L;
 	private Thread thread;
 	private boolean running;
-	private Handler handler;
 	private HUD hud;
-	private SpawnSystem spawnSys;
-	private PlayerObject player;
-	private ReticleObject reticle;
 	private Store store;
 	private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
+	public static PlayerObject player;
+	public static ReticleObject reticle;
+	public static SpawnSystem spawnSys;
+	public static LoadSave loadsave;
+	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
 	//public Music songHusk, songMystic, songFat;
@@ -51,15 +52,16 @@ public class Program extends Canvas implements Runnable{
 	public Program() {
 		
 		AudioPlayer.load();
-		handler = new Handler(this);
-		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
-		handler.addObject(new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		handler = new Handler();
+		player = new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler);
+		reticle = new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler);
+		handler.addObject(player);
+		handler.addObject(reticle);		
+		loadsave = new LoadSave();
 		spawnSys = new SpawnSystem(handler);
-		hud = new HUD(handler, spawnSys);
-		player = (PlayerObject)handler.getObjectAt(0);
-		reticle = (ReticleObject)handler.getObjectAt(1);
 		store = new Store(handler);
 		storeMotion = new StoreMotion(store);
+		hud = new HUD(handler, spawnSys);
 		
 		addKeyListener(new KeyInput(handler));
 		addMouseListener(new MouseInput(handler));
@@ -75,7 +77,7 @@ public class Program extends Canvas implements Runnable{
 		
 		gameState = STATE.StartMenu;
 		
-		song = AudioPlayer.getMusic("Husk");
+		song = AudioPlayer.getMusic("Dying");
 		//songHusk = AudioPlayer.getMusic("Husk");
 		//songMystic = AudioPlayer.getMusic("Mystic");
 		//songFat = AudioPlayer.getMusic("Fat");
@@ -142,7 +144,7 @@ public class Program extends Canvas implements Runnable{
 			if (currMilli - timer > 1000) {
 				//timer += 1000;
 				timer = System.currentTimeMillis();
-				System.out.println("FPS: " + frames);
+				//System.out.println("FPS: " + frames);
 				frames = 0;
 
 			}
@@ -261,16 +263,13 @@ public class Program extends Canvas implements Runnable{
 		hud.tick();
 		if (gameState == STATE.InGame) {
 			//player.resetAllAmmo();
-			player.resetAllAmmo();
-			handler.removeProjectiles();
 			removeMouseMotionListener(storeMotion);
 		}
 		else if (gameState == STATE.StoreMenu) {
 			addMouseMotionListener(storeMotion);
 		}
 		else {
-			player.resetAllAmmo();
-			handler.removeProjectiles();
+			
 		}
 	}
 	
@@ -304,7 +303,7 @@ public class Program extends Canvas implements Runnable{
 		return (val > min) ? ((val < max) ? val : max) : min;
 	}
 	
-	public void commenceLevel() {
+	public static void commenceLevel() {
 		player.setX(WIDTH/2-10);
 		player.setY(HEIGHT/2-30);
 		spawnSys.commenceLevel();
