@@ -7,8 +7,8 @@ import game.Program.STATE;
 
 public class KeyInput extends KeyAdapter{
 	
-	private static Handler handler;
-	private static PlayerObject player;
+	private Handler handler;
+	private PlayerObject player;
 	private boolean w, a, s, d;
 	private double speed = 2;
 	
@@ -35,7 +35,7 @@ public class KeyInput extends KeyAdapter{
 			if (key == KeyEvent.VK_1) player.switchToPrimary();
 			if (key == KeyEvent.VK_2) player.switchToSecondary();
 			if (key == KeyEvent.VK_3) player.switchToSidearm();
-			
+			if (key == KeyEvent.VK_SPACE) handler.removeZombies();
 			changeVelocity();
 
 			if (key == KeyEvent.VK_ESCAPE) {
@@ -48,6 +48,14 @@ public class KeyInput extends KeyAdapter{
 			
 		}
 		else if (Program.gameState == STATE.GameOver) {
+			if (key == KeyEvent.VK_R) {
+				Program.loadFromFile("res/saves/autosave.syg", player);
+				Program.gameState = STATE.StoreMenu;
+			}
+			if (key == KeyEvent.VK_N) {
+				Program.loadFromFile("res/saves/newgame.syg", player);
+				Program.gameState = STATE.StartMenu;
+			}
 			
 		}
 		else if (Program.gameState == STATE.StartMenu) {
@@ -56,13 +64,13 @@ public class KeyInput extends KeyAdapter{
 				Program.commenceLevel();
 			}
 			if (key == KeyEvent.VK_1) {
-				Program.loadsave.loadFromFile("res/saves/save1.syg");
+				Program.loadFromFile("res/saves/save1.syg", player);
 			}
 			if (key == KeyEvent.VK_2) {
-				Program.loadsave.loadFromFile("res/saves/save2.syg");
+				Program.loadFromFile("res/saves/save2.syg", player);
 			}
 			if (key == KeyEvent.VK_3) {
-				Program.loadsave.loadFromFile("res/saves/save3.syg");
+				Program.loadFromFile("res/saves/save3.syg", player);
 			}
 	
 		}
@@ -78,11 +86,14 @@ public class KeyInput extends KeyAdapter{
 				Program.commenceLevel();
 			}
 			if (key == KeyEvent.VK_1) {
-				Program.loadsave.saveToFile("res/saves/save1.syg");
-				Program.loadsave.loadFromFile("res/saves/save1.syg");
+				Program.saveToFile("res/saves/save1.syg", player);
 			}
-			if (key == KeyEvent.VK_2) Program.loadsave.saveToFile("res/saves/save2.syg");
-			if (key == KeyEvent.VK_3) Program.loadsave.saveToFile("res/saves/save3.syg");
+			if (key == KeyEvent.VK_2) {
+				Program.saveToFile("res/saves/save2.syg", player);
+			}
+			if (key == KeyEvent.VK_3) {
+				Program.saveToFile("res/saves/save3.syg", player);
+			}
 		}
 	}
 	

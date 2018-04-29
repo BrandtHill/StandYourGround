@@ -24,8 +24,8 @@ public class Gun implements Serializable {
 	private boolean shooting;
 	private long reloadTime;
 	private String gunName;
-	private static PlayerObject player;
-	private static Handler handler;
+	private PlayerObject player;
+	private Handler handler;
 	private transient Sound reloadSound;
 	private long timer;
 	private long tickDivider;

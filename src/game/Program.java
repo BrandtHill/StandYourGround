@@ -25,10 +25,10 @@ public class Program extends Canvas implements Runnable{
 	private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
-	public static PlayerObject player;
-	public static ReticleObject reticle;
+	//public static PlayerObject player;
+	private ReticleObject reticle;
 	public static SpawnSystem spawnSys;
-	public static LoadSave loadsave;
+	public static SaveData saveData;
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
@@ -53,11 +53,11 @@ public class Program extends Canvas implements Runnable{
 		
 		AudioPlayer.load();
 		handler = new Handler();
-		player = new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler);
 		reticle = new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler);
-		handler.addObject(player);
-		handler.addObject(reticle);		
-		loadsave = new LoadSave();
+		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		handler.addObject(reticle);
+		((PlayerObject)handler.getObjectAt(0)).addReticle(reticle);
+		saveData = new SaveData();
 		spawnSys = new SpawnSystem(handler);
 		store = new Store(handler);
 		storeMotion = new StoreMotion(store);
@@ -84,6 +84,8 @@ public class Program extends Canvas implements Runnable{
 		song.loop(1f, 0.25f);
 		
 		tickDivider = 0;
+
+		saveToFile("res/saves/newgame.syg", (PlayerObject)handler.getObjectAt(0));
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -220,9 +222,10 @@ public class Program extends Canvas implements Runnable{
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("GAME OVER", 250, 200);
-			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("RELAUNCH TO PLAY AGAIN", 150, 400);
+			g.drawString("YOU DIED", 250, 200);
+			g.setFont(new Font("Arial", 1, 28));
+			g.drawString("R: RETRY FROM AUTOSAVE", 150, 400);
+			g.drawString("N: NEW GAME", 150, 450);
         }
 		
 		g.dispose();
@@ -234,7 +237,6 @@ public class Program extends Canvas implements Runnable{
 			handler.tick();
 			
 			if (tickDivider % 8 == 0) {
-				player.setAngle(atan2(reticle.getX() - (player.getX() + 10), reticle.getY() - (player.getY() + 10)));
 				hud.tick();
 				spawnSys.tick();
 			}
@@ -267,6 +269,9 @@ public class Program extends Canvas implements Runnable{
 		}
 		else if (gameState == STATE.StoreMenu) {
 			addMouseMotionListener(storeMotion);
+		}
+		else if (gameState == STATE.GameOver) {
+			saveToFile("res/saves/autosave.syg", (PlayerObject)handler.getObjectAt(0));
 		}
 		else {
 			
@@ -304,9 +309,18 @@ public class Program extends Canvas implements Runnable{
 	}
 	
 	public static void commenceLevel() {
-		player.setX(WIDTH/2-10);
-		player.setY(HEIGHT/2-30);
 		spawnSys.commenceLevel();
+	}
+	
+	public static void saveToFile(String filename, PlayerObject player) {
+		saveData.saveToFile(filename, player);
+	}
+	public static void loadFromFile(String filename, PlayerObject player) {
+		saveData = saveData.loadFromFile(filename);
+		if(saveData!= null)
+			saveData.setPlayerAfterLoad(player);
+		else
+			System.out.println("Player load was not successful.");
 	}
 
 }

@@ -4,8 +4,8 @@ import game.Program.STATE;
 
 public class SpawnSystem {
 
-	private static Handler handler;
-	private static PlayerObject player;
+	private Handler handler;
+	private PlayerObject player;
 	private boolean doneCommencing;
 	private int zombiesLeft;
 	private int level;//, money;
@@ -35,7 +35,6 @@ public class SpawnSystem {
 				Program.gameState = STATE.StoreMenu;
 				level++;
 				player.resetAllAmmo();
-				handler.removeProjectiles();
 				player.setLevel(level);
 				player.setMoneyAtRoundStart(player.getMoney());
 				//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getMoney());
@@ -45,6 +44,10 @@ public class SpawnSystem {
 	
 	public void commenceLevel() {
 		//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getLevel());
+		handler.removeProjectiles();
+		handler.removeZombies();
+		player.setX(Program.WIDTH/2-10);
+		player.setY(Program.HEIGHT/2-30);
 		player.setMoneyAtRoundStart(player.getMoney());
 		switch(level) {
 		

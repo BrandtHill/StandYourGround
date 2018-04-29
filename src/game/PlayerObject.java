@@ -1,5 +1,7 @@
 package game;
 
+import static java.lang.Math.atan2;
+
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -16,14 +18,14 @@ import javax.imageio.ImageIO;
 import game.Gun.GUN;
 import game.Program.STATE;
 
-public class PlayerObject extends GameObject{// implements Serializable{
+public class PlayerObject extends GameObject{
 	
-	private static final long serialVersionUID = 2544512233426538755L;
 	private Gun gunWeilded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
 	private LinkedList<Gun> arsenal;
+	private ReticleObject reticle;
 	private double angle;
 	private double speed;
 	private byte tickDivider;
@@ -48,9 +50,9 @@ public class PlayerObject extends GameObject{// implements Serializable{
 		money = 0;
 		moneyAtRoundStart = 0;
 		speed = 2;
+		reticle = null;
+		level = 1;
 		loadSprites();
-		
-	
 	}
 	
 	public Rectangle getBounds() {
@@ -71,6 +73,8 @@ public class PlayerObject extends GameObject{// implements Serializable{
 		
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-48);
+		
+		angle = atan2(reticle.getX() - (x + 10), reticle.getY() - (y + 10));
 		
 		gunWeilded.tick();
 		
@@ -135,10 +139,14 @@ public class PlayerObject extends GameObject{// implements Serializable{
 	public void setLevel(int l) {level = l;}
 	
 	public void setGuns() {
-		gunPrimary = arsenal.get(0);
-		gunSecondary = arsenal.get(1);
-		gunSidearm = arsenal.get(2);
-		gunWeilded = gunSidearm;
+		try {
+			gunPrimary = arsenal.get(0);
+			gunSecondary = arsenal.get(1);
+			gunSidearm = arsenal.get(2);
+			gunWeilded = gunSidearm;
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
 	}
 	
 	public void switchToPrimary() {
@@ -175,5 +183,9 @@ public class PlayerObject extends GameObject{// implements Serializable{
 				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
 			}
 		}
+	}
+	
+	public void addReticle(ReticleObject r) {
+		reticle = r;
 	}
 }

@@ -14,8 +14,8 @@ import static java.lang.Math.round;
 
 public class Store extends MouseAdapter{
 
-	private static PlayerObject player;
-	private static Handler handler;
+	private PlayerObject player;
+	private Handler handler;
 	private int mX, mY;
 	public Color colors [] = {Color.WHITE, Color.WHITE, Color.WHITE, Color.WHITE};
 	private int buttonX [] = {100, 260, 420, 580};

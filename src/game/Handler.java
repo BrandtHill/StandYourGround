@@ -1,7 +1,6 @@
 package game;
 
 import java.awt.Graphics;
-import java.io.Serializable;
 import java.util.LinkedList;
 import java.util.Random;
 import static java.lang.Math.abs;
@@ -10,9 +9,8 @@ import static java.lang.Math.abs;
  * This class contains the list of game objects and ticks
  * and renders each them.
  */
-public class Handler implements Serializable{
+public class Handler {
 	
-	private static final long serialVersionUID = 6279890344869152420L;
 	private LinkedList<GameObject> gameObjs; 
 	
 	public Handler() {
@@ -34,12 +32,19 @@ public class Handler implements Serializable{
 	}
 
 	public void removeProjectiles() {
-		for(int i = 0; i < gameObjs.size(); i++) {
+		for(int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
 			if(obj.getType() == ObjectType.Projectile) {
-				ProjectileObject projectile = (ProjectileObject)obj;
-				projectile.setOld();
-				removeObject(projectile);
+				removeObject(obj);
+			}
+		}
+	}
+	
+	public void removeZombies() {
+		for(int i = gameObjs.size() - 1; i >= 0; i--) {
+			GameObject obj = getObjectAt(i);
+			if(obj.getType() == ObjectType.Zombie) {
+				removeObject(obj);
 			}
 		}
 	}
@@ -62,14 +67,6 @@ public class Handler implements Serializable{
 	public void addZombie(double x, double y) {
 		Random r = new Random();
 		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1.2));
-	}
-	
-	public void loadInPlayer(PlayerObject p) {
-		if (gameObjs.peekFirst().getType() == ObjectType.Player) {
-			
-			gameObjs.peek();
-			gameObjs.addFirst(p);
-		}
 	}
 	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}

@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import game.Program.STATE;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
@@ -15,7 +14,7 @@ import static java.lang.Math.cos;
 public class ZombieObject extends GameObject{
 
 	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	private static PlayerObject player;
+	private PlayerObject player;
 	private Random r;
 	private byte tickDivider;
 	//private boolean i;
