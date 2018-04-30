@@ -25,7 +25,6 @@ public class Program extends Canvas implements Runnable{
 	private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
-	//public static PlayerObject player;
 	private ReticleObject reticle;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;

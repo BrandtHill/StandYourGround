@@ -31,24 +31,28 @@ public class SpawnSystem {
 			}
 			zombiesLeft = numZomb;
 			if (zombiesLeft == 0) {
+				
 				doneCommencing = false;
 				Program.gameState = STATE.StoreMenu;
 				level++;
+				
 				player.resetAllAmmo();
 				player.setLevel(level);
 				player.setMoneyAtRoundStart(player.getMoney());
-				//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getMoney());
+				
 			}
 		}
 	}
 	
 	public void commenceLevel() {
-		//System.out.println(player.getMoneyAtRoundStart() + "   " + player.getLevel());
+		
 		handler.removeProjectiles();
 		handler.removeZombies();
 		player.setX(Program.WIDTH/2-10);
 		player.setY(Program.HEIGHT/2-30);
+		player.resetAllAmmo();
 		player.setMoneyAtRoundStart(player.getMoney());
+		
 		switch(level) {
 		
 		case 1: 
@@ -110,6 +114,5 @@ public class SpawnSystem {
 	public int getRemaining() {return zombiesLeft;}
 	public int getLevel() {return level;}
 	public void setLevel(int l) {level = l;}
-	//public int getMoney() {return money;}
 
 }

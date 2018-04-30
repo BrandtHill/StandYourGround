@@ -30,7 +30,7 @@ public class Gun implements Serializable {
 	private long timer;
 	private long tickDivider;
 	private GUN gunType;
-	public static enum GUN{
+	public static enum GUN {
 		Pistol,
 		Rifle,
 		Shotgun;	
@@ -48,14 +48,19 @@ public class Gun implements Serializable {
 		ammoExtra = ammoCapacity = extra;
 		player = p;
 		handler = h;
-		reloadTime = 2000;
 		isFullAuto = fa;
-		if(gunType == GUN.Pistol)
-			reloadSound = AudioPlayer.getSound("ReloadPistol");
-		else if(gunType == GUN.Rifle)
-			reloadSound = AudioPlayer.getSound("ReloadPistol");
-		else if(gunType == GUN.Shotgun)
-			reloadSound = AudioPlayer.getSound("ReloadPistol");
+		if(gunName.equals("AR-15")) {
+			reloadSound = AudioPlayer.getSound("ReloadAR15");
+			reloadTime = 2750;
+		}
+		else if(gunName.equals("Over-Under")) {
+			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
+			reloadTime = 2750;
+		}
+		else if(gunName.equals("Titan")) {
+			reloadSound = AudioPlayer.getSound("ReloadTitan");
+			reloadTime = 2000;
+		}
 	}
 	
 	public void shoot(double angle) {
@@ -90,8 +95,7 @@ public class Gun implements Serializable {
 	public void reload() {
 		if (!waitingOnReload) {
 			if (ammoExtra > 0 && ammoLoaded < magSize) {
-				//AudioPlayer.getSound("ReloadPistol").play(1f, 0.75f);
-				reloadSound.play(1f, 0.75f);
+				reloadSound.play(1f, 1f);
 				waitingOnReload = true;
 				timer = System.currentTimeMillis();
 			}
