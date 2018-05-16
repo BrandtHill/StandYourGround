@@ -8,7 +8,7 @@ public class SpawnSystem {
 	private PlayerObject player;
 	private boolean doneCommencing;
 	private int zombiesLeft;
-	private int level;//, money;
+	private int level;
 	
 	public SpawnSystem(Handler h) {
 		handler = h;
@@ -24,12 +24,8 @@ public class SpawnSystem {
 	
 	public void tick() {
 		if (doneCommencing) {
-			int numZomb = 0;
-			for (int i = 2; i < handler.getObjList().size(); i++) {
-				if (handler.getObjectAt(i).getType() == ObjectType.Zombie)
-					numZomb++;
-			}
-			zombiesLeft = numZomb;
+
+			zombiesLeft = player.zombiesLeft;
 			if (zombiesLeft == 0) {
 				
 				doneCommencing = false;
@@ -56,54 +52,97 @@ public class SpawnSystem {
 		switch(level) {
 		
 		case 1: 
+			player.zombiesLeft = 8;
 			for(int i = 0; i < 4; i++) {
-				handler.addZombie(-(i+1)*50, i*200);
-				zombiesLeft++;
+				handler.addZombieLeft(1.2, level);
 			}
 			for(int i = 0; i < 4; i++) {
-				handler.addZombie((i+1)*50+1500, i*200);
-				zombiesLeft++;
+				handler.addZombieRight(1.2, level);
 			}
 			break;
 		
 		case 2:
+			player.zombiesLeft = 16;
 			for(int i = 0; i < 5; i++) {
-				handler.addZombie(200+(i*50), -(50+(i*25)));
-				zombiesLeft++;
+				handler.addZombieUp(1.2, level);
 			}
 			for(int i = 0; i < 3; i++) {
-				handler.addZombie(100+(i*100), (Program.HEIGHT+200+(i*150)));
-				zombiesLeft++;
+				handler.addZombieDown(1.0, level);
 			}
 			for(int i = 0; i < 4; i++) {
-				handler.addZombie(-500-(i*50), (300+(i*25)));
-				zombiesLeft++;
+				handler.addZombieLeft(1.3, level);
 			}
 			for(int i = 0; i < 4; i++) {
-				handler.addZombie(Program.WIDTH+700+(i*100), (150+(i*100)));
-				zombiesLeft++;
+				handler.addZombieRight(1.2, level);
 			}
 			break;
 		
 		case 3:
+			player.zombiesLeft = 24;
 			for(int i = 0; i < 12; i++) {
-				handler.addZombie(Program.WIDTH+(i*20), (50+(i*50)));
-				zombiesLeft++;
+				handler.addZombieRight(1.1, level);
 			}
 			for(int i = 0; i < 12; i++) {
-				handler.addZombie(-(i*20), (550-(i*50)));
-				zombiesLeft++;
+				handler.addZombieLeft(1.25, level);
 			}	
 			break;
 		
+		case 4:
+			player.zombiesLeft = 20;
+			for(int i = 0; i < 4; i++) {
+				handler.addZombieRight(1.3, level);
+			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombieLeft(1.3, level);
+			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombieRight(1.3, level);
+			}
+			for(int i = 0; i < 4; i++) {
+				handler.addZombieLeft(1.3, level);
+			}	
+			
+			handler.addZombieRight(2.5, level);
+			handler.addZombieRight(2.5, level);
+			handler.addZombieLeft(2.5, level);
+			handler.addZombieLeft(2.5, level);
+			
+			break;
+		
+		case 5:
+			player.zombiesLeft = 30;
+			for(int i = 0; i < 15; i++) {
+				handler.addZombieUp(1.2, level);
+			}
+			for(int i = 0; i < 15; i++) {
+				handler.addZombieDown(1.2, level);
+			}	
+			break;
+		
+		case 6:
+			player.zombiesLeft = 15;
+			for(int i = 0; i < 5; i++) {
+				handler.addZombieRight(1.5, level);
+			}
+			for(int i = 0; i < 5; i++) {
+				handler.addZombieLeft(1.5, level);
+			}
+			
+			handler.addZombieRight(2, level);
+			handler.addZombieRight(2.3, level);
+			handler.addZombieLeft(2, level);
+			handler.addZombieLeft(2.3, level);
+			handler.addZombieRight(3, level);
+			
+			break;	
+		
 		default:
+			player.zombiesLeft = 4*level;
 			for(int i = 0; i<60; i++) {
 				handler.addZombie();
-				zombiesLeft++;
 			}
 			for(int i = 0; i < 20*(level-3); i++) {
-				handler.addZombie(-100 + i*10, Program.HEIGHT+200+(30*i));
-				zombiesLeft++;
+				handler.addZombie(-100 + i*10, Program.HEIGHT+200+(30*i), level);
 			}
 			break;
 		}

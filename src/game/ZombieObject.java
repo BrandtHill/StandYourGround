@@ -19,7 +19,7 @@ public class ZombieObject extends GameObject{
 	private byte tickDivider;
 	//private boolean i;
 	
-	public ZombieObject(double xPos, double yPos, Handler h, double spd) {
+	public ZombieObject(double xPos, double yPos, Handler h, double spd, double hp) {
 		super(xPos, yPos, ObjectType.Zombie, h);
 		
 		try {
@@ -27,9 +27,8 @@ public class ZombieObject extends GameObject{
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
-		
-		r = new Random();
-		health = r.nextInt(21) + 60;
+
+		health = hp;
 		
 		speed = spd;
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
@@ -51,6 +50,7 @@ public class ZombieObject extends GameObject{
 		
 		if(tickDivider%8 == 0)
 			detectCollision();
+		
 		tickDivider++;
 	}
 	
@@ -89,6 +89,7 @@ public class ZombieObject extends GameObject{
 		if(health<= 0) {
 			int money = player.getMoney();
 			player.setMoney(20+r.nextInt(11) + money);
+			player.zombiesLeft--;
 			handler.removeObject(this);
 		}
 	}

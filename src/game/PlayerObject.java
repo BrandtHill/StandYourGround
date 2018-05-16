@@ -34,13 +34,17 @@ public class PlayerObject extends GameObject{
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
 	private int level;
+	public int zombiesLeft;
 	
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
-		gunSidearm = new Gun("Titan", GUN.Pistol, 7, 42, 22, false, this, h);
+		gunSidearm = new Gun("Titan", GUN.Pistol, 7, 56, 22, false, this, h);
 		gunPrimary = new Gun("AR-15", GUN.Rifle, 30, 30, 35, false, this, h); 
 		gunSecondary = new Gun("Over-Under", GUN.Shotgun, 2, 10, 40, false, this, h);
 		arsenal = new LinkedList<Gun>();
+		gunSidearm.setOwned(true);
+		gunSecondary.setOwned(false);
+		gunPrimary.setOwned(false);
 		arsenal.add(gunPrimary);
 		arsenal.add(gunSecondary);
 		arsenal.add(gunSidearm);
@@ -106,7 +110,6 @@ public class PlayerObject extends GameObject{
 				ZombieObject zomb = (ZombieObject)obj;
 				if(zomb.getBounds().intersects(this.getBounds())) {
 					Program.gameState = STATE.GameOver;
-					//handler.removeObject(this);
 				}
 			}
 		}
@@ -150,19 +153,23 @@ public class PlayerObject extends GameObject{
 	}
 	
 	public void switchToPrimary() {
-		if(gunWeilded != gunPrimary) 
+		if(gunWeilded != gunPrimary && gunPrimary.getOwned()) {
 			gunWeilded.swapGun();
 			gunWeilded = gunPrimary;
+		}
+
 	}
 	public void switchToSecondary() {
-		if(gunWeilded != gunSecondary)
+		if(gunWeilded != gunSecondary && gunSecondary.getOwned()) {
 			gunWeilded.swapGun();
 			gunWeilded = gunSecondary;
+		}
 	}
 	public void switchToSidearm() {
-		if(gunWeilded != gunSidearm)
+		if(gunWeilded != gunSidearm && gunSidearm.getOwned()) {
 			gunWeilded.swapGun();
 			gunWeilded = gunSidearm;
+		}
 	}
 	public void resetAllAmmo() {
 		for(int i = 0; i < arsenal.size(); i++) {

@@ -82,8 +82,13 @@ public class KeyInput extends KeyAdapter{
 		else if (Program.gameState == STATE.StoreMenu) {
 			
 			if (key == KeyEvent.VK_SPACE) {
-				Program.gameState = STATE.InGame;
-				Program.commenceLevel();
+				if (Store.menu == Store.Menu.BuyGuns) {
+					Store.menu = Store.Menu.BuyUpgrades;
+				}
+				else if (Store.menu == Store.Menu.BuyUpgrades) {
+					Program.gameState = STATE.InGame;
+					Program.commenceLevel();
+				}
 			}
 			if (key == KeyEvent.VK_1) {
 				Program.saveToFile("res/saves/save1.syg", player);

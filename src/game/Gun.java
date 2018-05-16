@@ -22,6 +22,7 @@ public class Gun implements Serializable {
 	private boolean waitingOnReload;
 	private boolean isFullAuto;
 	private boolean shooting;
+	private boolean owned;
 	private long reloadTime;
 	private String gunName;
 	private PlayerObject player;
@@ -41,7 +42,7 @@ public class Gun implements Serializable {
 		gunName = name;
 		gunType = type;
 		waitingOnReload = false;
-		//hasClickedOnEmpty = false;
+		owned = false;
 		damage = dmg;
 		magSize = mag;
 		ammoLoaded = mag;
@@ -176,6 +177,7 @@ public class Gun implements Serializable {
 	public int getAmmoCapacity() {return ammoCapacity;}
 	public boolean getShooting() {return shooting;}
 	public boolean getFullAuto() {return isFullAuto;}
+	public boolean getOwned() {return owned;}
 	public String getName() {return gunName;}
 
 	public void setDamage(double dmg) {damage = dmg;}
@@ -184,6 +186,7 @@ public class Gun implements Serializable {
 	public void setAmmoExtra(int ammo) {ammoExtra = ammo;}
 	public void setAmmoCapacity(int ammo) {ammoCapacity = ammo;}
 	public void setShooting(boolean s) {shooting = s;}
+	public void setOwned(boolean o) {owned = o;}
 	public void setTickDivider(int t) {tickDivider = t;}
 	
 }

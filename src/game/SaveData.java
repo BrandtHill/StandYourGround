@@ -19,6 +19,7 @@ public class SaveData implements Serializable {
 	private int level;
 	private LinkedList<Integer> magSizes;
 	private LinkedList<Integer> ammoCaps;
+	private LinkedList<Boolean> gunsOwned;
 	
 	public SaveData() {
 		
@@ -32,6 +33,7 @@ public class SaveData implements Serializable {
 			LinkedList<Gun> arsenal;
 			magSizes = new LinkedList<Integer>();
 			ammoCaps = new LinkedList<Integer>();
+			gunsOwned = new LinkedList<Boolean>();
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
@@ -40,6 +42,7 @@ public class SaveData implements Serializable {
 				Gun g = arsenal.get(i);
 				magSizes.add(i, g.getMagSize());
 				ammoCaps.add(i, g.getAmmoCapacity());
+				gunsOwned.add(i, g.getOwned());
 			} 
 	         
 	        out.writeObject(this);
@@ -84,6 +87,7 @@ public class SaveData implements Serializable {
 			Gun g = arsenal.get(i);
 			g.setMagSize(magSizes.get(i));
 			g.setAmmoCapacity(ammoCaps.get(i));
+			g.setOwned(gunsOwned.get(i));
 			g.resetAmmo();
 		}
 		Program.gameState = STATE.StoreMenu;
