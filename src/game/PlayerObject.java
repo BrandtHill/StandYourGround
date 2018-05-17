@@ -181,6 +181,12 @@ public class PlayerObject extends GameObject{
 		for(int i = 0; i < arsenal.size(); i++) {
 			arsenal.get(i).resetAmmo();
 		}
+		if(gunPrimary.getOwned())
+			gunWeilded = gunPrimary;
+		else if(gunSecondary.getOwned())
+			gunWeilded = gunSecondary;
+		else 
+			gunWeilded = gunSidearm;
 	}
 	
 	public void loadSprites() {
