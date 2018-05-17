@@ -26,7 +26,7 @@ public class SpawnSystem {
 		if (doneCommencing) {
 
 			zombiesLeft = player.zombiesLeft;
-			if (zombiesLeft == 0) {
+			if (zombiesLeft <= 0) {
 				
 				doneCommencing = false;
 				Program.gameState = STATE.StoreMenu;
@@ -137,7 +137,7 @@ public class SpawnSystem {
 			break;	
 		
 		default:
-			player.zombiesLeft = 4*level;
+			player.zombiesLeft = 20*level;
 			for(int i = 0; i<60; i++) {
 				handler.addZombie();
 			}

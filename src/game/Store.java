@@ -148,11 +148,13 @@ public class Store extends MouseAdapter{
 			}
 		}
 
-		int cap = gun.getAmmoCapacity();
-		if(player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
-			gun.setAmmoCapacity(ammo+cap);
-			player.setMoney(player.getMoney() - money);
+		if (gun.getOwned()) {
+			int cap = gun.getAmmoCapacity();
+			if (player.getMoney() >= money) {
+				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				gun.setAmmoCapacity(ammo + cap);
+				player.setMoney(player.getMoney() - money);
+			} 
 		}
 	}
 	
@@ -167,14 +169,16 @@ public class Store extends MouseAdapter{
 			}
 		}
 		
-		if(player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
-			int mag = gun.getMagSize();
-			int cap = gun.getAmmoCapacity();
-			int m = player.getMoney();
-			gun.setMagSize(mag + ammo);
-			gun.setAmmoCapacity(cap + ammo);
-			player.setMoney(m - money);
+		if (gun.getOwned()) {
+			if (player.getMoney() >= money) {
+				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				int mag = gun.getMagSize();
+				int cap = gun.getAmmoCapacity();
+				int m = player.getMoney();
+				gun.setMagSize(mag + ammo);
+				gun.setAmmoCapacity(cap + ammo);
+				player.setMoney(m - money);
+			} 
 		}		
 	}
 	
@@ -189,10 +193,12 @@ public class Store extends MouseAdapter{
 			}
 		}
 
-		if(player.getMoney() >= money && !gun.getOwned()) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
-			gun.setOwned(true);
-			player.setMoney(player.getMoney() - money);
+		if (!gun.getOwned()) {
+			if (player.getMoney() >= money) {
+				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				gun.setOwned(true);
+				player.setMoney(player.getMoney() - money);
+			} 
 		}
 	}
 

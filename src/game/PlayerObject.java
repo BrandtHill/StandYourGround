@@ -133,6 +133,12 @@ public class PlayerObject extends GameObject{
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
 	public int getLevel() {return level;}
+	public int getGunIndex() {
+		if(gunWeilded == gunPrimary) return 0;
+		else if(gunWeilded == gunSecondary) return 1;
+		else if(gunWeilded == gunSidearm) return 2;
+		else return 0;
+	}
 	
 	public void setAngle(double a) {angle = a;}
 	public void setArsenal(LinkedList<Gun> l) {arsenal = l;}

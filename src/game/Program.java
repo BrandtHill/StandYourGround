@@ -84,8 +84,8 @@ public class Program extends Canvas implements Runnable{
 		
 		tickDivider = 0;
 
-		saveToFile("res/saves/newgame.syg", (PlayerObject)handler.getObjectAt(0));
-		saveToFile("res/saves/autosave.syg", (PlayerObject)handler.getObjectAt(0));
+		saveToFile("res/saves/newgame.syg/", (PlayerObject)handler.getObjectAt(0));
+		saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -269,7 +269,7 @@ public class Program extends Canvas implements Runnable{
 		}
 		else if (gameState == STATE.StoreMenu) {
 			addMouseMotionListener(storeMotion);
-			saveToFile("res/saves/autosave.syg", (PlayerObject)handler.getObjectAt(0));
+			saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
 			Store.menu = Store.Menu.BuyGuns;
 		}
 		else if (gameState == STATE.GameOver) {
