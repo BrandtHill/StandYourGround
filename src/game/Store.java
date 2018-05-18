@@ -50,7 +50,7 @@ public class Store extends MouseAdapter{
 				else if (inBounds(buttonX[1], buttonY[1], buttonW, buttonH))
 					upgradeCapacity("Over-Under", 8, 250);
 				else if (inBounds(buttonX[2], buttonY[2], buttonW, buttonH))
-					upgradeCapacity("Titan", 14, 200);
+					upgradeCapacity("Titan", 14, 150);
 				else if (inBounds(buttonX[3], buttonY[3], buttonW, buttonH))
 					upgradeMagSize("AR-15", 10, 500);
 			}
@@ -58,7 +58,7 @@ public class Store extends MouseAdapter{
 				if (inBounds(buttonX[0], buttonY[0], buttonW, buttonH))
 					buyGun("AR-15", 750);
 				else if (inBounds(buttonX[1], buttonY[1], buttonW, buttonH))
-					buyGun("Over-Under", 550);
+					buyGun("Over-Under", 450);
 			}
 			player.setMoneyAtRoundStart(player.getMoney());
 		}
@@ -82,7 +82,7 @@ public class Store extends MouseAdapter{
 			g.draw3DRect(buttonX[1], buttonY[1], buttonW, buttonH, true);
 			g.drawString("Buy", 270, 120);
 			g.drawString("Over-Under", 280, 140);
-			g.drawString("$550", 280, 160);
+			g.drawString("$450", 280, 160);
 
 		}
 		if (menu == Menu.BuyUpgrades) {
@@ -108,7 +108,7 @@ public class Store extends MouseAdapter{
 			g.draw3DRect(buttonX[2], buttonY[2], buttonW, buttonH, true);
 			g.drawString("Increase Capacity", 430, 120);
 			g.drawString("Titan", 440, 140);
-			g.drawString("$200", 440, 160);
+			g.drawString("$150", 440, 160);
 			
 			g.setColor(colors[3]);
 			g.draw3DRect(buttonX[3], buttonY[3], buttonW, buttonH, true);

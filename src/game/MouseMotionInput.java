@@ -3,7 +3,6 @@ package game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import static java.lang.Math.atan2;
 
 public class MouseMotionInput extends MouseMotionAdapter {
 

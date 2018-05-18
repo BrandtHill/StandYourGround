@@ -1,7 +1,6 @@
 package game;
 
 import java.awt.Graphics;
-import java.io.Serializable;
 
 import static java.lang.Math.sqrt;
 

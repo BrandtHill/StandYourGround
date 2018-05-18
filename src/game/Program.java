@@ -1,7 +1,5 @@
 package game;
 
-import static java.lang.Math.atan2;
-
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
@@ -22,7 +20,7 @@ public class Program extends Canvas implements Runnable{
 	private boolean running;
 	private HUD hud;
 	private Store store;
-	private MouseMotionInput mmi;
+	//private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
 	private ReticleObject reticle;
@@ -146,7 +144,7 @@ public class Program extends Canvas implements Runnable{
 			if (currMilli - timer > 1000) {
 				//timer += 1000;
 				timer = System.currentTimeMillis();
-				//System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames);
 				frames = 0;
 
 			}

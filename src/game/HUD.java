@@ -9,7 +9,7 @@ public class HUD {
 	private Handler handler;
 	private PlayerObject player;
 	private SpawnSystem spawnSys;
-	private String gunInfo, levelInfo, selectedInfo;
+	private String gunInfo, levelInfo;
 	private Color[] colors;
 	private Color sel, unSel;
 	

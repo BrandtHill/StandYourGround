@@ -13,7 +13,6 @@ public class MouseInput extends MouseAdapter{
 	
 	private Handler handler;
 	private PlayerObject player;
-	private double angle;
 	
 	public MouseInput(Handler h) {
 		handler = h;

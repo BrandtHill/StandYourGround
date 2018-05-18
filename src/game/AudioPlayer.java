@@ -22,6 +22,7 @@ public class AudioPlayer {
 			soundMap.put("Rifle", new Sound("res/RifleSound.wav"));
 			soundMap.put("Shotgun", new Sound("res/ShotgunSound.wav"));
 			soundMap.put("ReloadTitan", new Sound("res/ReloadTitanSound.ogg"));
+			soundMap.put("ReloadPX4", new Sound("res/ReloadPX4Sound.wav"));
 			soundMap.put("ReloadAR15", new Sound("res/ReloadAR15Sound.ogg"));
 			soundMap.put("ReloadOverUnder", new Sound("res/ReloadOverUnderSound.ogg"));
 			soundMap.put("BlipMinor", new Sound("res/BlipMinor.wav"));

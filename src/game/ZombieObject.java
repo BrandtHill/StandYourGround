@@ -51,6 +51,9 @@ public class ZombieObject extends GameObject{
 		if(tickDivider%8 == 0)
 			detectCollision();
 		
+		if(health<20)
+			speed *= 1.001;
+		
 		tickDivider++;
 	}
 	

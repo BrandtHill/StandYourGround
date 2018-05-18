@@ -7,10 +7,8 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.LinkedList;
 
 import javax.imageio.ImageIO;
@@ -38,16 +36,18 @@ public class PlayerObject extends GameObject{
 	
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
-		gunSidearm = new Gun("Titan", GUN.Pistol, 7, 56, 22, false, this, h);
-		gunPrimary = new Gun("AR-15", GUN.Rifle, 30, 30, 35, false, this, h); 
-		gunSecondary = new Gun("Over-Under", GUN.Shotgun, 2, 10, 40, false, this, h);
 		arsenal = new LinkedList<Gun>();
+		arsenal.add(new Gun("AR-15", GUN.Rifle, 30, 30, 35, true, this, h));
+		arsenal.add(new Gun("M77", GUN.Rifle, 5, 15, 70, false, this, h));
+		arsenal.add(new Gun("Over-Under", GUN.Shotgun, 2, 10, 40, false, this, h));
+		arsenal.add(new Gun("PX4 Compact", GUN.Pistol, 15, 30, 31, false, this, h));;
+		arsenal.add(new Gun("Titan", GUN.Pistol, 7, 56, 22, false, this, h));
+		gunSidearm = searchGun("Titan");
+		gunPrimary = searchGun("AR-15"); 
+		gunSecondary = searchGun("Over-Under");
 		gunSidearm.setOwned(true);
-		gunSecondary.setOwned(false);
-		gunPrimary.setOwned(false);
-		arsenal.add(gunPrimary);
-		arsenal.add(gunSecondary);
-		arsenal.add(gunSidearm);
+		//gunPrimary.setOwned(true);
+		//gunSecondary.setOwned(true);
 		gunWeilded = gunSidearm;
 		tickDivider = 0;
 		spriteNum = 0;
@@ -146,6 +146,16 @@ public class PlayerObject extends GameObject{
 	public void setMoney(int m) {money = m;}
 	public void setMoneyAtRoundStart(int m) {moneyAtRoundStart = m;}
 	public void setLevel(int l) {level = l;}
+	
+	public Gun searchGun(String n) {
+		Gun g = null;
+		for(int i = 0; i < arsenal.size(); i++) {
+			g = arsenal.get(i);
+			if(g.getName().equals(n))
+				return g;
+		}
+		return null;
+	}
 	
 	public void setGuns() {
 		try {
