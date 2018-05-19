@@ -56,30 +56,36 @@ public class Gun implements Serializable {
 		player = p;
 		handler = h;
 		isFullAuto = fa;
-		if(gunID == GUN.AR15) {
+		
+		switch (gunID) {
+		case AR15:
 			reloadSound = AudioPlayer.getSound("ReloadAR15");
 			reloadTime = 2750;
 			chamberTime = 67;
-		}
-		else if(gunID == GUN.OverUnder) {
-			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
-			reloadTime = 2750;
-			chamberTime = 250;
-		}
-		else if(gunID == GUN.Titan) {
-			reloadSound = AudioPlayer.getSound("ReloadTitan");
-			reloadTime = 2000;
-			chamberTime = 50;
-		}
-		else if(gunID == GUN.PX4Compact) {
-			reloadSound = AudioPlayer.getSound("ReloadPX4");
-			reloadTime = 2000;
-			chamberTime = 50;
-		}
-		else if(gunID == GUN.M77) {
+			break;
+		case M77:
 			reloadSound = AudioPlayer.getSound("ReloadPX4");
 			reloadTime = 2000;
 			chamberTime = 1250;
+			break;
+		case OverUnder:
+			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
+			reloadTime = 2750;
+			chamberTime = 250;
+			break;
+		case PX4Compact:
+			reloadSound = AudioPlayer.getSound("ReloadPX4");
+			reloadTime = 2000;
+			chamberTime = 50;
+			break;
+		case Titan:
+			reloadSound = AudioPlayer.getSound("ReloadTitan");
+			reloadTime = 2000;
+			chamberTime = 50;
+			break;
+		default:
+			break;
+		
 		}
 	}
 	
