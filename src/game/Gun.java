@@ -32,18 +32,21 @@ public class Gun implements Serializable {
 	private transient Sound reloadSound;
 	private long timerReload;
 	private long timerChamber;
-	private long tickDivider;
-	private GUN gunType;
+	//private long tickDivider;
+	private GUN gunID;
 	public static enum GUN {
-		Pistol,
-		Rifle,
-		Shotgun;	
+		AR15,
+		OverUnder,
+		M77,
+		Titan,
+		PX4Compact
+		;
 	}
 	
-	public Gun(String name, GUN type, int mag, int extra, double dmg, boolean fa, PlayerObject p, Handler h) {
+	public Gun(String name, GUN id, int mag, int extra, double dmg, boolean fa, PlayerObject p, Handler h) {
 		
 		gunName = name;
-		gunType = type;
+		gunID = id;
 		waitingOnReload = false;
 		owned = false;
 		damage = dmg;
@@ -53,27 +56,27 @@ public class Gun implements Serializable {
 		player = p;
 		handler = h;
 		isFullAuto = fa;
-		if(gunName.equals("AR-15")) {
+		if(gunID == GUN.AR15) {
 			reloadSound = AudioPlayer.getSound("ReloadAR15");
 			reloadTime = 2750;
 			chamberTime = 67;
 		}
-		else if(gunName.equals("Over-Under")) {
+		else if(gunID == GUN.OverUnder) {
 			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
 			reloadTime = 2750;
 			chamberTime = 250;
 		}
-		else if(gunName.equals("Titan")) {
+		else if(gunID == GUN.Titan) {
 			reloadSound = AudioPlayer.getSound("ReloadTitan");
 			reloadTime = 2000;
 			chamberTime = 50;
 		}
-		else if(gunName.equals("PX4 Compact")) {
+		else if(gunID == GUN.PX4Compact) {
 			reloadSound = AudioPlayer.getSound("ReloadPX4");
 			reloadTime = 2000;
 			chamberTime = 50;
 		}
-		else if(gunName.equals("M77")) {
+		else if(gunID == GUN.M77) {
 			reloadSound = AudioPlayer.getSound("ReloadPX4");
 			reloadTime = 2000;
 			chamberTime = 1250;
@@ -83,37 +86,49 @@ public class Gun implements Serializable {
 	public void shoot(double angle) {
 		if (ammoLoaded > 0 && !waitingOnReload && chambered) {
 			Random r = new Random();
+			double spread;
 			
-			if (gunName.equals("Titan")) {
-				double spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
+			switch(gunID) {
+				
+			case Titan:
+				spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
 				handler.addObject(
 						new ProjectileObject(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 20, angle + spread, damage, 5, handler));
 				AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
-			}
-			else if (gunName.equals("PX4 Compact")) {
-				double spread = (r.nextDouble() - 0.5) * 5 * PI / 180;
+				break;
+				
+			case PX4Compact:
+				spread = (r.nextDouble() - 0.5) * 5 * PI / 180;
 				handler.addObject(
 						new ProjectileObject(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 23, angle + spread, damage, 7, handler));
 				AudioPlayer.getSound("Pistol").play(0.95f, 0.3f); 
-			}
-			else if (gunName.equals("AR-15")) {
-				double spread = (r.nextDouble() - 0.5) * 3 * PI / 180;
+				break;
+				
+			case AR15:
+				spread = (r.nextDouble() - 0.5) * 3 * PI / 180;
 				handler.addObject(
 						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 30, angle + spread, damage, 17.5, handler));
 				AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
-			}
-			else if (gunName.equals("Over-Under")) {
+				break;
+			
+			case OverUnder: 
 				for (int i = 0; i < 9; i++) {
-					double spread = (r.nextDouble() - 0.5) * 9 * PI / 180;
+					spread = (r.nextDouble() - 0.5) * 9 * PI / 180;
 					handler.addObject(
 							new ProjectileObject(muzzlePointX(-3, 21), muzzlePointY(-3, 21), 15, angle + spread, damage, 6,handler));
 				}
 				AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
-			}
-			else if (gunName.equals("M77")) {
+				break;
+				
+			case M77:
 				handler.addObject(
 						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 42, angle, damage, 25, handler));
 				AudioPlayer.getSound("Rifle").play(0.8f, 0.35f);
+				break;
+				
+			default:
+				break;
+			
 			}
 			
 			chambered = false;
@@ -166,11 +181,11 @@ public class Gun implements Serializable {
 		}
 		
 		//if (tickDivider%4 == 0) {
-			if (shooting && isFullAuto) {
-				shoot(player.getAngle());
-			} 
+		if (shooting && isFullAuto) {
+			shoot(player.getAngle());
+		} 
 		//}
-		tickDivider++;
+		//tickDivider++;
 	}
 	
 	public void resetAmmo() {
@@ -224,6 +239,6 @@ public class Gun implements Serializable {
 	public void setAmmoCapacity(int ammo) {ammoCapacity = ammo;}
 	public void setShooting(boolean s) {shooting = s;}
 	public void setOwned(boolean o) {owned = o;}
-	public void setTickDivider(int t) {tickDivider = t;}
+	//public void setTickDivider(int t) {tickDivider = t;}
 	
 }

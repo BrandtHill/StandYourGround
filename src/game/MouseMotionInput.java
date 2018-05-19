@@ -22,12 +22,10 @@ public class MouseMotionInput extends MouseMotionAdapter {
 	public void mouseMoved(MouseEvent e) {
 		reticle.setX(e.getX());
 		reticle.setY(e.getY());
-		//player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
 	}
 	public void mouseDragged(MouseEvent e) {
 		reticle.setX(e.getX());
 		reticle.setY(e.getY());
-		//player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
 	}
 
 }

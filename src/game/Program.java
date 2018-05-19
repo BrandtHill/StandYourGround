@@ -146,22 +146,7 @@ public class Program extends Canvas implements Runnable{
 				timer = System.currentTimeMillis();
 				System.out.println("FPS: " + frames);
 				frames = 0;
-
 			}
-	        
-	        if (gameState == STATE.InGame) {
-	        	
-			}
-	        else if (gameState == STATE.PauseMenu) {
-	        	
-	        }
-	        else if (gameState == STATE.StartMenu) {
-	        	
-	        }
-	        else if (gameState == STATE.StoreMenu) {
-	        	
-	        }
-        
         }
         stop();
 	}
@@ -178,43 +163,8 @@ public class Program extends Canvas implements Runnable{
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		if (gameState == STATE.InGame) {
-			g.drawImage(background, 0, 0, null);
-			handler.render(g);
-			hud.render(g);
-		}
-		else if (gameState == STATE.PauseMenu) {
-			g.fillRect(0, 0, WIDTH, HEIGHT);
-			g.setColor(new Color(115,48,168));
-			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("GAME PAUSED", 180, 200);
-			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
-			
-			reticle.render(g);
-		}
-		else if (gameState == STATE.StartMenu) {
-			g.fillRect(0, 0, WIDTH, HEIGHT);
-			g.setColor(new Color(150,48,30));
-			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("STAND YOUR GROUND", 160, 200);
-			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS SPACE TO BEGIN", 180, 400);
-
-			reticle.render(g);
-        }
-		else if (gameState == STATE.StoreMenu) {
-			g.fillRect(0, 0, WIDTH, HEIGHT);
-			
-			store.render(g);
-			
-			reticle.render(g);
-        }
-		else if (gameState == STATE.GameOver) {
+		switch (gameState) {
+		case GameOver:
 			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(30,60,30));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
@@ -224,33 +174,76 @@ public class Program extends Canvas implements Runnable{
 			g.setFont(new Font("Arial", 1, 28));
 			g.drawString("R: RETRY FROM AUTOSAVE", 150, 400);
 			g.drawString("N: NEW GAME", 150, 450);
-        }
+			break;
+			
+		case InGame:
+			g.drawImage(background, 0, 0, null);
+			handler.render(g);
+			hud.render(g);
+			break;
+			
+		case PauseMenu:
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			g.setColor(new Color(115,48,168));
+			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 48));
+			g.drawString("GAME PAUSED", 180, 200);
+			g.setFont(new Font("Arial", 1, 36));
+			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
+			reticle.render(g);
+			break;
+			
+		case StartMenu:
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			g.setColor(new Color(150,48,30));
+			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 42));
+			g.drawString("STAND YOUR GROUND", 160, 200);
+			g.setFont(new Font("Arial", 1, 36));
+			g.drawString("PRESS SPACE TO BEGIN", 180, 400);
+			reticle.render(g);
+			break;
+			
+		case StoreMenu:
+			g.fillRect(0, 0, WIDTH, HEIGHT);
+			store.render(g);
+			reticle.render(g);
+			break;
+			
+		default:
+			break;
+		}
 		
 		g.dispose();
 		bs.show();
 	}
 
 	private void tick() {
-		if (gameState == STATE.InGame) {
+		
+		switch (gameState) {
+		case GameOver:
+			break;	
+		case InGame:
 			handler.tick();
-			
 			if (tickDivider % 8 == 0) {
 				hud.tick();
 				spawnSys.tick();
 			}
 			tickDivider++;
-		}
-		else if (gameState == STATE.PauseMenu)
-		{
+			break;
+		case PauseMenu:
 			reticle.tick();
-		}
-		else if (gameState == STATE.StoreMenu)
-		{
+			break;
+		case StartMenu:
 			reticle.tick();
-		}
-		else if (gameState == STATE.StartMenu)
-		{
+			break;
+		case StoreMenu:
 			reticle.tick();
+			break;
+		default:
+			break;
 		}
 		if(prevState != gameState) {
 			stateChange();
@@ -261,42 +254,50 @@ public class Program extends Canvas implements Runnable{
 	private void stateChange() {
 		musicChange();
 		hud.tick();
-		if (gameState == STATE.InGame) {
-			//player.resetAllAmmo();
+		
+		switch (gameState) {
+		case InGame:
 			removeMouseMotionListener(storeMotion);
-		}
-		else if (gameState == STATE.StoreMenu) {
+			break;
+		case StoreMenu:
 			addMouseMotionListener(storeMotion);
 			saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
 			Store.menu = Store.Menu.BuyGuns;
-		}
-		else if (gameState == STATE.GameOver) {
-			
-		}
-		else {
-			
+			break;
+		case GameOver:
+			break;
+		case PauseMenu:
+			break;
+		case StartMenu:
+			break;
+		default:
+			break;
 		}
 	}
 	
 	private void musicChange() {
-		if (gameState == STATE.PauseMenu){
-			float pos = song.getPosition();
-			song.stop();
-			song.loop(0.65f, 0.25f);
-			song.setPosition(pos);
+		
+		float pos = song.getPosition();
+		song.stop();
+		
+		switch (gameState) {
+		
+		case InGame: 	song.loop(1f, 0.25f);
+			break;
+		case PauseMenu:	song.loop(0.65f, 0.25f);
+			break;
+		case StoreMenu:	song.loop(1.35f, 0.25f);
+			break;		
+		case GameOver:	song.loop(0.65f, 0.25f);
+			break;
+		case StartMenu:	song.loop(1f, 0.25f);
+			break;
+		default:		song.loop(1f, 0.25f);
+			break;
+			
 		}
-		else if (gameState == STATE.InGame){
-			float pos = song.getPosition();
-			song.stop();
-			song.loop(1f, 0.25f);
-			song.setPosition(pos);
-		}
-		else if (gameState == STATE.StoreMenu){
-			float pos = song.getPosition();
-			song.stop();
-			song.loop(1.35f, 0.25f);
-			song.setPosition(pos);
-		}
+		
+		song.setPosition(pos);
 	}
 	
 	/*

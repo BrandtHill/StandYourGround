@@ -3,6 +3,7 @@ package game;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
+
 import game.Program.STATE;
 
 public class KeyInput extends KeyAdapter{
@@ -21,66 +22,87 @@ public class KeyInput extends KeyAdapter{
 		}
 	}
 	
-	/*
-	 * All this does is set bools true then calls changeVelocity.
-	 */
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		if (Program.gameState == STATE.InGame) {
-			if (key == KeyEvent.VK_W) w = true;
-			if (key == KeyEvent.VK_A) a = true;
-			if (key == KeyEvent.VK_S) s = true;
-			if (key == KeyEvent.VK_D) d = true;
-			if (key == KeyEvent.VK_1) player.switchToPrimary();
-			if (key == KeyEvent.VK_2) player.switchToSecondary();
-			if (key == KeyEvent.VK_3) player.switchToSidearm();
-			changeVelocity();
-
-			if (key == KeyEvent.VK_ESCAPE) {
+		switch (Program.gameState) {
+		
+		case InGame:
+			switch (key) {
+			case KeyEvent.VK_W: w = true;
+				break;
+			case KeyEvent.VK_A: a = true;
+				break;
+			case KeyEvent.VK_S:	s = true;
+				break;
+			case KeyEvent.VK_D:	d = true;
+				break;
+			case KeyEvent.VK_1: player.switchToPrimary();
+				break;
+			case KeyEvent.VK_2: player.switchToSecondary();
+				break;
+			case KeyEvent.VK_3: player.switchToSidearm();
+				break;
+			case KeyEvent.VK_R: player.getGun().reload();
+				break;
+			case KeyEvent.VK_ESCAPE:
 				Program.gameState = STATE.PauseMenu;
 				w = a = s = d = false;
+				break;
+			default:
+				break;
 			}
-			if (key == KeyEvent.VK_R) {
-				player.getGun().reload();
-			}
+			changeVelocity();
+			break;
 			
-		}
-		else if (Program.gameState == STATE.GameOver) {
-			if (key == KeyEvent.VK_R) {
+		case GameOver:
+			switch (key) {
+			case KeyEvent.VK_R:
 				Program.loadFromFile("res/saves/autosave.syg/", player);
 				Program.gameState = STATE.StoreMenu;
-			}
-			if (key == KeyEvent.VK_N) {
+				break;
+			case KeyEvent.VK_N:
 				Program.loadFromFile("res/saves/newgame.syg/", player);
 				Program.gameState = STATE.StartMenu;
+				break;
+			default:
+				break;
 			}
-			
-		}
-		else if (Program.gameState == STATE.StartMenu) {
-			if (key == KeyEvent.VK_SPACE) {
+			break;
+		
+		case PauseMenu:
+			switch (key) {
+			case KeyEvent.VK_ESCAPE:
+				Program.gameState = STATE.InGame;
+				break;
+			default:
+				break;
+			}
+			break;
+		
+		case StartMenu:
+			switch (key) {
+			case KeyEvent.VK_SPACE:
 				Program.gameState = STATE.InGame;
 				Program.commenceLevel();
-			}
-			if (key == KeyEvent.VK_1) {
+				break;
+			case KeyEvent.VK_1:
 				Program.loadFromFile("res/saves/save1.syg/", player);
-			}
-			if (key == KeyEvent.VK_2) {
+				break;
+			case KeyEvent.VK_2:
 				Program.loadFromFile("res/saves/save2.syg/", player);
-			}
-			if (key == KeyEvent.VK_3) {
+				break;
+			case KeyEvent.VK_3:
 				Program.loadFromFile("res/saves/save3.syg/", player);
+				break;
+			default:
+				break;
 			}
-	
-		}
-		else if (Program.gameState == STATE.PauseMenu) {
-			if (key == KeyEvent.VK_ESCAPE) {
-				Program.gameState = STATE.InGame;
-			}
-		}
-		else if (Program.gameState == STATE.StoreMenu) {
-			
-			if (key == KeyEvent.VK_SPACE) {
+			break;
+		
+		case StoreMenu:
+			switch (key) {
+			case KeyEvent.VK_SPACE:
 				if (Store.menu == Store.Menu.BuyGuns) {
 					Store.menu = Store.Menu.BuyUpgrades;
 				}
@@ -88,16 +110,24 @@ public class KeyInput extends KeyAdapter{
 					Program.gameState = STATE.InGame;
 					Program.commenceLevel();
 				}
-			}
-			if (key == KeyEvent.VK_1) {
+				break;
+			case KeyEvent.VK_1:
 				Program.saveToFile("res/saves/save1.syg/", player);
-			}
-			if (key == KeyEvent.VK_2) {
+				break;
+			case KeyEvent.VK_2:
 				Program.saveToFile("res/saves/save2.syg/", player);
-			}
-			if (key == KeyEvent.VK_3) {
+				break;
+			case KeyEvent.VK_3:
 				Program.saveToFile("res/saves/save3.syg/", player);
+				break;
+			default:
+				break;
 			}
+			break;
+		
+		default:
+			break;
+		
 		}
 	}
 	
@@ -106,11 +136,19 @@ public class KeyInput extends KeyAdapter{
 	 */
 	public void keyReleased(KeyEvent e) {
 		int key = e.getKeyCode();
-			
-		if(key == KeyEvent.VK_W) w = false;
-		if(key == KeyEvent.VK_A) a = false;
-		if(key == KeyEvent.VK_S) s = false;
-		if(key == KeyEvent.VK_D) d = false;
+		
+		switch (key){
+		case KeyEvent.VK_W: w = false;
+			break;
+		case KeyEvent.VK_A: a = false;
+			break;
+		case KeyEvent.VK_S: s = false;
+			break;
+		case KeyEvent.VK_D: d = false;
+			break;
+		default:
+			break;
+		}
 		changeVelocity();
 
 	}
@@ -123,12 +161,12 @@ public class KeyInput extends KeyAdapter{
 
 		speed = player.getSpeed();
 		
-		if((w && s) || !(w || s))	player.setVelY(0);
-		if(w && !s) 				player.setVelY(-1*speed);
-		if(!w && s)					player.setVelY(speed);
-		if((a && d) || !(a || d))	player.setVelX(0);
-		if(a && !d)					player.setVelX(-1*speed);
-		if(!a && d)					player.setVelX(speed);
+		if	((w && s) || !(w || s))		player.setVelY(0);
+		if	(w && !s) 					player.setVelY(-1*speed);
+		if	(!w && s)					player.setVelY(speed);
+		if	((a && d) || !(a || d))		player.setVelX(0);
+		if	(a && !d)					player.setVelX(-1*speed);
+		if	(!a && d)					player.setVelX(speed);
 
 	}
 }
