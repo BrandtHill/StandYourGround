@@ -21,10 +21,13 @@ public class AudioPlayer {
 			soundMap.put("Pistol", new Sound("res/PistolSound.wav"));
 			soundMap.put("Rifle", new Sound("res/RifleSound.wav"));
 			soundMap.put("Shotgun", new Sound("res/ShotgunSound.wav"));
+			soundMap.put("Sniper", new Sound("res/SniperSound.wav"));
 			soundMap.put("ReloadTitan", new Sound("res/ReloadTitanSound.ogg"));
 			soundMap.put("ReloadPX4", new Sound("res/ReloadPX4Sound.wav"));
 			soundMap.put("ReloadAR15", new Sound("res/ReloadAR15Sound.ogg"));
 			soundMap.put("ReloadOverUnder", new Sound("res/ReloadOverUnderSound.ogg"));
+			soundMap.put("ReloadM77", new Sound("res/ReloadM77Sound.ogg"));
+			soundMap.put("CycleM77", new Sound("res/CycleM77Sound.ogg"));
 			soundMap.put("BlipMinor", new Sound("res/BlipMinor.wav"));
 			soundMap.put("BlipMajor", new Sound("res/BlipMajor.wav"));
 		} catch (SlickException e) {

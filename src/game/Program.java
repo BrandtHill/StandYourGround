@@ -245,6 +245,7 @@ public class Program extends Canvas implements Runnable{
 		default:
 			break;
 		}
+		
 		if(prevState != gameState) {
 			stateChange();
 		}

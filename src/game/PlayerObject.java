@@ -44,10 +44,13 @@ public class PlayerObject extends GameObject{
 		arsenal.add(new Gun("Titan", GUN.Titan, 7, 56, 22, false, this, h));
 		gunSidearm = searchGun("Titan");
 		gunPrimary = searchGun("AR-15"); 
-		gunSecondary = searchGun("Over-Under");
+		gunSecondary = searchGun("M77");
 		gunSidearm.setOwned(true);
-		//gunPrimary.setOwned(true);
-		//gunSecondary.setOwned(true);
+		gunSidearm.setEquipped(true);
+		gunPrimary.setOwned(true);
+		gunPrimary.setEquipped(true);
+		gunSecondary.setOwned(true);
+		gunSecondary.setOwned(true);
 		gunWeilded = gunSidearm;
 		tickDivider = 0;
 		spriteNum = 0;
@@ -127,6 +130,9 @@ public class PlayerObject extends GameObject{
 	}
 
 	public Gun getGun() {return gunWeilded;}
+	public Gun getPrimary() {return gunPrimary;}
+	public Gun getSecondary() {return gunSecondary;}
+	public Gun getSidearm() {return gunSidearm;}
 	public LinkedList<Gun> getArsenal() {return arsenal;}
 	public double getAngle() {return angle;}
 	public double getSpeed() {return speed;}
@@ -140,6 +146,9 @@ public class PlayerObject extends GameObject{
 		else return 0;
 	}
 	
+	public void setPrimary(Gun g) {gunPrimary = g;}
+	public void setSecondary(Gun g) {gunSecondary = g;}
+	public void setSidearm(Gun g) {gunSidearm = g;}
 	public void setAngle(double a) {angle = a;}
 	public void setArsenal(LinkedList<Gun> l) {arsenal = l;}
 	public void setSpeed(double s) {speed = s;}
@@ -190,13 +199,23 @@ public class PlayerObject extends GameObject{
 	public void resetAllAmmo() {
 		for(int i = 0; i < arsenal.size(); i++) {
 			arsenal.get(i).resetAmmo();
+			arsenal.get(i).setEquipped(false);
 		}
-		if(gunPrimary.getOwned())
+		if(gunPrimary.getOwned()) {
 			gunWeilded = gunPrimary;
-		else if(gunSecondary.getOwned())
+			gunPrimary.setEquipped(true);
+		}
+			
+		else if(gunSecondary.getOwned()) {
 			gunWeilded = gunSecondary;
-		else 
+			gunSecondary.setEquipped(true);
+		}
+			
+		else {
 			gunWeilded = gunSidearm;
+			gunSidearm.setEquipped(true);
+		}
+			
 	}
 	
 	public void loadSprites() {

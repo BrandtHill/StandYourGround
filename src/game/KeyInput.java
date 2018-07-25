@@ -103,14 +103,28 @@ public class KeyInput extends KeyAdapter{
 		case StoreMenu:
 			switch (key) {
 			case KeyEvent.VK_SPACE:
-				if (Store.menu == Store.Menu.BuyGuns) {
+				
+				switch (Store.menu) {
+				case BuyGuns:
 					Store.menu = Store.Menu.BuyUpgrades;
-				}
-				else if (Store.menu == Store.Menu.BuyUpgrades) {
+					break;
+				case BuyUpgrades:
+					Store.menu = Store.Menu.SelectSidearm;
+					break;
+				case SelectPrimary:
+					Store.menu = Store.Menu.SelectSecondary;
+					break;
+				case SelectSecondary:
 					Program.gameState = STATE.InGame;
 					Program.commenceLevel();
+					break;
+				case SelectSidearm:
+					Store.menu = Store.Menu.SelectPrimary;
+					break;
+				default:
+					break;
 				}
-				break;
+				
 			case KeyEvent.VK_1:
 				Program.saveToFile("res/saves/save1.syg/", player);
 				break;

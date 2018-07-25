@@ -24,6 +24,7 @@ public class Gun implements Serializable {
 	private boolean shooting;
 	private boolean owned;
 	private boolean chambered;
+	private boolean equipped;
 	private long reloadTime;
 	private long chamberTime;
 	private String gunName;
@@ -64,7 +65,7 @@ public class Gun implements Serializable {
 			chamberTime = 67;
 			break;
 		case M77:
-			reloadSound = AudioPlayer.getSound("ReloadPX4");
+			reloadSound = AudioPlayer.getSound("ReloadM77");
 			reloadTime = 2000;
 			chamberTime = 1250;
 			break;
@@ -129,7 +130,9 @@ public class Gun implements Serializable {
 			case M77:
 				handler.addObject(
 						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 42, angle, damage, 25, handler));
-				AudioPlayer.getSound("Rifle").play(0.8f, 0.35f);
+				AudioPlayer.getSound("Sniper").play(1f, 0.4f);
+				if(ammoLoaded > 1) 
+					AudioPlayer.getSound("CycleM77").play();
 				break;
 				
 			default:
@@ -236,6 +239,7 @@ public class Gun implements Serializable {
 	public boolean getShooting() {return shooting;}
 	public boolean getFullAuto() {return isFullAuto;}
 	public boolean getOwned() {return owned;}
+	public boolean getEquipped() {return equipped;}
 	public String getName() {return gunName;}
 
 	public void setDamage(double dmg) {damage = dmg;}
@@ -245,6 +249,9 @@ public class Gun implements Serializable {
 	public void setAmmoCapacity(int ammo) {ammoCapacity = ammo;}
 	public void setShooting(boolean s) {shooting = s;}
 	public void setOwned(boolean o) {owned = o;}
+	public void setEquipped(boolean e) {equipped = e;}
 	//public void setTickDivider(int t) {tickDivider = t;}
+
+
 	
 }
