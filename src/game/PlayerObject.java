@@ -37,14 +37,14 @@ public class PlayerObject extends GameObject{
 	public PlayerObject(double xPos, double yPos, Handler h) {
 		super(xPos, yPos, ObjectType.Player, h);
 		arsenal = new LinkedList<Gun>();
-		arsenal.add(new Gun("AR-15", GUN.AR15, 30, 30, 35, true, this, h));
+		arsenal.add(new Gun("AR-15", GUN.AR15, 30, 30, 35, false, this, h));
 		arsenal.add(new Gun("M77", GUN.M77, 3, 15, 70, false, this, h));
 		arsenal.add(new Gun("Over-Under", GUN.OverUnder, 2, 10, 40, false, this, h));
 		arsenal.add(new Gun("PX4 Compact", GUN.PX4Compact, 15, 30, 31, false, this, h));;
 		arsenal.add(new Gun("Titan", GUN.Titan, 7, 56, 22, false, this, h));
 		gunSidearm = searchGun("Titan");
 		gunPrimary = searchGun("AR-15"); 
-		gunSecondary = searchGun("M77");
+		gunSecondary = searchGun("Over-Under");
 		gunSidearm.setOwned(true);
 		gunSidearm.setEquipped(true);
 		gunPrimary.setOwned(true);
