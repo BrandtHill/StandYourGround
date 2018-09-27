@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="create_run_jar" name="Create Runnable Jar for StandYourGround">
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.project" value="${basedir}/.."/>
+    <property name="dir.bin" value="${dir.project}/bin"/>
+    <property name="dir.lib" value="${dir.project}/lib"/>
+    <property name="dir.res" value="${dir.project}/res"/>
+    <target name="create_run_jar">
+        <jar destfile="${dir.bin}/SYG.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="game.Program"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <zipfileset dir="${dir.bin}/game" prefix="game"/>
+            <!-- <zipfileset dir="${dir.res}" prefix="game/res"/> -->
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jinput.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jogg-0.0.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jorbis-0.0.15.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/slick.jar"/>
+        </jar>
+    </target>
+</project>
