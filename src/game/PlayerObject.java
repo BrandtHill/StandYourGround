@@ -101,8 +101,7 @@ public class PlayerObject extends GameObject{
 			spriteNum = spriteNum % 8;
 		}
 		
-		tickDivider++;
-		
+		tickDivider++;	
 	}
 	
 	public void detectCollision()
@@ -121,12 +120,10 @@ public class PlayerObject extends GameObject{
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 
-			g2d.setColor(Color.LIGHT_GRAY);
-			g2d.rotate(-angle, x + 10, y + 10);
-			//g2d.fillRect((int)x, (int)y, 20, 20);
-			g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
-			//g2d.drawImage(img, (int)x, (int)y, null);
-			g2d.rotate(angle, x + 10, y + 10);
+		g2d.setColor(Color.LIGHT_GRAY);
+		g2d.rotate(-angle, x + 10, y + 10);
+		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
+		g2d.rotate(angle, x + 10, y + 10);
 	}
 
 	public Gun getGun() {return gunWeilded;}
@@ -160,8 +157,7 @@ public class PlayerObject extends GameObject{
 		Gun g = null;
 		for(int i = 0; i < arsenal.size(); i++) {
 			g = arsenal.get(i);
-			if(g.getName().equals(n))
-				return g;
+			if(g.getName().equals(n)) return g;
 		}
 		return null;
 	}
@@ -205,17 +201,14 @@ public class PlayerObject extends GameObject{
 			gunWeilded = gunPrimary;
 			gunPrimary.setEquipped(true);
 		}
-			
 		else if(gunSecondary.getOwned()) {
 			gunWeilded = gunSecondary;
 			gunSecondary.setEquipped(true);
-		}
-			
+		}	
 		else {
 			gunWeilded = gunSidearm;
 			gunSidearm.setEquipped(true);
-		}
-			
+		}	
 	}
 	
 	public void loadSprites() {

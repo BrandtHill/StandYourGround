@@ -12,33 +12,34 @@ public class StoreMotion extends MouseMotionAdapter{
 	private Store store;
 
 	
-	public StoreMotion(Store s) {
-		store = s;
+	public StoreMotion(Store store) {
+		this.store = store;
 	}
 	
-	public void mouseMoved(MouseEvent e) {
-		
+	public void mouseMoved(MouseEvent e) {	
 		if (Program.gameState == STATE.StoreMenu) {
-			for (int i = 0; i < store.getNumButtons(); i++) {
-				if (store.inBounds(e.getPoint(), i)) {
-					if (store.colors[i] == Color.WHITE)
-						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-					store.colors[i] = Color.GREEN;
+			for (Button b : store.buttons) {
+				if (b != null && b.isActive()) {
+					if (b.inBounds(e.getPoint())) {
+						if (b.color == Color.WHITE)
+							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+						b.color = Color.GREEN;
+					} else b.color = Color.WHITE;
 				}
-				else store.colors[i] = Color.WHITE;
 			} 
 		}
 	}
 	
 	public void mouseDragged(MouseEvent e) {
 		if (Program.gameState == STATE.StoreMenu) {
-			for (int i = 0; i < store.getNumButtons(); i++) {
-				if (store.inBounds(e.getPoint(), i)) {
-					if (store.colors[i] == Color.WHITE)
-						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);	
-					store.colors[i] = Color.CYAN;
+			for (Button b : store.buttons) {
+				if (b != null && b.isActive()) {
+					if (b.inBounds(e.getPoint())) {
+						if (b.color == Color.WHITE)
+							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+						b.color = Color.CYAN;
+					} else b.color = Color.WHITE;
 				}
-				else store.colors[i] = Color.WHITE;
 			} 
 		}
 	}

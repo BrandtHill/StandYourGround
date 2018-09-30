@@ -8,16 +8,16 @@ import game.Program.STATE;
 
 public class KeyInput extends KeyAdapter{
 	
-	private Handler handler;
+	private Store store;
 	private PlayerObject player;
 	private boolean w, a, s, d;
 	private double speed = 2;
 	
-	public KeyInput(Handler h) {
-		handler = h;
+	public KeyInput(Handler handler, Store store) {
+		this.store = store;
 		try {
 			player = (PlayerObject)handler.getObjectAt(0);
-		}catch(Exception e) {
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
@@ -105,21 +105,31 @@ public class KeyInput extends KeyAdapter{
 			case KeyEvent.VK_SPACE:
 				
 				switch (Store.menu) {
+				case Other:
+					Store.menu = Store.Menu.BuyGuns;
+					store.onChange();
+					break;
 				case BuyGuns:
 					Store.menu = Store.Menu.BuyUpgrades;
+					store.onChange();
 					break;
 				case BuyUpgrades:
 					Store.menu = Store.Menu.SelectSidearm;
-					break;
-				case SelectPrimary:
-					Store.menu = Store.Menu.SelectSecondary;
-					break;
-				case SelectSecondary:
-					Program.gameState = STATE.InGame;
-					Program.commenceLevel();
+					store.onChange();
 					break;
 				case SelectSidearm:
 					Store.menu = Store.Menu.SelectPrimary;
+					store.onChange();
+					break;
+				case SelectPrimary:
+					Store.menu = Store.Menu.SelectSecondary;
+					store.onChange();
+					break;
+				case SelectSecondary:
+					Store.menu = Store.Menu.Other;
+					store.onChange();
+					Program.gameState = STATE.InGame;
+					Program.commenceLevel();
 					break;
 				default:
 					break;
@@ -141,7 +151,6 @@ public class KeyInput extends KeyAdapter{
 		
 		default:
 			break;
-		
 		}
 	}
 	
@@ -164,7 +173,6 @@ public class KeyInput extends KeyAdapter{
 			break;
 		}
 		changeVelocity();
-
 	}
 	
 	/*

@@ -29,9 +29,7 @@ public class Program extends Canvas implements Runnable{
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
-	//public Music songHusk, songMystic, songFat;
 	public Music song;
-	//private float posHusk, posMystic, posFat = 0f;
 	private byte tickDivider;
 	
 	public static enum STATE{
@@ -40,14 +38,12 @@ public class Program extends Canvas implements Runnable{
 		StartMenu,
 		GameOver,
 		PauseMenu;
-		
 	}
 	
 	public static STATE gameState;
 	private STATE prevState;
 	
 	public Program() {
-		
 		AudioPlayer.load();
 		handler = new Handler();
 		reticle = new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler);
@@ -60,7 +56,7 @@ public class Program extends Canvas implements Runnable{
 		storeMotion = new StoreMotion(store);
 		hud = new HUD(handler, spawnSys);
 		
-		addKeyListener(new KeyInput(handler));
+		addKeyListener(new KeyInput(handler, store));
 		addMouseListener(new MouseInput(handler));
 		addMouseListener(store);
 		addMouseMotionListener(new MouseMotionInput(handler));
@@ -75,9 +71,7 @@ public class Program extends Canvas implements Runnable{
 		gameState = STATE.StartMenu;
 		
 		song = AudioPlayer.getMusic("Dying");
-		//songHusk = AudioPlayer.getMusic("Husk");
-		//songMystic = AudioPlayer.getMusic("Mystic");
-		//songFat = AudioPlayer.getMusic("Fat");
+
 		song.loop(1f, 0.25f);
 		
 		tickDivider = 0;
@@ -93,7 +87,6 @@ public class Program extends Canvas implements Runnable{
 		thread = new Thread(this);
 		thread.start();
 		running = true;
-		//run();
 	}
 	
 	public synchronized void stop() {
@@ -111,7 +104,7 @@ public class Program extends Canvas implements Runnable{
 		new Program();
 	}
 
-	/*
+	/**
 	 * This method is the main game loop. It 'ticks' 60 times
 	 * per second. It renders the game as fast as possible and
 	 * prints the frame rate to console every second. 
@@ -264,6 +257,7 @@ public class Program extends Canvas implements Runnable{
 			addMouseMotionListener(storeMotion);
 			saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
 			Store.menu = Store.Menu.BuyGuns;
+			store.onChange();
 			break;
 		case GameOver:
 			break;
@@ -282,7 +276,6 @@ public class Program extends Canvas implements Runnable{
 		song.stop();
 		
 		switch (gameState) {
-		
 		case InGame: 	song.loop(1f, 0.25f);
 			break;
 		case PauseMenu:	song.loop(0.65f, 0.25f);
@@ -295,13 +288,12 @@ public class Program extends Canvas implements Runnable{
 			break;
 		default:		song.loop(1f, 0.25f);
 			break;
-			
 		}
 		
 		song.setPosition(pos);
 	}
 	
-	/*
+	/**
 	 * This method makes sure the input 'val' is within
 	 * the bounds on 'min' and 'max'. I think it's a rather
 	 * clever one-line implementation.
@@ -317,6 +309,7 @@ public class Program extends Canvas implements Runnable{
 	public static void saveToFile(String filename, PlayerObject player) {
 		saveData.saveToFile(filename, player);
 	}
+	
 	public static void loadFromFile(String filename, PlayerObject player) {
 		saveData = saveData.loadFromFile(filename);
 		if(saveData!= null)
