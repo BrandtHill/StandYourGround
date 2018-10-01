@@ -11,7 +11,7 @@ public class Button {
 
 	private int x, y, w, h;
 	private String line1, line2, line3;
-	public Color color;
+	public Color displayColor, mainColor;
 	private Font font;
 	private boolean active;
 	private static PlayerObject player;
@@ -28,20 +28,21 @@ public class Button {
 		this.line3 = line3;
 		this.gun = player.searchGun(line2);
 		if (Store.menu == Menu.BuyGuns) {
-			this.color = gun.isOwned() ? Color.LIGHT_GRAY : Color.WHITE;
+			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 		}
 		else {	
-			this.color = gun.isOwned() ?
+			this.mainColor = gun.isOwned() ?
 						(gun.isSelected() ? 
 								new Color(131, 53, 214) 
 								: Color.WHITE) 
-								: Color.LIGHT_GRAY;
+								: Color.GRAY;
 		}
+		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Arial", 1, 12);
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(active ? color : Color.DARK_GRAY);
+		g.setColor(displayColor);
 		g.setFont(font);
 		g.draw3DRect(x, y, w, h, true);
 		g.drawString(line1, x + 10, y + 20);

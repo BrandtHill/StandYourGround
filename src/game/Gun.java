@@ -24,9 +24,6 @@ public class Gun implements Serializable {
 	private boolean shooting;
 	private boolean owned;
 	private boolean chambered;
-	private boolean equippedPrimary;
-	private boolean equippedSecondary;
-	private boolean equippedSidearm;
 	private boolean selected;
 	private long reloadTime;
 	private long chamberTime;
@@ -252,10 +249,6 @@ public class Gun implements Serializable {
 	public boolean isShooting() {return shooting;}
 	public boolean isFullAuto() {return isFullAuto;}
 	public boolean isOwned() {return owned;}
-	public boolean isEquippedPrimary() {return equippedPrimary;}
-	public boolean isEquippedSecondary() {return equippedSecondary;}
-	public boolean isEquippedSidearm() {return equippedSidearm;}
-	public boolean isEquipped() {return equippedPrimary || equippedSecondary || equippedSidearm;}
 	public boolean isSelected() {return selected;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
@@ -270,25 +263,12 @@ public class Gun implements Serializable {
 	public static void setPlayer(PlayerObject player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
 	
-	public void equipAsPrimary() {
-		unequip();
-		equippedPrimary = true;
-	}
-	public void equipAsSecondary() {
-		unequip();
-		equippedPrimary = true;
-	}
-	public void equipAsSidearm() {
-		unequip();
-		equippedSidearm = true;
-	}
-	public void unequip() {
-		equippedPrimary = equippedSecondary = equippedSidearm = false;
-	}
-	
 	public void select() {selected = true;}
 	public void unselect() {selected = false;}
-
 	
+	// These are wrapper functions that interact with this gun in relation to the player
+	public int getIndexOf() {return player.getIndexOfGun(gunName);}
+	public boolean isEquipped() {return player.isEquipped(gunName);}
+	public void unequip() {player.unequip(gunName);}
 	
 }

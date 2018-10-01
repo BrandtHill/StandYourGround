@@ -227,15 +227,10 @@ public class Program extends Canvas implements Runnable{
 			tickDivider++;
 			break;
 		case PauseMenu:
-			reticle.tick();
-			break;
 		case StartMenu:
-			reticle.tick();
-			break;
 		case StoreMenu:
-			reticle.tick();
-			break;
 		default:
+			reticle.tick();
 			break;
 		}
 		
@@ -251,7 +246,7 @@ public class Program extends Canvas implements Runnable{
 		
 		switch (gameState) {
 		case InGame:
-			commenceLevel();
+			if (prevState != STATE.PauseMenu) commenceLevel();
 			removeMouseMotionListener(storeMotion);
 			break;
 		case StoreMenu:

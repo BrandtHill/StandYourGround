@@ -37,7 +37,7 @@ public class HUD {
 		levelInfo = "Level " + spawnSys.getLevel() + 
 				"    " + "Zombies Remaining: " + spawnSys.getRemaining() + 
 				"     $"+ player.getMoney();
-		int gunIndex = player.getGunIndex();
+		int gunIndex = player.getGunWeildedIndex();
 		for(int i = 0; i < 3; i++) {
 			if(i == gunIndex) 
 				colors[i] = sel;

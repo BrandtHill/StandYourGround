@@ -21,10 +21,10 @@ public class StoreMotion extends MouseMotionAdapter{
 			for (Button b : store.buttons) {
 				if (b != null && b.isActive()) {
 					if (b.inBounds(e.getPoint())) {
-						if (b.color == Color.WHITE)
+						if (b.displayColor == b.mainColor)
 							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-						b.color = Color.GREEN;
-					} else b.color = Color.WHITE;
+						b.displayColor = Color.GREEN;
+					} else b.displayColor = b.mainColor;
 				}
 			} 
 		}
@@ -35,10 +35,10 @@ public class StoreMotion extends MouseMotionAdapter{
 			for (Button b : store.buttons) {
 				if (b != null && b.isActive()) {
 					if (b.inBounds(e.getPoint())) {
-						if (b.color == Color.WHITE)
+						if (b.displayColor == b.mainColor)
 							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-						b.color = Color.CYAN;
-					} else b.color = Color.WHITE;
+						b.displayColor = Color.CYAN;
+					} else b.displayColor = b.mainColor;
 				}
 			} 
 		}

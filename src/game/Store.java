@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import game.Program.STATE;
@@ -62,33 +61,33 @@ public class Store extends MouseAdapter{
 				break;
 			case SelectSidearm:
 				if (buttons[3].inBounds(e.getPoint()))
-					equipGun("PX4 Compact", 0);
+					player.equipSidearm("PX4 Compact");
 				else if (buttons[4].inBounds(e.getPoint()))
-					equipGun("Titan", 0);
+					player.equipSidearm("Titan");
 				break;
 			case SelectPrimary:
 				if (buttons[0].inBounds(e.getPoint()))
-					equipGun("AR-15", 1);
+					player.equipPrimary("AR-15");
 				else if (buttons[1].inBounds(e.getPoint()))
-					equipGun("Over-Under", 1);
+					player.equipPrimary("Over-Under");
 				else if (buttons[2].inBounds(e.getPoint()))
-					equipGun("M77", 1);
+					player.equipPrimary("M77");
 				else if (buttons[3].inBounds(e.getPoint()))
-					equipGun("PX4 Compact", 1);
+					player.equipPrimary("PX4 Compact");
 				else if (buttons[4].inBounds(e.getPoint()))
-					equipGun("Titan", 1);
+					player.equipPrimary("Titan");
 				break;
 			case SelectSecondary:
 				if (buttons[0].inBounds(e.getPoint()))
-					equipGun("AR-15", 2);
+					player.equipSecondary("AR-15");
 				else if (buttons[1].inBounds(e.getPoint()))
-					equipGun("Over-Under", 2);
+					player.equipSecondary("Over-Under");
 				else if (buttons[2].inBounds(e.getPoint()))
-					equipGun("M77", 2);
+					player.equipSecondary("M77");
 				else if (buttons[3].inBounds(e.getPoint()))
-					equipGun("PX4 Compact", 2);
+					player.equipSecondary("PX4 Compact");
 				else if (buttons[4].inBounds(e.getPoint()))
-					equipGun("Titan", 2);
+					player.equipSecondary("Titan");
 				break;
 			default:
 				break;
@@ -110,6 +109,7 @@ public class Store extends MouseAdapter{
 		case SelectPrimary: menu = Menu.SelectSecondary;
 			break;
 		case SelectSecondary: menu = Menu.Other;
+			player.unselectAll();
 			Program.gameState = STATE.InGame;
 			break;
 		default:
@@ -199,22 +199,34 @@ public class Store extends MouseAdapter{
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT PRIMARY", 280, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			drawEquipped(g);
 			break;
 		case SelectSidearm:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SIDEARM", 280, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			drawEquipped(g);
 			break;			
 		case SelectSecondary:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SECONDARY", 280, 50);
 			g.drawString("PRESS SPACE TO COMMENCE NEXT LEVEL", 120, 450);
+			drawEquipped(g);
 			break;			
 		default:
 			break;
 		}	
+	}
+	
+	private void drawEquipped(Graphics g) {
+		g.setColor(Color.GRAY);
+		g.setFont(new Font("Arial", 1, 10));
+		
+		g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 70, 390);
+		g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 70, 405);
+		g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 70, 420);
 	}
 	
 	public boolean inBounds(Point p, int i) {
@@ -223,15 +235,7 @@ public class Store extends MouseAdapter{
 	
 	public void upgradeCapacity(String gunName, int ammo, int money) {
 		
-		ArrayList<Gun> arsenal = player.getArsenal();
-		Gun gun = null;
-		for(int i = 0; i < arsenal.size(); i++) {
-			if(arsenal.get(i).getName().equals(gunName)) {
-				gun = arsenal.get(i);
-				break;
-			}
-		}
-
+		Gun gun = player.searchGun(gunName);
 		if (gun.isOwned()) {
 			int cap = gun.getAmmoCapacity();
 			if (player.getMoney() >= money) {
@@ -243,16 +247,8 @@ public class Store extends MouseAdapter{
 	}
 	
 	public void upgradeMagSize(String gunName, int ammo, int money) {
-		
-		ArrayList<Gun> arsenal = player.getArsenal();
-		Gun gun = null;
-		for(int i = 0; i < arsenal.size(); i++) {
-			if(arsenal.get(i).getName().equals(gunName)) {
-				gun = arsenal.get(i);
-				break;
-			}
-		}
-		
+
+		Gun gun = player.searchGun(gunName);
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
@@ -275,28 +271,6 @@ public class Store extends MouseAdapter{
 				gun.setOwned(true);
 				player.setMoney(player.getMoney() - money);
 			} 
-		}
-	}
-	
-	public void equipGun(String gunName, int index) {
-		
-		Gun gun = player.searchGun(gunName);
-		if(gun.isOwned()) {
-			if(!gun.isEquipped()) {
-				if(index == 0)
-					player.setGunSidearm(gun);
-				else if(index == 1)
-					player.setGunPrimary(gun);
-				else if(index == 2)
-					player.setGunSecondary(gun);
-			}
-		}
-	}
-	
-	public void equipAsPrimary(String gunName) {
-		Gun gun = player.searchGun(gunName);
-		if (gun.isOwned() && !gun.isSelected()) {
-			if (!gun.isEquipped()) player.setGunPrimary(gun);
 		}
 	}
 }
