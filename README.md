@@ -30,4 +30,4 @@ Now just zip it up and it should be good to go! It can be run by opening
 `SYG.jar` once unzipped.
 
 It takes a little while to open, probably due to
-loading the music files. Perhaps this ca be made asynchronous?
+loading the music files. Perhaps this can be made asynchronous?

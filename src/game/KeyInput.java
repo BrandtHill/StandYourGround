@@ -43,7 +43,7 @@ public class KeyInput extends KeyAdapter{
 				break;
 			case KeyEvent.VK_3: player.switchToSidearm();
 				break;
-			case KeyEvent.VK_R: player.getGun().reload();
+			case KeyEvent.VK_R: player.getGunWielded().reload();
 				break;
 			case KeyEvent.VK_ESCAPE:
 				Program.gameState = STATE.PauseMenu;
@@ -103,38 +103,11 @@ public class KeyInput extends KeyAdapter{
 		case StoreMenu:
 			switch (key) {
 			case KeyEvent.VK_SPACE:
-				
-				switch (Store.menu) {
-				case Other:
-					Store.menu = Store.Menu.BuyGuns;
-					store.onChange();
-					break;
-				case BuyGuns:
-					Store.menu = Store.Menu.BuyUpgrades;
-					store.onChange();
-					break;
-				case BuyUpgrades:
-					Store.menu = Store.Menu.SelectSidearm;
-					store.onChange();
-					break;
-				case SelectSidearm:
-					Store.menu = Store.Menu.SelectPrimary;
-					store.onChange();
-					break;
-				case SelectPrimary:
-					Store.menu = Store.Menu.SelectSecondary;
-					store.onChange();
-					break;
-				case SelectSecondary:
-					Store.menu = Store.Menu.Other;
-					store.onChange();
-					Program.gameState = STATE.InGame;
-					Program.commenceLevel();
-					break;
-				default:
-					break;
-				}
-				
+				store.nextMenu();
+				break;
+			case KeyEvent.VK_BACK_SPACE:
+				store.prevMenu();
+				break;
 			case KeyEvent.VK_1:
 				Program.saveToFile("res/saves/save1.syg/", player);
 				break;
@@ -154,7 +127,7 @@ public class KeyInput extends KeyAdapter{
 		}
 	}
 	
-	/*
+	/**
 	 * All this does is set bools false then calls changeVelocity.
 	 */
 	public void keyReleased(KeyEvent e) {
@@ -175,7 +148,7 @@ public class KeyInput extends KeyAdapter{
 		changeVelocity();
 	}
 	
-	/*
+	/**
 	 * This handles all the cases so that there's fluid
 	 * movement when opposing keys are pressed and released.
 	 */

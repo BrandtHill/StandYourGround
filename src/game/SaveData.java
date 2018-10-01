@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.LinkedList;
+import java.util.ArrayList;
 
 import game.Program.STATE;
 
@@ -17,9 +17,9 @@ public class SaveData implements Serializable {
 	private int money;
 	private int moneyAtRoundStart;
 	private int level;
-	private LinkedList<Integer> magSizes;
-	private LinkedList<Integer> ammoCaps;
-	private LinkedList<Boolean> gunsOwned;
+	private ArrayList<Integer> magSizes;
+	private ArrayList<Integer> ammoCaps;
+	private ArrayList<Boolean> gunsOwned;
 	
 	public SaveData() {
 		
@@ -30,10 +30,10 @@ public class SaveData implements Serializable {
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
 	         
-			LinkedList<Gun> arsenal;
-			magSizes = new LinkedList<Integer>();
-			ammoCaps = new LinkedList<Integer>();
-			gunsOwned = new LinkedList<Boolean>();
+			ArrayList<Gun> arsenal;
+			magSizes = new ArrayList<Integer>();
+			ammoCaps = new ArrayList<Integer>();
+			gunsOwned = new ArrayList<Boolean>();
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
@@ -42,7 +42,7 @@ public class SaveData implements Serializable {
 				Gun g = arsenal.get(i);
 				magSizes.add(i, g.getMagSize());
 				ammoCaps.add(i, g.getAmmoCapacity());
-				gunsOwned.add(i, g.getOwned());
+				gunsOwned.add(i, g.isOwned());
 			} 
 	         
 	        out.writeObject(this);
@@ -78,7 +78,7 @@ public class SaveData implements Serializable {
 	}
 	
 	public void setPlayerAfterLoad(PlayerObject player) {
-		LinkedList<Gun> arsenal = player.getArsenal();
+		ArrayList<Gun> arsenal = player.getArsenal();
 		player.setMoney(moneyAtRoundStart);
 		player.setMoneyAtRoundStart(moneyAtRoundStart);
 		player.setLevel(level);

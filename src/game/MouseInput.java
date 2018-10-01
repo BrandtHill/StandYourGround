@@ -29,10 +29,10 @@ public class MouseInput extends MouseAdapter{
 		
 		if(Program.gameState == STATE.InGame){
 			if (button == MouseEvent.BUTTON1) {
-				Gun gun = player.getGun();
+				Gun gun = player.getGunWielded();
 				player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
 				
-				if(gun.getFullAuto())
+				if(gun.isFullAuto())
 					gun.setShooting(true);
 				else	
 					gun.shoot(player.getAngle());
@@ -62,7 +62,7 @@ public class MouseInput extends MouseAdapter{
 		
 		if(Program.gameState == STATE.InGame) {
 			if (button == MouseEvent.BUTTON1) {
-				player.getGun().setShooting(false);
+				player.getGunWielded().setShooting(false);
 			}
 		}
 		

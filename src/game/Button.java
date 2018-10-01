@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import game.Store.Menu;
+
 public class Button {
 
 	private int x, y, w, h;
@@ -12,6 +14,8 @@ public class Button {
 	public Color color;
 	private Font font;
 	private boolean active;
+	private static PlayerObject player;
+	private Gun gun;
 	
 	public Button(int x, int y, boolean active, String line1, String line2, String line3) {
 		this.x = x;
@@ -22,12 +26,22 @@ public class Button {
 		this.line1 = line1;
 		this.line2 = line2;
 		this.line3 = line3;
-		this.color = Color.WHITE;
+		this.gun = player.searchGun(line2);
+		if (Store.menu == Menu.BuyGuns) {
+			this.color = gun.isOwned() ? Color.LIGHT_GRAY : Color.WHITE;
+		}
+		else {	
+			this.color = gun.isOwned() ?
+						(gun.isSelected() ? 
+								new Color(131, 53, 214) 
+								: Color.WHITE) 
+								: Color.LIGHT_GRAY;
+		}
 		this.font = new Font("Arial", 1, 12);
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(active ? color : Color.GRAY);
+		g.setColor(active ? color : Color.DARK_GRAY);
 		g.setFont(font);
 		g.draw3DRect(x, y, w, h, true);
 		g.drawString(line1, x + 10, y + 20);
@@ -37,6 +51,9 @@ public class Button {
 
 	public boolean isActive() {return active;}
 	public void setActive(boolean active) {this.active = active;}
+
+	public static PlayerObject getPlayer() {return player;}
+	public static void setPlayer(PlayerObject player) {Button.player = player;}
 
 	public boolean inBounds(Point p) {
 		if(p.getX() > x && p.getX() < (x + w)) {

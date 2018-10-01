@@ -34,7 +34,7 @@ public class Handler {
 	public void removeProjectiles() {
 		for(int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj.getType() == ObjectType.Projectile) {
+			if(obj instanceof ProjectileObject) {
 				removeObject(obj);
 			}
 		}
@@ -43,7 +43,7 @@ public class Handler {
 	public void removeZombies() {
 		for(int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj.getType() == ObjectType.Zombie) {
+			if(obj instanceof ZombieObject) {
 				removeObject(obj);
 			}
 		}

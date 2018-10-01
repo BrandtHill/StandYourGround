@@ -24,17 +24,20 @@ public class Gun implements Serializable {
 	private boolean shooting;
 	private boolean owned;
 	private boolean chambered;
-	private boolean equipped;
+	private boolean equippedPrimary;
+	private boolean equippedSecondary;
+	private boolean equippedSidearm;
+	private boolean selected;
 	private long reloadTime;
 	private long chamberTime;
 	private String gunName;
-	private PlayerObject player;
-	private Handler handler;
+	private static PlayerObject player;
+	private static Handler handler;
 	private transient Sound reloadSound;
 	private long timerReload;
 	private long timerChamber;
 	//private long tickDivider;
-	private GUN gunID;
+	private GUN gunId;
 	public static enum GUN {
 		AR15,
 		OverUnder,
@@ -44,45 +47,55 @@ public class Gun implements Serializable {
 		;
 	}
 	
-	public Gun(String name, GUN id, int mag, int extra, double dmg, boolean fa, PlayerObject p, Handler h) {
+	public Gun(GUN id) {
 		
-		gunName = name;
-		gunID = id;
-		waitingOnReload = false;
-		owned = false;
-		damage = dmg;
-		magSize = mag;
-		ammoLoaded = mag;
-		ammoExtra = ammoCapacity = extra;
-		player = p;
-		handler = h;
-		isFullAuto = fa;
+		gunId = id;
 		
-		switch (gunID) {
+		switch (gunId) {
 		case AR15:
 			reloadSound = AudioPlayer.getSound("ReloadAR15");
 			reloadTime = 2750;
 			chamberTime = 67;
+			gunName = "AR-15";
+			ammoLoaded = magSize = 30;
+			ammoExtra = ammoCapacity = 30;
+			damage = 35;
 			break;
 		case M77:
 			reloadSound = AudioPlayer.getSound("ReloadM77");
 			reloadTime = 2000;
 			chamberTime = 1250;
+			gunName = "M77";
+			ammoLoaded = magSize = 3;
+			ammoExtra = ammoCapacity = 15;
+			damage = 70;
 			break;
 		case OverUnder:
 			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
 			reloadTime = 2750;
 			chamberTime = 250;
+			gunName = "Over-Under";
+			ammoLoaded = magSize = 2;
+			ammoExtra = ammoCapacity = 10;
+			damage = 40;
 			break;
 		case PX4Compact:
 			reloadSound = AudioPlayer.getSound("ReloadPX4");
 			reloadTime = 2000;
 			chamberTime = 50;
+			gunName = "PX4 Compact";
+			ammoLoaded = magSize = 15;
+			ammoExtra = ammoCapacity = 30;
+			damage = 31;
 			break;
 		case Titan:
 			reloadSound = AudioPlayer.getSound("ReloadTitan");
 			reloadTime = 2000;
 			chamberTime = 50;
+			gunName = "Titan";
+			ammoLoaded = magSize = 7;
+			ammoExtra = ammoCapacity = 56;
+			damage = 22;
 			break;
 		default:
 			break;
@@ -95,7 +108,7 @@ public class Gun implements Serializable {
 			Random r = new Random();
 			double spread;
 			
-			switch(gunID) {
+			switch(gunId) {
 				
 			case Titan:
 				spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
@@ -213,7 +226,7 @@ public class Gun implements Serializable {
 		waitingOnReload = false;
 	}
 	
-	/*
+	/**
 	 * This function takes in the location of the muzzle of the gun 
 	 * relative to the center of the player sprite and returns the
 	 * X value corrected for player rotation.
@@ -222,7 +235,7 @@ public class Gun implements Serializable {
 		return player.getX() + 10 + relX*cos(player.getAngle()) + relY*sin(player.getAngle());
 	}
 	
-	/*
+	/**
 	 * This function takes in the location of the muzzle of the gun 
 	 * relative to the center of the player sprite and returns the
 	 * X value corrected for player rotation.
@@ -236,22 +249,46 @@ public class Gun implements Serializable {
 	public int getAmmoLoaded() {return ammoLoaded;}
 	public int getAmmoExtra() {return ammoExtra;}
 	public int getAmmoCapacity() {return ammoCapacity;}
-	public boolean getShooting() {return shooting;}
-	public boolean getFullAuto() {return isFullAuto;}
-	public boolean getOwned() {return owned;}
-	public boolean getEquipped() {return equipped;}
+	public boolean isShooting() {return shooting;}
+	public boolean isFullAuto() {return isFullAuto;}
+	public boolean isOwned() {return owned;}
+	public boolean isEquippedPrimary() {return equippedPrimary;}
+	public boolean isEquippedSecondary() {return equippedSecondary;}
+	public boolean isEquippedSidearm() {return equippedSidearm;}
+	public boolean isEquipped() {return equippedPrimary || equippedSecondary || equippedSidearm;}
+	public boolean isSelected() {return selected;}
 	public String getName() {return gunName;}
+	public GUN getId() {return gunId;}
 
-	public void setDamage(double dmg) {damage = dmg;}
-	public void setMagSize(int mag) {magSize = mag;}
-	public void setAmmoLoaded(int ammo) {ammoLoaded = ammo;}
-	public void setAmmoExtra(int ammo) {ammoExtra = ammo;}
-	public void setAmmoCapacity(int ammo) {ammoCapacity = ammo;}
-	public void setShooting(boolean s) {shooting = s;}
-	public void setOwned(boolean o) {owned = o;}
-	public void setEquipped(boolean e) {equipped = e;}
-	//public void setTickDivider(int t) {tickDivider = t;}
+	public void setDamage(double damage) {this.damage = damage;}
+	public void setMagSize(int magSize) {this.magSize = magSize;}
+	public void setAmmoLoaded(int ammoLoaded) {this.ammoLoaded = ammoLoaded;}
+	public void setAmmoExtra(int ammoExtra) {this.ammoExtra = ammoExtra;}
+	public void setAmmoCapacity(int ammoCapacity) {this.ammoCapacity = ammoCapacity;}
+	public void setShooting(boolean shooting) {this.shooting = shooting;}
+	public void setOwned(boolean owned) {this.owned = owned;}
+	public static void setPlayer(PlayerObject player) {Gun.player = player;}
+	public static void setHandler(Handler handler) {Gun.handler = handler;}
+	
+	public void equipAsPrimary() {
+		unequip();
+		equippedPrimary = true;
+	}
+	public void equipAsSecondary() {
+		unequip();
+		equippedPrimary = true;
+	}
+	public void equipAsSidearm() {
+		unequip();
+		equippedSidearm = true;
+	}
+	public void unequip() {
+		equippedPrimary = equippedSecondary = equippedSidearm = false;
+	}
+	
+	public void select() {selected = true;}
+	public void unselect() {selected = false;}
 
-
+	
 	
 }

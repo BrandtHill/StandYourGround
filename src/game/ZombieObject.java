@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.util.Random;
 
-
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
@@ -17,20 +16,19 @@ public class ZombieObject extends GameObject{
 	private PlayerObject player;
 	private Random r;
 	private byte tickDivider;
-	//private boolean i;
 	
-	public ZombieObject(double xPos, double yPos, Handler h, double spd, double hp) {
-		super(xPos, yPos, ObjectType.Zombie, h);
+	public ZombieObject(double x, double y, Handler handler, double speed, double health) {
+		super(x, y, handler);
 		
 		try {
 			player = (PlayerObject)handler.getObjectAt(0);
-		}catch(Exception e) {
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 
-		health = hp;
+		this.health = health;	
+		this.speed = speed;
 		
-		speed = spd;
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
 	}
@@ -48,11 +46,9 @@ public class ZombieObject extends GameObject{
 		x += velX;
 		y += velY;
 		
-		if(tickDivider%8 == 0)
-			detectCollision();
+		if(tickDivider%8 == 0) detectCollision();
 		
-		if(health<20)
-			speed *= 1.001;
+		if(health<20) speed *= 1.001;
 		
 		tickDivider++;
 	}
@@ -61,7 +57,7 @@ public class ZombieObject extends GameObject{
 	{
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
-			if(obj.getType() == ObjectType.Zombie) {
+			if(obj instanceof ZombieObject) {
 				ZombieObject zomb = (ZombieObject)obj;
 				if(zomb.getBounds().intersects(this.getBounds())) {
 					double theta = atan2(x-zomb.getX(), y-zomb.getY());

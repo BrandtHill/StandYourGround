@@ -11,8 +11,8 @@ public class ReticleObject extends GameObject {
 	private int[] xLine = new int[5];
 	private int[] yLine = new int[5];
 	
-	public ReticleObject(double xPos, double yPos, Handler h) {
-		super(xPos, yPos, ObjectType.Reticle, h);
+	public ReticleObject(double x, double y, Handler handler) {
+		super(x, y, handler);
 	}
 
 	public void tick() {
@@ -28,9 +28,7 @@ public class ReticleObject extends GameObject {
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
-		//g2d.drawRect((int)x-5, (int)y-5, 10, 10);
 		g2d.drawPolyline(xLine, yLine, 5);
-		
 	}
 
 }

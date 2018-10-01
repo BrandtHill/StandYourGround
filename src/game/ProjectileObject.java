@@ -12,15 +12,15 @@ public class ProjectileObject extends GameObject{
 	private double velMag, velAng, xScale, yScale, xPrev, yPrev, damage, knockBack;
 	private boolean old;
 	
-	public ProjectileObject(double xPos, double yPos, double magnitude, double angle, double dmg, double knock, Handler h) {
-		super(xPos, yPos, ObjectType.Projectile, h);
+	public ProjectileObject(double x, double y, double magnitude, double angle, double damage, double knock, Handler handler) {
+		super(x, y, handler);
 		velMag = magnitude;
 		velAng = angle;
 		xScale = sin(velAng);
 		yScale = cos(velAng);
 		xPrev = x;
 		yPrev = y;
-		damage = dmg;
+		this.damage = damage;
 		knockBack = knock;
 	}
 	
@@ -29,7 +29,6 @@ public class ProjectileObject extends GameObject{
 	}
 
 	public void tick() {
-		//if (!old) {
 		velX = xScale * velMag;
 		velY = yScale * velMag;
 		xPrev = x;
@@ -41,15 +40,13 @@ public class ProjectileObject extends GameObject{
 		if (old)
 			handler.removeObject(this);
 		detectCollision();
-		//}
 	}
 	
-	public void detectCollision()
-	{
+	public void detectCollision() {
 		if (!old) {
 			for (int i = 1; i < handler.getObjList().size(); i++) {
 				GameObject obj = handler.getObjectAt(i);
-				if (obj.getType() == ObjectType.Zombie) {
+				if (obj instanceof ZombieObject) {
 					ZombieObject zomb = (ZombieObject) obj;
 					if (zomb.getBounds().intersectsLine(this.getBounds())) {
 						zomb.damageMe(damage, velAng, knockBack);
@@ -61,13 +58,9 @@ public class ProjectileObject extends GameObject{
 	}
 
 	public void render(Graphics g) {
-		
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setColor(Color.YELLOW);
 		g2d.draw(getBounds());
-		//g.setColor(Color.YELLOW);
-		//g.fillOval((int)x-1, (int)y-1, 2, 2);
-		//g.drawLine((int) x, (int) y, (int) xPrev, (int) yPrev);
 	}
 	
 	public void setOld() {old = true;}

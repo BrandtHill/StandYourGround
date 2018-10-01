@@ -30,7 +30,7 @@ public class HUD {
 	
 
 	public void tick() {
-		Gun gun = player.getGun();
+		Gun gun = player.getGunWielded();
 		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + 
 				"/" + gun.getMagSize() + 
 				"   " + gun.getAmmoExtra();

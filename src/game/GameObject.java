@@ -7,16 +7,14 @@ import static java.lang.Math.sqrt;
 public abstract class GameObject {
 
 	protected double x, y, velX, velY;
-	protected ObjectType type;
 	public static final double HALFSQRT2 = sqrt(2)/2;
 	protected Handler handler;
 	
-	public GameObject(double xPos, double yPos, ObjectType objType, Handler h) {
-		x = xPos;
-		y = yPos;
-		type = objType;
+	public GameObject(double x, double y, Handler handler) {
+		this.x = x;
+		this.y = y;
+		this.handler = handler;
 		velX = velY = 0;
-		handler = h;
 	}
 	
 	public GameObject() {
@@ -26,15 +24,13 @@ public abstract class GameObject {
 	public abstract void tick();
 	public abstract void render(Graphics g);
 	
-	
 	//Getters and setters
-	public void setX(double val) 		{x = val;}
-	public void setY(double val) 		{y = val;}
-	public void setVelX(double val) 	{velX = val;}
-	public void setVelY(double val) 	{velY = val;}
+	public void setX(double x) 			{this.x = x;}
+	public void setY(double y) 			{this.y = y;}
+	public void setVelX(double velX) 	{this.velX = velX;}
+	public void setVelY(double velY) 	{this.velY = velY;}
 	public double getX() 				{return x;}
 	public double getY() 				{return y;}
 	public double getVelX() 			{return velX;}
 	public double getVelY() 			{return velY;}
-	public ObjectType getType() 	{return type;}
 }

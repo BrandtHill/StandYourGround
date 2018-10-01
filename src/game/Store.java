@@ -6,8 +6,8 @@ import java.awt.Graphics;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 
 import game.Program.STATE;
 
@@ -31,6 +31,7 @@ public class Store extends MouseAdapter{
 	public Store(Handler handler) {
 		try {
 			player = (PlayerObject)handler.getObjectAt(0);
+			Button.setPlayer(player);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -93,11 +94,47 @@ public class Store extends MouseAdapter{
 				break;
 			}
 			
+			onMenuChange();
 			player.setMoneyAtRoundStart(player.getMoney());
 		}
 	}
 	
-	public void onChange() {
+	public void nextMenu() {
+		switch (menu) {
+		case BuyGuns: menu = Menu.BuyUpgrades;
+			break;
+		case BuyUpgrades: menu = Menu.SelectSidearm;
+			break;
+		case SelectSidearm: menu = Menu.SelectPrimary;
+			break;
+		case SelectPrimary: menu = Menu.SelectSecondary;
+			break;
+		case SelectSecondary: menu = Menu.Other;
+			Program.gameState = STATE.InGame;
+			break;
+		default:
+			break;		
+		}
+		onMenuChange();
+	}
+	
+	public void prevMenu() {
+		switch (menu) {
+		case BuyUpgrades: menu = Menu.BuyGuns;
+			break;
+		case SelectSidearm: menu = Menu.BuyUpgrades;
+			break;
+		case SelectPrimary: menu = Menu.SelectSidearm;
+			break;
+		case SelectSecondary: menu = Menu.SelectPrimary;
+			break;
+		default:
+			break;		
+		}
+		onMenuChange();
+	}
+	
+	public void onMenuChange() {
 		Arrays.fill(buttons, null);
 		
 		switch (menu) {
@@ -186,7 +223,7 @@ public class Store extends MouseAdapter{
 	
 	public void upgradeCapacity(String gunName, int ammo, int money) {
 		
-		LinkedList<Gun> arsenal = player.getArsenal();
+		ArrayList<Gun> arsenal = player.getArsenal();
 		Gun gun = null;
 		for(int i = 0; i < arsenal.size(); i++) {
 			if(arsenal.get(i).getName().equals(gunName)) {
@@ -195,7 +232,7 @@ public class Store extends MouseAdapter{
 			}
 		}
 
-		if (gun.getOwned()) {
+		if (gun.isOwned()) {
 			int cap = gun.getAmmoCapacity();
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
@@ -207,7 +244,7 @@ public class Store extends MouseAdapter{
 	
 	public void upgradeMagSize(String gunName, int ammo, int money) {
 		
-		LinkedList<Gun> arsenal = player.getArsenal();
+		ArrayList<Gun> arsenal = player.getArsenal();
 		Gun gun = null;
 		for(int i = 0; i < arsenal.size(); i++) {
 			if(arsenal.get(i).getName().equals(gunName)) {
@@ -216,7 +253,7 @@ public class Store extends MouseAdapter{
 			}
 		}
 		
-		if (gun.getOwned()) {
+		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 				int mag = gun.getMagSize();
@@ -232,7 +269,7 @@ public class Store extends MouseAdapter{
 	public void buyGun(String gunName, int money) {
 		
 		Gun gun = player.searchGun(gunName);
-		if (!gun.getOwned()) {
+		if (!gun.isOwned()) {
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 				gun.setOwned(true);
@@ -244,16 +281,22 @@ public class Store extends MouseAdapter{
 	public void equipGun(String gunName, int index) {
 		
 		Gun gun = player.searchGun(gunName);
-		if(gun.getOwned()) {
-			if(!gun.getEquipped()) {
-				gun.setEquipped(true);
+		if(gun.isOwned()) {
+			if(!gun.isEquipped()) {
 				if(index == 0)
-					player.setSidearm(gun);
+					player.setGunSidearm(gun);
 				else if(index == 1)
-					player.setPrimary(gun);
+					player.setGunPrimary(gun);
 				else if(index == 2)
-					player.setSecondary(gun);
+					player.setGunSecondary(gun);
 			}
+		}
+	}
+	
+	public void equipAsPrimary(String gunName) {
+		Gun gun = player.searchGun(gunName);
+		if (gun.isOwned() && !gun.isSelected()) {
+			if (!gun.isEquipped()) player.setGunPrimary(gun);
 		}
 	}
 }
