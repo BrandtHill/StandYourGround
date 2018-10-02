@@ -65,6 +65,15 @@ public class KeyInput extends KeyAdapter{
 				Program.loadFromFile("res/saves/newgame.syg/", player);
 				Program.gameState = STATE.StartMenu;
 				break;
+			case KeyEvent.VK_1:
+				Program.saveToFile("res/saves/save1.syg/", player);
+				break;
+			case KeyEvent.VK_2:
+				Program.saveToFile("res/saves/save2.syg/", player);
+				break;
+			case KeyEvent.VK_3:
+				Program.saveToFile("res/saves/save3.syg/", player);
+				break;	
 			default:
 				break;
 			}

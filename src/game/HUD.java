@@ -18,7 +18,7 @@ public class HUD {
 		handler = h;
 		try {
 			player = (PlayerObject)handler.getObjectAt(0);
-		}catch(Exception e) {
+		} catch(Exception e) {
 			e.getMessage();
 		}
 		spawnSys = s;
@@ -48,7 +48,6 @@ public class HUD {
 	}
 	
 	public void render(Graphics g) {
-		//Graphics2D g2d = (Graphics2D)g;
 		g.setColor(new Color(100,20,20,127));
 		g.fillRect(20, 20, 290, 30);
 		g.fillRect(350, 20, 350, 30);

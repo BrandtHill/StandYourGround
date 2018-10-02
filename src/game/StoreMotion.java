@@ -19,7 +19,7 @@ public class StoreMotion extends MouseMotionAdapter{
 	public void mouseMoved(MouseEvent e) {	
 		if (Program.gameState == STATE.StoreMenu) {
 			for (Button b : store.buttons) {
-				if (b != null && b.isActive()) {
+				if (b != null && b.isClickable()) {
 					if (b.inBounds(e.getPoint())) {
 						if (b.displayColor == b.mainColor)
 							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
@@ -33,11 +33,11 @@ public class StoreMotion extends MouseMotionAdapter{
 	public void mouseDragged(MouseEvent e) {
 		if (Program.gameState == STATE.StoreMenu) {
 			for (Button b : store.buttons) {
-				if (b != null && b.isActive()) {
+				if (b != null && b.isClickable()) {
 					if (b.inBounds(e.getPoint())) {
 						if (b.displayColor == b.mainColor)
 							AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-						b.displayColor = Color.CYAN;
+						b.displayColor = Color.GREEN;
 					} else b.displayColor = b.mainColor;
 				}
 			} 

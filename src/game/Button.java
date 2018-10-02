@@ -13,7 +13,7 @@ public class Button {
 	private String line1, line2, line3;
 	public Color displayColor, mainColor;
 	private Font font;
-	private boolean active;
+	private boolean clickable, active;
 	private static PlayerObject player;
 	private Gun gun;
 	
@@ -27,16 +27,7 @@ public class Button {
 		this.line2 = line2;
 		this.line3 = line3;
 		this.gun = player.searchGun(line2);
-		if (Store.menu == Menu.BuyGuns) {
-			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
-		}
-		else {	
-			this.mainColor = gun.isOwned() ?
-						(gun.isSelected() ? 
-								new Color(131, 53, 214) 
-								: Color.WHITE) 
-								: Color.GRAY;
-		}
+		this.updateColor();
 		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Arial", 1, 12);
 	}
@@ -50,9 +41,30 @@ public class Button {
 		g.drawString(line3, x + 20, y + 60);
 	}
 
-	public boolean isActive() {return active;}
-	public void setActive(boolean active) {this.active = active;}
+	public boolean isClickable() {return clickable;}
+	public void setClickable(boolean clickable) {this.clickable = clickable;}
 
+	public void updateColor() {
+		if (Store.menu == Menu.BuyGuns) {
+			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
+			this.clickable = active && !gun.isOwned();
+		}
+		else if(Store.menu == Menu.BuyUpgrades) {
+			this.mainColor = gun.isOwned() ? Color.WHITE : Color.GRAY;
+			this.clickable = active && gun.isOwned();
+		}
+		else {	
+			this.mainColor = gun.isOwned() ?
+							(gun.isEquipped() ? 
+							(gun.isLockedIn() ?
+								  new Color(131, 53, 214)
+								: new Color(160, 160, 240))
+								: Color.WHITE) 
+								: Color.GRAY;
+			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
+		}
+	}
+	
 	public static PlayerObject getPlayer() {return player;}
 	public static void setPlayer(PlayerObject player) {Button.player = player;}
 

@@ -24,7 +24,7 @@ public class Gun implements Serializable {
 	private boolean shooting;
 	private boolean owned;
 	private boolean chambered;
-	private boolean selected;
+	private boolean lockedIn;
 	private long reloadTime;
 	private long chamberTime;
 	private String gunName;
@@ -60,7 +60,7 @@ public class Gun implements Serializable {
 			break;
 		case M77:
 			reloadSound = AudioPlayer.getSound("ReloadM77");
-			reloadTime = 2000;
+			reloadTime = 3000;
 			chamberTime = 1250;
 			gunName = "M77";
 			ammoLoaded = magSize = 3;
@@ -249,7 +249,7 @@ public class Gun implements Serializable {
 	public boolean isShooting() {return shooting;}
 	public boolean isFullAuto() {return isFullAuto;}
 	public boolean isOwned() {return owned;}
-	public boolean isSelected() {return selected;}
+	public boolean isLockedIn() {return lockedIn;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 
@@ -263,8 +263,8 @@ public class Gun implements Serializable {
 	public static void setPlayer(PlayerObject player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
 	
-	public void select() {selected = true;}
-	public void unselect() {selected = false;}
+	public void lockIn() {lockedIn = true;}
+	public void unLock() {lockedIn = false;}
 	
 	// These are wrapper functions that interact with this gun in relation to the player
 	public int getIndexOf() {return player.getIndexOfGun(gunName);}

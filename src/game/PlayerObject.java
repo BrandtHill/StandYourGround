@@ -45,11 +45,7 @@ public class PlayerObject extends GameObject{
 		arsenal.add(new Gun(GUN.PX4Compact));;
 		arsenal.add(new Gun(GUN.Titan));
 		gunSidearm = searchGun(GUN.Titan);
-		gunPrimary = searchGun(GUN.AR15); 
-		gunSecondary = searchGun(GUN.OverUnder);
 		gunSidearm.setOwned(true);
-		gunPrimary.setOwned(true);
-		gunSecondary.setOwned(true);
 		gunWielded = gunSidearm;
 		tickDivider = 0;
 		spriteNum = 0;
@@ -87,11 +83,21 @@ public class PlayerObject extends GameObject{
 		if (tickDivider%8 == 0) {
 			detectCollision();
 			
-			switch(gunWielded.getName()) {
-			case "Titan": gunNum = 0; 		break;
-			case "AR-15": gunNum = 1; 		break;
-			case "Over-Under": gunNum = 2;	break;
-			default: gunNum = 0; 			break;
+			switch(gunWielded.getId()) {
+			case Titan:
+			case PX4Compact:
+				gunNum = 0; 		
+				break;
+			case AR15: 
+				gunNum = 1;
+				break;
+			case OverUnder:
+			case M77:
+				gunNum = 2;
+				break;
+			default: 
+				gunNum = 0;
+				break;
 			}
 			
 			if(velX != 0 || velY != 0)
@@ -136,9 +142,9 @@ public class PlayerObject extends GameObject{
 	public int getLevel() {return level;}
 	public int getGunWeildedIndex() {
 		if(gunWielded == gunPrimary) return 0;
-		else if(gunWielded == gunSecondary) return 1;
-		else if(gunWielded == gunSidearm) return 2;
-		else return 0;
+		if(gunWielded == gunSecondary) return 1;
+		if(gunWielded == gunSidearm) return 2;
+		return 0;
 	}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
@@ -163,13 +169,11 @@ public class PlayerObject extends GameObject{
 		}
 		return null;
 	}
-	
 	public void switchToPrimary() {
 		if (gunPrimary != null && gunWielded != gunPrimary) {
 			gunWielded.swapGun();
 			gunWielded = gunPrimary;
 		}
-
 	}
 	public void switchToSecondary() {
 		if (gunSecondary != null && gunWielded != gunSecondary) {
@@ -187,41 +191,38 @@ public class PlayerObject extends GameObject{
 		for(int i = 0; i < arsenal.size(); i++) {
 			arsenal.get(i).resetAmmo();
 		}
-		if(gunPrimary.isOwned()) {
+		if (gunPrimary != null)
 			gunWielded = gunPrimary;
-		}
-		else if(gunSecondary.isOwned()) {
-			gunWielded = gunSecondary;
-		}	
-		else {
+		else if (gunSecondary != null)
+			gunWielded = gunSecondary;	
+		else if (gunSidearm != null)
 			gunWielded = gunSidearm;
-		}	
 	}
 	
 	public void equipPrimary(String name) {
 		Gun g = searchGun(name);
-		if (g.isOwned() && !g.isSelected()) {
+		if (g.isOwned() && !g.isLockedIn()) {
 			if (g.isEquipped()) g.unequip();
 			gunPrimary = g;
-			gunPrimary.select();
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}
 	
 	public void equipSecondary(String name) {
 		Gun g = searchGun(name);
-		if (g.isOwned() && !g.isSelected()) {
+		if (g.isOwned() && !g.isLockedIn()) {
 			if (g.isEquipped()) g.unequip();
 			gunSecondary = g;
-			gunSecondary.select();
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}
 	
 	public void equipSidearm(String name) {
 		Gun g = searchGun(name);
-		if (g.isOwned() && !g.isSelected()) {
+		if (g.isOwned() && !g.isLockedIn()) {
 			if (g.isEquipped()) g.unequip();
 			gunSidearm = g;
-			gunSidearm.select();
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}
 	
@@ -234,7 +235,7 @@ public class PlayerObject extends GameObject{
 	
 	public void unselectAll() {
 		for (Gun g : arsenal) {
-			g.unselect();
+			g.unLock();
 		}
 	}
 	
@@ -249,7 +250,7 @@ public class PlayerObject extends GameObject{
 		default:
 			break;
 		}
-		searchGun(name).unselect();
+		searchGun(name).unLock();
 	}
 	
 	public int getIndexOfGun(String name) {

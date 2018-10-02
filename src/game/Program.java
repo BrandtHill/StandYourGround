@@ -63,7 +63,6 @@ public class Program extends Canvas implements Runnable{
 		
 		try {
 			background = ImageIO.read(new File("res/GrassBackground.png"));
-
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}

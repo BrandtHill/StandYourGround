@@ -25,6 +25,7 @@ public class Store extends MouseAdapter{
 		SelectSidearm,
 		SelectPrimary,
 		SelectSecondary,
+		Final
 	}
 	
 	public Store(Handler handler) {
@@ -93,25 +94,38 @@ public class Store extends MouseAdapter{
 				break;
 			}
 			
-			onMenuChange();
+			for (Button b : buttons) {
+				if (b != null) b.updateColor();
+			}
+			
 			player.setMoneyAtRoundStart(player.getMoney());
 		}
 	}
 	
 	public void nextMenu() {
 		switch (menu) {
-		case BuyGuns: menu = Menu.BuyUpgrades;
+		case BuyGuns: 
+			menu = Menu.BuyUpgrades;
 			break;
-		case BuyUpgrades: menu = Menu.SelectSidearm;
+		case BuyUpgrades: 
+			menu = Menu.SelectSidearm;
 			break;
-		case SelectSidearm: menu = Menu.SelectPrimary;
+		case SelectSidearm: 
+			menu = Menu.SelectPrimary;
+			if (player.getGunSidearm() != null) player.getGunSidearm().lockIn();
 			break;
-		case SelectPrimary: menu = Menu.SelectSecondary;
+		case SelectPrimary: 
+			menu = Menu.SelectSecondary;
+			if (player.getGunPrimary() != null) player.getGunPrimary().lockIn();
 			break;
-		case SelectSecondary: menu = Menu.Other;
+		case SelectSecondary: 
+			menu = Menu.Final;
+			if (player.getGunSecondary() != null) player.getGunSecondary().lockIn();
+			break;
+		case Final:
+			menu = Menu.Other;
 			player.unselectAll();
 			Program.gameState = STATE.InGame;
-			break;
 		default:
 			break;		
 		}
@@ -120,14 +134,23 @@ public class Store extends MouseAdapter{
 	
 	public void prevMenu() {
 		switch (menu) {
-		case BuyUpgrades: menu = Menu.BuyGuns;
+		case BuyUpgrades: 
+			menu = Menu.BuyGuns;
 			break;
-		case SelectSidearm: menu = Menu.BuyUpgrades;
+		case SelectSidearm: 
+			menu = Menu.BuyUpgrades;
 			break;
-		case SelectPrimary: menu = Menu.SelectSidearm;
+		case SelectPrimary: 
+			menu = Menu.SelectSidearm;
+			if (player.getGunSidearm() != null) player.getGunSidearm().unLock();
 			break;
-		case SelectSecondary: menu = Menu.SelectPrimary;
+		case SelectSecondary: 
+			menu = Menu.SelectPrimary;
+			if (player.getGunPrimary() != null) player.getGunPrimary().unLock();
 			break;
+		case Final:
+			menu = Menu.SelectSecondary;
+			if (player.getGunSecondary() != null) player.getGunSecondary().unLock();
 		default:
 			break;		
 		}
@@ -186,35 +209,44 @@ public class Store extends MouseAdapter{
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			break;
 		case BuyUpgrades:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			break;
 		case SelectPrimary:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT PRIMARY", 280, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			drawEquipped(g);
 			break;
 		case SelectSidearm:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SIDEARM", 280, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 170, 450);
+			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			drawEquipped(g);
-			break;			
+			break;
 		case SelectSecondary:
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SECONDARY", 280, 50);
-			g.drawString("PRESS SPACE TO COMMENCE NEXT LEVEL", 120, 450);
+			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			drawEquipped(g);
-			break;			
+			break;
+		case Final:
+			g.setColor(Color.LIGHT_GRAY);
+			g.setFont(new Font("Arial", 1, 48));
+			g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 100, 200);
+			g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 100, 280);
+			g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 100, 360);
+			g.setColor(Color.WHITE);
+			g.setFont(new Font("Arial", 1, 24));
+			g.drawString("PRESS SPACE TO COMMENCE NEXT LEVEL", 150, 550);
 		default:
 			break;
 		}	
@@ -223,7 +255,6 @@ public class Store extends MouseAdapter{
 	private void drawEquipped(Graphics g) {
 		g.setColor(Color.GRAY);
 		g.setFont(new Font("Arial", 1, 10));
-		
 		g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 70, 390);
 		g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 70, 405);
 		g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 70, 420);
