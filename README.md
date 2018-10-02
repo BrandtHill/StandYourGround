@@ -1,8 +1,6 @@
 ## How To Run
 
 * Open project in Eclipse
-* Add libs to project
-	* Project Properties -> Java Build Path -> Add External JARs -> "$PROJECT/lib/*.jar"
 * Add required native libs
 	* Project Properties -> Java Build Path -> Expand "lwjgl.jar" -> Click "Native
 			library location" -> Click "Edit..." -> Click "External Folder..." ->

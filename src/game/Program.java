@@ -26,6 +26,7 @@ public class Program extends Canvas implements Runnable{
 	private ReticleObject reticle;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;
+	public static PlayerObject player;
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
@@ -47,9 +48,10 @@ public class Program extends Canvas implements Runnable{
 		AudioPlayer.load();
 		handler = new Handler();
 		reticle = new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler);
-		handler.addObject(new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler));
+		player = new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler);
+		handler.addObject(player);
 		handler.addObject(reticle);
-		((PlayerObject)handler.getObjectAt(0)).addReticle(reticle);
+		player.addReticle(reticle);
 		saveData = new SaveData();
 		spawnSys = new SpawnSystem(handler);
 		store = new Store(handler);
@@ -250,7 +252,7 @@ public class Program extends Canvas implements Runnable{
 			break;
 		case StoreMenu:
 			addMouseMotionListener(storeMotion);
-			saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
+			saveToFile("res/saves/autosave.syg/", player);
 			Store.menu = Store.Menu.BuyGuns;
 			store.onMenuChange();
 			break;
@@ -294,7 +296,7 @@ public class Program extends Canvas implements Runnable{
 	 * clever one-line implementation.
 	 */
 	public static double clamp(double val, double min, double max) {
-		return (val > min) ? ((val < max) ? val : max) : min;
+		return Math.min(Math.max(val, min), max);
 	}
 	
 	public static void commenceLevel() {

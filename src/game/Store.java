@@ -168,9 +168,9 @@ public class Store extends MouseAdapter{
 			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "PX4 Compact", "$375");
 			break;
 		case BuyUpgrades:
-			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Capacity", "AR-15", "$300");
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Capacity", "Over-Under", "$250");
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Capacity", "Titan", "$150");
+			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Ammo", "AR-15", "$300");
+			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Ammo", "Over-Under", "$250");
+			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "Titan", "$150");
 			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Mag Size", "AR-15", "$500");
 			break;
 		case SelectPrimary:

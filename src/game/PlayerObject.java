@@ -191,12 +191,18 @@ public class PlayerObject extends GameObject{
 		for(int i = 0; i < arsenal.size(); i++) {
 			arsenal.get(i).resetAmmo();
 		}
-		if (gunPrimary != null)
-			gunWielded = gunPrimary;
-		else if (gunSecondary != null)
-			gunWielded = gunSecondary;	
-		else if (gunSidearm != null)
-			gunWielded = gunSidearm;
+		if (gunPrimary != null) {
+			if (gunPrimary.isOwned()) gunWielded = gunPrimary;
+			else gunPrimary = null;
+		}
+		else if (gunSecondary != null) {
+			if (gunSecondary.isOwned()) gunWielded = gunSecondary;	
+			else gunSecondary = null;
+		}
+		else if (gunSidearm != null) {
+			if (gunSidearm.isOwned()) gunWielded = gunSidearm;
+			else gunSidearm = null;
+		}
 	}
 	
 	public void equipPrimary(String name) {

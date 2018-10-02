@@ -69,9 +69,7 @@ public class SaveData implements Serializable {
 			
 			return temp;
 			
-		} catch (IOException e) {
-			System.out.println(e.getMessage());
-		} catch (ClassNotFoundException e) {
+		} catch (IOException | ClassNotFoundException e) {
 			System.out.println(e.getMessage());
 		}
 		return null;
