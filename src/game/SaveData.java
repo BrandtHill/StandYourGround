@@ -1,5 +1,6 @@
 package game;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -22,7 +23,10 @@ public class SaveData implements Serializable {
 	private ArrayList<Boolean> gunsOwned;
 	
 	public SaveData() {
-		
+		File directory = new File("res/saves");
+		if (!directory.exists()) {
+			directory.mkdirs();
+		}
 	}
 	
 	public void saveToFile(String filename, PlayerObject player) {
