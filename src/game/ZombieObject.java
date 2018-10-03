@@ -4,7 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
@@ -15,7 +20,10 @@ public class ZombieObject extends GameObject{
 	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	private PlayerObject player;
 	private Random r;
-	private byte tickDivider;
+	private static BufferedImage spriteSheet;
+	private static BufferedImage[] zombieSprites = new BufferedImage[8];
+	private int tickDivider;
+	private int spriteNum;
 	
 	public ZombieObject(double x, double y, Handler handler, double speed, double health) {
 		super(x, y, handler);
@@ -40,13 +48,16 @@ public class ZombieObject extends GameObject{
 		xBias = speed*sin(angle);
 		yBias = speed*cos(angle);
 		r = new Random();
-		velX = r.nextInt(61)/10.0 - 3 + xBias;
-		velY = r.nextInt(61)/10.0 - 3 + yBias;
+		velX = r.nextInt(31)/10.0 - 1.5 + xBias;
+		velY = r.nextInt(31)/10.0 - 1.5 + yBias;
 		
 		x += velX;
 		y += velY;
 		
-		if(tickDivider%8 == 0) detectCollision();
+		if(tickDivider % 8 == 0) {
+			detectCollision();
+			spriteNum = (spriteNum + 1) % 8;
+		}
 		
 		if(health<20) speed *= 1.001;
 		
@@ -77,7 +88,7 @@ public class ZombieObject extends GameObject{
 
 		g2d.setColor(Color.RED);
 		g2d.rotate(-angle, x+10, y+10);
-		g2d.fillRect((int)x, (int)y, 20, 20);
+		g2d.drawImage(zombieSprites[spriteNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
 	}
 	
@@ -92,5 +103,17 @@ public class ZombieObject extends GameObject{
 			handler.removeObject(this);
 		}
 	}
-
+	
+	public static void loadSprites() {
+		try {
+			FileInputStream file = new FileInputStream("res/ZombieSprite_1.png");
+			spriteSheet = ImageIO.read(file);
+			file.close();
+		} catch (IOException e) {
+			System.out.println(e.getMessage());
+		}
+		for(int i = 0; i < 8; i++) {
+			zombieSprites[i] = spriteSheet.getSubimage(20 * i, 0, 20, 24);
+		}
+	}
 }

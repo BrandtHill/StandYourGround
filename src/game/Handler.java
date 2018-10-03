@@ -15,6 +15,7 @@ public class Handler {
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
+		ZombieObject.loadSprites();
 	}
 	
 	public void tick() {
