@@ -25,6 +25,7 @@ public class Gun implements Serializable {
 	private boolean owned;
 	private boolean chambered;
 	private boolean lockedIn;
+	private boolean isSidearm;
 	private long reloadTime;
 	private long chamberTime;
 	private String gunName;
@@ -84,6 +85,7 @@ public class Gun implements Serializable {
 			ammoLoaded = magSize = 15;
 			ammoExtra = ammoCapacity = 30;
 			damage = 31;
+			isSidearm = true;
 			break;
 		case Titan:
 			reloadSound = AudioPlayer.getSound("ReloadTitan");
@@ -93,6 +95,7 @@ public class Gun implements Serializable {
 			ammoLoaded = magSize = 7;
 			ammoExtra = ammoCapacity = 56;
 			damage = 22;
+			isSidearm = true;
 			break;
 		default:
 			break;
@@ -250,6 +253,7 @@ public class Gun implements Serializable {
 	public boolean isFullAuto() {return isFullAuto;}
 	public boolean isOwned() {return owned;}
 	public boolean isLockedIn() {return lockedIn;}
+	public boolean isSidearm() {return isSidearm;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 

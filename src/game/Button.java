@@ -10,6 +10,7 @@ import game.Store.Menu;
 public class Button {
 
 	private int x, y, w, h;
+	private int amount;
 	private String line1, line2, line3;
 	public Color displayColor, mainColor;
 	private Font font;
@@ -30,6 +31,11 @@ public class Button {
 		this.updateColor();
 		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Arial", 1, 12);
+	}
+	
+	public Button(int x, int y, boolean active, String line1, String line2, String line3, int amount) {
+		this(x, y, active, line1, line2, line3);
+		this.amount = amount;
 	}
 	
 	public void render(Graphics g) {
@@ -67,7 +73,16 @@ public class Button {
 	
 	public static PlayerObject getPlayer() {return player;}
 	public static void setPlayer(PlayerObject player) {Button.player = player;}
-
+	public Gun getGun() {return this.gun;}
+	public int getAmount() {return this.amount;}
+	
+	public int getPrice() {
+		if (!line3.isEmpty()) {
+			return Integer.parseInt(line3.substring(1));
+		} 
+		return 0;
+	}
+	
 	public boolean inBounds(Point p) {
 		if(p.getX() > x && p.getX() < (x + w)) {
 			if(p.getY() > y && p.getY() < (y + h)) {
@@ -75,5 +90,9 @@ public class Button {
 			}
 		}
 		return false;
+	}
+	
+	public String getFirstLine() {
+		return line1;
 	}
 }

@@ -254,7 +254,7 @@ public class Program extends Canvas implements Runnable{
 			addMouseMotionListener(storeMotion);
 			saveToFile("res/saves/autosave.syg/", player);
 			Store.menu = Store.Menu.BuyGuns;
-			store.onMenuChange();
+			store.onMenuUpdate();
 			break;
 		case GameOver:
 			break;

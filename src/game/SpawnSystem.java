@@ -28,26 +28,25 @@ public class SpawnSystem {
 	
 	public void tick() {
 		if (doneCommencing) {
-			
 			if(!doneSpawning) {
-				if(System.currentTimeMillis() - timer > delay)
-					spawn();
+				if (System.currentTimeMillis() - timer > delay) spawn();
 			}
 			
 			zombiesLeft = player.zombiesLeft;
-			if (zombiesLeft <= 0) {
-				
-				doneCommencing = false;
-				doneSpawning = false;
-				Program.gameState = STATE.StoreMenu;
-				level++;
-				
-				player.resetAllAmmo();
-				player.setLevel(level);
-				player.setMoneyAtRoundStart(player.getMoney());
-				
-			}
+			
+			if (zombiesLeft <= 0) completeLevel();
 		}
+	}
+	
+	public void completeLevel() {
+		doneCommencing = false;
+		doneSpawning = false;
+		Program.gameState = STATE.StoreMenu;
+		level++;
+		
+		player.resetAllAmmo();
+		player.setLevel(level);
+		player.setMoneyAtRoundStart(player.getMoney());
 	}
 	
 	public void commenceLevel() {
@@ -57,6 +56,7 @@ public class SpawnSystem {
 		player.setX(Program.WIDTH/2-10);
 		player.setY(Program.HEIGHT/2-30);
 		player.resetAllAmmo();
+		player.autoWield();
 		player.setMoneyAtRoundStart(player.getMoney());
 		wave = 1;
 		doneSpawning = false;
