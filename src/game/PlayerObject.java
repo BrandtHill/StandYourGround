@@ -28,7 +28,7 @@ public class PlayerObject extends GameObject{
 	private double speed;
 	private byte tickDivider;
 	private static transient BufferedImage spriteSheet;
-	private static transient BufferedImage[][] playerSprites = new BufferedImage [8][3];
+	private static transient BufferedImage[][] playerSprites = new BufferedImage [8][5];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
 	private int level;
@@ -85,15 +85,19 @@ public class PlayerObject extends GameObject{
 			
 			switch(gunWielded.getId()) {
 			case Titan:
+				gunNum = 0;
+				break;
 			case PX4Compact:
-				gunNum = 0; 		
+				gunNum = 1; 		
 				break;
 			case AR15: 
-				gunNum = 1;
+				gunNum = 2;
 				break;
 			case OverUnder:
+				gunNum = 3;
+				break;
 			case M77:
-				gunNum = 2;
+				gunNum = 4;
 				break;
 			default: 
 				gunNum = 0;
@@ -276,7 +280,7 @@ public class PlayerObject extends GameObject{
 			System.out.println(e.getMessage());
 		}
 		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 3; j++) {
+			for(int j = 0; j < 5; j++) {
 				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
 			}
 		}
