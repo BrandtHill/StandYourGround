@@ -2,6 +2,8 @@ package game.Weapons;
 
 import static java.lang.Math.sin;
 
+import java.util.Random;
+
 import static java.lang.Math.cos;
 
 import org.newdawn.slick.Sound;
@@ -11,10 +13,12 @@ import game.Player;
 
 public abstract class Gun {
 
-	protected double damage;
-	protected int ammoLoaded, ammoCapacity, ammoExtra, magSize;
+	protected double damage, spread;
+	protected double velocity, knock;
+	protected int xOffset, yOffset; //From center of player
+	protected int ammoLoaded, ammoCapacity, ammoExtra, magSize, hits;
 	protected boolean owned, lockedIn, isSidearm, specialRounds;
-	protected boolean waitingOnReload, isFullAuto, shooting, chambered;
+	protected boolean currentlyReloading, isFullAuto, shooting, chambered;
 	protected long reloadTime, chamberTime;
 	protected long timerReload, timerChamber;
 	protected String gunName;
@@ -22,25 +26,29 @@ public abstract class Gun {
 	protected static Handler handler;
 	protected transient Sound reloadSound;
 	protected long tickDivider;
+	protected Random r;
 	protected GUN gunId;
 	public static enum GUN {
 		AR15,
 		OverUnder,
 		M77,
 		Titan,
-		PX4Compact
+		PX4Compact, 
+		Model57
 	}
 	
 	public Gun() {
+		r = new Random();
+		hits = 1;
 	}
 	
-	public abstract void shoot(double angle);
+	public abstract void shoot();
 	
 	public void reload() {
-		if (!waitingOnReload) {
+		if (!currentlyReloading) {
 			if (ammoExtra > 0 && ammoLoaded < magSize) {
 				reloadSound.play(1f, 1f);
-				waitingOnReload = true;
+				currentlyReloading = true;
 				timerReload = System.currentTimeMillis();
 			}
 		}
@@ -57,33 +65,23 @@ public abstract class Gun {
 			ammoExtra -= ammoExtra;
 		}
 		
-		waitingOnReload = false;
+		currentlyReloading = false;
 	}
 	
 	public void tick() {
-		if(!(ammoLoaded > 0))
-			reload();
+		reloadIfNeeded();
 		
-		if(waitingOnReload) {
-			long timeElapsed = System.currentTimeMillis() - timerReload;
-			if((timeElapsed) > reloadTime) {				
+		if(currentlyReloading) {
+			if((System.currentTimeMillis() - timerReload) > reloadTime) {				
 				reloadFinish();
 			}
 		}
 		
 		if(!chambered) {
-			long timeElapsed = System.currentTimeMillis() - timerChamber;
-			if((timeElapsed) > chamberTime) {				
+			if((System.currentTimeMillis() - timerChamber) > chamberTime) {				
 				chambered = true;
 			}
 		}
-		
-		if (tickDivider%4 == 0) {
-			if (shooting && isFullAuto) {
-				shoot(player.getAngle());
-			} 
-		}
-		
 	}
 	
 	public void resetAmmo() {
@@ -99,7 +97,7 @@ public abstract class Gun {
 	public void swapGun() {
 		if(reloadSound.playing())
 			reloadSound.stop();
-		waitingOnReload = false;
+		currentlyReloading = false;
 	}
 	
 	/**
@@ -107,8 +105,8 @@ public abstract class Gun {
 	 * relative to the center of the player sprite and returns the
 	 * X value corrected for player rotation.
 	 */
-	protected double muzzlePointX(int relX, int relY) {
-		return player.getX() + 10 + relX*cos(player.getAngle()) + relY*sin(player.getAngle());
+	public double muzzlePointX() {
+		return player.getX() + 10 + xOffset*cos(player.getAngle()) + yOffset*sin(player.getAngle());
 	}
 	
 	/**
@@ -116,15 +114,19 @@ public abstract class Gun {
 	 * relative to the center of the player sprite and returns the
 	 * X value corrected for player rotation.
 	 */
-	protected double muzzlePointY(int relX, int relY) {
-		return player.getY() + 10 + relY*cos(player.getAngle()) - relX*sin(player.getAngle());
+	public double muzzlePointY() {
+		return player.getY() + 10 + yOffset*cos(player.getAngle()) - xOffset*sin(player.getAngle());
 	}
 	
 	public double getDamage() {return damage;}
+	public double getSpread() {return spread;}
+	public double getVelocity() {return velocity;}
+	public double getKnock() {return knock;}
 	public int getMagSize() {return magSize;}
 	public int getAmmoLoaded() {return ammoLoaded;}
 	public int getAmmoExtra() {return ammoExtra;}
 	public int getAmmoCapacity() {return ammoCapacity;}
+	public int getHits() {return hits;}
 	public boolean isShooting() {return shooting;}
 	public boolean isFullAuto() {return isFullAuto;}
 	public boolean isOwned() {return owned;}
@@ -135,6 +137,7 @@ public abstract class Gun {
 	public GUN getId() {return gunId;}
 
 	public void setDamage(double damage) {this.damage = damage;}
+	public void setSpread(double spread) {this.spread = spread;}
 	public void setMagSize(int magSize) {this.magSize = magSize;}
 	public void setAmmoLoaded(int ammoLoaded) {this.ammoLoaded = ammoLoaded;}
 	public void setAmmoExtra(int ammoExtra) {this.ammoExtra = ammoExtra;}
@@ -145,12 +148,30 @@ public abstract class Gun {
 	public void setSpecialRounds(boolean specialRounds) {this.specialRounds = specialRounds;}
 	public static void setPlayer(Player player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
+	public void resetTickDivier() {tickDivider = 0;}
 	public void lockIn() {lockedIn = true;}
 	public void unLock() {lockedIn = false;}
 	
 	// These are wrapper functions that interact with this gun in relation to the player
-	public int getIndexOf() {return player.getIndexOfGun(gunName);}
-	public boolean isEquipped() {return player.isEquipped(gunName);}
-	public void unequip() {player.unequip(gunName);}
+	public int getIndexOf() {return player.getIndexOfGun(this);}
+	public boolean isEquipped() {return player.isEquipped(this);}
+	public void unequip() {player.unequip(this);}
+	
+	protected boolean canShoot() {
+		return ammoLoaded > 0 
+			&& !currentlyReloading 
+			&& chambered;
+	}
+	
+	protected void reloadIfNeeded() {
+		if (ammoExtra > 0 && ammoLoaded <= 0)
+			reload();
+	}
+	
+	protected void onShotFired() {
+		ammoLoaded--;
+		chambered = false;
+		timerChamber = System.currentTimeMillis();
+	}
 	
 }

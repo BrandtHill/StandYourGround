@@ -10,10 +10,10 @@ public abstract class GameObject {
 	public static final double HALFSQRT2 = sqrt(2)/2;
 	protected Handler handler;
 	
-	public GameObject(double x, double y, Handler handler) {
+	public GameObject(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.handler = handler;
+		this.handler = Program.handler;
 		velX = velY = 0;
 	}
 	

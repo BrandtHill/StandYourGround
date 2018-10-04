@@ -60,9 +60,7 @@ public class SaveData implements Serializable {
 	        out.close();
 	        file.close();
 	        System.out.println("Level: "+ level + " Money: " + money + " MoneyAtStart: " + moneyAtRoundStart);
-	        for (int i = 0; i < magSizes.size(); i++) {
-				System.out.println("Mag Sizes: " + magSizes.get(i) + " Caps: " + ammoCaps.get(i));
-	        }
+	        System.out.println("GunsOwned: " + player.getArsenal().stream().filter(g -> g.isOwned()).count());
 	        System.out.println("Saved current game state: " + filename);
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
@@ -101,6 +99,10 @@ public class SaveData implements Serializable {
 			g.setSpecialRounds(specialRounds.get(i));
 			g.resetAmmo();
 		}
+		player.autoEquip();
+		
+		System.out.println("Level: "+ level + " Money: " + money + " MoneyAtStart: " + moneyAtRoundStart);
+        System.out.println("GunsOwned: " + player.getArsenal().stream().filter(g -> g.isOwned()).count());
 		Program.gameState = STATE.StoreMenu;
 	}
 

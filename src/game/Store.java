@@ -14,9 +14,9 @@ import game.Weapons.Gun;
 public class Store extends MouseAdapter{
 
 	private Player player;
-	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580};
-	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200};
-	public Button[] buttons = new Button[8];
+	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
+	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
+	public Button[] buttons = new Button[12];
 	public static Menu menu = Menu.Other;
 	
 	public static enum Menu{
@@ -154,18 +154,19 @@ public class Store extends MouseAdapter{
 			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Buy", "AR-15", "$750");
 			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "M77", "$600");
 			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "Over-Under", "$450");
-			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "PX4 Compact", "$375");
+			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "Model 57", "$425");
+			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Buy", "PX4 Compact", "$375");
 			break;
 		case BuyUpgrades:
 			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Ammo", "AR-15", "$300", 30);
 			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Ammo", "M77", "$300", 9);
 			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "Over-Under", "$250", 8);
-			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Ammo", "PX4 Compact", "$175", 15);
-			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Increase Ammo", "Titan", "$150", 14);
-			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Mag Size", "AR-15", "$500", 10);
-			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Drop-In Auto Sear", "AR-15", "$1100");
-			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Hollow Points", "PX4 Compact", "$350");
-			
+			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Ammo", "Model 57", "$200", 12);
+			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Increase Ammo", "PX4 Compact", "$175", 15);
+			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Ammo", "Titan", "$150", 14);
+			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Increase Mag Size", "AR-15", "$500", 10);
+			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Drop-In Auto Sear", "AR-15", "$1100");
+			buttons[8] = new Button(buttonX[8], buttonY[8], true, "Hollow Points", "PX4 Compact", "$350");
 			break;
 		case SelectPrimary:
 			for (int i = 0; i < player.getArsenal().size(); i++) {

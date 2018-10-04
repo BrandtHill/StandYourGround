@@ -18,12 +18,15 @@ import game.Weapons.AR15;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
 import game.Weapons.M77;
+import game.Weapons.Model57;
 import game.Weapons.OverUnder;
 import game.Weapons.PX4Compact;
 import game.Weapons.Titan;
 
 public class Player extends GameObject{
 	
+	private final static int NUMSPRITECYCLES = 8;
+	private final static int NUMGUNS = 6;
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
@@ -34,20 +37,21 @@ public class Player extends GameObject{
 	private double speed;
 	private byte tickDivider;
 	private static transient BufferedImage spriteSheet;
-	private static transient BufferedImage[][] playerSprites = new BufferedImage [8][5];
+	private static transient BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
 	private int level;
 	public int zombiesLeft;
 	
 	public Player(double x, double y, Handler handler) {
-		super(x, y, handler);
+		super(x, y);
 		Gun.setPlayer(this);
 		Gun.setHandler(handler);
 		arsenal = new ArrayList<Gun>();
 		arsenal.add(new AR15());
 		arsenal.add(new M77());
 		arsenal.add(new OverUnder());
+		arsenal.add(new Model57());
 		arsenal.add(new PX4Compact());
 		arsenal.add(new Titan());
 		gunSidearm = searchGun(GUN.Titan);
@@ -96,14 +100,17 @@ public class Player extends GameObject{
 			case PX4Compact:
 				gunNum = 1; 		
 				break;
-			case AR15: 
+			case Model57:
 				gunNum = 2;
 				break;
-			case OverUnder:
+			case AR15: 
 				gunNum = 3;
 				break;
-			case M77:
+			case OverUnder:
 				gunNum = 4;
+				break;
+			case M77:
+				gunNum = 5;
 				break;
 			default: 
 				gunNum = 0;
@@ -257,8 +264,7 @@ public class Player extends GameObject{
 		}
 	}
 	
-	public boolean isEquipped(String name) {
-		Gun g = searchGun(name);
+	public boolean isEquipped(Gun g) {
 		return g == gunPrimary
 			|| g == gunSecondary
 			|| g == gunSidearm;
@@ -270,8 +276,8 @@ public class Player extends GameObject{
 		}
 	}
 	
-	public void unequip(String name) {
-		switch(getIndexOfGun(name)) {
+	public void unequip(Gun g) {
+		switch(getIndexOfGun(g)) {
 		case 0: gunPrimary = null;
 			break;
 		case 1: gunSecondary = null;
@@ -281,11 +287,10 @@ public class Player extends GameObject{
 		default:
 			break;
 		}
-		searchGun(name).unLock();
+		g.unLock();
 	}
 	
-	public int getIndexOfGun(String name) {
-		Gun g = searchGun(name);
+	public int getIndexOfGun(Gun g) {
 		if (g == gunPrimary) return 0;
 		if (g == gunSecondary) return 1;
 		if (g == gunSidearm) return 2;
@@ -300,8 +305,8 @@ public class Player extends GameObject{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		for(int i = 0; i < 8; i++) {
-			for(int j = 0; j < 5; j++) {
+		for(int i = 0; i < NUMSPRITECYCLES; i++) {
+			for(int j = 0; j < NUMGUNS; j++) {
 				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
 			}
 		}

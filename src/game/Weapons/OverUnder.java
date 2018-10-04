@@ -1,9 +1,5 @@
 package game.Weapons;
 
-import static java.lang.Math.PI;
-
-import java.util.Random;
-
 import game.AudioPlayer;
 import game.Projectile;
 
@@ -19,23 +15,27 @@ public class OverUnder extends Gun {
 		ammoLoaded = magSize = 2;
 		ammoExtra = ammoCapacity = 10;
 		damage = 29;
+		spread = 9;
+		xOffset = -3;
+		yOffset = 21;
+		velocity = 15;
+		knock = 6;
 	}
 	
-	public void shoot(double angle) {
-		if (ammoLoaded > 0 && !waitingOnReload && chambered) {
-			Random r = new Random();
-			double spread;
+	@Override
+	public void shoot() {
+		if (canShoot()) {
 			for (int i = 0; i < 9; i++) {
-				spread = (r.nextDouble() - 0.5) * 9 * PI / 180;
-				handler.addObject(new Projectile(muzzlePointX(-3, 21), muzzlePointY(-3, 21), 15, angle + spread, damage,
-						6, handler, r.nextInt(3) + 1));
+				handler.addObject(new Projectile(this));
 			}
-			chambered = false;
-			timerChamber = System.currentTimeMillis();
-			ammoLoaded--;
+			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
 		}
-		else if (ammoExtra > 0 && !(ammoLoaded > 0)) reload();
+		reloadIfNeeded();
 	}
-
+	
+	@Override
+	public int getHits() {
+		return r.nextInt(3) + 1;
+	}
 }

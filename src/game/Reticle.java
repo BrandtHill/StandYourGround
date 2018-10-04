@@ -12,7 +12,7 @@ public class Reticle extends GameObject {
 	private int[] yLine = new int[5];
 	
 	public Reticle(double x, double y, Handler handler) {
-		super(x, y, handler);
+		super(x, y);
 	}
 
 	public void tick() {

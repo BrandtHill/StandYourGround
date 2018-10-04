@@ -33,10 +33,12 @@ public class MouseInput extends MouseAdapter{
 				Gun gun = player.getGunWielded();
 				player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
 				
-				if(gun.isFullAuto())
+				if(gun.isFullAuto()) {
+					gun.resetTickDivier();
 					gun.setShooting(true);
+				}
 				else	
-					gun.shoot(player.getAngle());
+					gun.shoot();
 			}
 		}
 		else if(Program.gameState == STATE.GameOver){

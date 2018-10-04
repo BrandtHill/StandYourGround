@@ -26,7 +26,7 @@ public class Zombie extends GameObject{
 	private int spriteNum;
 	
 	public Zombie(double x, double y, Handler handler, double speed, double health) {
-		super(x, y, handler);
+		super(x, y);
 		
 		try {
 			player = (Player)handler.getObjectAt(0);
