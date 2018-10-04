@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import game.Program.STATE;
+import game.Weapons.Gun;
 
 public class SaveData implements Serializable {
 

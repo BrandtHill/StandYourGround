@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import game.Program.STATE;
+import game.Weapons.Gun;
 
 
 public class MouseInput extends MouseAdapter{

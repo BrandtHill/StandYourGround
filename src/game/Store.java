@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
 import game.Program.STATE;
+import game.Weapons.Gun;
 
 public class Store extends MouseAdapter{
 
@@ -151,8 +152,8 @@ public class Store extends MouseAdapter{
 		switch (menu) {
 		case BuyGuns:
 			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Buy", "AR-15", "$750");
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "Over-Under", "$450");
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "M77", "$600");
+			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "M77", "$600");
+			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "Over-Under", "$450");
 			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "PX4 Compact", "$375");
 			break;
 		case BuyUpgrades:

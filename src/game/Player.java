@@ -13,8 +13,14 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import game.Gun.GUN;
 import game.Program.STATE;
+import game.Weapons.AR15;
+import game.Weapons.Gun;
+import game.Weapons.Gun.GUN;
+import game.Weapons.M77;
+import game.Weapons.OverUnder;
+import game.Weapons.PX4Compact;
+import game.Weapons.Titan;
 
 public class Player extends GameObject{
 	
@@ -39,11 +45,11 @@ public class Player extends GameObject{
 		Gun.setPlayer(this);
 		Gun.setHandler(handler);
 		arsenal = new ArrayList<Gun>();
-		arsenal.add(new Gun(GUN.AR15));
-		arsenal.add(new Gun(GUN.M77));
-		arsenal.add(new Gun(GUN.OverUnder));
-		arsenal.add(new Gun(GUN.PX4Compact));
-		arsenal.add(new Gun(GUN.Titan));
+		arsenal.add(new AR15());
+		arsenal.add(new M77());
+		arsenal.add(new OverUnder());
+		arsenal.add(new PX4Compact());
+		arsenal.add(new Titan());
 		gunSidearm = searchGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;

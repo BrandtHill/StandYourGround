@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import game.Store.Menu;
+import game.Weapons.Gun;
 
 public class Button {
 
