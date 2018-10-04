@@ -3,7 +3,7 @@ package game;
 import static java.lang.Math.PI;
 import static java.lang.Math.sin;
 
-import java.io.Serializable;
+import java.awt.Color;
 
 import static java.lang.Math.cos;
 
@@ -11,30 +11,19 @@ import java.util.Random;
 
 import org.newdawn.slick.Sound;
 
-public class Gun implements Serializable {
+public class Gun {
 
-	private static final long serialVersionUID = 1906685545236886613L;
 	private double damage;
-	private int ammoLoaded;
-	private int ammoCapacity;
-	private int ammoExtra;
-	private int magSize;
-	private boolean waitingOnReload;
-	private boolean isFullAuto;
-	private boolean shooting;
-	private boolean owned;
-	private boolean chambered;
-	private boolean lockedIn;
-	private boolean isSidearm;
-	private long reloadTime;
-	private long chamberTime;
+	private int ammoLoaded, ammoCapacity, ammoExtra, magSize;
+	private boolean owned, lockedIn, isSidearm, specialRounds;
+	private boolean waitingOnReload, isFullAuto, shooting, chambered;
+	private long reloadTime, chamberTime;
+	private long timerReload, timerChamber;
 	private String gunName;
-	private static PlayerObject player;
+	private static Player player;
 	private static Handler handler;
 	private transient Sound reloadSound;
-	private long timerReload;
-	private long timerChamber;
-	//private long tickDivider;
+	private long tickDivider;
 	private GUN gunId;
 	public static enum GUN {
 		AR15,
@@ -42,7 +31,6 @@ public class Gun implements Serializable {
 		M77,
 		Titan,
 		PX4Compact
-		;
 	}
 	
 	public Gun(GUN id) {
@@ -66,7 +54,7 @@ public class Gun implements Serializable {
 			gunName = "M77";
 			ammoLoaded = magSize = 3;
 			ammoExtra = ammoCapacity = 15;
-			damage = 70;
+			damage = 110;
 			break;
 		case OverUnder:
 			reloadSound = AudioPlayer.getSound("ReloadOverUnder");
@@ -75,7 +63,7 @@ public class Gun implements Serializable {
 			gunName = "Over-Under";
 			ammoLoaded = magSize = 2;
 			ammoExtra = ammoCapacity = 10;
-			damage = 40;
+			damage = 29;
 			break;
 		case PX4Compact:
 			reloadSound = AudioPlayer.getSound("ReloadPX4");
@@ -113,21 +101,23 @@ public class Gun implements Serializable {
 			case Titan:
 				spread = (r.nextDouble() - 0.5) * 7 * PI / 180;
 				handler.addObject(
-						new ProjectileObject(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 20, angle + spread, damage, 5, handler));
+						new Projectile(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 20, angle + spread, damage, 5, handler));
 				AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
 				break;
 				
 			case PX4Compact:
 				spread = (r.nextDouble() - 0.5) * 5 * PI / 180;
-				handler.addObject(
-						new ProjectileObject(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 23, angle + spread, damage, 7, handler));
+				double newDmg = damage * (isSpecialRounds() ? 1.5 : 1.0);
+				Projectile p = new Projectile(muzzlePointX(-2, 10), muzzlePointY(-2, 10), 23, angle + spread, newDmg, 7, handler);
+				if (isSpecialRounds()) p.color = new Color(243, 144, 0);
+				handler.addObject(p);
 				AudioPlayer.getSound("Pistol").play(0.95f, 0.3f); 
 				break;
 				
 			case AR15:
 				spread = (r.nextDouble() - 0.5) * 3 * PI / 180;
 				handler.addObject(
-						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 30, angle + spread, damage, 17.5, handler));
+						new Projectile(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 30, angle + spread, damage, 17.5, handler));
 				AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
 				break;
 			
@@ -135,14 +125,14 @@ public class Gun implements Serializable {
 				for (int i = 0; i < 9; i++) {
 					spread = (r.nextDouble() - 0.5) * 9 * PI / 180;
 					handler.addObject(
-							new ProjectileObject(muzzlePointX(-3, 21), muzzlePointY(-3, 21), 15, angle + spread, damage, 6,handler));
+							new Projectile(muzzlePointX(-3, 21), muzzlePointY(-3, 21), 15, angle + spread, damage, 6, handler, r.nextInt(3) + 1));
 				}
 				AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
 				break;
 				
 			case M77:
 				handler.addObject(
-						new ProjectileObject(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 42, angle, damage, 25, handler));
+						new Projectile(muzzlePointX(-3, 19), muzzlePointY(-3, 19), 42, angle, damage, 25, handler, 5));
 				AudioPlayer.getSound("Sniper").play(1f, 0.4f);
 				if(ammoLoaded > 1) 
 					AudioPlayer.getSound("CycleM77").play();
@@ -202,12 +192,12 @@ public class Gun implements Serializable {
 			}
 		}
 		
-		//if (tickDivider%4 == 0) {
-		if (shooting && isFullAuto) {
-			shoot(player.getAngle());
-		} 
-		//}
-		//tickDivider++;
+		if (tickDivider%4 == 0) {
+			if (shooting && isFullAuto) {
+				shoot(player.getAngle());
+			} 
+		}
+		
 	}
 	
 	public void resetAmmo() {
@@ -254,6 +244,7 @@ public class Gun implements Serializable {
 	public boolean isOwned() {return owned;}
 	public boolean isLockedIn() {return lockedIn;}
 	public boolean isSidearm() {return isSidearm;}
+	public boolean isSpecialRounds() {return specialRounds;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 
@@ -263,10 +254,11 @@ public class Gun implements Serializable {
 	public void setAmmoExtra(int ammoExtra) {this.ammoExtra = ammoExtra;}
 	public void setAmmoCapacity(int ammoCapacity) {this.ammoCapacity = ammoCapacity;}
 	public void setShooting(boolean shooting) {this.shooting = shooting;}
+	public void setFullAuto(boolean fullAuto) {this.isFullAuto = fullAuto;}
 	public void setOwned(boolean owned) {this.owned = owned;}
-	public static void setPlayer(PlayerObject player) {Gun.player = player;}
+	public void setSpecialRounds(boolean specialRounds) {this.specialRounds = specialRounds;}
+	public static void setPlayer(Player player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
-	
 	public void lockIn() {lockedIn = true;}
 	public void unLock() {lockedIn = false;}
 	

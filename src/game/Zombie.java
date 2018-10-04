@@ -15,21 +15,21 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
-public class ZombieObject extends GameObject{
+public class Zombie extends GameObject{
 
 	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	private PlayerObject player;
+	private Player player;
 	private Random r;
 	private static BufferedImage spriteSheet;
 	private static BufferedImage[] zombieSprites = new BufferedImage[8];
 	private int tickDivider;
 	private int spriteNum;
 	
-	public ZombieObject(double x, double y, Handler handler, double speed, double health) {
+	public Zombie(double x, double y, Handler handler, double speed, double health) {
 		super(x, y, handler);
 		
 		try {
-			player = (PlayerObject)handler.getObjectAt(0);
+			player = (Player)handler.getObjectAt(0);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
@@ -68,8 +68,8 @@ public class ZombieObject extends GameObject{
 	{
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
-			if(obj instanceof ZombieObject) {
-				ZombieObject zomb = (ZombieObject)obj;
+			if(obj instanceof Zombie) {
+				Zombie zomb = (Zombie)obj;
 				if(zomb.getBounds().intersects(this.getBounds())) {
 					double theta = atan2(x-zomb.getX(), y-zomb.getY());
 					x += 3*sin(theta);

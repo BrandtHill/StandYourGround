@@ -5,7 +5,7 @@ import game.Program.STATE;
 public class SpawnSystem {
 
 	private Handler handler;
-	private PlayerObject player;
+	private Player player;
 	private boolean doneCommencing, doneSpawning;
 	private int zombiesLeft;
 	private int level, wave;
@@ -15,7 +15,7 @@ public class SpawnSystem {
 		handler = h;
 		level = 1;
 		try {
-			player = (PlayerObject)handler.getObjectAt(0);
+			player = (Player)handler.getObjectAt(0);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

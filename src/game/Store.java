@@ -12,7 +12,7 @@ import game.Program.STATE;
 
 public class Store extends MouseAdapter{
 
-	private PlayerObject player;
+	private Player player;
 	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580};
 	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200};
 	public Button[] buttons = new Button[8];
@@ -30,7 +30,7 @@ public class Store extends MouseAdapter{
 	
 	public Store(Handler handler) {
 		try {
-			player = (PlayerObject)handler.getObjectAt(0);
+			player = (Player)handler.getObjectAt(0);
 			Button.setPlayer(player);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
@@ -61,6 +61,12 @@ public class Store extends MouseAdapter{
 				if (b.getFirstLine().contains("Mag")) {
 					upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
 				}
+				if (b.getFirstLine().contains("Hollow")) {
+					upgradeRounds(b.getGun(), b.getPrice());
+				}
+				if (b.getFirstLine().contains("Auto")) {
+					upgradeFireMode(b.getGun(), b.getPrice());
+				}
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
@@ -82,7 +88,7 @@ public class Store extends MouseAdapter{
 			player.setMoneyAtRoundStart(player.getMoney());
 		}
 	}
-	
+
 	public void nextMenu() {
 		switch (menu) {
 		case BuyGuns: 
@@ -151,11 +157,14 @@ public class Store extends MouseAdapter{
 			break;
 		case BuyUpgrades:
 			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Ammo", "AR-15", "$300", 30);
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Ammo", "Over-Under", "$250", 8);
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "M77", "$300", 9);
+			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Ammo", "M77", "$300", 9);
+			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "Over-Under", "$250", 8);
 			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Ammo", "PX4 Compact", "$175", 15);
 			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Increase Ammo", "Titan", "$150", 14);
 			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Mag Size", "AR-15", "$500", 10);
+			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Drop-In Auto Sear", "AR-15", "$1100");
+			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Hollow Points", "PX4 Compact", "$350");
+			
 			break;
 		case SelectPrimary:
 			for (int i = 0; i < player.getArsenal().size(); i++) {
@@ -242,7 +251,7 @@ public class Store extends MouseAdapter{
 		return buttons[i].inBounds(p);
 	}
 	
-	public void upgradeCapacity(Gun gun, int ammo, int money) {
+	private void upgradeCapacity(Gun gun, int ammo, int money) {
 		
 		if (gun.isOwned()) {
 			int cap = gun.getAmmoCapacity();
@@ -254,7 +263,7 @@ public class Store extends MouseAdapter{
 		}
 	}
 	
-	public void upgradeMagSize(Gun gun, int ammo, int money) {
+	private void upgradeMagSize(Gun gun, int ammo, int money) {
 
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
@@ -269,7 +278,27 @@ public class Store extends MouseAdapter{
 		}		
 	}
 	
-	public void buyGun(Gun gun, int money) {
+	private void upgradeRounds(Gun gun, int money) {
+		if (gun.isOwned()) {
+			if (player.getMoney() >= money) {
+				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				gun.setSpecialRounds(true);
+				player.setMoney(player.getMoney() - money);
+			}
+		}
+	}
+	
+	private void upgradeFireMode(Gun gun, int money) {
+		if (gun.isOwned()) {
+			if (player.getMoney() >= money) {
+				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				gun.setFullAuto(true);
+				player.setMoney(player.getMoney() - money);
+			}
+		}
+	}
+	
+	private void buyGun(Gun gun, int money) {
 		
 		if (!gun.isOwned()) {
 			if (player.getMoney() >= money) {

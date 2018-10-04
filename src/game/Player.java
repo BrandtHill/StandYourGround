@@ -16,14 +16,14 @@ import javax.imageio.ImageIO;
 import game.Gun.GUN;
 import game.Program.STATE;
 
-public class PlayerObject extends GameObject{
+public class Player extends GameObject{
 	
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
 	private ArrayList<Gun> arsenal;
-	private ReticleObject reticle;
+	private Reticle reticle;
 	private double angle;
 	private double speed;
 	private byte tickDivider;
@@ -34,7 +34,7 @@ public class PlayerObject extends GameObject{
 	private int level;
 	public int zombiesLeft;
 	
-	public PlayerObject(double x, double y, Handler handler) {
+	public Player(double x, double y, Handler handler) {
 		super(x, y, handler);
 		Gun.setPlayer(this);
 		Gun.setHandler(handler);
@@ -42,7 +42,7 @@ public class PlayerObject extends GameObject{
 		arsenal.add(new Gun(GUN.AR15));
 		arsenal.add(new Gun(GUN.M77));
 		arsenal.add(new Gun(GUN.OverUnder));
-		arsenal.add(new Gun(GUN.PX4Compact));;
+		arsenal.add(new Gun(GUN.PX4Compact));
 		arsenal.add(new Gun(GUN.Titan));
 		gunSidearm = searchGun(GUN.Titan);
 		gunSidearm.setOwned(true);
@@ -117,8 +117,8 @@ public class PlayerObject extends GameObject{
 	{
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
-			if(obj instanceof ZombieObject) {
-				ZombieObject zomb = (ZombieObject)obj;
+			if(obj instanceof Zombie) {
+				Zombie zomb = (Zombie)obj;
 				if(zomb.getBounds().intersects(this.getBounds())) {
 					Program.gameState = STATE.GameOver;
 				}
@@ -301,7 +301,7 @@ public class PlayerObject extends GameObject{
 		}
 	}
 	
-	public void addReticle(ReticleObject r) {
+	public void addReticle(Reticle r) {
 		reticle = r;
 	}
 }

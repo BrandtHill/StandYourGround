@@ -12,12 +12,12 @@ import game.Program.STATE;
 public class MouseInput extends MouseAdapter{
 	
 	private Handler handler;
-	private PlayerObject player;
+	private Player player;
 	
 	public MouseInput(Handler h) {
 		handler = h;
 		try {
-			player = (PlayerObject)handler.getObjectAt(0);
+			player = (Player)handler.getObjectAt(0);
 		}catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

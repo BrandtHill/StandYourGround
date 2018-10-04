@@ -23,10 +23,10 @@ public class Program extends Canvas implements Runnable{
 	//private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
-	private ReticleObject reticle;
+	private Reticle reticle;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;
-	public static PlayerObject player;
+	public static Player player;
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
@@ -47,8 +47,8 @@ public class Program extends Canvas implements Runnable{
 	public Program() {
 		AudioPlayer.load();
 		handler = new Handler();
-		reticle = new ReticleObject(WIDTH/2-10, HEIGHT/2-30, handler);
-		player = new PlayerObject(WIDTH/2-10, HEIGHT/2-30, handler);
+		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30, handler);
+		player = new Player(WIDTH/2-10, HEIGHT/2-30, handler);
 		handler.addObject(player);
 		handler.addObject(reticle);
 		player.addReticle(reticle);
@@ -77,8 +77,8 @@ public class Program extends Canvas implements Runnable{
 		
 		tickDivider = 0;
 
-		saveToFile("res/saves/newgame.syg/", (PlayerObject)handler.getObjectAt(0));
-		saveToFile("res/saves/autosave.syg/", (PlayerObject)handler.getObjectAt(0));
+		saveToFile("res/saves/newgame.syg/", (Player)handler.getObjectAt(0));
+		saveToFile("res/saves/autosave.syg/", (Player)handler.getObjectAt(0));
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -303,11 +303,11 @@ public class Program extends Canvas implements Runnable{
 		spawnSys.commenceLevel();
 	}
 	
-	public static void saveToFile(String filename, PlayerObject player) {
+	public static void saveToFile(String filename, Player player) {
 		saveData.saveToFile(filename, player);
 	}
 	
-	public static void loadFromFile(String filename, PlayerObject player) {
+	public static void loadFromFile(String filename, Player player) {
 		saveData = saveData.loadFromFile(filename);
 		if(saveData!= null)
 			saveData.setPlayerAfterLoad(player);

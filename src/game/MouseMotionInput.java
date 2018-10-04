@@ -6,11 +6,11 @@ import java.awt.event.MouseMotionAdapter;
 public class MouseMotionInput extends MouseMotionAdapter {
 
 	private Handler handler;
-	private ReticleObject reticle; 
+	private Reticle reticle; 
 	public MouseMotionInput(Handler h) {
 		handler = h;
 		try {
-			reticle = (ReticleObject)handler.getObjectAt(1);
+			reticle = (Reticle)handler.getObjectAt(1);
 		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}

@@ -15,7 +15,7 @@ public class Button {
 	public Color displayColor, mainColor;
 	private Font font;
 	private boolean clickable, active;
-	private static PlayerObject player;
+	private static Player player;
 	private Gun gun;
 	
 	public Button(int x, int y, boolean active, String line1, String line2, String line3) {
@@ -57,7 +57,9 @@ public class Button {
 		}
 		else if(Store.menu == Menu.BuyUpgrades) {
 			this.mainColor = gun.isOwned() ? Color.WHITE : Color.GRAY;
-			this.clickable = active && gun.isOwned();
+			this.clickable = active && gun.isOwned() 
+					&& (line1.contains("Hollow") ? !gun.isSpecialRounds() : true)
+					&& (line1.contains("Auto") ? !gun.isFullAuto() : true);
 		}
 		else {	
 			this.mainColor = gun.isOwned() ?
@@ -71,8 +73,8 @@ public class Button {
 		}
 	}
 	
-	public static PlayerObject getPlayer() {return player;}
-	public static void setPlayer(PlayerObject player) {Button.player = player;}
+	public static Player getPlayer() {return player;}
+	public static void setPlayer(Player player) {Button.player = player;}
 	public Gun getGun() {return this.gun;}
 	public int getAmount() {return this.amount;}
 	

@@ -15,7 +15,7 @@ public class Handler {
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
-		ZombieObject.loadSprites();
+		Zombie.loadSprites();
 	}
 	
 	public void tick() {
@@ -35,7 +35,7 @@ public class Handler {
 	public void removeProjectiles() {
 		for(int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj instanceof ProjectileObject) {
+			if(obj instanceof Projectile) {
 				removeObject(obj);
 			}
 		}
@@ -44,7 +44,7 @@ public class Handler {
 	public void removeZombies() {
 		for(int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj instanceof ZombieObject) {
+			if(obj instanceof Zombie) {
 				removeObject(obj);
 			}
 		}
@@ -61,38 +61,38 @@ public class Handler {
 		}
 		while(abs(x-xPlayer)<200 && abs(y-yPlayer)<200);
 		
-		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1, 60));
+		addObject(new Zombie(x,y,this, r.nextDouble()/5+1, 60));
 		
 	}
 	
 	public void addZombieLeft(double speed, int lvl) {
 		Random r = new Random();	
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new ZombieObject(-100, r.nextInt(Program.HEIGHT), this, speed, hp));
+		addObject(new Zombie(-100, r.nextInt(Program.HEIGHT), this, speed, hp));
 	}
 	
 	public void addZombieRight(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new ZombieObject(Program.WIDTH + 100, r.nextInt(Program.HEIGHT), this, speed, hp));
+		addObject(new Zombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT), this, speed, hp));
 	}
 	
 	public void addZombieUp(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new ZombieObject(r.nextInt(Program.WIDTH), -100, this, speed, hp));
+		addObject(new Zombie(r.nextInt(Program.WIDTH), -100, this, speed, hp));
 	}
 	
 	public void addZombieDown(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new ZombieObject(r.nextInt(Program.WIDTH), Program.HEIGHT + 100, this, speed, hp));
+		addObject(new Zombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100, this, speed, hp));
 	}
 	
 	public void addZombie(double x, double y, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new ZombieObject(x,y,this, r.nextDouble()/5+1.2, hp));
+		addObject(new Zombie(x,y,this, r.nextDouble()/5+1.2, hp));
 	}
 	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}

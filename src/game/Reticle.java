@@ -4,14 +4,14 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
-public class ReticleObject extends GameObject {
+public class Reticle extends GameObject {
 
 	private final int[] xZeroed = {-10, 10, 0, 0, 0};
 	private final int[] yZeroed = {0, 0, 0, 10, -10};
 	private int[] xLine = new int[5];
 	private int[] yLine = new int[5];
 	
-	public ReticleObject(double x, double y, Handler handler) {
+	public Reticle(double x, double y, Handler handler) {
 		super(x, y, handler);
 	}
 

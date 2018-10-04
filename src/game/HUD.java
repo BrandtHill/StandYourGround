@@ -7,7 +7,7 @@ import java.awt.Graphics;
 public class HUD {
 	
 	private Handler handler;
-	private PlayerObject player;
+	private Player player;
 	private SpawnSystem spawnSys;
 	private String gunInfo, levelInfo;
 	private Color[] colors;
@@ -17,7 +17,7 @@ public class HUD {
 	public HUD(Handler h, SpawnSystem s) {
 		handler = h;
 		try {
-			player = (PlayerObject)handler.getObjectAt(0);
+			player = (Player)handler.getObjectAt(0);
 		} catch(Exception e) {
 			e.getMessage();
 		}

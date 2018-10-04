@@ -21,6 +21,8 @@ public class SaveData implements Serializable {
 	private ArrayList<Integer> magSizes;
 	private ArrayList<Integer> ammoCaps;
 	private ArrayList<Boolean> gunsOwned;
+	private ArrayList<Boolean> fireModes;
+	private ArrayList<Boolean> specialRounds;
 	
 	public SaveData() {
 		File directory = new File("res/saves");
@@ -29,7 +31,7 @@ public class SaveData implements Serializable {
 		}
 	}
 	
-	public void saveToFile(String filename, PlayerObject player) {
+	public void saveToFile(String filename, Player player) {
 		try {
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
@@ -38,6 +40,8 @@ public class SaveData implements Serializable {
 			magSizes = new ArrayList<Integer>();
 			ammoCaps = new ArrayList<Integer>();
 			gunsOwned = new ArrayList<Boolean>();
+			fireModes = new ArrayList<Boolean>();
+			specialRounds = new ArrayList<Boolean>();
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
@@ -47,6 +51,8 @@ public class SaveData implements Serializable {
 				magSizes.add(i, g.getMagSize());
 				ammoCaps.add(i, g.getAmmoCapacity());
 				gunsOwned.add(i, g.isOwned());
+				specialRounds.add(i, g.isSpecialRounds());
+				fireModes.add(i, g.isFullAuto());
 			} 
 	         
 	        out.writeObject(this);
@@ -79,7 +85,7 @@ public class SaveData implements Serializable {
 		return null;
 	}
 	
-	public void setPlayerAfterLoad(PlayerObject player) {
+	public void setPlayerAfterLoad(Player player) {
 		ArrayList<Gun> arsenal = player.getArsenal();
 		player.setMoney(moneyAtRoundStart);
 		player.setMoneyAtRoundStart(moneyAtRoundStart);
@@ -90,6 +96,8 @@ public class SaveData implements Serializable {
 			g.setMagSize(magSizes.get(i));
 			g.setAmmoCapacity(ammoCaps.get(i));
 			g.setOwned(gunsOwned.get(i));
+			g.setFullAuto(fireModes.get(i));
+			g.setSpecialRounds(specialRounds.get(i));
 			g.resetAmmo();
 		}
 		Program.gameState = STATE.StoreMenu;
