@@ -4,6 +4,7 @@ import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 public class Window extends Canvas{
@@ -21,6 +22,7 @@ public class Window extends Canvas{
 		frame.setLocationRelativeTo(null);	
 		frame.setCursor( frame.getToolkit().createCustomCursor
 				(new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),new Point(),null ) );
+		frame.setIconImage(new ImageIcon("res/Oscilloshape1.JPG").getImage());
 		frame.add(p);
 		frame.setVisible(true);
 		p.start();

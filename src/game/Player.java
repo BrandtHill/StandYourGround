@@ -43,10 +43,10 @@ public class Player extends GameObject{
 	private int level;
 	public int zombiesLeft;
 	
-	public Player(double x, double y, Handler handler) {
+	public Player(double x, double y) {
 		super(x, y);
 		Gun.setPlayer(this);
-		Gun.setHandler(handler);
+		Gun.setHandler(Program.handler);
 		arsenal = new ArrayList<Gun>();
 		arsenal.add(new AR15());
 		arsenal.add(new M77());

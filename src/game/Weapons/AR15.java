@@ -10,7 +10,7 @@ public class AR15 extends Gun {
 		gunId = GUN.AR15;
 		reloadSound = AudioPlayer.getSound("ReloadAR15");
 		reloadTime = 2750;
-		chamberTime = 67;
+		chamberTime = 60;
 		gunName = "AR-15";
 		ammoLoaded = magSize = 30;
 		ammoExtra = ammoCapacity = 30;
@@ -37,7 +37,7 @@ public class AR15 extends Gun {
 		super.tick();
 		if ((tickDivider % 4) == 0 && isFullAuto && shooting) {
 			shoot();
-		} 
+		}
 		tickDivider++;
 	}
 }

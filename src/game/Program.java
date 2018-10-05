@@ -4,23 +4,24 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.RenderingHints;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.time.Duration;
 
 import javax.imageio.ImageIO;
 
-import org.newdawn.slick.Music;
+import org.lwjgl.openal.AL;
 
 public class Program extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = -1499886446881465910L;
-	private Thread thread;
+	private Thread gameThread;
 	private boolean running;
 	private HUD hud;
 	private Store store;
-	//private MouseMotionInput mmi;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
 	private Reticle reticle;
@@ -30,8 +31,6 @@ public class Program extends Canvas implements Runnable{
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
-	public Music song;
-	private byte tickDivider;
 	
 	public static enum STATE{
 		InGame,
@@ -41,14 +40,14 @@ public class Program extends Canvas implements Runnable{
 		PauseMenu;
 	}
 	
-	public static STATE gameState;
-	private STATE prevState;
+	public static STATE gameState = STATE.StartMenu;
+	private static STATE prevState;
 	
 	public Program() {
-		AudioPlayer.load();
+		AudioPlayer.init();
 		handler = new Handler();
-		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30, handler);
-		player = new Player(WIDTH/2-10, HEIGHT/2-30, handler);
+		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
+		player = new Player(WIDTH/2-10, HEIGHT/2-30);
 		handler.addObject(player);
 		handler.addObject(reticle);
 		player.addReticle(reticle);
@@ -68,14 +67,6 @@ public class Program extends Canvas implements Runnable{
 		} catch (IOException e) {
 			System.out.println(e.getMessage());
 		}
-		
-		gameState = STATE.StartMenu;
-		
-		song = AudioPlayer.getMusic("Dying");
-
-		song.loop(1f, 0.25f);
-		
-		tickDivider = 0;
 
 		saveToFile("res/saves/newgame.syg/", (Player)handler.getObjectAt(0));
 		saveToFile("res/saves/autosave.syg/", (Player)handler.getObjectAt(0));
@@ -85,15 +76,16 @@ public class Program extends Canvas implements Runnable{
 	}
 	
 	public synchronized void start() {
-		thread = new Thread(this);
-		thread.start();
 		running = true;
+		gameThread = new Thread(this, "Main Game Thread");
+		gameThread.start();
 	}
 	
 	public synchronized void stop() {
 		try {
-			thread.join();
+			gameThread.join();
 			running = false;
+			AL.destroy();
 		}
 		catch(Exception e) {
 			System.out.println(e.toString());
@@ -118,29 +110,27 @@ public class Program extends Canvas implements Runnable{
         double nsPerTick = 1000000000 / ticksPerSec;
         double delta = 0;
         long timer = System.currentTimeMillis();
-        long currMilli;
         int frames = 0;
-        while(running)
-        {
-	        currTime = System.nanoTime();
+        while(running) {
+	        
+        	currTime = System.nanoTime();
 	        delta += (currTime - lastTime) / nsPerTick;
 	        lastTime = currTime;
-	        while(delta >=1)
-	        {
+	        
+	        while (delta >=1) {
 	            tick();
 	            delta--;
 	        }
 	        
 	        render();
-	        frames++;
-	        
-        	currMilli = System.currentTimeMillis();
-			if (currMilli - timer > 1000) {
-				//timer += 1000;
+			frames++;
+			if (System.currentTimeMillis() - timer > 1000) {
 				timer = System.currentTimeMillis();
-				System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + (frames > 1000 ? "1000+" : frames));
 				frames = 0;
 			}
+	        
+	        if (delta < 0.9) delay(Duration.ofMillis(1));
         }
         stop();
 	}
@@ -221,11 +211,8 @@ public class Program extends Canvas implements Runnable{
 			break;	
 		case InGame:
 			handler.tick();
-			if (tickDivider % 8 == 0) {
-				hud.tick();
-				spawnSys.tick();
-			}
-			tickDivider++;
+			hud.tick();
+			spawnSys.tick();
 			break;
 		case PauseMenu:
 		case StartMenu:
@@ -242,7 +229,6 @@ public class Program extends Canvas implements Runnable{
 	}
 	
 	private void stateChange() {
-		musicChange();
 		hud.tick();
 		
 		switch (gameState) {
@@ -265,29 +251,6 @@ public class Program extends Canvas implements Runnable{
 		default:
 			break;
 		}
-	}
-	
-	private void musicChange() {
-		
-		float pos = song.getPosition();
-		song.stop();
-		
-		switch (gameState) {
-		case InGame: 	song.loop(1f, 0.25f);
-			break;
-		case PauseMenu:	song.loop(0.65f, 0.25f);
-			break;
-		case StoreMenu:	song.loop(1.35f, 0.25f);
-			break;		
-		case GameOver:	song.loop(0.65f, 0.25f);
-			break;
-		case StartMenu:	song.loop(1f, 0.25f);
-			break;
-		default:		song.loop(1f, 0.25f);
-			break;
-		}
-		
-		song.setPosition(pos);
 	}
 	
 	/**
@@ -314,5 +277,12 @@ public class Program extends Canvas implements Runnable{
 		else
 			System.out.println("Player load was not successful.");
 	}
-
+	
+	public static void delay(Duration duration) {
+		try {
+			Thread.sleep(duration.toMillis());
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 }

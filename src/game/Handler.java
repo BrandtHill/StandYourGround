@@ -28,7 +28,7 @@ public class Handler {
 	public void render(Graphics g) {
 		for(int i = gameObjs.size()-1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			obj.render(g);
+			if (obj != null) obj.render(g);
 		}
 	}
 

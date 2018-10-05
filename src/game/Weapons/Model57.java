@@ -8,7 +8,7 @@ public class Model57 extends Gun {
 	public Model57() {
 		super();
 		gunId = GUN.Model57;
-		reloadSound = AudioPlayer.getSound("ReloadPX4");
+		reloadSound = AudioPlayer.getSound("ReloadModel57");
 		reloadTime = 3000;
 		chamberTime = 200;
 		gunName = "Model 57";
@@ -28,10 +28,9 @@ public class Model57 extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
-			chambered = false;
-			timerChamber = System.currentTimeMillis();
-			ammoLoaded--;
-			AudioPlayer.getSound("Pistol").play(0.75f,0.45f);
+			AudioPlayer.getSound("Pistol").play(0.50f,0.45f);
+			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
+			onShotFired();	
 		}
 		reloadIfNeeded();
 	}

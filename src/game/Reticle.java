@@ -11,7 +11,7 @@ public class Reticle extends GameObject {
 	private int[] xLine = new int[5];
 	private int[] yLine = new int[5];
 	
-	public Reticle(double x, double y, Handler handler) {
+	public Reticle(double x, double y) {
 		super(x, y);
 	}
 
