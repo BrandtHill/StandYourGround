@@ -3,8 +3,7 @@ package game;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.RenderingHints;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -24,9 +23,9 @@ public class Program extends Canvas implements Runnable{
 	private Store store;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
-	private Reticle reticle;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;
+	public static Reticle reticle;
 	public static Player player;
 	public static Handler handler;
 	public static final int HEIGHT = 600;
@@ -52,15 +51,15 @@ public class Program extends Canvas implements Runnable{
 		handler.addObject(reticle);
 		player.addReticle(reticle);
 		saveData = new SaveData();
-		spawnSys = new SpawnSystem(handler);
-		store = new Store(handler);
+		spawnSys = new SpawnSystem();
+		store = new Store();
 		storeMotion = new StoreMotion(store);
-		hud = new HUD(handler, spawnSys);
+		hud = new HUD();
 		
-		addKeyListener(new KeyInput(handler, store));
-		addMouseListener(new MouseInput(handler));
+		addKeyListener(new KeyInput(store));
+		addMouseListener(new MouseInput());
 		addMouseListener(store);
-		addMouseMotionListener(new MouseMotionInput(handler));
+		addMouseMotionListener(new MouseMotionInput());
 		
 		try {
 			background = ImageIO.read(new File("res/GrassBackground.png"));
@@ -142,7 +141,7 @@ public class Program extends Canvas implements Runnable{
 			return;					
 		}
 		
-		Graphics g = bs.getDrawGraphics();
+		Graphics2D g = (Graphics2D)bs.getDrawGraphics();
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);

@@ -53,16 +53,21 @@ public class Button {
 
 	public void updateColor() {
 		if (Store.menu == Menu.BuyGuns) {
-			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 			this.clickable = active && !gun.isOwned();
+			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 		}
 		else if(Store.menu == Menu.BuyUpgrades) {
-			this.mainColor = gun.isOwned() ? Color.WHITE : Color.GRAY;
 			this.clickable = active && gun.isOwned() 
 					&& (line1.contains("Hollow") ? !gun.isSpecialRounds() : true)
 					&& (line1.contains("Auto") ? !gun.isFullAuto() : true);
+			this.mainColor = gun.isOwned() ? 
+							(isClickable() ?
+								  Color.WHITE
+								: new Color(160, 160, 240)) 
+								: Color.GRAY;
 		}
-		else {	
+		else {
+			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
 			this.mainColor = gun.isOwned() ?
 							(gun.isEquipped() ? 
 							(gun.isLockedIn() ?
@@ -70,7 +75,6 @@ public class Button {
 								: new Color(160, 160, 240))
 								: Color.WHITE) 
 								: Color.GRAY;
-			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
 		}
 	}
 	
@@ -78,13 +82,7 @@ public class Button {
 	public static void setPlayer(Player player) {Button.player = player;}
 	public Gun getGun() {return this.gun;}
 	public int getAmount() {return this.amount;}
-	
-	public int getPrice() {
-		if (!line3.isEmpty()) {
-			return Integer.parseInt(line3.substring(1));
-		} 
-		return 0;
-	}
+	public int getPrice() {return (!line3.isEmpty()) ? Integer.parseInt(line3.substring(1)) : 0;}
 	
 	public boolean inBounds(Point p) {
 		if(p.getX() > x && p.getX() < (x + w)) {

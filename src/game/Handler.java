@@ -11,29 +11,39 @@ import static java.lang.Math.abs;
  */
 public class Handler {
 	
-	private LinkedList<GameObject> gameObjs; 
+	private LinkedList<GameObject> gameObjs;
+	private LinkedList<Blood>	   bloodList;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
+		bloodList = new LinkedList<Blood>();
 		Zombie.loadSprites();
 	}
 	
 	public void tick() {
-		for(int i = 0; i < gameObjs.size(); i++) {
-			GameObject obj = getObjectAt(i);
-			obj.tick();
+		for (int i = 0; i < bloodList.size(); i++) {
+			bloodList.get(i).tick();
+		}
+		for (int i = 0; i < gameObjs.size(); i++) {
+			getObjectAt(i).tick();
 		}
 	}
 	
 	public void render(Graphics g) {
-		for(int i = gameObjs.size()-1; i >= 0; i--) {
-			GameObject obj = getObjectAt(i);
-			if (obj != null) obj.render(g);
+		for (Blood b : bloodList) {
+			b.render(g);
+		}
+		for (int i = gameObjs.size() - 1; i >= 0; i--) {
+			getObjectAt(i).render(g);
 		}
 	}
 
+	public void removeBlood() {
+		bloodList.clear();
+	}
+	
 	public void removeProjectiles() {
-		for(int i = gameObjs.size() - 1; i >= 0; i--) {
+		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
 			if(obj instanceof Projectile) {
 				removeObject(obj);
@@ -42,7 +52,7 @@ public class Handler {
 	}
 	
 	public void removeZombies() {
-		for(int i = gameObjs.size() - 1; i >= 0; i--) {
+		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
 			if(obj instanceof Zombie) {
 				removeObject(obj);
@@ -96,7 +106,9 @@ public class Handler {
 	}
 	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}
+	public void addBlood(Blood blood)			{bloodList.add(blood);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
+	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
 	public LinkedList<GameObject> getObjList()	{return gameObjs;}
 

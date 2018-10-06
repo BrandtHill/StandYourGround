@@ -9,17 +9,13 @@ import game.Program.STATE;
 public class KeyInput extends KeyAdapter{
 	
 	private Store store;
-	private Player player;
+	private static Player player;
 	private boolean w, a, s, d;
 	private double speed = 2;
 	
-	public KeyInput(Handler handler, Store store) {
+	public KeyInput(Store store) {
 		this.store = store;
-		try {
-			player = (Player)handler.getObjectAt(0);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		KeyInput.player = Program.player;
 	}
 	
 	public void keyPressed(KeyEvent e) {

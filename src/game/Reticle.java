@@ -10,9 +10,11 @@ public class Reticle extends GameObject {
 	private final int[] yZeroed = {0, 0, 0, 10, -10};
 	private int[] xLine = new int[5];
 	private int[] yLine = new int[5];
+	private static Player player;
 	
 	public Reticle(double x, double y) {
 		super(x, y);
+		player = Program.player;
 	}
 
 	public void tick() {

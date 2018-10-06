@@ -12,16 +12,10 @@ import game.Weapons.Gun;
 
 public class MouseInput extends MouseAdapter{
 	
-	private Handler handler;
-	private Player player;
+	private static Player player;
 	
-	public MouseInput(Handler h) {
-		handler = h;
-		try {
-			player = (Player)handler.getObjectAt(0);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public MouseInput() {
+		MouseInput.player = Program.player;
 	}
 	
 	public void mousePressed(MouseEvent e) {

@@ -85,7 +85,7 @@ public class Zombie extends GameObject{
 
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-
+		
 		g2d.setColor(Color.RED);
 		g2d.rotate(-angle, x+10, y+10);
 		g2d.drawImage(zombieSprites[spriteNum], (int)x, (int)y, null);
@@ -94,8 +94,10 @@ public class Zombie extends GameObject{
 	
 	public void damageMe(double damage, double angle, double knock) {
 		health -= damage;
+		handler.addBlood(new Blood(x+10, y+10));
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
+		handler.addBlood(new Blood(x+10, y+10, knock, angle));
 		if(health<= 0) {
 			int money = player.getMoney();
 			player.setMoney(20+r.nextInt(11) + money);

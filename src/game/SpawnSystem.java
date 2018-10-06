@@ -4,21 +4,17 @@ import game.Program.STATE;
 
 public class SpawnSystem {
 
-	private Handler handler;
-	private Player player;
+	private static Handler handler;
+	private static Player player;
 	private boolean doneCommencing, doneSpawning;
 	private int zombiesLeft;
 	private int level, wave;
 	private long timer, delay;
 	
-	public SpawnSystem(Handler h) {
-		handler = h;
+	public SpawnSystem() {
 		level = 1;
-		try {
-			player = (Player)handler.getObjectAt(0);
-		}catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		handler = Program.handler;
+		player = Program.player;
 		doneCommencing = doneSpawning = false;
 		zombiesLeft = 0;
 		timer = System.currentTimeMillis();
@@ -47,10 +43,14 @@ public class SpawnSystem {
 		player.resetAllAmmo();
 		player.setLevel(level);
 		player.setMoneyAtRoundStart(player.getMoney());
+		
+		handler.removeBlood();
+		handler.removeProjectiles();
+		handler.removeZombies();
 	}
 	
 	public void commenceLevel() {
-		
+		handler.removeBlood();
 		handler.removeProjectiles();
 		handler.removeZombies();
 		player.setX(Program.WIDTH/2-10);

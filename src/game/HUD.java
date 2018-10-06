@@ -8,23 +8,16 @@ import game.Weapons.Gun;
 
 public class HUD {
 	
-	private Handler handler;
-	private Player player;
-	private SpawnSystem spawnSys;
+	private static Player player;
+	private static SpawnSystem spawnSys;
 	private String gunInfo, levelInfo;
 	private Color[] colors;
 	private Color sel, unSel;
 	
 	
-	public HUD(Handler h, SpawnSystem s) {
-		handler = h;
-		try {
-			player = (Player)handler.getObjectAt(0);
-		} catch(Exception e) {
-			e.getMessage();
-		}
-		spawnSys = s;
-		gunInfo = levelInfo = new String();
+	public HUD() {
+		player = Program.player;
+		spawnSys = Program.spawnSys;
 		colors = new Color[3];
 		sel = new Color(255, 255, 255, 255);
 		unSel = new Color(255, 255, 255, 65);

@@ -13,7 +13,7 @@ import game.Weapons.Gun;
 
 public class Store extends MouseAdapter{
 
-	private Player player;
+	private static Player player;
 	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
 	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
 	public Button[] buttons = new Button[12];
@@ -29,13 +29,9 @@ public class Store extends MouseAdapter{
 		Final
 	}
 	
-	public Store(Handler handler) {
-		try {
-			player = (Player)handler.getObjectAt(0);
-			Button.setPlayer(player);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+	public Store() {
+		player = Program.player;
+		Button.setPlayer(player);
 	}
 	
 	public void mousePressed(MouseEvent e) {
