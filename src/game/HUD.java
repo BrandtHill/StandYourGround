@@ -44,23 +44,23 @@ public class HUD {
 	
 	public void render(Graphics g) {
 		g.setColor(new Color(100,20,20,127));
-		g.fillRect(20, 20, 290, 30);
-		g.fillRect(350, 20, 350, 30);
+		g.fillRect(40, 20, 290, 30);
+		g.fillRect(370, 20, 370, 30);
 		
 		g.setColor(new Color(100,20,20));
-		g.draw3DRect(20, 20, 290, 30, true);
-		g.draw3DRect(350, 20, 350, 30, true);
+		g.draw3DRect(40, 20, 290, 30, true);
+		g.draw3DRect(370, 20, 370, 30, true);
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 16));
-		g.drawString(gunInfo, 40, 42);
-		g.drawString(levelInfo, 370, 42);
+		g.drawString(gunInfo, 60, 42);
+		g.drawString(levelInfo, 390, 42);
 		
 		g.setColor(colors[0]);
-		g.drawString("1", 250, 42);
+		g.drawString("1", 270, 42);
 		g.setColor(colors[1]);
-		g.drawString("2", 270, 42);
+		g.drawString("2", 290, 42);
 		g.setColor(colors[2]);
-		g.drawString("3", 290, 42);
+		g.drawString("3", 310, 42);
 	}
 }

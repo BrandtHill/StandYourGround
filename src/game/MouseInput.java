@@ -13,9 +13,11 @@ import game.Weapons.Gun;
 public class MouseInput extends MouseAdapter{
 	
 	private static Player player;
+	private static Reticle reticle;
 	
 	public MouseInput() {
-		MouseInput.player = Program.player;
+		player = Program.player;
+		reticle = Program.reticle;
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -25,7 +27,7 @@ public class MouseInput extends MouseAdapter{
 		if(Program.gameState == STATE.InGame){
 			if (button == MouseEvent.BUTTON1) {
 				Gun gun = player.getGunWielded();
-				player.setAngle(atan2(e.getX() - (player.getX() + 10), e.getY() - (player.getY() + 10)));
+				player.setAngle(atan2(reticle.getXDisplay() - (player.getX() + 10), reticle.getYDisplay() - (player.getY() + 10)));
 				
 				if(gun.isFullAuto()) {
 					gun.resetTickDivier();

@@ -84,9 +84,9 @@ public class Player extends GameObject{
 		}
 		
 		x = Program.clamp(x, 0, Program.WIDTH-26);
-		y = Program.clamp(y, 0, Program.HEIGHT-48);
+		y = Program.clamp(y, 0, Program.HEIGHT-26);
 		
-		angle = atan2(reticle.getX() - (x + 10), reticle.getY() - (y + 10));
+		angle = atan2(reticle.getXDisplay() - (x + 10), reticle.getYDisplay() - (y + 10));
 		
 		gunWielded.tick();
 		
@@ -119,6 +119,9 @@ public class Player extends GameObject{
 			
 			if(velX != 0 || velY != 0)
 				spriteNum++;
+			
+			]
+					
 			
 			spriteNum = spriteNum % 8;
 		}

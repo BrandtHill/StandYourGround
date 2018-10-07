@@ -45,8 +45,8 @@ public class Program extends Canvas implements Runnable{
 	public Program() {
 		AudioPlayer.init();
 		handler = new Handler();
-		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
+		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
 		handler.addObject(player);
 		handler.addObject(reticle);
 		player.addReticle(reticle);
@@ -160,8 +160,14 @@ public class Program extends Canvas implements Runnable{
 			break;
 			
 		case InGame:
+			double xT = clamp(-player.getX() + (WIDTH/2 - 70), -160, 0);
+			double yT = clamp(-player.getY() + (HEIGHT/2 - 80), -140, 0);
+			g.scale(0.5, 0.5);
+			g.translate(xT, yT);
 			g.drawImage(background, 0, 0, null);
 			handler.render(g);
+			g.translate(-xT, -yT);
+			g.scale(0.50, 0.50);
 			hud.render(g);
 			break;
 			
