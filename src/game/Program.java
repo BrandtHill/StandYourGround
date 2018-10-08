@@ -162,12 +162,12 @@ public class Program extends Canvas implements Runnable{
 		case InGame:
 			double xT = clamp(-player.getX() + (WIDTH/2 - 70), -160, 0);
 			double yT = clamp(-player.getY() + (HEIGHT/2 - 80), -140, 0);
-			g.scale(0.5, 0.5);
+			g.scale(1.25, 1.25);
 			g.translate(xT, yT);
 			g.drawImage(background, 0, 0, null);
 			handler.render(g);
 			g.translate(-xT, -yT);
-			g.scale(0.50, 0.50);
+			g.scale(0.8, 0.8);
 			hud.render(g);
 			break;
 			

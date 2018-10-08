@@ -97,7 +97,7 @@ public class Zombie extends GameObject{
 		handler.addBlood(new Blood(x+10, y+10));
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
-		handler.addBlood(new Blood(x+10, y+10, knock, angle));
+		handler.bloodSplat(x+10, y+10, knock, angle);
 		if(health<= 0) {
 			int money = player.getMoney();
 			player.setMoney(20+r.nextInt(11) + money);

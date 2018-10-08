@@ -14,6 +14,7 @@ public class Reticle extends GameObject {
 	private int[] yLine = new int[5];
 	private static Player player;
 	private double xDisplay, yDisplay;
+	private boolean wantToLimitRange; //functionality exists
 	
 	public Reticle(double x, double y) {
 		super(x, y);
@@ -26,15 +27,9 @@ public class Reticle extends GameObject {
 		yDisplay = y = Program.clamp(y, 0, Program.HEIGHT);
 				
 		if (Program.gameState == STATE.InGame) {
-			/*double angle = player.getAngle();
-			double xW = Math.abs(200 * Math.sin(angle));
-			double yW = Math.abs(200 * Math.cos(angle));
-			double xP = player.getX() + 10;
-			double yP = player.getY() + 10;
-			xDisplay = Program.clamp(x, xP - xW, xP + xW);
-			yDisplay = Program.clamp(y, yP - yW, yP + yW);*/
 			xDisplay = Program.clamp(x + player.getX() + 10 - Program.WIDTH/2, 0, Program.WIDTH);
 			yDisplay = Program.clamp(y + player.getY() + 30 - Program.HEIGHT/2, 0, Program.HEIGHT);
+			if (wantToLimitRange) limitRange(200);
 		}
 		
 		for(int i = 0; i<xLine.length; i++)
@@ -48,8 +43,18 @@ public class Reticle extends GameObject {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
 		g2d.drawPolyline(xLine, yLine, 5);
-		g2d.setColor(new Color(255,255,255,63));
-		g2d.drawOval((int)x-2, (int)y-2, 4, 4);
+		g2d.setColor(new Color(255,255,255,47));
+		g2d.drawOval((int)x-3, (int)y-3, 6, 6);
+	}
+	
+	private void limitRange(double range) {
+		double angle = Math.atan2(xDisplay - (player.getX() + 10), yDisplay - (player.getY() + 10));
+		double xW = Math.abs(range * Math.sin(angle));
+		double yW = Math.abs(range * Math.cos(angle));
+		double xP = player.getX() + 10;
+		double yP = player.getY() + 10;
+		xDisplay = Program.clamp(xDisplay, xP - xW, xP + xW);
+		yDisplay = Program.clamp(yDisplay, yP - yW, yP + yW);
 	}
 	
 	public double getXDisplay() {return xDisplay;}

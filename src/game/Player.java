@@ -120,9 +120,6 @@ public class Player extends GameObject{
 			if(velX != 0 || velY != 0)
 				spriteNum++;
 			
-			]
-					
-			
 			spriteNum = spriteNum % 8;
 		}
 		
@@ -306,7 +303,7 @@ public class Player extends GameObject{
 			spriteSheet = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		for(int i = 0; i < NUMSPRITECYCLES; i++) {
 			for(int j = 0; j < NUMGUNS; j++) {

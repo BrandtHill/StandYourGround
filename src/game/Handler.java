@@ -105,6 +105,13 @@ public class Handler {
 		addObject(new Zombie(x,y,this, r.nextDouble()/5+1.2, hp));
 	}
 	
+	public void bloodSplat(double x, double y, double knock, double angle) {
+		Random r = new Random();
+		addBlood(new Blood(x, y, knock, angle));
+		addBlood(new Blood(x, y, knock + (r.nextDouble() - 0.5)*2, angle + (r.nextDouble() - 0.5)));
+		addBlood(new Blood(x, y, knock + (r.nextDouble() - 0.5)*2, angle + (r.nextDouble() - 0.5)));
+	}
+	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
