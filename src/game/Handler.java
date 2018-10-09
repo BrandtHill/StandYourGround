@@ -71,45 +71,46 @@ public class Handler {
 		}
 		while(abs(x-xPlayer)<200 && abs(y-yPlayer)<200);
 		
-		addObject(new Zombie(x,y,this, r.nextDouble()/5+1, 60));
+		addObject(new Zombie(x, y, r.nextDouble()/5+1, 60));
 		
 	}
 	
 	public void addZombieLeft(double speed, int lvl) {
 		Random r = new Random();	
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(-100, r.nextInt(Program.HEIGHT), this, speed, hp));
+		addObject(new Zombie(-100, r.nextInt(Program.HEIGHT), speed, hp));
 	}
 	
 	public void addZombieRight(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT), this, speed, hp));
+		addObject(new Zombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT), speed, hp));
 	}
 	
 	public void addZombieUp(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(r.nextInt(Program.WIDTH), -100, this, speed, hp));
+		addObject(new Zombie(r.nextInt(Program.WIDTH), -100, speed, hp));
 	}
 	
 	public void addZombieDown(double speed, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100, this, speed, hp));
+		addObject(new Zombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100, speed, hp));
 	}
 	
 	public void addZombie(double x, double y, int lvl) {
 		Random r = new Random();
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(x,y,this, r.nextDouble()/5+1.2, hp));
+		addObject(new Zombie(x, y, r.nextDouble()/5+1.2, hp));
 	}
 	
-	public void bloodSplat(double x, double y, double knock, double angle) {
+	public void bloodSplat(double x, double y, double knock, double angle, int num) {
 		Random r = new Random();
 		addBlood(new Blood(x, y, knock, angle));
-		addBlood(new Blood(x, y, knock + (r.nextDouble() - 0.5)*2, angle + (r.nextDouble() - 0.5)));
-		addBlood(new Blood(x, y, knock + (r.nextDouble() - 0.5)*2, angle + (r.nextDouble() - 0.5)));
+		for (int i = 1; i < num; i++) {
+			addBlood(new Blood(x, y, knock * (r.nextDouble() * 0.5 + 0.5 ), angle + (r.nextDouble() - 0.5)*1.55));
+		}
 	}
 	
 	public void addObject(GameObject obj) 		{gameObjs.add(obj);}

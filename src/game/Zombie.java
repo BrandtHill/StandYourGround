@@ -25,14 +25,10 @@ public class Zombie extends GameObject{
 	private int tickDivider;
 	private int spriteNum;
 	
-	public Zombie(double x, double y, Handler handler, double speed, double health) {
+	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
 		
-		try {
-			player = (Player)handler.getObjectAt(0);
-		} catch(Exception e) {
-			System.out.println(e.getMessage());
-		}
+		player = Program.player;
 
 		this.health = health;	
 		this.speed = speed;
@@ -97,7 +93,7 @@ public class Zombie extends GameObject{
 		handler.addBlood(new Blood(x+10, y+10));
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
-		handler.bloodSplat(x+10, y+10, knock, angle);
+		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
 		if(health<= 0) {
 			int money = player.getMoney();
 			player.setMoney(20+r.nextInt(11) + money);
@@ -112,7 +108,7 @@ public class Zombie extends GameObject{
 			spriteSheet = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		for(int i = 0; i < 8; i++) {
 			zombieSprites[i] = spriteSheet.getSubimage(20 * i, 0, 20, 24);
