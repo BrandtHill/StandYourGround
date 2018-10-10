@@ -27,8 +27,9 @@ public class Reticle extends GameObject {
 		yDisplay = y = Program.clamp(y, 0, Program.HEIGHT);
 				
 		if (Program.gameState == STATE.InGame) {
-			xDisplay = Program.clamp(x + player.getX() + 10 - Program.WIDTH/2, 0, Program.WIDTH);
-			yDisplay = Program.clamp(y + player.getY() + 30 - Program.HEIGHT/2, 0, Program.HEIGHT);
+			if (!Program.isOnEdgeX()) xDisplay = Program.clamp(x + player.getX() + 10 - Program.WIDTH / 2, 0, Program.WIDTH);
+			if (!Program.isOnEdgeY()) yDisplay = Program.clamp(y + player.getY() + 30 - Program.HEIGHT / 2, 0, Program.HEIGHT);
+			
 			if (wantToLimitRange) limitRange(200);
 		}
 		

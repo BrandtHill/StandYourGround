@@ -30,6 +30,8 @@ public class Program extends Canvas implements Runnable{
 	public static Handler handler;
 	public static final int HEIGHT = 600;
 	public static final int WIDTH = 800;
+	public static final int XTBOUND = -160;
+	public static final int YTBOUND = -140;
 	
 	public static enum STATE{
 		InGame,
@@ -67,8 +69,8 @@ public class Program extends Canvas implements Runnable{
 			System.out.println(e.getMessage());
 		}
 
-		saveToFile("res/saves/newgame.syg/", (Player)handler.getObjectAt(0));
-		saveToFile("res/saves/autosave.syg/", (Player)handler.getObjectAt(0));
+		saveToFile("res/saves/newgame.syg/");
+		saveToFile("res/saves/autosave.syg/");
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -160,8 +162,8 @@ public class Program extends Canvas implements Runnable{
 			break;
 			
 		case InGame:
-			double xT = clamp(-player.getX() + (WIDTH/2 - 70), -160, 0);
-			double yT = clamp(-player.getY() + (HEIGHT/2 - 80), -140, 0);
+			double xT = clamp(-player.getX() + (WIDTH/2 - 70), XTBOUND, 0);
+			double yT = clamp(-player.getY() + (HEIGHT/2 - 80), YTBOUND, 0);
 			g.scale(1.25, 1.25);
 			g.translate(xT, yT);
 			g.drawImage(background, 0, 0, null);
@@ -243,7 +245,7 @@ public class Program extends Canvas implements Runnable{
 			break;
 		case StoreMenu:
 			addMouseMotionListener(storeMotion);
-			saveToFile("res/saves/autosave.syg/", player);
+			saveToFile("res/saves/autosave.syg/");
 			Store.menu = Store.Menu.BuyGuns;
 			store.onMenuUpdate();
 			break;
@@ -258,11 +260,16 @@ public class Program extends Canvas implements Runnable{
 		}
 	}
 	
-	/**
-	 * This method makes sure the input 'val' is within
-	 * the bounds on 'min' and 'max'. I think it's a rather
-	 * clever one-line implementation.
-	 */
+	public static boolean isOnEdgeX() {
+		double x = -player.getX() + (WIDTH/2 - 70);
+		return x > 0 || x < XTBOUND;
+	}
+	
+	public static boolean isOnEdgeY() {
+		double y = -player.getY() + (HEIGHT/2 - 80);
+		return y > 0 || y < YTBOUND;
+	}
+	
 	public static double clamp(double val, double min, double max) {
 		return Math.min(Math.max(val, min), max);
 	}
@@ -271,16 +278,14 @@ public class Program extends Canvas implements Runnable{
 		spawnSys.commenceLevel();
 	}
 	
-	public static void saveToFile(String filename, Player player) {
+	public static void saveToFile(String filename) {
 		saveData.saveToFile(filename, player);
 	}
 	
-	public static void loadFromFile(String filename, Player player) {
+	public static void loadFromFile(String filename) {
 		saveData = saveData.loadFromFile(filename);
-		if(saveData!= null)
-			saveData.setPlayerAfterLoad(player);
-		else
-			System.out.println("Player load was not successful.");
+		if (saveData!= null) saveData.setPlayerAfterLoad(player);
+		else System.out.println("Player load was not successful.");
 	}
 	
 	public static void delay(Duration duration) {
