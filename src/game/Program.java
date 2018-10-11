@@ -17,7 +17,8 @@ import org.lwjgl.openal.AL;
 public class Program extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = -1499886446881465910L;
-	private Thread gameThread;
+	private Thread gameThread, renderThread;
+	private Object lock;
 	private boolean running;
 	private HUD hud;
 	private Store store;
@@ -79,12 +80,17 @@ public class Program extends Canvas implements Runnable{
 	public synchronized void start() {
 		running = true;
 		gameThread = new Thread(this, "Main Game Thread");
+		renderThread = new Thread( new Runnable() {
+			public void run() {renderThreadLoop();}
+		});
 		gameThread.start();
+		renderThread.start();
 	}
 	
 	public synchronized void stop() {
 		try {
 			gameThread.join();
+			renderThread.join();
 			running = false;
 			AL.destroy();
 		}
@@ -136,6 +142,10 @@ public class Program extends Canvas implements Runnable{
         stop();
 	}
 
+	private void renderThreadLoop() {
+		int frames = 0;
+	}
+	
 	private void render() {
 		BufferStrategy bs = this.getBufferStrategy();
 		if(bs == null) {
@@ -250,11 +260,8 @@ public class Program extends Canvas implements Runnable{
 			store.onMenuUpdate();
 			break;
 		case GameOver:
-			break;
 		case PauseMenu:
-			break;
 		case StartMenu:
-			break;
 		default:
 			break;
 		}
