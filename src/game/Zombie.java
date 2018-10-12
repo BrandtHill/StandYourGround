@@ -17,11 +17,14 @@ import static java.lang.Math.cos;
 
 public class Zombie extends GameObject{
 
-	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	private Player player;
-	private Random r;
-	private static BufferedImage spriteSheet;
-	private static BufferedImage[] zombieSprites = new BufferedImage[8];
+	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
+	protected Player player;
+	protected Random r;
+	private static BufferedImage spriteSheet1;
+	private static BufferedImage spriteSheet2;
+	protected BufferedImage[] zombieSprites;
+	protected static BufferedImage[] zombieSprites1 = new BufferedImage[8];
+	protected static BufferedImage[] zombieSprites2 = new BufferedImage[8];
 	private int tickDivider;
 	private int spriteNum;
 	
@@ -32,6 +35,7 @@ public class Zombie extends GameObject{
 
 		this.health = health;	
 		this.speed = speed;
+		this.zombieSprites = zombieSprites1;
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
@@ -105,13 +109,19 @@ public class Zombie extends GameObject{
 	public static void loadSprites() {
 		try {
 			FileInputStream file = new FileInputStream("res/ZombieSprite_1.png");
-			spriteSheet = ImageIO.read(file);
+			spriteSheet1 = ImageIO.read(file);
+			file.close();
+			file = new FileInputStream("res/ZombieSprite_2.png");
+			spriteSheet2 = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		for(int i = 0; i < 8; i++) {
-			zombieSprites[i] = spriteSheet.getSubimage(20 * i, 0, 20, 24);
+			zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
+		}
+		for(int i = 0; i < 8; i++) {
+			zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
 		}
 	}
 }

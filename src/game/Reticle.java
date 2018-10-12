@@ -50,7 +50,7 @@ public class Reticle extends GameObject {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
 		g2d.drawPolyline(xLine, yLine, 5);
-		g2d.setColor(new Color(255,255,255,47));
+		g2d.setColor(new Color(255,255,255,31));
 		g2d.drawOval((int)x-3, (int)y-3, 6, 6);
 	}
 	

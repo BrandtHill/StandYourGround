@@ -5,6 +5,7 @@ import static java.lang.Math.atan2;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
@@ -70,6 +71,13 @@ public class Player extends GameObject{
 	public Rectangle getBounds() {
 		return new Rectangle((int)x, (int)y, 20, 20);
 	}
+	
+	public Polygon getSightBounds() {
+		return new Polygon(
+				new int[]{(int)x + 10, (int)(x + 10 + 220 * Math.sin(angle - 0.075)), (int)(x + 10 + 220 * Math.sin(angle + 0.075))}, 
+				new int[]{(int)y + 10, (int)(y + 10 + 220 * Math.cos(angle - 0.075)), (int)(y + 10 + 220 * Math.cos(angle + 0.075))},
+				3);
+	}
 
 	public void tick() {
 		
@@ -90,35 +98,27 @@ public class Player extends GameObject{
 		
 		gunWielded.tick();
 		
-		if (tickDivider%8 == 0) {
+		if (tickDivider%4 == 0) {
 			detectCollision();
 			
 			switch(gunWielded.getId()) {
-			case Titan:
-				gunNum = 0;
+			case Titan:			gunNum = 0;
 				break;
-			case PX4Compact:
-				gunNum = 1; 		
+			case PX4Compact:	gunNum = 1;
 				break;
-			case Model57:
-				gunNum = 2;
+			case Model57:		gunNum = 2;
 				break;
-			case AR15: 
-				gunNum = 3;
+			case AR15: 			gunNum = 3;
 				break;
-			case OverUnder:
-				gunNum = 4;
+			case OverUnder:		gunNum = 4;
 				break;
-			case M77:
-				gunNum = 5;
+			case M77:			gunNum = 5;
 				break;
-			default: 
-				gunNum = 0;
+			default: 			gunNum = 0;
 				break;
 			}
 			
-			if(velX != 0 || velY != 0)
-				spriteNum++;
+			if (velX != 0 || velY != 0) spriteNum++;
 			
 			spriteNum = spriteNum % 8;
 		}
@@ -126,8 +126,7 @@ public class Player extends GameObject{
 		tickDivider++;	
 	}
 	
-	public void detectCollision()
-	{
+	public void detectCollision() {
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
 			if(obj instanceof Zombie) {
@@ -145,6 +144,7 @@ public class Player extends GameObject{
 		g2d.rotate(-angle, x + 10, y + 10);
 		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x + 10, y + 10);
+		g2d.drawPolygon(getSightBounds());
 	}
 
 	public Gun getGunWielded() {return gunWielded;}

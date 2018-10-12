@@ -78,7 +78,7 @@ public class Handler {
 	public void addZombieLeft(double speed, int lvl) {
 		Random r = new Random();	
 		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(-100, r.nextInt(Program.HEIGHT), speed, hp));
+		addObject(new DodgingZombie(-100, r.nextInt(Program.HEIGHT), speed, hp));
 	}
 	
 	public void addZombieRight(double speed, int lvl) {
