@@ -179,9 +179,9 @@ public class Program extends Canvas implements Runnable{
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("GAME PAUSED", 180, 200);
+			g.drawString("GAME PAUSED", 200, 200);
 			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS 'ESC' TO RESUME", 150, 400);
+			g.drawString("PRESS 'ESC' TO RESUME", 160, 400);
 			reticle.render(g);
 			break;
 			

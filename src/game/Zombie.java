@@ -25,8 +25,8 @@ public class Zombie extends GameObject{
 	protected BufferedImage[] zombieSprites;
 	protected static BufferedImage[] zombieSprites1 = new BufferedImage[8];
 	protected static BufferedImage[] zombieSprites2 = new BufferedImage[8];
-	private int tickDivider;
-	private int spriteNum;
+	protected int tickDivider;
+	protected int spriteNum;
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
@@ -36,36 +36,40 @@ public class Zombie extends GameObject{
 		this.health = health;	
 		this.speed = speed;
 		this.zombieSprites = zombieSprites1;
+
+		this.r = new Random();
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
 	}
 
 	public void tick() {
-		xPlayer = player.getX()+10;
-		yPlayer = player.getY()+10;
-		angle = atan2(xPlayer-x, yPlayer-y);
+		angle = getAngleToPlayer();
 		xBias = speed*sin(angle);
 		yBias = speed*cos(angle);
-		r = new Random();
 		velX = r.nextInt(31)/10.0 - 1.5 + xBias;
 		velY = r.nextInt(31)/10.0 - 1.5 + yBias;
 		
 		x += velX;
 		y += velY;
 		
-		if(tickDivider % 8 == 0) {
+		if (tickDivider % 8 == 0) {
 			detectCollision();
-			spriteNum = (spriteNum + 1) % 8;
+			spriteNum++;
 		}
 		
-		if(health<20) speed *= 1.001;
+		if (health<20) speed *= 1.001;
 		
 		tickDivider++;
 	}
 	
-	public void detectCollision()
-	{
+	protected double getAngleToPlayer() {
+		xPlayer = player.getX()+10;
+		yPlayer = player.getY()+10;
+		return atan2(xPlayer-x, yPlayer-y);
+	}
+	
+	public void detectCollision() {
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
 			if(obj instanceof Zombie) {
@@ -88,7 +92,7 @@ public class Zombie extends GameObject{
 		
 		g2d.setColor(Color.RED);
 		g2d.rotate(-angle, x+10, y+10);
-		g2d.drawImage(zombieSprites[spriteNum], (int)x, (int)y, null);
+		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
 	}
 	
