@@ -144,7 +144,6 @@ public class Player extends GameObject{
 		g2d.rotate(-angle, x + 10, y + 10);
 		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x + 10, y + 10);
-		g2d.drawPolygon(getSightBounds());
 	}
 
 	public Gun getGunWielded() {return gunWielded;}

@@ -3,8 +3,10 @@ package game;
 public class DodgingZombie extends Zombie {
 
 	private long lastDodged = 0;
+	private long lastStrafed = 0;
 	private int numTicks = 0;
 	private boolean isDodging;
+	private boolean strafeDir;
 	private int ticksInSight, maxTicksInSight;
 	private double theta;
 	
@@ -18,15 +20,29 @@ public class DodgingZombie extends Zombie {
 	@Override
 	public void tick() {
 		
-		if ((System.currentTimeMillis() - lastDodged > 6000)) {
+		if (System.currentTimeMillis() - lastDodged > 6000) {
 			if (isLineOfSight()) ticksInSight++;
 			else ticksInSight = 0;
 			
 			if (ticksInSight >= maxTicksInSight) initDodge();
 		}
 		
-		if (isDodging) dodgeTick();
-		else super.tick();
+		if (isDodging) {
+			dodgeTick();
+		}
+		else {
+			super.tick();
+			if (isLineOfSight()) {
+				double phi = angle + (strafeDir ? 1 : -1) * Math.PI / 2;
+				x += Math.sin(phi);
+				y += Math.cos(phi);
+			}
+		}
+		
+		if (System.currentTimeMillis() - lastStrafed > 5000) {
+			strafeDir = r.nextBoolean();
+			lastStrafed = System.currentTimeMillis();
+		}
 	}
 	
 	private boolean isLineOfSight() {

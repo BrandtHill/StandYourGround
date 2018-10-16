@@ -18,8 +18,8 @@ import static java.lang.Math.cos;
 public class Zombie extends GameObject{
 
 	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	protected Player player;
 	protected Random r;
+	protected static Player player;
 	private static BufferedImage spriteSheet1;
 	private static BufferedImage spriteSheet2;
 	protected BufferedImage[] zombieSprites;
@@ -30,9 +30,7 @@ public class Zombie extends GameObject{
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
-		
 		player = Program.player;
-
 		this.health = health;	
 		this.speed = speed;
 		this.zombieSprites = zombieSprites1;
