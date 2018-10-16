@@ -3,8 +3,6 @@ package game;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
-import game.Program.STATE;
-
 public class MouseMotionInput extends MouseMotionAdapter {
 	
 	private static Reticle reticle;

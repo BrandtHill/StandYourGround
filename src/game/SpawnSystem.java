@@ -10,6 +10,16 @@ public class SpawnSystem {
 	private int zombiesLeft;
 	private int level, wave;
 	private long timer, delay;
+	private enum REGION {
+		UP,
+		DOWN,
+		LEFT,
+		RIGHT
+	}
+	private enum ZOMBIE {
+		NORMAL,
+		DODGING
+	}
 	
 	public SpawnSystem() {
 		level = 1;
@@ -94,12 +104,9 @@ public class SpawnSystem {
 			break;	
 		
 		default:
-			player.zombiesLeft = 20*level;
-			for(int i = 0; i<60; i++) {
-				handler.addZombie();
-			}
-			for(int i = 0; i < 20*(level-3); i++) {
-				handler.addZombie(-100 + i*10, Program.HEIGHT+200+(30*i), level);
+			player.zombiesLeft = 20 * level;
+			for(int i = 0; i < 20 * level; i++) {
+				Handler.addZombie();
 			}
 			break;
 		}
@@ -116,19 +123,12 @@ public class SpawnSystem {
 		case 1:
 			switch(wave) {
 			case 1:
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieLeft(1.2, level);
-				}
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
 				delay = 5000;
 				break;
 				
 			case 2:
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieRight(1.2, level);
-				}
-				break;
-				
-			default: 
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
 				doneSpawning = true;	
 				break;
 				
@@ -137,168 +137,116 @@ public class SpawnSystem {
 		case 2:
 			switch(wave) {
 			case 1: 
-				for(int i = 0; i < 5; i++) {
-					handler.addZombieUp(1.2, level);
-				}
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 5);
 				delay = 1000;
 				break;
 			
 			case 2:
-				for(int i = 0; i < 3; i++) {
-					handler.addZombieDown(1.0, level);
-				}
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
 				delay = 2000;
 				break;
 			
 			case 3:
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieLeft(1.3, level);
-				}
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
 				delay = 3000;
 				break;
 				
 			case 4:
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieRight(1.2, level);
-				}
-				break;
-				
-			default:
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
 				doneSpawning = true;
 				break;
-			
 			}
-			
 			break;
 			
 		case 3:
 			switch(wave) {
 			case 1: 
-				for(int i = 0; i < 12; i++) {
-					handler.addZombieRight(1.1, level);
-				}
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 12);
 				delay = 2500;
 				break;
 			
 			case 2:
-				for(int i = 0; i < 12; i++) {
-					handler.addZombieLeft(1.25, level);
-				}				
-				break;
-				
-			default:
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 12);
 				doneSpawning = true;
 				break;
-			
 			}
-			
 			break;
 			
 		case 4:
 			switch(wave) {
 			case 1: 
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieRight(1.3, level);
-				}
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieLeft(1.3, level);
-				}				
-				handler.addZombieRight(2.5, level);
-				handler.addZombieRight(2.5, level);
-				handler.addZombieLeft(2.5, level);
-				handler.addZombieLeft(2.5, level);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
+
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);	//fast
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);	//fast
 				delay = 5000;
 				break;
 			
 			case 2:
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieRight(1.3, level);
-				}
-				for(int i = 0; i < 4; i++) {
-					handler.addZombieLeft(1.3, level);
-				}	
-				break;
-				
-			default:
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
 				doneSpawning = true;
-				break;
-			
+				break;			
 			}
-			
 			break;			
 		
 		case 5:	
 			switch(wave) {
 			case 1: 
-				for(int i = 0; i < 15; i++) {
-					handler.addZombieUp(1.2, level);
-				}
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 15);
 				delay = 6000;
 				break;
 			
 			case 2:
-				for(int i = 0; i < 15; i++) {
-					handler.addZombieDown(1.2, level);
-				}
-				break;
-				
-			default:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 15);
 				doneSpawning = true;
 				break;
-			
 			}
-			
 			break;
 		
 		case 6:
 			switch(wave) {
 			case 1: 				
-				handler.addZombieRight(2, level);
-				handler.addZombieRight(2.3, level);
-				handler.addZombieLeft(2, level);
-				handler.addZombieLeft(2.3, level);
-				handler.addZombieRight(3, level);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3); 	//fast
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);  	//fast
 				delay = 2500;
 				break;
 			
 			case 2:
-				for(int i = 0; i < 5; i++) {
-					handler.addZombieRight(1.5, level);
-				}
-				for(int i = 0; i < 5; i++) {
-					handler.addZombieLeft(1.5, level);
-				}
-				break;
-				
-			default:
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
 				doneSpawning = true;
 				break;
-			
 			}
-			
 			break;			
 			
 		default:
-			/*switch(wave) {
-			case 1: 
-				
-				break;
-			
-			case 2:
-				
-				break;
-				
-			default:
-				doneSpawning = true;
-				break;
-			
-			}*/
 			doneSpawning = true;
 			break;			
 			
 		}
-		
 		wave++;
+	}
+	
+	private void spawnZombies(REGION region, ZOMBIE zombie, int num) {
+		Runnable zombieMethod = null;
+		switch(region) {
+		case UP: 	zombieMethod = Handler::addZombieUp;
+			break;
+		case DOWN: 	zombieMethod = Handler::addZombieDown;
+			break;
+		case LEFT: 	zombieMethod = Handler::addZombieLeft;
+			break;
+		case RIGHT: zombieMethod = Handler::addZombieRight;
+			break;
+		default:
+			return;
+		}
+		
+		for (int i = 0; i < num; i++) {
+			zombieMethod.run();	
+		}
 	}
 	
 	public int getRemaining() {return zombiesLeft;}

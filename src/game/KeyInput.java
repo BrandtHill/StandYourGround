@@ -54,21 +54,21 @@ public class KeyInput extends KeyAdapter{
 		case GameOver:
 			switch (key) {
 			case KeyEvent.VK_R:
-				Program.loadFromFile("res/saves/autosave.syg/", player);
+				Program.loadFromFile("res/saves/autosave.syg/");
 				Program.gameState = STATE.StoreMenu;
 				break;
 			case KeyEvent.VK_N:
-				Program.loadFromFile("res/saves/newgame.syg/", player);
+				Program.loadFromFile("res/saves/newgame.syg/");
 				Program.gameState = STATE.StartMenu;
 				break;
 			case KeyEvent.VK_1:
-				Program.saveToFile("res/saves/save1.syg/", player);
+				Program.saveToFile("res/saves/save1.syg/");
 				break;
 			case KeyEvent.VK_2:
-				Program.saveToFile("res/saves/save2.syg/", player);
+				Program.saveToFile("res/saves/save2.syg/");
 				break;
 			case KeyEvent.VK_3:
-				Program.saveToFile("res/saves/save3.syg/", player);
+				Program.saveToFile("res/saves/save3.syg/");
 				break;	
 			default:
 				break;
@@ -92,13 +92,13 @@ public class KeyInput extends KeyAdapter{
 				Program.commenceLevel();
 				break;
 			case KeyEvent.VK_1:
-				Program.loadFromFile("res/saves/save1.syg/", player);
+				Program.loadFromFile("res/saves/save1.syg/");
 				break;
 			case KeyEvent.VK_2:
-				Program.loadFromFile("res/saves/save2.syg/", player);
+				Program.loadFromFile("res/saves/save2.syg/");
 				break;
 			case KeyEvent.VK_3:
-				Program.loadFromFile("res/saves/save3.syg/", player);
+				Program.loadFromFile("res/saves/save3.syg/");
 				break;
 			default:
 				break;
@@ -114,13 +114,13 @@ public class KeyInput extends KeyAdapter{
 				store.prevMenu();
 				break;
 			case KeyEvent.VK_1:
-				Program.saveToFile("res/saves/save1.syg/", player);
+				Program.saveToFile("res/saves/save1.syg/");
 				break;
 			case KeyEvent.VK_2:
-				Program.saveToFile("res/saves/save2.syg/", player);
+				Program.saveToFile("res/saves/save2.syg/");
 				break;
 			case KeyEvent.VK_3:
-				Program.saveToFile("res/saves/save3.syg/", player);
+				Program.saveToFile("res/saves/save3.syg/");
 				break;
 			default:
 				break;

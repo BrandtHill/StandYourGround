@@ -17,51 +17,57 @@ import static java.lang.Math.cos;
 
 public class Zombie extends GameObject{
 
-	private double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
-	private Player player;
-	private Random r;
-	private static BufferedImage spriteSheet;
-	private static BufferedImage[] zombieSprites = new BufferedImage[8];
-	private int tickDivider;
-	private int spriteNum;
+	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
+	protected Random r;
+	protected static Player player;
+	private static BufferedImage spriteSheet1;
+	private static BufferedImage spriteSheet2;
+	protected BufferedImage[] zombieSprites;
+	protected static BufferedImage[] zombieSprites1 = new BufferedImage[8];
+	protected static BufferedImage[] zombieSprites2 = new BufferedImage[8];
+	protected int tickDivider;
+	protected int spriteNum;
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
-		
 		player = Program.player;
-
 		this.health = health;	
 		this.speed = speed;
+		this.zombieSprites = zombieSprites1;
+
+		this.r = new Random();
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
 	}
 
 	public void tick() {
-		xPlayer = player.getX()+10;
-		yPlayer = player.getY()+10;
-		angle = atan2(xPlayer-x, yPlayer-y);
+		angle = getAngleToPlayer();
 		xBias = speed*sin(angle);
 		yBias = speed*cos(angle);
-		r = new Random();
 		velX = r.nextInt(31)/10.0 - 1.5 + xBias;
 		velY = r.nextInt(31)/10.0 - 1.5 + yBias;
 		
 		x += velX;
 		y += velY;
 		
-		if(tickDivider % 8 == 0) {
+		if (tickDivider % 8 == 0) {
 			detectCollision();
-			spriteNum = (spriteNum + 1) % 8;
+			spriteNum++;
 		}
 		
-		if(health<20) speed *= 1.001;
+		if (health<20) speed *= 1.001;
 		
 		tickDivider++;
 	}
 	
-	public void detectCollision()
-	{
+	protected double getAngleToPlayer() {
+		xPlayer = player.getX()+10;
+		yPlayer = player.getY()+10;
+		return atan2(xPlayer-x, yPlayer-y);
+	}
+	
+	public void detectCollision() {
 		for(int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
 			if(obj instanceof Zombie) {
@@ -84,7 +90,7 @@ public class Zombie extends GameObject{
 		
 		g2d.setColor(Color.RED);
 		g2d.rotate(-angle, x+10, y+10);
-		g2d.drawImage(zombieSprites[spriteNum], (int)x, (int)y, null);
+		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
 	}
 	
@@ -105,13 +111,19 @@ public class Zombie extends GameObject{
 	public static void loadSprites() {
 		try {
 			FileInputStream file = new FileInputStream("res/ZombieSprite_1.png");
-			spriteSheet = ImageIO.read(file);
+			spriteSheet1 = ImageIO.read(file);
+			file.close();
+			file = new FileInputStream("res/ZombieSprite_2.png");
+			spriteSheet2 = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		for(int i = 0; i < 8; i++) {
-			zombieSprites[i] = spriteSheet.getSubimage(20 * i, 0, 20, 24);
+			zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
+		}
+		for(int i = 0; i < 8; i++) {
+			zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
 		}
 	}
 }

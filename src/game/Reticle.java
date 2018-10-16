@@ -14,25 +14,32 @@ public class Reticle extends GameObject {
 	private int[] yLine = new int[5];
 	private static Player player;
 	private double xDisplay, yDisplay;
+	private double xPlayer, yPlayer;
 	private boolean wantToLimitRange; //functionality exists
 	
 	public Reticle(double x, double y) {
 		super(x, y);
 		player = Program.player;
+		xPlayer = player.getX();
+		yPlayer = player.getY();
 	}
 
-	public void tick() {
-		
+	public void tick() {	
 		xDisplay = x = Program.clamp(x, 0, Program.WIDTH);
 		yDisplay = y = Program.clamp(y, 0, Program.HEIGHT);
-				
+		
 		if (Program.gameState == STATE.InGame) {
-			xDisplay = Program.clamp(x + player.getX() + 10 - Program.WIDTH/2, 0, Program.WIDTH);
-			yDisplay = Program.clamp(y + player.getY() + 30 - Program.HEIGHT/2, 0, Program.HEIGHT);
+			
+			if (!Program.isOnEdgeX()) xPlayer = player.getX();
+			if (!Program.isOnEdgeY()) yPlayer = player.getY();
+			
+			xDisplay = Program.clamp(x + xPlayer + 10 - Program.WIDTH / 2, 0, Program.WIDTH);
+			yDisplay = Program.clamp(y + yPlayer + 30 - Program.HEIGHT / 2, 0, Program.HEIGHT);
+			
 			if (wantToLimitRange) limitRange(200);
 		}
 		
-		for(int i = 0; i<xLine.length; i++)
+		for (int i = 0; i < xLine.length; i++)
 		{
 			xLine[i] = (int)xDisplay + xZeroed[i];
 			yLine[i] = (int)yDisplay + yZeroed[i];
@@ -43,7 +50,7 @@ public class Reticle extends GameObject {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
 		g2d.drawPolyline(xLine, yLine, 5);
-		g2d.setColor(new Color(255,255,255,47));
+		g2d.setColor(new Color(255,255,255,31));
 		g2d.drawOval((int)x-3, (int)y-3, 6, 6);
 	}
 	

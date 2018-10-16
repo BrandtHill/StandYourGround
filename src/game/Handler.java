@@ -11,13 +11,15 @@ import static java.lang.Math.abs;
  */
 public class Handler {
 	
-	private LinkedList<GameObject> gameObjs;
-	private LinkedList<Blood>	   bloodList;
+	private static LinkedList<GameObject> 	gameObjs;
+	private static LinkedList<Blood>	   	bloodList;
+	private static Random 					r;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
 		bloodList = new LinkedList<Blood>();
 		Zombie.loadSprites();
+		r = new Random();
 	}
 	
 	public void tick() {
@@ -60,8 +62,7 @@ public class Handler {
 		}
 	}
 	
-	public void addZombie() {
-		Random r = new Random();
+	public static void addZombie() {
 		double x,y = 0;
 		double xPlayer = gameObjs.get(0).getX();
 		double yPlayer = gameObjs.get(0).getY();
@@ -75,49 +76,39 @@ public class Handler {
 		
 	}
 	
-	public void addZombieLeft(double speed, int lvl) {
-		Random r = new Random();	
-		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(-100, r.nextInt(Program.HEIGHT), speed, hp));
+	public static void addZombieLeft() {
+		addZombie(-100, r.nextInt(Program.HEIGHT));
 	}
 	
-	public void addZombieRight(double speed, int lvl) {
-		Random r = new Random();
-		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT), speed, hp));
+	public static void addZombieRight() {
+		addZombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT));
 	}
 	
-	public void addZombieUp(double speed, int lvl) {
-		Random r = new Random();
-		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(r.nextInt(Program.WIDTH), -100, speed, hp));
+	public static void addZombieUp() {
+		addZombie(r.nextInt(Program.WIDTH), -100);
 	}
 	
-	public void addZombieDown(double speed, int lvl) {
-		Random r = new Random();
-		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100, speed, hp));
+	public static void addZombieDown() {
+		addZombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100);
 	}
 	
-	public void addZombie(double x, double y, int lvl) {
-		Random r = new Random();
-		double hp = 40 + 5*lvl + r.nextInt(lvl);
-		addObject(new Zombie(x, y, r.nextDouble()/5+1.2, hp));
+	public static void addZombie(double x, double y) {
+		double hp = 40 + 4 * Program.player.getLevel();
+		double speed = 1.2 + Program.player.getLevel() * 0.05;
+		addObject(new Zombie(x, y, speed, hp));
 	}
 	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
-		Random r = new Random();
 		addBlood(new Blood(x, y, knock, angle));
 		for (int i = 1; i < num; i++) {
 			addBlood(new Blood(x, y, knock * (r.nextDouble() * 0.5 + 0.5 ), angle + (r.nextDouble() - 0.5)*1.55));
 		}
 	}
 	
-	public void addObject(GameObject obj) 		{gameObjs.add(obj);}
+	public static void addObject(GameObject obj){gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
 	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
 	public LinkedList<GameObject> getObjList()	{return gameObjs;}
-
 }
