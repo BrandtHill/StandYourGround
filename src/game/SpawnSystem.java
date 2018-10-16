@@ -1,5 +1,7 @@
 package game;
 
+import java.util.function.Consumer;
+
 import game.Program.STATE;
 
 public class SpawnSystem {
@@ -16,7 +18,7 @@ public class SpawnSystem {
 		LEFT,
 		RIGHT
 	}
-	private enum ZOMBIE {
+	public enum ZOMBIE {
 		NORMAL,
 		DODGING
 	}
@@ -178,8 +180,8 @@ public class SpawnSystem {
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
 
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);	//fast
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);	//fast
+				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 2);	//fast
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);	//fast
 				delay = 5000;
 				break;
 			
@@ -208,8 +210,8 @@ public class SpawnSystem {
 		case 6:
 			switch(wave) {
 			case 1: 				
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3); 	//fast
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);  	//fast
+				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 3); 	//fast
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);  	//fast
 				delay = 2500;
 				break;
 			
@@ -230,22 +232,26 @@ public class SpawnSystem {
 	}
 	
 	private void spawnZombies(REGION region, ZOMBIE zombie, int num) {
-		Runnable zombieMethod = null;
+		Consumer<ZOMBIE> zombieMethod = null;
 		switch(region) {
-		case UP: 	zombieMethod = Handler::addZombieUp;
+		case UP:
+			zombieMethod = Handler::addZombieUp;
 			break;
-		case DOWN: 	zombieMethod = Handler::addZombieDown;
+		case DOWN:
+			zombieMethod = Handler::addZombieDown;
 			break;
-		case LEFT: 	zombieMethod = Handler::addZombieLeft;
+		case LEFT:
+			zombieMethod = Handler::addZombieLeft;
 			break;
-		case RIGHT: zombieMethod = Handler::addZombieRight;
+		case RIGHT:
+			zombieMethod = Handler::addZombieRight;
 			break;
 		default:
 			return;
 		}
 		
 		for (int i = 0; i < num; i++) {
-			zombieMethod.run();	
+			zombieMethod.accept(zombie);	
 		}
 	}
 	
