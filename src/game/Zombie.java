@@ -19,7 +19,7 @@ public class Zombie extends GameObject{
 
 	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	protected Random r;
-	protected static Player player;
+	protected Player player;
 	private static BufferedImage spriteSheet1;
 	private static BufferedImage spriteSheet2;
 	protected BufferedImage[] zombieSprites;
@@ -30,7 +30,7 @@ public class Zombie extends GameObject{
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
-		player = Program.player;
+		this.player = Program.player;
 		this.health = health;	
 		this.speed = speed;
 		this.zombieSprites = zombieSprites1;
@@ -102,7 +102,7 @@ public class Zombie extends GameObject{
 		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
 		if(health<= 0) {
 			int money = player.getMoney();
-			player.setMoney(20+r.nextInt(11) + money);
+			player.setMoney(25 + money);
 			player.zombiesLeft--;
 			handler.removeObject(this);
 		}

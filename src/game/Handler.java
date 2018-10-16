@@ -3,6 +3,9 @@ package game;
 import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
+
+import game.SpawnSystem.ZOMBIE;
+
 import static java.lang.Math.abs;
 
 /*
@@ -76,26 +79,64 @@ public class Handler {
 		
 	}
 	
-	public static void addZombieLeft() {
-		addZombie(-100, r.nextInt(Program.HEIGHT));
+	public static void addZombieLeft(ZOMBIE type) {
+		double x = -100;
+		double y = r.nextInt(Program.HEIGHT);
+		
+		switch(type) {
+		case DODGING:	addDodgingZombie(x, y);
+			break;
+		case NORMAL: 	addNormalZombie(x, y); 
+			break;
+		}
 	}
 	
-	public static void addZombieRight() {
-		addZombie(Program.WIDTH + 100, r.nextInt(Program.HEIGHT));
+	public static void addZombieRight(ZOMBIE type) {
+		double x = Program.WIDTH + 100;
+		double y = r.nextInt(Program.HEIGHT);
+		
+		switch(type) {
+		case DODGING:	addDodgingZombie(x, y);
+			break;
+		case NORMAL: 	addNormalZombie(x, y); 
+			break;
+		}
 	}
 	
-	public static void addZombieUp() {
-		addZombie(r.nextInt(Program.WIDTH), -100);
+	public static void addZombieUp(ZOMBIE type) {
+		double x = r.nextInt(Program.WIDTH);
+		double y = -100;
+		
+		switch(type) {
+		case DODGING:	addDodgingZombie(x, y);
+			break;
+		case NORMAL:	addNormalZombie(x, y); 
+			break;
+		}
 	}
 	
-	public static void addZombieDown() {
-		addZombie(r.nextInt(Program.WIDTH), Program.HEIGHT + 100);
+	public static void addZombieDown(ZOMBIE type) {
+		double x = r.nextInt(Program.WIDTH);
+		double y = Program.HEIGHT + 100;
+		
+		switch(type) {
+		case DODGING:	addDodgingZombie(x, y);
+			break;
+		case NORMAL: 	addNormalZombie(x, y); 
+			break;
+		}
 	}
 	
-	public static void addZombie(double x, double y) {
+	public static void addNormalZombie(double x, double y) {
 		double hp = 40 + 4 * Program.player.getLevel();
 		double speed = 1.2 + Program.player.getLevel() * 0.05;
 		addObject(new Zombie(x, y, speed, hp));
+	}
+	
+	public static void addDodgingZombie(double x, double y) {
+		double hp = 36 + 3 * Program.player.getLevel();
+		double speed = 1.4 + Program.player.getLevel() * 0.07;
+		addObject(new DodgingZombie(x, y, speed, hp));
 	}
 	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
