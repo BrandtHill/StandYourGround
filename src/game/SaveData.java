@@ -24,6 +24,7 @@ public class SaveData implements Serializable {
 	private ArrayList<Boolean> gunsOwned;
 	private ArrayList<Boolean> fireModes;
 	private ArrayList<Boolean> specialRounds;
+	private ArrayList<Boolean> magIncreased;
 	
 	public SaveData() {
 		File directory = new File("res/saves");
@@ -43,6 +44,7 @@ public class SaveData implements Serializable {
 			gunsOwned = new ArrayList<Boolean>();
 			fireModes = new ArrayList<Boolean>();
 			specialRounds = new ArrayList<Boolean>();
+			magIncreased = new ArrayList<Boolean>();
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
@@ -54,6 +56,7 @@ public class SaveData implements Serializable {
 				gunsOwned.add(i, g.isOwned());
 				specialRounds.add(i, g.isSpecialRounds());
 				fireModes.add(i, g.isFullAuto());
+				magIncreased.add(i, g.isMagIncreased());
 			} 
 	         
 	        out.writeObject(this);
@@ -97,6 +100,7 @@ public class SaveData implements Serializable {
 			g.setOwned(gunsOwned.get(i));
 			g.setFullAuto(fireModes.get(i));
 			g.setSpecialRounds(specialRounds.get(i));
+			g.setMagIncreased(magIncreased.get(i));
 			g.resetAmmo();
 		}
 		player.autoEquip();

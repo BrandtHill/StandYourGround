@@ -15,6 +15,7 @@ public class DodgingZombie extends Zombie {
 		this.zombieSprites = zombieSprites2;
 		this.maxTicksInSight = r.nextInt(60) + 20;
 		this.ticksInSight = 0;
+		this.moneyValue = 30;
 	}
 
 	@Override
@@ -34,8 +35,8 @@ public class DodgingZombie extends Zombie {
 			super.tick();
 			if (isLineOfSight()) {
 				double phi = angle + (strafeDir ? 1 : -1) * Math.PI / 2;
-				x += Math.sin(phi);
-				y += Math.cos(phi);
+				x += 1.2 * Math.sin(phi);
+				y += 1.2 * Math.cos(phi);
 			}
 		}
 		
@@ -59,7 +60,7 @@ public class DodgingZombie extends Zombie {
 	}
 	
 	private void dodgeTick() {
-		double tempSpeed = 0.75 + numTicks / 15f;
+		double tempSpeed = 0.75 + numTicks / 25f;
 		theta += r.nextGaussian() * 0.1f;
 		angle = getAngleToPlayer();
 		x += tempSpeed * speed * Math.sin(theta);

@@ -22,11 +22,14 @@ public class Zombie extends GameObject{
 	protected Player player;
 	private static BufferedImage spriteSheet1;
 	private static BufferedImage spriteSheet2;
+	private static BufferedImage spriteSheet3;
 	protected BufferedImage[] zombieSprites;
 	protected static BufferedImage[] zombieSprites1 = new BufferedImage[8];
 	protected static BufferedImage[] zombieSprites2 = new BufferedImage[8];
+	protected static BufferedImage[] zombieSprites3 = new BufferedImage[8];
 	protected int tickDivider;
 	protected int spriteNum;
+	protected int moneyValue;
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
@@ -39,6 +42,7 @@ public class Zombie extends GameObject{
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
+		moneyValue = 22;
 	}
 
 	public void tick() {
@@ -100,30 +104,36 @@ public class Zombie extends GameObject{
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
 		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
-		if(health<= 0) {
-			int money = player.getMoney();
-			player.setMoney(25 + money);
+		if (health <= 0) {
+			player.setMoney(moneyValue + player.getMoney());
 			player.zombiesLeft--;
 			handler.removeObject(this);
 		}
 	}
 	
 	public static void loadSprites() {
+		FileInputStream file;
 		try {
-			FileInputStream file = new FileInputStream("res/ZombieSprite_1.png");
+			file = new FileInputStream("res/ZombieSprite_1.png");
 			spriteSheet1 = ImageIO.read(file);
 			file.close();
 			file = new FileInputStream("res/ZombieSprite_2.png");
 			spriteSheet2 = ImageIO.read(file);
 			file.close();
+			file = new FileInputStream("res/ZombieSprite_3.png");
+			spriteSheet3 = ImageIO.read(file);
+			file.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
 		}
-		for(int i = 0; i < 8; i++) {
+		for (int i = 0; i < 8; i++) {
 			zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
+		}
+		for (int i = 0; i < 8; i++) {
+			zombieSprites3[i] = spriteSheet3.getSubimage(20 * i, 0, 20, 24);
 		}
 	}
 }

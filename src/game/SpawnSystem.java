@@ -1,7 +1,5 @@
 package game;
 
-import java.util.function.Consumer;
-
 import game.Program.STATE;
 
 public class SpawnSystem {
@@ -12,7 +10,7 @@ public class SpawnSystem {
 	private int zombiesLeft;
 	private int level, wave;
 	private long timer, delay;
-	private enum REGION {
+	public enum REGION {
 		UP,
 		DOWN,
 		LEFT,
@@ -20,7 +18,8 @@ public class SpawnSystem {
 	}
 	public enum ZOMBIE {
 		NORMAL,
-		DODGING
+		DODGING,
+		FAST
 	}
 	
 	public SpawnSystem() {
@@ -76,17 +75,17 @@ public class SpawnSystem {
 		switch(level) {
 		
 		case 1: 
-			player.zombiesLeft = 8;
+			player.zombiesLeft = 6;
 			delay = 1000;
 			break;
 		
 		case 2:
-			player.zombiesLeft = 16;
+			player.zombiesLeft = 12;
 			delay = 1000;
 			break;
 		
 		case 3:
-			player.zombiesLeft = 24;
+			player.zombiesLeft = 16;
 			delay = 2500;
 			break;
 		
@@ -106,9 +105,9 @@ public class SpawnSystem {
 			break;	
 		
 		default:
-			player.zombiesLeft = 20 * level;
-			for(int i = 0; i < 20 * level; i++) {
-				Handler.addZombie();
+			player.zombiesLeft = 10 * level;
+			for(int i = 0; i < 10 * level; i++) {
+				handler.addRandomZombie();
 			}
 			break;
 		}
@@ -125,12 +124,12 @@ public class SpawnSystem {
 		case 1:
 			switch(wave) {
 			case 1:
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				delay = 5000;
 				break;
 				
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
 				doneSpawning = true;	
 				break;
 				
@@ -139,22 +138,23 @@ public class SpawnSystem {
 		case 2:
 			switch(wave) {
 			case 1: 
-				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
 				delay = 1000;
 				break;
 			
 			case 2:
-				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 1);
 				delay = 2000;
 				break;
 			
 			case 3:
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
 				delay = 3000;
 				break;
 				
 			case 4:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
 				doneSpawning = true;
 				break;
 			}
@@ -163,12 +163,15 @@ public class SpawnSystem {
 		case 3:
 			switch(wave) {
 			case 1: 
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 12);
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				delay = 2500;
 				break;
 			
 			case 2:
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 12);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 6);
 				doneSpawning = true;
 				break;
 			}
@@ -177,17 +180,16 @@ public class SpawnSystem {
 		case 4:
 			switch(wave) {
 			case 1: 
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
-
-				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 2);	//fast
-				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);	//fast
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 3);
 				delay = 5000;
 				break;
 			
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);
 				doneSpawning = true;
 				break;			
 			}
@@ -201,7 +203,9 @@ public class SpawnSystem {
 				break;
 			
 			case 2:
-				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 15);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 10);
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				doneSpawning = true;
 				break;
 			}
@@ -210,14 +214,14 @@ public class SpawnSystem {
 		case 6:
 			switch(wave) {
 			case 1: 				
-				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 3); 	//fast
-				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);  	//fast
-				delay = 2500;
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 3);
+				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 3);
+				delay = 7500;
 				break;
 			
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.DODGING, 4);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 5);
 				doneSpawning = true;
 				break;
 			}
@@ -232,26 +236,8 @@ public class SpawnSystem {
 	}
 	
 	private void spawnZombies(REGION region, ZOMBIE zombie, int num) {
-		Consumer<ZOMBIE> zombieMethod = null;
-		switch(region) {
-		case UP:
-			zombieMethod = Handler::addZombieUp;
-			break;
-		case DOWN:
-			zombieMethod = Handler::addZombieDown;
-			break;
-		case LEFT:
-			zombieMethod = Handler::addZombieLeft;
-			break;
-		case RIGHT:
-			zombieMethod = Handler::addZombieRight;
-			break;
-		default:
-			return;
-		}
-		
 		for (int i = 0; i < num; i++) {
-			zombieMethod.accept(zombie);	
+			handler.addZombie(zombie, region);	
 		}
 	}
 	

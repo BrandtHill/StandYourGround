@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import game.SpawnSystem.REGION;
 import game.SpawnSystem.ZOMBIE;
 
 import static java.lang.Math.abs;
@@ -14,9 +15,9 @@ import static java.lang.Math.abs;
  */
 public class Handler {
 	
-	private static LinkedList<GameObject> 	gameObjs;
-	private static LinkedList<Blood>	   	bloodList;
-	private static Random 					r;
+	private LinkedList<GameObject> 	gameObjs;
+	private LinkedList<Blood>	   	bloodList;
+	private Random 					r;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
@@ -65,78 +66,76 @@ public class Handler {
 		}
 	}
 	
-	public static void addZombie() {
-		double x,y = 0;
-		double xPlayer = gameObjs.get(0).getX();
-		double yPlayer = gameObjs.get(0).getY();
+	public void addRandomZombie() {
+		double x, y;
+		double xPlayer = Program.player.getX();
+		double yPlayer = Program.player.getY();
 		do {
-			x = r.nextInt(750);
-			y = r.nextInt(550);
+			x = r.nextInt(Program.WIDTH);
+			y = r.nextInt(Program.HEIGHT);
 		}
-		while(abs(x-xPlayer)<200 && abs(y-yPlayer)<200);
+		while(abs(x-xPlayer) < 200 && abs(y-yPlayer) < 200);
 		
-		addObject(new Zombie(x, y, r.nextDouble()/5+1, 60));
+		addNormalZombie(x, y);
 		
 	}
 	
-	public static void addZombieLeft(ZOMBIE type) {
-		double x = -100;
-		double y = r.nextInt(Program.HEIGHT);
+	public void addZombie(ZOMBIE zombie, REGION region) {
+		double x, y;
 		
-		switch(type) {
-		case DODGING:	addDodgingZombie(x, y);
+		switch (region) {
+		case DOWN:
+			x = r.nextInt(Program.WIDTH);
+			y = Program.HEIGHT + 100;
 			break;
-		case NORMAL: 	addNormalZombie(x, y); 
+		case LEFT:
+			x = -100;
+			y = r.nextInt(Program.HEIGHT);
+			break;
+		case RIGHT:
+			x = Program.WIDTH + 100;
+			y = r.nextInt(Program.HEIGHT);
+			break;
+		case UP:
+			x = r.nextInt(Program.WIDTH);
+			y = -100;
+			break;
+		default:
+			x = y = 0;
 			break;
 		}
-	}
-	
-	public static void addZombieRight(ZOMBIE type) {
-		double x = Program.WIDTH + 100;
-		double y = r.nextInt(Program.HEIGHT);
 		
-		switch(type) {
-		case DODGING:	addDodgingZombie(x, y);
+		switch(zombie) {
+		case DODGING:
+			addDodgingZombie(x, y);
 			break;
-		case NORMAL: 	addNormalZombie(x, y); 
+		case FAST:
+			addFastZombie(x, y); 
 			break;
-		}
-	}
-	
-	public static void addZombieUp(ZOMBIE type) {
-		double x = r.nextInt(Program.WIDTH);
-		double y = -100;
-		
-		switch(type) {
-		case DODGING:	addDodgingZombie(x, y);
+		case NORMAL:
+			addNormalZombie(x, y); 
 			break;
-		case NORMAL:	addNormalZombie(x, y); 
-			break;
-		}
-	}
-	
-	public static void addZombieDown(ZOMBIE type) {
-		double x = r.nextInt(Program.WIDTH);
-		double y = Program.HEIGHT + 100;
-		
-		switch(type) {
-		case DODGING:	addDodgingZombie(x, y);
-			break;
-		case NORMAL: 	addNormalZombie(x, y); 
+		default:
 			break;
 		}
 	}
 	
-	public static void addNormalZombie(double x, double y) {
+	public void addNormalZombie(double x, double y) {
 		double hp = 40 + 4 * Program.player.getLevel();
 		double speed = 1.2 + Program.player.getLevel() * 0.05;
 		addObject(new Zombie(x, y, speed, hp));
 	}
 	
-	public static void addDodgingZombie(double x, double y) {
+	public void addDodgingZombie(double x, double y) {
 		double hp = 36 + 3 * Program.player.getLevel();
-		double speed = 1.4 + Program.player.getLevel() * 0.07;
+		double speed = 1.4 + Program.player.getLevel() * 0.05;
 		addObject(new DodgingZombie(x, y, speed, hp));
+	}
+	
+	public void addFastZombie(double x, double y) {
+		double hp = 40 + 4 * Program.player.getLevel();
+		double speed = 2 + Program.player.getLevel() * 0.05;
+		addObject(new FastZombie(x, y, speed, hp));
 	}
 	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
@@ -146,7 +145,7 @@ public class Handler {
 		}
 	}
 	
-	public static void addObject(GameObject obj){gameObjs.add(obj);}
+	public void addObject(GameObject obj)		{gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
 	public void removeBlood(Blood blood)		{bloodList.remove(blood);}

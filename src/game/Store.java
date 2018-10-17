@@ -147,11 +147,11 @@ public class Store extends MouseAdapter{
 		
 		switch (menu) {
 		case BuyGuns:
-			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Buy", "AR-15", "$750");
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "M77", "$600");
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "Over-Under", "$450");
-			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "Model 57", "$425");
-			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Buy", "PX4 Compact", "$375");
+			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Buy", "AR-15", "$875");
+			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "M77", "$650");
+			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "Over-Under", "$525");
+			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "Model 57", "$475");
+			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Buy", "PX4 Compact", "$350");
 			break;
 		case BuyUpgrades:
 			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Ammo", "AR-15", "$300", 30);
@@ -271,6 +271,7 @@ public class Store extends MouseAdapter{
 				int m = player.getMoney();
 				gun.setMagSize(mag + ammo);
 				gun.setAmmoCapacity(cap + ammo);
+				gun.setMagIncreased(true);
 				player.setMoney(m - money);
 			} 
 		}		

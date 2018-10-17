@@ -17,7 +17,7 @@ public abstract class Gun {
 	protected double velocity, knock;
 	protected int xOffset, yOffset; //From center of player
 	protected int ammoLoaded, ammoCapacity, ammoExtra, magSize, hits;
-	protected boolean owned, lockedIn, isSidearm, specialRounds;
+	protected boolean owned, lockedIn, isSidearm, specialRounds, isMagIncreased;
 	protected boolean currentlyReloading, isFullAuto, shooting, chambered;
 	protected long reloadTime, chamberTime;
 	protected long timerReload, timerChamber;
@@ -133,6 +133,7 @@ public abstract class Gun {
 	public boolean isLockedIn() {return lockedIn;}
 	public boolean isSidearm() {return isSidearm;}
 	public boolean isSpecialRounds() {return specialRounds;}
+	public boolean isMagIncreased() {return isMagIncreased;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 
@@ -146,6 +147,7 @@ public abstract class Gun {
 	public void setFullAuto(boolean fullAuto) {this.isFullAuto = fullAuto;}
 	public void setOwned(boolean owned) {this.owned = owned;}
 	public void setSpecialRounds(boolean specialRounds) {this.specialRounds = specialRounds;}
+	public void setMagIncreased(boolean isMagIncreased) {this.isMagIncreased = isMagIncreased;}
 	public static void setPlayer(Player player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
 	public void resetTickDivier() {tickDivider = 0;}
