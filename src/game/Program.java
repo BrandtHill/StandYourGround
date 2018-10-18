@@ -23,6 +23,8 @@ public class Program extends Canvas implements Runnable{
 	private Store store;
 	private StoreMotion storeMotion;
 	private BufferedImage background;
+	private BufferedImage background1;
+	private BufferedImage background2;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;
 	public static Reticle reticle;
@@ -64,9 +66,11 @@ public class Program extends Canvas implements Runnable{
 		addMouseMotionListener(new MouseMotionInput());
 		
 		try {
-			background = ImageIO.read(new File("res/GrassBackground.png"));
+			background1 = ImageIO.read(new File("res/GrassBackground.png"));
+			background2 = ImageIO.read(new File("res/StreetBackground.png"));
+			background = background1;
 		} catch (IOException e) {
-			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 		saveToFile("res/saves/newgame.syg/");
@@ -240,6 +244,12 @@ public class Program extends Canvas implements Runnable{
 		
 		switch (gameState) {
 		case InGame:
+			if (player.getLevel() < 6) {
+				background = background1;
+			}
+			else {
+				background = background2;
+			}
 			if (prevState != STATE.PauseMenu) commenceLevel();
 			removeMouseMotionListener(storeMotion);
 			break;

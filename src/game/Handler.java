@@ -74,7 +74,7 @@ public class Handler {
 			x = r.nextInt(Program.WIDTH);
 			y = r.nextInt(Program.HEIGHT);
 		}
-		while(abs(x-xPlayer) < 200 && abs(y-yPlayer) < 200);
+		while (abs(x-xPlayer) < 300 && abs(y-yPlayer) < 300);
 		
 		addNormalZombie(x, y);
 		

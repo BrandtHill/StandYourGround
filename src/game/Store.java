@@ -207,6 +207,7 @@ public class Store extends MouseAdapter{
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT PRIMARY", 280, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			player.renderPreview(g, player.getGunPrimary());
 			drawEquipped(g);
 			break;
 		case SelectSidearm:
@@ -214,6 +215,7 @@ public class Store extends MouseAdapter{
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SIDEARM", 280, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			player.renderPreview(g, player.getGunSidearm());
 			drawEquipped(g);
 			break;
 		case SelectSecondary:
@@ -221,6 +223,7 @@ public class Store extends MouseAdapter{
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("SELECT SECONDARY", 280, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			player.renderPreview(g, player.getGunSecondary());
 			drawEquipped(g);
 			break;
 		case Final:

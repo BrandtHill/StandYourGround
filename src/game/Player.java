@@ -101,22 +101,7 @@ public class Player extends GameObject{
 		if (tickDivider%4 == 0) {
 			detectCollision();
 			
-			switch(gunWielded.getId()) {
-			case Titan:			gunNum = 0;
-				break;
-			case PX4Compact:	gunNum = 1;
-				break;
-			case Model57:		gunNum = 2;
-				break;
-			case AR15: 			gunNum = 3;
-				break;
-			case OverUnder:		gunNum = 4;
-				break;
-			case M77:			gunNum = 5;
-				break;
-			default: 			gunNum = 0;
-				break;
-			}
+			gunNum = getGunSpriteNum(gunWielded);
 			
 			if (velX != 0 || velY != 0) spriteNum++;
 			
@@ -124,6 +109,20 @@ public class Player extends GameObject{
 		}
 		
 		tickDivider++;	
+	}
+	
+	private int getGunSpriteNum(Gun g) {
+		if (g == null) return 0;
+
+		switch(g.getId()) {
+		case Titan:			return 0;
+		case PX4Compact:	return 1;
+		case Model57:		return 2;
+		case AR15: 			return 3;
+		case OverUnder:		return 4;
+		case M77:			return 5;
+		default: 			return 0;
+		}
 	}
 	
 	public void detectCollision() {
@@ -144,6 +143,11 @@ public class Player extends GameObject{
 		g2d.rotate(-angle, x + 10, y + 10);
 		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x + 10, y + 10);
+	}
+	
+	public void renderPreview(Graphics g, Gun gun) {
+		Graphics2D g2d = (Graphics2D)g;
+		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 30, 400, 60, 96, null);
 	}
 
 	public Gun getGunWielded() {return gunWielded;}
