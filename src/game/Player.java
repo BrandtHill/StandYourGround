@@ -147,7 +147,8 @@ public class Player extends GameObject{
 	
 	public void renderPreview(Graphics g, Gun gun) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 30, 400, 60, 96, null);
+		g2d.drawImage(Program.background.getSubimage(40, 20, 40, 40), 560, 360, 150, 150, null);
+		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 600, 380, 80, 128, null);
 	}
 
 	public Gun getGunWielded() {return gunWielded;}

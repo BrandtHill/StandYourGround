@@ -134,7 +134,7 @@ public class Handler {
 	
 	public void addFastZombie(double x, double y) {
 		double hp = 40 + 4 * Program.player.getLevel();
-		double speed = 2 + Program.player.getLevel() * 0.02;
+		double speed = 1.8 + Program.player.getLevel() * 0.02;
 		addObject(new FastZombie(x, y, speed, hp));
 	}
 	

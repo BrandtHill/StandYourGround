@@ -15,7 +15,7 @@ public class DodgingZombie extends Zombie {
 		this.zombieSprites = zombieSprites2;
 		this.maxTicksInSight = r.nextInt(60) + 20;
 		this.ticksInSight = 0;
-		this.moneyValue = 30;
+		this.moneyValue = 31;
 	}
 
 	@Override

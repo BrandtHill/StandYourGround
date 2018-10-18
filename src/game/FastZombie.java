@@ -7,7 +7,7 @@ public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y, double speed, double health) {
 		super(x, y, speed, health);
-		this.moneyValue = 34;
+		this.moneyValue = 36;
 		this.zombieSprites = zombieSprites3;
 	}
 	
@@ -27,14 +27,16 @@ public class FastZombie extends Zombie {
 			spriteNum++;
 		}
 		
-		speed *= 1.001;
+		speed *= 1.0005;
+		speed = Math.max(speed, 2.5);
 		
 		tickDivider++;
 	}
 	
 	@Override
 	public void damageMe(double damage, double angle, double knock) {
-		knock *= 3;
+		knock *= 1.8;
+		speed *= 0.95;
 		super.damageMe(damage, angle, knock);
 	}
 

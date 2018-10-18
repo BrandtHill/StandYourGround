@@ -22,7 +22,7 @@ public class Program extends Canvas implements Runnable{
 	private HUD hud;
 	private Store store;
 	private StoreMotion storeMotion;
-	private BufferedImage background;
+	public static BufferedImage background;
 	private BufferedImage background1;
 	private BufferedImage background2;
 	public static SpawnSystem spawnSys;

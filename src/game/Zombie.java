@@ -42,7 +42,7 @@ public class Zombie extends GameObject{
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		tickDivider = 0;
-		moneyValue = 22;
+		moneyValue = 23;
 	}
 
 	public void tick() {
