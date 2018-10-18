@@ -122,19 +122,19 @@ public class Handler {
 	
 	public void addNormalZombie(double x, double y) {
 		double hp = 40 + 4 * Program.player.getLevel();
-		double speed = 1.2 + Program.player.getLevel() * 0.05;
+		double speed = 1.2 + Program.player.getLevel() * 0.02;
 		addObject(new Zombie(x, y, speed, hp));
 	}
 	
 	public void addDodgingZombie(double x, double y) {
 		double hp = 36 + 3 * Program.player.getLevel();
-		double speed = 1.4 + Program.player.getLevel() * 0.05;
+		double speed = 1.4 + Program.player.getLevel() * 0.02;
 		addObject(new DodgingZombie(x, y, speed, hp));
 	}
 	
 	public void addFastZombie(double x, double y) {
 		double hp = 40 + 4 * Program.player.getLevel();
-		double speed = 2 + Program.player.getLevel() * 0.05;
+		double speed = 2 + Program.player.getLevel() * 0.02;
 		addObject(new FastZombie(x, y, speed, hp));
 	}
 	

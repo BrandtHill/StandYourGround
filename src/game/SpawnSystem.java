@@ -149,7 +149,7 @@ public class SpawnSystem {
 				break;
 			
 			case 3:
-				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 1);
 				delay = 3000;
 				break;
 				
@@ -182,14 +182,14 @@ public class SpawnSystem {
 			case 1: 
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
-				spawnZombies(REGION.UP, ZOMBIE.FAST, 3);
-				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 3);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
 				delay = 5000;
 				break;
 			
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				doneSpawning = true;
 				break;			
 			}

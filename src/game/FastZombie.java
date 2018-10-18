@@ -31,5 +31,11 @@ public class FastZombie extends Zombie {
 		
 		tickDivider++;
 	}
+	
+	@Override
+	public void damageMe(double damage, double angle, double knock) {
+		knock *= 3;
+		super.damageMe(damage, angle, knock);
+	}
 
 }
