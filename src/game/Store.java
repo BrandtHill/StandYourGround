@@ -61,6 +61,9 @@ public class Store extends MouseAdapter{
 				if (b.getFirstLine().contains("Hollow")) {
 					upgradeRounds(b.getGun(), b.getPrice());
 				}
+				if (b.getFirstLine().contains("Loads")) {
+					upgradeRounds(b.getGun(), b.getPrice());
+				}
 				if (b.getFirstLine().contains("Auto")) {
 					upgradeFireMode(b.getGun(), b.getPrice());
 				}
@@ -163,6 +166,7 @@ public class Store extends MouseAdapter{
 			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Increase Mag Size", "AR-15", "$500", 10);
 			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Drop-In Auto Sear", "AR-15", "$1100");
 			buttons[8] = new Button(buttonX[8], buttonY[8], true, "Hollow Points", "PX4 Compact", "$350");
+			buttons[9] = new Button(buttonX[9], buttonY[9], true, "Hand Loads", "M77", "$500");
 			break;
 		case SelectPrimary:
 			for (int i = 0; i < player.getArsenal().size(); i++) {

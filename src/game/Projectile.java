@@ -13,11 +13,12 @@ import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 
 public class Projectile extends GameObject{
-
-	private double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack;
+	
+	// public variables because I'm not about to make all these getters and setters
+	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;
+	public int hits;
+	public Color color;
 	private boolean old;
-	private int hits;
-	private Color color;
 	
 	public Projectile(Gun g) {
 		super(g.muzzlePointX(), g.muzzlePointY());
@@ -27,11 +28,14 @@ public class Projectile extends GameObject{
 		this.yScale = cos(angle);
 		this.xPrev = x;
 		this.yPrev = y;
-		this.damage = g.getDamage() * (g.isSpecialRounds() ? 1.75 : 1.0);
+		this.damage = g.getDamage();
 		this.knockBack = g.getKnock();
 		this.magnitude = g.getVelocity();
 		this.hits = g.getHits();
-		this.color = (g.isSpecialRounds() ? new Color(243, 144, 0) : Color.YELLOW);
+		this.color = Color.YELLOW;
+		this.angleMulti = 0.5;
+		
+		if (g.isSpecialRounds()) g.makeRoundSpecial(this);
 	}
 	
 	public Line2D.Double getBounds() {
@@ -45,10 +49,15 @@ public class Projectile extends GameObject{
 		yPrev = y;
 		x += velX;
 		y += velY;
-		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT)
+		
+		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) {
 			old = true;
-		if (old)
+		}
+		
+		if (old) {
 			handler.removeObject(this);
+		}
+		
 		detectCollision();
 	}
 	
@@ -63,7 +72,7 @@ public class Projectile extends GameObject{
 						hits--;
 						damage /= 1.4;
 						magnitude /= 1.2;
-						angle += (new Random().nextDouble() - 0.5) / 2;
+						angle += (new Random().nextDouble() - 0.5) * angleMulti;
 						xScale = sin(angle);
 						yScale = cos(angle);
 					}

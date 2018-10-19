@@ -38,4 +38,8 @@ public class OverUnder extends Gun {
 	public int getHits() {
 		return r.nextInt(3) + 1;
 	}
+
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+	}
 }

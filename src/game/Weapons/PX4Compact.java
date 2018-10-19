@@ -1,5 +1,7 @@
 package game.Weapons;
 
+import java.awt.Color;
+
 import game.AudioPlayer;
 import game.Projectile;
 
@@ -30,5 +32,11 @@ public class PX4Compact extends Gun {
 			AudioPlayer.getSound("Pistol").play(0.95f, 0.3f);
 		} 
 		reloadIfNeeded();
+	}
+
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+		p.color = new Color(243, 144, 0);
+		p.damage *= 1.75;
 	}
 }

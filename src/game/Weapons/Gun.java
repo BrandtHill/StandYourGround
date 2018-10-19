@@ -10,6 +10,7 @@ import org.newdawn.slick.Sound;
 
 import game.Handler;
 import game.Player;
+import game.Projectile;
 
 public abstract class Gun {
 
@@ -43,6 +44,8 @@ public abstract class Gun {
 	}
 	
 	public abstract void shoot();
+	
+	public abstract void makeRoundSpecial(Projectile p);
 	
 	public void reload() {
 		if (!currentlyReloading) {

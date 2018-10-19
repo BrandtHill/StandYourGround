@@ -40,4 +40,8 @@ public class AR15 extends Gun {
 		}
 		tickDivider++;
 	}
+
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+	}
 }

@@ -163,9 +163,9 @@ public class Player extends GameObject{
 	public int getLevel() {return level;}
 	public Gun getGunAt(int i) {return arsenal.get(i);}
 	public int getGunWeildedIndex() {
-		if(gunWielded == gunPrimary) return 0;
-		if(gunWielded == gunSecondary) return 1;
-		if(gunWielded == gunSidearm) return 2;
+		if (gunWielded == gunPrimary) return 0;
+		if (gunWielded == gunSecondary) return 1;
+		if (gunWielded == gunSidearm) return 2;
 		return 0;
 	}
 	
@@ -180,14 +180,14 @@ public class Player extends GameObject{
 	public void setLevel(int level) {this.level = level;}
 	
 	public Gun searchGun(String name) {
-		for(Gun g : arsenal) {
-			if(g.getName().equals(name)) return g;
+		for (Gun g : arsenal) {
+			if (g.getName().equals(name)) return g;
 		}
 		return null;
 	}
 	public Gun searchGun(GUN id) {
-		for(Gun g : arsenal) {
-			if(g.getId() == id) return g;
+		for (Gun g : arsenal) {
+			if (g.getId() == id) return g;
 		}
 		return null;
 	}
@@ -210,32 +210,43 @@ public class Player extends GameObject{
 		}
 	}
 	public void resetAllAmmo() {
-		for(Gun g : arsenal) {
+		for (Gun g : arsenal) {
 			g.resetAmmo();
 		}
 	}
 	
 	public void autoEquip() {
 		gunPrimary = gunSecondary = gunSidearm = gunWielded = null;
-		for (Gun g : arsenal) {
-			if (g.isOwned() && g.isSidearm() && !g.isEquipped()) {
-				gunSidearm = g;
-				break;
+		
+		while (numGunsAvailable() > 0) {
+			if (gunPrimary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
+				gunPrimary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
+				continue;
 			}
-		}
-		for (Gun g : arsenal) {
-			if (g.isOwned() && !g.isEquipped()) {
-				gunPrimary = g;
-				break;
+			if (gunSecondary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
+				gunSecondary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
+				continue;
 			}
-		}
-		for (Gun g : arsenal) {
-			if (g.isOwned() && !g.isEquipped()) {
-				gunSecondary = g;
-				break;
+			if (gunSidearm == null && numSidearmsAvailable() > 0) {
+				gunSidearm = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
+				continue;
 			}
+			break;
 		}
+		
 		autoWield();
+	}
+	
+	private int numGunsAvailable() {
+		return (int) arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).count();
+	}
+	
+	private int numPrimariesAvailable() {
+		return (int) arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && !g.isSidearm()).count();
+	}
+	
+	private int numSidearmsAvailable() {
+		return (int) arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).count();
 	}
 	
 	public void autoWield() {
@@ -309,8 +320,8 @@ public class Player extends GameObject{
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		for(int i = 0; i < NUMSPRITECYCLES; i++) {
-			for(int j = 0; j < NUMGUNS; j++) {
+		for (int i = 0; i < NUMSPRITECYCLES; i++) {
+			for (int j = 0; j < NUMGUNS; j++) {
 				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
 			}
 		}

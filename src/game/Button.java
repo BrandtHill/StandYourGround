@@ -59,6 +59,7 @@ public class Button {
 		else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
 					&& (line1.contains("Hollow") ? !gun.isSpecialRounds() : true)
+					&& (line1.contains("Loads") ? !gun.isSpecialRounds() : true)
 					&& (line1.contains("Auto") ? !gun.isFullAuto() : true)
 					&& (line1.contains("Mag Size") ? !gun.isMagIncreased() : true);
 			this.mainColor = gun.isOwned() ? 

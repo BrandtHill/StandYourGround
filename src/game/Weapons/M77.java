@@ -1,5 +1,7 @@
 package game.Weapons;
 
+import java.awt.Color;
+
 import game.AudioPlayer;
 import game.Projectile;
 
@@ -32,5 +34,15 @@ public class M77 extends Gun {
 			onShotFired();
 		}
 		reloadIfNeeded();
+	}
+
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+		p.angleMulti = 0.1;
+		p.color = new Color(243, 144, 0);
+		p.hits += 3;
+		p.damage *= 1.25;
+		p.magnitude *= 1.15;
+		p.knockBack *= 1.2;
 	}
 }

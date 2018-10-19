@@ -71,13 +71,15 @@ public class Handler {
 		double xPlayer = Program.player.getX();
 		double yPlayer = Program.player.getY();
 		do {
-			x = r.nextInt(Program.WIDTH);
+			x = r.nextInt(2 * Program.WIDTH) - Program.WIDTH;
 			y = r.nextInt(Program.HEIGHT);
 		}
 		while (abs(x-xPlayer) < 300 && abs(y-yPlayer) < 300);
 		
-		addNormalZombie(x, y);
-		
+		double zombieDist = r.nextGaussian();
+		if 		(zombieDist < -1) 	addDodgingZombie(x, y);
+		else if (zombieDist > 1.5) 	addFastZombie(x, y);
+		else						addNormalZombie(x, y);
 	}
 	
 	public void addZombie(ZOMBIE zombie, REGION region) {

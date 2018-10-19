@@ -18,7 +18,7 @@ public class StoreMotion extends MouseMotionAdapter{
 	public void mouseMoved(MouseEvent e) {	
 		if (Program.gameState == STATE.StoreMenu) {
 			for (Button b : store.buttons) {
-				if (b != null && b.isClickable()) {
+				if (b != null && (b.isClickable() || b.displayColor == Color.GREEN)) {
 					if (b.inBounds(e.getPoint())) {
 						if (b.displayColor == b.mainColor) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
 						b.displayColor = Color.GREEN;

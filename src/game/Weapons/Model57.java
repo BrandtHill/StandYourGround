@@ -35,4 +35,8 @@ public class Model57 extends Gun {
 		reloadIfNeeded();
 	}
 
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+	}
+
 }

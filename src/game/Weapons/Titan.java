@@ -33,4 +33,8 @@ public class Titan extends Gun {
 		reloadIfNeeded();
 	}
 
+	@Override
+	public void makeRoundSpecial(Projectile p) {
+	}
+
 }
