@@ -12,8 +12,6 @@ import java.time.Duration;
 
 import javax.imageio.ImageIO;
 
-import org.lwjgl.openal.AL;
-
 public class Program extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = -1499886446881465910L;
@@ -90,7 +88,6 @@ public class Program extends Canvas implements Runnable{
 		try {
 			gameThread.join();
 			running = false;
-			AL.destroy();
 		}
 		catch(Exception e) {
 			System.out.println(e.toString());
@@ -142,7 +139,7 @@ public class Program extends Canvas implements Runnable{
 	
 	private void render() {
 		BufferStrategy bs = this.getBufferStrategy();
-		if(bs == null) {
+		if (bs == null) {
 			this.createBufferStrategy(3);
 			return;					
 		}
@@ -233,9 +230,7 @@ public class Program extends Canvas implements Runnable{
 			break;
 		}
 		
-		if(prevState != gameState) {
-			stateChange();
-		}
+		if (prevState != gameState) stateChange();
 		prevState = gameState;
 	}
 	
@@ -244,12 +239,7 @@ public class Program extends Canvas implements Runnable{
 		
 		switch (gameState) {
 		case InGame:
-			if (player.getLevel() < 6) {
-				background = background1;
-			}
-			else {
-				background = background2;
-			}
+			background = (player.getLevel() < 6) ? background1 : background2;
 			if (prevState != STATE.PauseMenu) commenceLevel();
 			removeMouseMotionListener(storeMotion);
 			break;

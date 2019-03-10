@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.text.MessageFormat;
 import java.util.ArrayList;
 
 import game.Program.STATE;
@@ -27,7 +28,7 @@ public class SaveData implements Serializable {
 	private ArrayList<Boolean> magIncreased;
 	
 	public SaveData() {
-		File directory = new File("res/saves");
+		File directory = new File("./res/saves");
 		if (!directory.exists()) {
 			directory.mkdirs();
 		}
@@ -62,8 +63,7 @@ public class SaveData implements Serializable {
 	        out.writeObject(this);
 	        out.close();
 	        file.close();
-	        System.out.println("Level: "+ level + " Money: " + money + 
-	        	" GunsOwned: " + player.getArsenal().stream().filter(g -> g.isOwned()).count());
+	        System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, player.getArsenal().stream().filter(g -> g.isOwned()).count()));
 	        System.out.println("Saved current game state: " + filename);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -78,9 +78,7 @@ public class SaveData implements Serializable {
 			in.close();
 			file.close();
 			System.out.println("Loaded game state from: " + filename);
-			
-			return temp;
-			
+			return temp;		
 		} catch (IOException | ClassNotFoundException e) {
 			e.printStackTrace();
 		}
@@ -105,8 +103,7 @@ public class SaveData implements Serializable {
 		}
 		player.autoEquip();
 		
-		System.out.println("Level: "+ level + " Money: " + money + 
-			" GunsOwned: " + player.getArsenal().stream().filter(g -> g.isOwned()).count());
+		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, player.getArsenal().stream().filter(g -> g.isOwned()).count()));
 		Program.gameState = STATE.StoreMenu;
 	}
 
