@@ -18,12 +18,10 @@ public class Projectile extends GameObject{
 	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;
 	public int hits;
 	public Color color;
-	private boolean old;
 	
 	public Projectile(Gun g) {
 		super(g.muzzlePointX(), g.muzzlePointY());
-		this.angle = Program.player.getAngle() +
-				 (new Random().nextDouble() - 0.5) * g.getSpread() * PI / 180;
+		this.angle = Program.player.getAngle() + (new Random().nextDouble() - 0.5) * g.getSpread() * PI / 180;
 		this.xScale = sin(angle);
 		this.yScale = cos(angle);
 		this.xPrev = x;
@@ -50,32 +48,23 @@ public class Projectile extends GameObject{
 		x += velX;
 		y += velY;
 		
-		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) {
-			old = true;
-		}
-		
-		if (old) {
-			handler.removeObject(this);
-		}
-		
-		detectCollision();
+		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.removeObject(this);
+		else detectCollision();
 	}
 	
 	public void detectCollision() {
-		if (!old) {
-			for (int i = 1; i < handler.getObjList().size(); i++) {
-				GameObject obj = handler.getObjectAt(i);
-				if (obj instanceof Zombie) {
-					Zombie zomb = (Zombie) obj;
-					if (zomb.getBounds().intersectsLine(this.getBounds())) {
-						zomb.damageMe(damage, angle, knockBack);
-						hits--;
-						damage /= 1.4;
-						magnitude /= 1.2;
-						angle += (new Random().nextDouble() - 0.5) * angleMulti;
-						xScale = sin(angle);
-						yScale = cos(angle);
-					}
+		for (int i = 1; i < handler.getObjList().size(); i++) {
+			GameObject obj = handler.getObjectAt(i);
+			if (obj instanceof Zombie) {
+				Zombie zomb = (Zombie) obj;
+				if (zomb.getBounds().intersectsLine(this.getBounds())) {
+					zomb.damageMe(damage, angle, knockBack);
+					hits--;
+					damage /= 1.4;
+					magnitude /= 1.2;
+					angle += (new Random().nextDouble() - 0.5) * angleMulti;
+					xScale = sin(angle);
+					yScale = cos(angle);
 				}
 			}
 		}
@@ -86,8 +75,4 @@ public class Projectile extends GameObject{
 		g2d.setColor(color);
 		g2d.draw(getBounds());
 	}
-	
-	public void setOld() {old = true;}
-	public boolean getOld() {return old;}
-	
 }

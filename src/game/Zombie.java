@@ -72,11 +72,11 @@ public class Zombie extends GameObject{
 	}
 	
 	public void detectCollision() {
-		for(int i = 2; i < handler.getObjList().size(); i++) {
+		for (int i = 2; i < handler.getObjList().size(); i++) {
 			GameObject obj = handler.getObjectAt(i);
-			if(obj instanceof Zombie) {
+			if (obj instanceof Zombie) {
 				Zombie zomb = (Zombie)obj;
-				if(zomb.getBounds().intersects(this.getBounds())) {
+				if (zomb.getBounds().intersects(this.getBounds())) {
 					double theta = atan2(x-zomb.getX(), y-zomb.getY());
 					x += 3*sin(theta);
 					y += 3*cos(theta);
@@ -91,7 +91,6 @@ public class Zombie extends GameObject{
 
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-		
 		g2d.setColor(Color.RED);
 		g2d.rotate(-angle, x+10, y+10);
 		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
@@ -123,17 +122,9 @@ public class Zombie extends GameObject{
 			file = new FileInputStream("res/ZombieSprite_3.png");
 			spriteSheet3 = ImageIO.read(file);
 			file.close();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		for (int i = 0; i < 8; i++) {
-			zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
-		}
-		for (int i = 0; i < 8; i++) {
-			zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
-		}
-		for (int i = 0; i < 8; i++) {
-			zombieSprites3[i] = spriteSheet3.getSubimage(20 * i, 0, 20, 24);
-		}
+		} catch (IOException e) { e.printStackTrace(); }
+		for (int i = 0; i < 8; i++) zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
+		for (int i = 0; i < 8; i++) zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
+		for (int i = 0; i < 8; i++) zombieSprites3[i] = spriteSheet3.getSubimage(20 * i, 0, 20, 24);
 	}
 }

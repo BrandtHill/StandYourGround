@@ -55,8 +55,7 @@ public class Button {
 		if (Store.menu == Menu.BuyGuns) {
 			this.clickable = active && !gun.isOwned();
 			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
-		}
-		else if(Store.menu == Menu.BuyUpgrades) {
+		} else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
 					&& (line1.contains("Hollow") ? !gun.isSpecialRounds() : true)
 					&& (line1.contains("Loads") ? !gun.isSpecialRounds() : true)
@@ -67,8 +66,7 @@ public class Button {
 								  Color.WHITE
 								: new Color(160, 160, 240)) 
 								: Color.GRAY;
-		}
-		else {
+		} else {
 			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
 			this.mainColor = gun.isOwned() ?
 							(gun.isEquipped() ? 
@@ -87,12 +85,7 @@ public class Button {
 	public int getPrice() {return (!line3.isEmpty()) ? Integer.parseInt(line3.substring(1)) : 0;}
 	
 	public boolean inBounds(Point p) {
-		if(p.getX() > x && p.getX() < (x + w)) {
-			if(p.getY() > y && p.getY() < (y + h)) {
-				return true;
-			}
-		}
-		return false;
+		return p.getX() > x && p.getX() < (x + w) && p.getY() > y && p.getY() < (y + h);
 	}
 	
 	public String getFirstLine() {

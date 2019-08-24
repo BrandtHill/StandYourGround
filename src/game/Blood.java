@@ -18,7 +18,6 @@ public class Blood extends GameObject {
 		this(x, y);
 		velX = Math.sin(angle) * knock;
 		velY = Math.cos(angle) * knock;
-		
 	}
 
 	@Override

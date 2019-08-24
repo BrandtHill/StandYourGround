@@ -32,15 +32,9 @@ public class SpawnSystem {
 
 	public void tick() {
 		if (doneCommencing) {
-			if (!doneSpawning) {
-				if (System.currentTimeMillis() - timer > delay)
-					spawn();
-			}
-
+			if (!doneSpawning && System.currentTimeMillis() - timer > delay) spawn();
 			zombiesLeft = player.zombiesLeft;
-
-			if (zombiesLeft <= 0)
-				completeLevel();
+			if (zombiesLeft <= 0) completeLevel();
 		}
 	}
 
@@ -353,7 +347,6 @@ public class SpawnSystem {
 		default:
 			doneSpawning = true;
 			break;
-
 		}
 		wave++;
 	}

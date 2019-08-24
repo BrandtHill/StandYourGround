@@ -29,9 +29,7 @@ public class SaveData implements Serializable {
 	
 	public SaveData() {
 		File directory = new File("./res/saves");
-		if (!directory.exists()) {
-			directory.mkdirs();
-		}
+		if (!directory.exists()) directory.mkdirs();
 	}
 	
 	public void saveToFile(String filename, Player player) {
@@ -79,10 +77,10 @@ public class SaveData implements Serializable {
 			file.close();
 			System.out.println("Loaded game state from: " + filename);
 			return temp;		
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 	
 	public void setPlayerAfterLoad(Player player) {
@@ -91,7 +89,7 @@ public class SaveData implements Serializable {
 		player.setMoneyAtRoundStart(moneyAtRoundStart);
 		player.setLevel(level);
 		Program.spawnSys.setLevel(level);
-		for(int i = 0; i < arsenal.size(); i++) {
+		for (int i = 0; i < arsenal.size(); i++) {
 			Gun g = arsenal.get(i);
 			g.setMagSize(magSizes.get(i));
 			g.setAmmoCapacity(ammoCaps.get(i));
@@ -106,5 +104,4 @@ public class SaveData implements Serializable {
 		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, player.getArsenal().stream().filter(g -> g.isOwned()).count()));
 		Program.gameState = STATE.StoreMenu;
 	}
-
 }

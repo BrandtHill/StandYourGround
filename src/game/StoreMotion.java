@@ -22,8 +22,7 @@ public class StoreMotion extends MouseMotionAdapter{
 					if (b.inBounds(e.getPoint())) {
 						if (b.displayColor == b.mainColor) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
 						b.displayColor = Color.GREEN;
-					} 
-					else b.displayColor = b.mainColor;
+					} else b.displayColor = b.mainColor;
 				}
 			} 
 		}

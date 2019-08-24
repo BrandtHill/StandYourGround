@@ -20,8 +20,7 @@ public class Window extends Canvas{
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);	
-		frame.setCursor( frame.getToolkit().createCustomCursor
-				(new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),new Point(),null ) );
+		frame.setCursor(frame.getToolkit().createCustomCursor(new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),new Point(),null ));
 		frame.setIconImage(new ImageIcon("res/Oscilloshape1.JPG").getImage());
 		frame.add(p);
 		frame.setVisible(true);

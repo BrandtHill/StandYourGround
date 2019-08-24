@@ -7,7 +7,6 @@ import java.awt.Graphics2D;
 import game.Program.STATE;
 
 public class Reticle extends GameObject {
-
 	private final int[] xZeroed = {-10, 10, 0, 0, 0};
 	private final int[] yZeroed = {0, 0, 0, 10, -10};
 	private int[] xLine = new int[5];
@@ -29,18 +28,14 @@ public class Reticle extends GameObject {
 		yDisplay = y = Program.clamp(y, 0, Program.HEIGHT);
 		
 		if (Program.gameState == STATE.InGame) {
-			
 			if (!Program.isOnEdgeX()) xPlayer = player.getX();
 			if (!Program.isOnEdgeY()) yPlayer = player.getY();
-			
 			xDisplay = Program.clamp(x + xPlayer + 10 - Program.WIDTH / 2, 0, Program.WIDTH);
 			yDisplay = Program.clamp(y + yPlayer + 30 - Program.HEIGHT / 2, 0, Program.HEIGHT);
-			
 			if (wantToLimitRange) limitRange(200);
 		}
 		
-		for (int i = 0; i < xLine.length; i++)
-		{
+		for (int i = 0; i < xLine.length; i++) {
 			xLine[i] = (int)xDisplay + xZeroed[i];
 			yLine[i] = (int)yDisplay + yZeroed[i];
 		}

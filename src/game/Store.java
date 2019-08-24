@@ -35,15 +35,8 @@ public class Store extends MouseAdapter{
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		if (Program.gameState == STATE.StoreMenu) {
-			
-			Button b = null;
-			for (int i = 0; i < buttons.length; i++) {
-				if (buttons[i] != null && buttons[i].inBounds(e.getPoint()) && buttons[i].isClickable()) {
-					b = buttons[i];
-					break;
-				}
-			}
+		if (Program.gameState == STATE.StoreMenu) {	
+			Button b = Arrays.stream(buttons).filter(x -> x != null && x.inBounds(e.getPoint()) && x.isClickable()).findAny().orElse(null);
 			
 			if (b == null) return;
 			
@@ -52,21 +45,11 @@ public class Store extends MouseAdapter{
 				buyGun(b.getGun(), b.getPrice());
 				break;
 			case BuyUpgrades:
-				if (b.getFirstLine().contains("Ammo")) {
-					upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
-				}
-				if (b.getFirstLine().contains("Mag")) {
-					upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
-				}
-				if (b.getFirstLine().contains("Hollow")) {
-					upgradeRounds(b.getGun(), b.getPrice());
-				}
-				if (b.getFirstLine().contains("Loads")) {
-					upgradeRounds(b.getGun(), b.getPrice());
-				}
-				if (b.getFirstLine().contains("Auto")) {
-					upgradeFireMode(b.getGun(), b.getPrice());
-				}
+				if (b.getFirstLine().contains("Ammo")) 		upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
+				if (b.getFirstLine().contains("Mag")) 		upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
+				if (b.getFirstLine().contains("Hollow"))	upgradeRounds(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Loads")) 	upgradeRounds(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Auto")) 		upgradeFireMode(b.getGun(), b.getPrice());
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
@@ -81,9 +64,7 @@ public class Store extends MouseAdapter{
 				break;
 			}
 			
-			for (Button btn : buttons) {
-				if (btn != null) btn.updateColor();
-			}
+			Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.updateColor());
 			
 			player.setMoneyAtRoundStart(player.getMoney());
 		}
@@ -189,10 +170,7 @@ public class Store extends MouseAdapter{
 	}
 	
 	public void render(Graphics g) {
-		
-		for (Button b : buttons) {
-			if (b != null) b.render(g);
-		}
+		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.render(g));
 		switch (menu) {
 		case BuyGuns:
 			g.setColor(Color.WHITE);
@@ -257,7 +235,6 @@ public class Store extends MouseAdapter{
 	}
 	
 	private void upgradeCapacity(Gun gun, int ammo, int money) {
-		
 		if (gun.isOwned()) {
 			int cap = gun.getAmmoCapacity();
 			if (player.getMoney() >= money) {
@@ -269,7 +246,6 @@ public class Store extends MouseAdapter{
 	}
 	
 	private void upgradeMagSize(Gun gun, int ammo, int money) {
-
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
@@ -305,7 +281,6 @@ public class Store extends MouseAdapter{
 	}
 	
 	private void buyGun(Gun gun, int money) {
-		
 		if (!gun.isOwned()) {
 			if (player.getMoney() >= money) {
 				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);

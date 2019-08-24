@@ -48,12 +48,10 @@ public abstract class Gun {
 	public abstract void makeRoundSpecial(Projectile p);
 	
 	public void reload() {
-		if (!currentlyReloading) {
-			if (ammoExtra > 0 && ammoLoaded < magSize) {
-				reloadSound.play(1f, 1f);
-				currentlyReloading = true;
-				timerReload = System.currentTimeMillis();
-			}
+		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+			reloadSound.play(1f, 1f);
+			currentlyReloading = true;
+			timerReload = System.currentTimeMillis();
 		}
 	}
 	private void reloadFinish() {
@@ -62,10 +60,9 @@ public abstract class Gun {
 		if (ammoExtra >= reloadAmount) {
 			ammoLoaded += reloadAmount;
 			ammoExtra -= reloadAmount;
-		}
-		else {
+		} else {
 			ammoLoaded += ammoExtra;
-			ammoExtra -= ammoExtra;
+			ammoExtra = 0;
 		}
 		
 		currentlyReloading = false;
@@ -74,16 +71,12 @@ public abstract class Gun {
 	public void tick() {
 		reloadIfNeeded();
 		
-		if(currentlyReloading) {
-			if((System.currentTimeMillis() - timerReload) > reloadTime) {				
-				reloadFinish();
-			}
+		if (currentlyReloading && (System.currentTimeMillis() - timerReload) > reloadTime) {			
+			reloadFinish();
 		}
 		
-		if(!chambered) {
-			if((System.currentTimeMillis() - timerChamber) > chamberTime) {				
-				chambered = true;
-			}
+		if(!chambered && (System.currentTimeMillis() - timerChamber) > chamberTime) {
+			chambered = true;
 		}
 	}
 	
@@ -91,15 +84,11 @@ public abstract class Gun {
 		ammoLoaded = magSize;
 		ammoExtra = ammoCapacity;
 		shooting = false;
-		if (reloadSound != null) {
-			if (reloadSound.playing())
-				reloadSound.stop();
-		}
+		if (reloadSound.playing()) reloadSound.stop();
 	}
 	
 	public void swapGun() {
-		if(reloadSound.playing())
-			reloadSound.stop();
+		if (reloadSound.playing()) reloadSound.stop();
 		currentlyReloading = false;
 	}
 	
@@ -163,14 +152,11 @@ public abstract class Gun {
 	public void unequip() {player.unequip(this);}
 	
 	protected boolean canShoot() {
-		return ammoLoaded > 0 
-			&& !currentlyReloading 
-			&& chambered;
+		return ammoLoaded > 0 && !currentlyReloading && chambered;
 	}
 	
 	protected void reloadIfNeeded() {
-		if (ammoExtra > 0 && ammoLoaded <= 0)
-			reload();
+		if (ammoExtra > 0 && ammoLoaded <= 0) reload();
 	}
 	
 	protected void onShotFired() {

@@ -25,7 +25,6 @@ import game.Weapons.PX4Compact;
 import game.Weapons.Titan;
 
 public class Player extends GameObject{
-	
 	private final static int NUMSPRITECYCLES = 8;
 	private final static int NUMGUNS = 6;
 	private Gun gunWielded;
@@ -80,7 +79,6 @@ public class Player extends GameObject{
 	}
 
 	public void tick() {
-		
 		if (velX != 0 && velY != 0) {
 			x += (HALFSQRT2*velX);
 			y += (HALFSQRT2*velY);
@@ -98,14 +96,11 @@ public class Player extends GameObject{
 		
 		gunWielded.tick();
 		
-		if (tickDivider%4 == 0) {
+		if (tickDivider % 4 == 0) {
 			detectCollision();
-			
 			gunNum = getGunSpriteNum(gunWielded);
-			
 			if (velX != 0 || velY != 0) spriteNum++;
-			
-			spriteNum = spriteNum % 8;
+			spriteNum %= 8;
 		}
 		
 		tickDivider++;	
@@ -126,15 +121,11 @@ public class Player extends GameObject{
 	}
 	
 	public void detectCollision() {
-		for(int i = 2; i < handler.getObjList().size(); i++) {
-			GameObject obj = handler.getObjectAt(i);
-			if(obj instanceof Zombie) {
-				Zombie zomb = (Zombie)obj;
-				if(zomb.getBounds().intersects(this.getBounds())) {
-					Program.gameState = STATE.GameOver;
-				}
-			}
-		}
+		if (handler.getObjList().stream()
+				.filter(o -> o instanceof Zombie)
+				.map(o -> (Zombie)o)
+				.anyMatch(z -> z.getBounds().intersects(this.getBounds()))
+				) Program.gameState = STATE.GameOver;
 	}
 
 	public void render(Graphics g) {
@@ -180,16 +171,10 @@ public class Player extends GameObject{
 	public void setLevel(int level) {this.level = level;}
 	
 	public Gun searchGun(String name) {
-		for (Gun g : arsenal) {
-			if (g.getName().equals(name)) return g;
-		}
-		return null;
+		return arsenal.stream().filter(g -> g.getName().equals(name)).findFirst().orElse(null);
 	}
 	public Gun searchGun(GUN id) {
-		for (Gun g : arsenal) {
-			if (g.getId() == id) return g;
-		}
-		return null;
+		return arsenal.stream().filter(g -> g.getId() == id).findFirst().orElse(null);
 	}
 	public void switchToPrimary() {
 		if (gunPrimary != null && gunWielded != gunPrimary) {
@@ -210,9 +195,7 @@ public class Player extends GameObject{
 		}
 	}
 	public void resetAllAmmo() {
-		for (Gun g : arsenal) {
-			g.resetAmmo();
-		}
+		arsenal.forEach(g -> g.resetAmmo());
 	}
 	
 	public void autoEquip() {
@@ -233,7 +216,6 @@ public class Player extends GameObject{
 			}
 			break;
 		}
-		
 		autoWield();
 	}
 	
@@ -286,9 +268,7 @@ public class Player extends GameObject{
 	}
 	
 	public void unselectAll() {
-		for (Gun g : arsenal) {
-			g.unLock();
-		}
+		arsenal.forEach(g -> g.unLock());
 	}
 	
 	public void unequip(Gun g) {
