@@ -8,6 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Arrays;
 
+import game.Audio.AudioPlayer;
 import game.Program.STATE;
 import game.Weapons.Gun;
 

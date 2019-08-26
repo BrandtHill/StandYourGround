@@ -1,4 +1,4 @@
-package game;
+package game.Audio;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -10,6 +10,8 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
 import static game.Program.delay;
+
+import game.Program;
 import game.Program.STATE;
 
 public class AudioPlayer {

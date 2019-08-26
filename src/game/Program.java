@@ -12,6 +12,9 @@ import java.time.Duration;
 
 import javax.imageio.ImageIO;
 
+import game.Audio.AudioMap;
+import game.Audio.AudioPlayer;
+
 public class Program extends Canvas implements Runnable{
 
 	private static final long serialVersionUID = -1499886446881465910L;
@@ -45,7 +48,8 @@ public class Program extends Canvas implements Runnable{
 	private static STATE prevState;
 	
 	public Program() {
-		AudioPlayer.init();
+		//AudioPlayer.init();
+		AudioMap.init();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
