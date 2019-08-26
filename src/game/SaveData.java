@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import game.GamePieces.Player;
 import game.Program.STATE;
 import game.Weapons.Gun;
 

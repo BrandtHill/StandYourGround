@@ -1,5 +1,6 @@
 package game;
 
+import game.GamePieces.Player;
 import game.Program.STATE;
 
 public class SpawnSystem {

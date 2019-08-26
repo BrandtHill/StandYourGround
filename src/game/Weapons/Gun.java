@@ -9,8 +9,8 @@ import static java.lang.Math.cos;
 import org.newdawn.slick.Sound;
 
 import game.Handler;
-import game.Player;
-import game.Projectile;
+import game.GamePieces.Player;
+import game.GamePieces.Projectile;
 
 public abstract class Gun {
 	protected double damage, spread;

@@ -1,12 +1,13 @@
-package game;
+package game.GamePieces;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import game.Program;
 import game.Program.STATE;
 
-public class Reticle extends GameObject {
+public class Reticle extends GamePiece {
 	private final int[] xZeroed = {-10, 10, 0, 0, 0};
 	private final int[] yZeroed = {0, 0, 0, 10, -10};
 	private int[] xLine = new int[5];

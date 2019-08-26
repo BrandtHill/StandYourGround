@@ -15,7 +15,7 @@
             <!-- <zipfileset dir="${dir.res}" prefix="game/res"/> -->
             <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jinput.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jogg-0.0.7.jar"/>
-            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jorbis-0.0.15.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jorbis-0.0.17.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/lwjgl.jar"/>
             <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/slick.jar"/>
         </jar>

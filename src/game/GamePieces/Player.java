@@ -1,4 +1,4 @@
-package game;
+package game.GamePieces;
 
 import static java.lang.Math.atan2;
 
@@ -14,8 +14,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import game.Program;
 import game.Audio.AudioPlayer;
-import game.Enemies.Zombie;
+import game.GamePieces.Enemies.Zombie;
 import game.Program.STATE;
 import game.Weapons.AR15;
 import game.Weapons.Gun;
@@ -26,7 +27,7 @@ import game.Weapons.OverUnder;
 import game.Weapons.PX4Compact;
 import game.Weapons.Titan;
 
-public class Player extends GameObject{
+public class Player extends GamePiece{
 	private final static int NUMSPRITECYCLES = 8;
 	private final static int NUMGUNS = 6;
 	private Gun gunWielded;

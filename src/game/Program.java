@@ -14,6 +14,12 @@ import javax.imageio.ImageIO;
 
 import game.Audio.AudioMap;
 import game.Audio.AudioPlayer;
+import game.GamePieces.Player;
+import game.GamePieces.Reticle;
+import game.Inputs.KeyInput;
+import game.Inputs.MouseInput;
+import game.Inputs.MouseMotionInput;
+import game.Inputs.StoreMotionInput;
 
 public class Program extends Canvas implements Runnable{
 
@@ -22,7 +28,7 @@ public class Program extends Canvas implements Runnable{
 	private Thread gameThread;
 	private HUD hud;
 	private Store store;
-	private StoreMotion storeMotion;
+	private StoreMotionInput storeMotion;
 	public static BufferedImage background;
 	private BufferedImage background1;
 	private BufferedImage background2;
@@ -48,7 +54,7 @@ public class Program extends Canvas implements Runnable{
 	private static STATE prevState;
 	
 	public Program() {
-		//AudioPlayer.init();
+		AudioPlayer.init();
 		AudioMap.init();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
@@ -59,7 +65,7 @@ public class Program extends Canvas implements Runnable{
 		saveData = new SaveData();
 		spawnSys = new SpawnSystem();
 		store = new Store();
-		storeMotion = new StoreMotion(store);
+		storeMotion = new StoreMotionInput(store);
 		hud = new HUD();
 		
 		addKeyListener(new KeyInput(store));

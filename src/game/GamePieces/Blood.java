@@ -1,9 +1,9 @@
-package game;
+package game.GamePieces;
 
 import java.awt.Color;
 import java.awt.Graphics;
 
-public class Blood extends GameObject {
+public class Blood extends GamePiece {
 	private int ticks;
 	private int alpha;
 	

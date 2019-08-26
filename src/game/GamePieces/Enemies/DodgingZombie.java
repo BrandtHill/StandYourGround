@@ -1,4 +1,4 @@
-package game.Enemies;
+package game.GamePieces.Enemies;
 
 public class DodgingZombie extends Zombie {
 	private int dodgeTicks = 0;

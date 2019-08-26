@@ -1,7 +1,7 @@
 package game.Weapons;
 
-import game.Projectile;
 import game.Audio.AudioPlayer;
+import game.GamePieces.Projectile;
 
 public class Titan extends Gun {
 

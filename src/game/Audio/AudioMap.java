@@ -9,8 +9,8 @@ public class AudioMap {
 	public static void init() {
 		soundMap.put("P1", new SoundEffect("./res/PistolSound.wav").init());
 		soundMap.put("P2", new MultiSoundEffect("./res/PistolSound.wav").init());
-		soundMap.put("C1", new SoundEffect("./res/CockModel57.wav").init());
-		soundMap.put("C2", new MultiSoundEffect("./res/CockModel57.wav").init());
+		soundMap.put("C1", new SoundEffect("./res/CycleM77Sound.ogg").init());
+		soundMap.put("C2", new MultiSoundEffect("./res/CycleM77Sound.ogg").init());
 	}
 	
 	public static ISound get(String key) {

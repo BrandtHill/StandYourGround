@@ -1,10 +1,12 @@
-package game;
+package game.Inputs;
 
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 import game.Program.STATE;
+import game.Program;
 import game.Audio.AudioMap;
+import game.GamePieces.Player;
 import game.Weapons.Gun;
 
 public class MouseInput extends MouseAdapter{

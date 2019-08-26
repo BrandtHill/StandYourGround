@@ -1,18 +1,21 @@
-package game;
+package game.Inputs;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import game.Button;
+import game.Program;
+import game.Store;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
 
 
-public class StoreMotion extends MouseMotionAdapter{
+public class StoreMotionInput extends MouseMotionAdapter{
 
 	private Store store;
 	
-	public StoreMotion(Store store) {
+	public StoreMotionInput(Store store) {
 		this.store = store;
 	}
 	

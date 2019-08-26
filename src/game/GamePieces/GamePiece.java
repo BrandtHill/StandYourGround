@@ -1,25 +1,26 @@
-package game;
+package game.GamePieces;
 
 import java.awt.Graphics;
 
+import game.Handler;
+import game.Program;
+
 import static java.lang.Math.sqrt;
 
-public abstract class GameObject {
+public abstract class GamePiece {
 
 	protected double x, y, velX, velY;
 	public static final double HALFSQRT2 = sqrt(2)/2;
 	protected Handler handler;
 	
-	public GameObject(double x, double y) {
+	public GamePiece(double x, double y) {
 		this.x = x;
 		this.y = y;
 		this.handler = Program.handler;
 		velX = velY = 0;
 	}
 	
-	public GameObject() {
-		
-	}
+	public GamePiece() {}
 	
 	public abstract void tick();
 	public abstract void render(Graphics g);

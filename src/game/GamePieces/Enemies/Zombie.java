@@ -1,4 +1,4 @@
-package game.Enemies;
+package game.GamePieces.Enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,16 +11,16 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import game.Blood;
-import game.GameObject;
-import game.Player;
 import game.Program;
+import game.GamePieces.Blood;
+import game.GamePieces.GamePiece;
+import game.GamePieces.Player;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
-public class Zombie extends GameObject{
+public class Zombie extends GamePiece{
 
 	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	protected Random r;

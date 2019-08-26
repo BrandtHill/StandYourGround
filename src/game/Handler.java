@@ -4,9 +4,12 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.Enemies.DodgingZombie;
-import game.Enemies.FastZombie;
-import game.Enemies.Zombie;
+import game.GamePieces.Blood;
+import game.GamePieces.GamePiece;
+import game.GamePieces.Projectile;
+import game.GamePieces.Enemies.DodgingZombie;
+import game.GamePieces.Enemies.FastZombie;
+import game.GamePieces.Enemies.Zombie;
 import game.SpawnSystem.REGION;
 import game.SpawnSystem.ZOMBIE;
 
@@ -18,12 +21,12 @@ import static java.lang.Math.abs;
  */
 public class Handler {
 	
-	private LinkedList<GameObject> 	gameObjs;
+	private LinkedList<GamePiece> 	gameObjs;
 	private LinkedList<Blood>	   	bloodList;
 	private Random 					r;
 	
 	public Handler() {
-		gameObjs = new LinkedList<GameObject>();
+		gameObjs = new LinkedList<GamePiece>();
 		bloodList = new LinkedList<Blood>();
 		Zombie.loadSprites();
 		r = new Random();
@@ -53,7 +56,7 @@ public class Handler {
 	
 	public void removeProjectiles() {
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
-			GameObject obj = getObjectAt(i);
+			GamePiece obj = getObjectAt(i);
 			if(obj instanceof Projectile) {
 				removeObject(obj);
 			}
@@ -62,7 +65,7 @@ public class Handler {
 	
 	public void removeZombies() {
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
-			GameObject obj = getObjectAt(i);
+			GamePiece obj = getObjectAt(i);
 			if(obj instanceof Zombie) {
 				removeObject(obj);
 			}
@@ -150,10 +153,10 @@ public class Handler {
 		}
 	}
 	
-	public void addObject(GameObject obj)		{gameObjs.add(obj);}
+	public void addObject(GamePiece obj)		{gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
-	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
+	public void removeObject(GamePiece obj) 	{gameObjs.remove(obj);}
 	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
-	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
-	public LinkedList<GameObject> getObjList()	{return gameObjs;}
+	public GamePiece getObjectAt(int i)		{return gameObjs.get(i);}
+	public LinkedList<GamePiece> getObjList()	{return gameObjs;}
 }

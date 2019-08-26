@@ -1,4 +1,4 @@
-package game;
+package game.GamePieces;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,14 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.Random;
 
-import game.Enemies.Zombie;
+import game.Program;
+import game.GamePieces.Enemies.Zombie;
 import game.Weapons.Gun;
 
 import static java.lang.Math.sin;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 
-public class Projectile extends GameObject{
+public class Projectile extends GamePiece{
 	
 	// public variables because I'm not about to make all these getters and setters
 	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;
@@ -55,7 +56,7 @@ public class Projectile extends GameObject{
 	
 	public void detectCollision() {
 		for (int i = 1; i < handler.getObjList().size(); i++) {
-			GameObject obj = handler.getObjectAt(i);
+			GamePiece obj = handler.getObjectAt(i);
 			if (obj instanceof Zombie) {
 				Zombie zomb = (Zombie) obj;
 				if (zomb.getBounds().intersectsLine(this.getBounds())) {
