@@ -4,13 +4,12 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Blood extends GameObject {
-
-	private long startTime;
+	private int ticks;
 	private int alpha;
 	
 	public Blood(double x, double y) {
 		super(x, y);
-		startTime = System.currentTimeMillis();
+		ticks = 0;
 		alpha = 255;
 	}
 	
@@ -26,8 +25,9 @@ public class Blood extends GameObject {
 		y += velY;
 		velX *= 0.75;
 		velY *= 0.75;
-		alpha -= Program.clamp((System.currentTimeMillis() - startTime) / 1000, 0, 255);
+		alpha -= ticks / 60;
 		if (alpha <= 0) handler.removeBlood(this);
+		ticks++;
 	}
 
 	@Override

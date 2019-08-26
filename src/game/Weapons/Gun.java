@@ -13,7 +13,6 @@ import game.Player;
 import game.Projectile;
 
 public abstract class Gun {
-
 	protected double damage, spread;
 	protected double velocity, knock;
 	protected int xOffset, yOffset; //From center of player
@@ -21,12 +20,13 @@ public abstract class Gun {
 	protected boolean owned, lockedIn, isSidearm, specialRounds, isMagIncreased;
 	protected boolean currentlyReloading, isFullAuto, shooting, chambered;
 	protected long reloadTime, chamberTime;
-	protected long timerReload, timerChamber;
 	protected String gunName;
 	protected static Player player;
 	protected static Handler handler;
-	protected transient Sound reloadSound;
+	protected Sound reloadSound;
+	protected float reloadSoundPosition;
 	protected long tickDivider;
+	protected int reloadTicks, chamberTicks;
 	protected Random r;
 	protected GUN gunId;
 	public static enum GUN {
@@ -51,7 +51,6 @@ public abstract class Gun {
 		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			reloadSound.play(1f, 1f);
 			currentlyReloading = true;
-			timerReload = System.currentTimeMillis();
 		}
 	}
 	private void reloadFinish() {
@@ -66,30 +65,36 @@ public abstract class Gun {
 		}
 		
 		currentlyReloading = false;
+		reloadTicks = 0;
+	}
+	
+	private void chamberFinish() {
+		chambered = true;
+		chamberTicks = 0;
 	}
 	
 	public void tick() {
 		reloadIfNeeded();
 		
-		if (currentlyReloading && (System.currentTimeMillis() - timerReload) > reloadTime) {			
-			reloadFinish();
-		}
-		
-		if(!chambered && (System.currentTimeMillis() - timerChamber) > chamberTime) {
-			chambered = true;
-		}
+		if (!chambered)	chamberTicks++;
+		if (currentlyReloading) reloadTicks++;
+		if (chamberTicks > ticksForChamber()) chamberFinish();
+		if (reloadTicks > ticksForReload()) reloadFinish();
 	}
 	
 	public void resetAmmo() {
 		ammoLoaded = magSize;
 		ammoExtra = ammoCapacity;
 		shooting = false;
+		chambered = true;
+		chamberTicks = reloadTicks = 0;
 		if (reloadSound.playing()) reloadSound.stop();
 	}
 	
 	public void swapGun() {
 		if (reloadSound.playing()) reloadSound.stop();
 		currentlyReloading = false;
+		chamberTicks = reloadTicks = 0;
 	}
 	
 	/**
@@ -162,7 +167,13 @@ public abstract class Gun {
 	protected void onShotFired() {
 		ammoLoaded--;
 		chambered = false;
-		timerChamber = System.currentTimeMillis();
 	}
 	
+	protected int ticksForReload() {
+		return (int) ((60f / 1000) * reloadTime);
+	}
+	
+	protected int ticksForChamber() {
+		return (int) ((60f / 1000) * chamberTime);
+	}
 }

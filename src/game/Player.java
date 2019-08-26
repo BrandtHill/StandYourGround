@@ -14,6 +14,7 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import game.Enemies.Zombie;
 import game.Program.STATE;
 import game.Weapons.AR15;
 import game.Weapons.Gun;

@@ -6,6 +6,7 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.Random;
 
+import game.Enemies.Zombie;
 import game.Weapons.Gun;
 
 import static java.lang.Math.sin;

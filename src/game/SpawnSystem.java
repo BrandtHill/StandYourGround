@@ -8,8 +8,7 @@ public class SpawnSystem {
 	private static Player player;
 	private boolean doneCommencing, doneSpawning;
 	private int zombiesLeft;
-	private int level, wave;
-	private long timer, delay;
+	private int level, wave, ticks, delayMillis;
 
 	public enum REGION {
 		UP, DOWN, LEFT, RIGHT
@@ -25,19 +24,24 @@ public class SpawnSystem {
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
 		zombiesLeft = 0;
-		timer = System.currentTimeMillis();
-		delay = 0;
+		ticks = 0;
+		delayMillis = 0;
 		wave = 1;
 	}
 
 	public void tick() {
+		ticks++;
 		if (doneCommencing) {
-			if (!doneSpawning && System.currentTimeMillis() - timer > delay) spawn();
+			if (!doneSpawning && ticks > delayTicks()) spawn();
 			zombiesLeft = player.zombiesLeft;
 			if (zombiesLeft <= 0) completeLevel();
 		}
 	}
 
+	private int delayTicks() {
+		return (int) ((60f / 1000) * delayMillis);
+	}
+	
 	public void completeLevel() {
 		doneCommencing = false;
 		doneSpawning = false;
@@ -69,52 +73,52 @@ public class SpawnSystem {
 
 		case 1:
 			player.zombiesLeft = 6;
-			delay = 1000;
+			delayMillis = 1000;
 			break;
 
 		case 2:
 			player.zombiesLeft = 12;
-			delay = 1000;
+			delayMillis = 1000;
 			break;
 
 		case 3:
 			player.zombiesLeft = 16;
-			delay = 2500;
+			delayMillis = 2500;
 			break;
 
 		case 4:
 			player.zombiesLeft = 20;
-			delay = 500;
+			delayMillis = 500;
 			break;
 
 		case 5:
 			player.zombiesLeft = 30;
-			delay = 1500;
+			delayMillis = 1500;
 			break;
 
 		case 6:
 			player.zombiesLeft = 15;
-			delay = 500;
+			delayMillis = 500;
 			break;
 
 		case 7:
 			player.zombiesLeft = 30;
-			delay = 500;
+			delayMillis = 500;
 			break;
 
 		case 8:
 			player.zombiesLeft = 34;
-			delay = 500;
+			delayMillis = 500;
 			break;
 
 		case 9:
 			player.zombiesLeft = 38;
-			delay = 1000;
+			delayMillis = 1000;
 			break;
 
 		case 10:
 			player.zombiesLeft = 20;
-			delay = 2000;
+			delayMillis = 2000;
 			break;
 
 		default:
@@ -125,20 +129,20 @@ public class SpawnSystem {
 			break;
 		}
 
-		timer = System.currentTimeMillis();
+		ticks = 0;
 		doneCommencing = true;
 
 	}
 
 	private void spawn() {
-		timer = System.currentTimeMillis();
+		ticks = 0;
 
 		switch (level) {
 		case 1:
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
-				delay = 5000;
+				delayMillis = 5000;
 				break;
 
 			case 2:
@@ -151,18 +155,18 @@ public class SpawnSystem {
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
-				delay = 1000;
+				delayMillis = 1000;
 				break;
 
 			case 2:
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 1);
-				delay = 2000;
+				delayMillis = 2000;
 				break;
 
 			case 3:
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 1);
-				delay = 3000;
+				delayMillis = 3000;
 				break;
 
 			case 4:
@@ -179,7 +183,7 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
-				delay = 2500;
+				delayMillis = 2500;
 				break;
 
 			case 2:
@@ -196,7 +200,7 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
 				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
-				delay = 5000;
+				delayMillis = 5000;
 				break;
 
 			case 2:
@@ -211,7 +215,7 @@ public class SpawnSystem {
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 15);
-				delay = 6000;
+				delayMillis = 6000;
 				break;
 
 			case 2:
@@ -228,7 +232,7 @@ public class SpawnSystem {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 3);
 				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 3);
-				delay = 7500;
+				delayMillis = 7500;
 				break;
 
 			case 2:
@@ -244,13 +248,13 @@ public class SpawnSystem {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 7);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 7);
-				delay = 7500;
+				delayMillis = 7500;
 				break;
 
 			case 2:
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 7);
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 7);
-				delay = 5000;
+				delayMillis = 5000;
 				break;
 
 			case 3:
@@ -267,28 +271,28 @@ public class SpawnSystem {
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
 				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
-				delay = 2250;
+				delayMillis = 2250;
 				break;
 
 			case 2:
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
-				delay = 2250;
+				delayMillis = 2250;
 				break;
 
 			case 3:
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.UP, ZOMBIE.FAST, 1);
-				delay = 2250;
+				delayMillis = 2250;
 				break;
 
 			case 4:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
 				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 1);
-				delay = 2250;
+				delayMillis = 2250;
 				break;
 
 			case 5:
@@ -308,7 +312,7 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
 				spawnZombies(REGION.UP, ZOMBIE.FAST, 1);
 				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 1);
-				delay = 6000;
+				delayMillis = 6000;
 				break;
 			
 			case 2:
@@ -316,7 +320,7 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
-				delay = 8000;
+				delayMillis = 8000;
 				break;
 			
 			case 3:
@@ -334,7 +338,7 @@ public class SpawnSystem {
 			case 1:
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 12);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
-				delay = 10000;
+				delayMillis = 10000;
 				break;
 
 			case 2:

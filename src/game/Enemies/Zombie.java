@@ -1,4 +1,4 @@
-package game;
+package game.Enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -10,6 +10,11 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+
+import game.Blood;
+import game.GameObject;
+import game.Player;
+import game.Program;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
@@ -72,17 +77,15 @@ public class Zombie extends GameObject{
 	}
 	
 	public void detectCollision() {
-		for (int i = 2; i < handler.getObjList().size(); i++) {
-			GameObject obj = handler.getObjectAt(i);
-			if (obj instanceof Zombie) {
-				Zombie zomb = (Zombie)obj;
-				if (zomb.getBounds().intersects(this.getBounds())) {
-					double theta = atan2(x-zomb.getX(), y-zomb.getY());
+		handler.getObjList().stream()
+				.filter(o -> o instanceof Zombie)
+				.map(o -> (Zombie)o)
+				.filter(z -> z.getBounds().intersects(this.getBounds()))
+				.forEach(z -> {
+					double theta = atan2(x - z.getX(), y - z.getY());
 					x += 3*sin(theta);
 					y += 3*cos(theta);
-				}
-			}
-		}
+				});
 	}
 	
 	public Rectangle getBounds() {

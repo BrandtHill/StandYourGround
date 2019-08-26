@@ -1,13 +1,10 @@
-package game;
+package game.Enemies;
 
 public class DodgingZombie extends Zombie {
-
-	private long lastDodged = 0;
-	private long lastStrafed = 0;
-	private int numTicks = 0;
+	private int dodgeTicks = 0;
 	private boolean isDodging;
 	private boolean strafeDir;
-	private int ticksInSight, maxTicksInSight;
+	private int ticksInSight, maxTicksInSight, ticksSinceDodge, ticksSinceStrafe;
 	private double theta;
 	
 	public DodgingZombie(double x, double y, double speed, double health) {
@@ -20,17 +17,12 @@ public class DodgingZombie extends Zombie {
 
 	@Override
 	public void tick() {
-		
-		if (System.currentTimeMillis() - lastDodged > 6000) {
-			if (isLineOfSight()) ticksInSight++;
-			else ticksInSight = 0;
-			
+		if (ticksSinceDodge > 360) {
+			ticksInSight = isLineOfSight() ? ticksInSight + 1 : 0;
 			if (ticksInSight >= maxTicksInSight) initDodge();
 		}
 		
-		if (isDodging) {
-			dodgeTick();
-		}
+		if (isDodging) dodgeTick();
 		else {
 			super.tick();
 			if (isLineOfSight()) {
@@ -40,10 +32,13 @@ public class DodgingZombie extends Zombie {
 			}
 		}
 		
-		if (System.currentTimeMillis() - lastStrafed > 5000) {
+		if (ticksSinceStrafe > 300) {
 			strafeDir = r.nextBoolean();
-			lastStrafed = System.currentTimeMillis();
+			ticksSinceStrafe = 0;
 		}
+		
+		ticksSinceDodge++;
+		ticksSinceStrafe++;
 	}
 	
 	private boolean isLineOfSight() {
@@ -52,20 +47,20 @@ public class DodgingZombie extends Zombie {
 	
 	private void initDodge() {
 		isDodging = true;
-		lastDodged = System.currentTimeMillis();
-		numTicks = r.nextInt(21) + 20;
+		ticksSinceDodge = 0;
+		dodgeTicks = r.nextInt(21) + 20;
 		ticksInSight = 0;
 		theta = angle + (r.nextBoolean() ? 1 : -1) * (Math.PI / 3f);
 		speed *= 1.1;
 	}
 	
 	private void dodgeTick() {
-		double tempSpeed = 0.75 + numTicks / 25f;
+		double tempSpeed = 0.75 + dodgeTicks / 25f;
 		theta += r.nextGaussian() * 0.1f;
 		angle = getAngleToPlayer();
 		x += tempSpeed * speed * Math.sin(theta);
 		y += tempSpeed * speed * Math.cos(theta);
-		if (--numTicks <= 0) isDodging = false;
+		if (--dodgeTicks <= 0) isDodging = false;
 		if (r.nextBoolean()) spriteNum++;
 	}
 }

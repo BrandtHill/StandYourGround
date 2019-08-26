@@ -1,8 +1,5 @@
 package game;
 
-
-import static java.lang.Math.atan2;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
@@ -10,13 +7,10 @@ import game.Program.STATE;
 import game.Weapons.Gun;
 
 public class MouseInput extends MouseAdapter{
-	
 	private static Player player;
-	private static Reticle reticle;
 	
 	public MouseInput() {
 		player = Program.player;
-		reticle = Program.reticle;
 	}
 	
 	public void mousePressed(MouseEvent e) {

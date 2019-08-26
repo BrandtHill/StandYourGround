@@ -114,7 +114,6 @@ public class Program extends Canvas implements Runnable{
         long timer = System.currentTimeMillis();
         int frames = 0;
         while (running) {
-	        
         	currTime = System.nanoTime();
 	        delta += (currTime - lastTime) / nsPerTick;
 	        lastTime = currTime;

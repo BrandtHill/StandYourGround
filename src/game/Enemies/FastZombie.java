@@ -1,4 +1,4 @@
-package game;
+package game.Enemies;
 
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
