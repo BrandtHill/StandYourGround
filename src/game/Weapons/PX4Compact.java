@@ -29,7 +29,8 @@ public class PX4Compact extends Gun {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
 			onShotFired();
-			AudioPlayer.getSound("Pistol").play(0.95f, 0.3f);
+			AudioPlayer.getSound("Pistol").setGain(0.3f);
+			AudioPlayer.getSound("Pistol").play(); //pitch 0.95f
 		} 
 		reloadIfNeeded();
 	}

@@ -28,7 +28,8 @@ public class Model57 extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
-			AudioPlayer.getSound("Pistol").play(0.50f,0.45f);
+			AudioPlayer.getSound("Pistol").setGain(0.45f);
+			AudioPlayer.getSound("Pistol").play(); //pitch 0.5
 			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
 			onShotFired();	
 		}

@@ -29,7 +29,8 @@ public class OverUnder extends Gun {
 				handler.addObject(new Projectile(this));
 			}
 			onShotFired();
-			AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
+			AudioPlayer.getSound("Shotgun").setGain(0.30f);
+			AudioPlayer.getSound("Shotgun").play();
 		}
 		reloadIfNeeded();
 	}

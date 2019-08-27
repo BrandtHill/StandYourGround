@@ -24,7 +24,7 @@ public class StoreMotionInput extends MouseMotionAdapter{
 			for (Button b : store.buttons) {
 				if (b != null && (b.isClickable() || b.displayColor == Color.GREEN)) {
 					if (b.inBounds(e.getPoint())) {
-						if (b.displayColor == b.mainColor) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+						if (b.displayColor == b.mainColor) playBlip();
 						b.displayColor = Color.GREEN;
 					} else b.displayColor = b.mainColor;
 				}
@@ -34,5 +34,10 @@ public class StoreMotionInput extends MouseMotionAdapter{
 	
 	public void mouseDragged(MouseEvent e) {
 		mouseMoved(e);
+	}
+	
+	private void playBlip() {
+		AudioPlayer.getSound("BlipMinor").setGain(0.7f);
+		AudioPlayer.getSound("BlipMinor").play();
 	}
 }

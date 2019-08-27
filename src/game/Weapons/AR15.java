@@ -27,7 +27,8 @@ public class AR15 extends Gun {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
 			onShotFired();
-			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
+			AudioPlayer.getSound("Rifle").setGain(0.3f);
+			AudioPlayer.getSound("Rifle").play();
 		} 
 		reloadIfNeeded();	
 	}

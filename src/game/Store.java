@@ -240,7 +240,7 @@ public class Store extends MouseAdapter{
 		if (gun.isOwned()) {
 			int cap = gun.getAmmoCapacity();
 			if (player.getMoney() >= money) {
-				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				playBlip();
 				gun.setAmmoCapacity(ammo + cap);
 				player.setMoney(player.getMoney() - money);
 			} 
@@ -250,7 +250,7 @@ public class Store extends MouseAdapter{
 	private void upgradeMagSize(Gun gun, int ammo, int money) {
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
-				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				playBlip();
 				int mag = gun.getMagSize();
 				int cap = gun.getAmmoCapacity();
 				int m = player.getMoney();
@@ -265,7 +265,7 @@ public class Store extends MouseAdapter{
 	private void upgradeRounds(Gun gun, int money) {
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
-				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				playBlip();
 				gun.setSpecialRounds(true);
 				player.setMoney(player.getMoney() - money);
 			}
@@ -275,7 +275,7 @@ public class Store extends MouseAdapter{
 	private void upgradeFireMode(Gun gun, int money) {
 		if (gun.isOwned()) {
 			if (player.getMoney() >= money) {
-				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				playBlip();
 				gun.setFullAuto(true);
 				player.setMoney(player.getMoney() - money);
 			}
@@ -285,10 +285,15 @@ public class Store extends MouseAdapter{
 	private void buyGun(Gun gun, int money) {
 		if (!gun.isOwned()) {
 			if (player.getMoney() >= money) {
-				AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+				playBlip();
 				gun.setOwned(true);
 				player.setMoney(player.getMoney() - money);
 			} 
 		}
+	}
+	
+	private void playBlip() {
+		AudioPlayer.getSound("BlipMajor").setGain(0.7f);
+		AudioPlayer.getSound("BlipMajor").play();
 	}
 }

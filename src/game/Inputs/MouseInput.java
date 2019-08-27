@@ -5,7 +5,6 @@ import java.awt.event.MouseEvent;
 
 import game.Program.STATE;
 import game.Program;
-import game.Audio.AudioMap;
 import game.GamePieces.Player;
 import game.Weapons.Gun;
 
@@ -30,14 +29,7 @@ public class MouseInput extends MouseAdapter{
 		}
 		else if(Program.gameState == STATE.GameOver);
 		else if(Program.gameState == STATE.PauseMenu);
-		else if(Program.gameState == STATE.StartMenu) {
-			if (button == MouseEvent.BUTTON1) {
-				AudioMap.get("P1").start();
-			}
-			if (button == MouseEvent.BUTTON3) {
-				AudioMap.get("P2").start();
-			}
-		}
+		else if(Program.gameState == STATE.StartMenu);
 		else if(Program.gameState == STATE.StoreMenu);
 	}
 	

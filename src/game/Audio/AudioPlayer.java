@@ -1,13 +1,12 @@
 package game.Audio;
 
+import java.io.FileInputStream;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
 
-import org.newdawn.slick.Music;
-import org.newdawn.slick.SlickException;
-import org.newdawn.slick.Sound;
+import org.newdawn.easyogg.OggClip;
 
 import static game.Program.delay;
 
@@ -16,28 +15,32 @@ import game.Program.STATE;
 
 public class AudioPlayer {
 
-	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Map<String, Music> musicMap = new HashMap<String, Music>();	
-	private static Music dying;
+	private static Map<String, OggClip> oggMap = new HashMap<String, OggClip>();
+	private static OggClip dying;
 	
 	private static void loadSounds() {
+		oggMap.put("Pistol", 			newClip("./res/PistolSound.ogg"));
+		oggMap.put("Rifle", 			newClip("./res/RifleSound.ogg"));
+		oggMap.put("Shotgun", 			newClip("./res/ShotgunSound.ogg"));
+		oggMap.put("Sniper", 			newClip("./res/SniperSound.ogg"));
+		oggMap.put("ReloadTitan", 		newClip("./res/ReloadTitanSound.ogg"));
+		oggMap.put("ReloadPX4", 		newClip("./res/ReloadPX4Sound.ogg"));
+		oggMap.put("ReloadAR15", 		newClip("./res/ReloadAR15Sound.ogg"));
+		oggMap.put("ReloadOverUnder", 	newClip("./res/ReloadOverUnderSound.ogg"));
+		oggMap.put("ReloadM77", 		newClip("./res/ReloadM77Sound.ogg"));
+		oggMap.put("ReloadModel57", 	newClip("./res/ReloadModel57.ogg"));
+		oggMap.put("CycleM77", 			newClip("./res/CycleM77Sound.ogg"));
+		oggMap.put("CockModel57", 		newClip("./res/CockModel57.ogg"));
+		oggMap.put("BlipMinor", 		newClip("./res/BlipMinor.ogg"));
+		oggMap.put("BlipMajor", 		newClip("./res/BlipMajor.ogg"));
+	}
+	
+	private static OggClip newClip(String filename) {
 		try {
-			soundMap.put("Pistol", 			new Sound("./res/PistolSound.wav"));
-			soundMap.put("Rifle", 			new Sound("./res/RifleSound.wav"));
-			soundMap.put("Shotgun", 		new Sound("./res/ShotgunSound.wav"));
-			soundMap.put("Sniper", 			new Sound("./res/SniperSound.wav"));
-			soundMap.put("ReloadTitan", 	new Sound("./res/ReloadTitanSound.ogg"));
-			soundMap.put("ReloadPX4", 		new Sound("./res/ReloadPX4Sound.wav"));
-			soundMap.put("ReloadAR15", 		new Sound("./res/ReloadAR15Sound.ogg"));
-			soundMap.put("ReloadOverUnder", new Sound("./res/ReloadOverUnderSound.ogg"));
-			soundMap.put("ReloadM77", 		new Sound("./res/ReloadM77Sound.ogg"));
-			soundMap.put("ReloadModel57", 	new Sound("./res/ReloadModel57.wav"));
-			soundMap.put("CycleM77", 		new Sound("./res/CycleM77Sound.ogg"));
-			soundMap.put("CockModel57", 	new Sound("./res/CockModel57.wav"));
-			soundMap.put("BlipMinor", 		new Sound("./res/BlipMinor.wav"));
-			soundMap.put("BlipMajor", 		new Sound("./res/BlipMajor.wav"));
-		} catch (SlickException e) {
+			return new OggClip(new FileInputStream(filename));
+		} catch (Exception e) {
 			e.printStackTrace();
+			return null;
 		}
 	}
 	
@@ -46,26 +49,22 @@ public class AudioPlayer {
 		Executors.newSingleThreadExecutor().execute( () -> {
 			Thread.currentThread().setName("Music Thread");
 			loadMusic();
-			//runMusicLoop();
-			AudioMap.get("Dying").start();
-			AudioMap.get("Dying").setGain(-20f);
+			runMusicLoop();
 		});
 	}
 	
 	private static void loadMusic() {
-		try {
-			musicMap.put("Dying", new Music("./res/Dying.ogg"));
-			//musicMap.put("Husk", new Music("./res/Husk.ogg"));
-			//musicMap.put("Mystic", new Music("./res/Mystic Beat.ogg"));
-			//musicMap.put("Fat", new Music("./res/Fat Beat.ogg"));
-		} catch (SlickException e) {
-			e.printStackTrace();
-		}
+		oggMap.put("Dying", newClip("./res/Dying.ogg"));
+		//oggMap.put("Husk", new Music("./res/Husk.ogg"));
+		//oggMap.put("Mystic", new Music("./res/Mystic Beat.ogg"));
+		//oggMap.put("Fat", new Music("./res/Fat Beat.ogg"));
 	}
 	
 	private static void runMusicLoop() {
-		dying = getMusic("Dying");
-		dying.loop(1f, 0.25f);
+		dying = getSound("Dying");
+		dying.loop();
+		dying.setGain(0.25f);
+		//dying.loop(1f, 0.25f);
 		STATE prev = Program.gameState;
 		STATE curr = Program.gameState;
 		while (true) {
@@ -77,32 +76,25 @@ public class AudioPlayer {
 	}
 	
 	private static void stateChange(STATE curr) {
-		float pos = dying.getPosition();
-		dying.stop();
+		//dying.stop();
 		
 		switch (curr) {
-		case GameOver:	dying.loop(0.65f, 0.25f);
+		case GameOver:	//dying.loop(0.65f, 0.25f);
 			break;
-		case InGame:	dying.loop(1f, 0.25f);
+		case InGame:	//dying.loop(1f, 0.25f);
 			break;
-		case PauseMenu: dying.loop(0.65f, 0.25f);
+		case PauseMenu: //dying.loop(0.65f, 0.25f);
 			break;
-		case StartMenu: dying.loop(1f, 0.25f);
+		case StartMenu: //dying.loop(1f, 0.25f);
 			break;
-		case StoreMenu: dying.loop(1.35f, 0.25f);
+		case StoreMenu: //dying.loop(1.35f, 0.25f);
 			break;
-		default:		dying.loop(1f, 0.25f);
+		default:		//dying.loop(1f, 0.25f);
 			break;
 		}
-		
-		dying.setPosition(pos);
 	}
 	
-	public static Music getMusic(String key) {
-		return musicMap.get(key);
-	}
-	
-	public static Sound getSound(String key) {
-		return soundMap.get(key);
+	public static OggClip getSound(String key) {
+		return oggMap.get(key);
 	}
 }

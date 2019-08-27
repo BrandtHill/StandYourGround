@@ -6,7 +6,7 @@ import java.util.Random;
 
 import static java.lang.Math.cos;
 
-import org.newdawn.slick.Sound;
+import org.newdawn.easyogg.OggClip;
 
 import game.Handler;
 import game.GamePieces.Player;
@@ -23,7 +23,7 @@ public abstract class Gun {
 	protected String gunName;
 	protected static Player player;
 	protected static Handler handler;
-	protected Sound reloadSound;
+	protected OggClip reloadSound;
 	protected float reloadSoundPosition;
 	protected long tickDivider;
 	protected int reloadTicks, chamberTicks;
@@ -49,7 +49,7 @@ public abstract class Gun {
 	
 	public void reload() {
 		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
-			reloadSound.play(1f, 1f);
+			reloadSound.play();
 			currentlyReloading = true;
 		}
 	}
@@ -88,11 +88,11 @@ public abstract class Gun {
 		shooting = false;
 		chambered = true;
 		chamberTicks = reloadTicks = 0;
-		if (reloadSound.playing()) reloadSound.stop();
+		if (!reloadSound.stopped()) reloadSound.stop();
 	}
 	
 	public void swapGun() {
-		if (reloadSound.playing()) reloadSound.stop();
+		if (!reloadSound.stopped()) reloadSound.stop();
 		currentlyReloading = false;
 		chamberTicks = reloadTicks = 0;
 	}

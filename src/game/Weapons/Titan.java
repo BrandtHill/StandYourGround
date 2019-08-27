@@ -28,7 +28,8 @@ public class Titan extends Gun {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
 			onShotFired();
-			AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
+			AudioPlayer.getSound("Pistol").setGain(0.25f);
+			AudioPlayer.getSound("Pistol").play(); //pitch 1.2
 		} 
 		reloadIfNeeded();
 	}

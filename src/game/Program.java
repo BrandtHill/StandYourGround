@@ -12,7 +12,6 @@ import java.time.Duration;
 
 import javax.imageio.ImageIO;
 
-import game.Audio.AudioMap;
 import game.Audio.AudioPlayer;
 import game.GamePieces.Player;
 import game.GamePieces.Reticle;
@@ -55,7 +54,6 @@ public class Program extends Canvas implements Runnable{
 	
 	public Program() {
 		AudioPlayer.init();
-		AudioMap.init();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
