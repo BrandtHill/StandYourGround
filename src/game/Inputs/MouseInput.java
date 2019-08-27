@@ -32,10 +32,10 @@ public class MouseInput extends MouseAdapter{
 		else if(Program.gameState == STATE.PauseMenu);
 		else if(Program.gameState == STATE.StartMenu) {
 			if (button == MouseEvent.BUTTON1) {
-				AudioMap.get("C1").start();
+				AudioMap.get("P1").start();
 			}
 			if (button == MouseEvent.BUTTON3) {
-				AudioMap.get("C2").start();
+				AudioMap.get("P2").start();
 			}
 		}
 		else if(Program.gameState == STATE.StoreMenu);

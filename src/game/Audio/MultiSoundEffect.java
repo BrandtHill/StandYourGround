@@ -40,6 +40,14 @@ public class MultiSoundEffect implements ISound {
 		increment();
 	}
 	
+	public float getGain() {
+		return effects[0].getGain();
+	}
+	
+	public void setGain(float gain) {
+		for (int i = 0; i < NUM_CLIPS; i++) effects[i].setGain(gain);
+	}
+	
 	private void increment() {
 		effectIndex++;
 		effectIndex %= NUM_CLIPS;

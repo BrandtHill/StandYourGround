@@ -10,4 +10,8 @@ public interface ISound {
 	public void pause();
 	
 	public void reset();
+	
+	public float getGain();
+	
+	public void setGain(float gain);
 }

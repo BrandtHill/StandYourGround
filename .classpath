@@ -11,6 +11,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="lib/slick.jar"/>
-	<classpathentry kind="lib" path="C:/github/StandYourGround/lib/java-vorbis-support-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/java-vorbis-support-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/vorbis-java-core-0.6.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -46,7 +46,9 @@ public class AudioPlayer {
 		Executors.newSingleThreadExecutor().execute( () -> {
 			Thread.currentThread().setName("Music Thread");
 			loadMusic();
-			runMusicLoop();
+			//runMusicLoop();
+			AudioMap.get("Dying").start();
+			AudioMap.get("Dying").setGain(-20f);
 		});
 	}
 	

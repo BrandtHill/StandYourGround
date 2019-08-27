@@ -21,7 +21,7 @@ public class SoundEffect implements ISound {
 	public SoundEffect init() {
 		try {
 			clip = AudioSystem.getClip();
-			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(filename));
+			AudioInputStream ais = AudioSystem.getAudioInputStream(new File(filename)); 
 			clip.open(ais);
 			gain = (FloatControl)clip.getControl(FloatControl.Type.MASTER_GAIN);
 		} catch (Exception e) {
@@ -45,5 +45,13 @@ public class SoundEffect implements ISound {
 	
 	public void reset() {
 		clip.setMicrosecondPosition(0);
+	}
+	
+	public float getGain() {
+		return gain.getValue();
+	}
+	
+	public void setGain(float gain) {
+		this.gain.setValue(gain);
 	}
 }
