@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
 
+import game.Pieces.Player;
 import game.Program.STATE;
 import game.Weapons.Gun;
 
@@ -20,44 +21,44 @@ public class SaveData implements Serializable {
 	private int money;
 	private int moneyAtRoundStart;
 	private int level;
-	private ArrayList<Integer> magSizes;
-	private ArrayList<Integer> ammoCaps;
-	private ArrayList<Boolean> gunsOwned;
-	private ArrayList<Boolean> fireModes;
-	private ArrayList<Boolean> specialRounds;
-	private ArrayList<Boolean> magIncreased;
+	private ArrayList<GunBean> gunBeans;
+
+	class GunBean implements Serializable {
+		int MagSize;
+		int AmmoCap;
+		boolean GunOwned;
+		boolean FireMode;
+		boolean SpecialRound;
+		boolean MagIncreased;
+	}
 	
 	public SaveData() {
 		File directory = new File("./res/saves");
 		if (!directory.exists()) directory.mkdirs();
+		gunBeans = new ArrayList<>();
 	}
 	
 	public void saveToFile(String filename, Player player) {
 		try {
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
-	         
-			ArrayList<Gun> arsenal;
-			magSizes = new ArrayList<Integer>();
-			ammoCaps = new ArrayList<Integer>();
-			gunsOwned = new ArrayList<Boolean>();
-			fireModes = new ArrayList<Boolean>();
-			specialRounds = new ArrayList<Boolean>();
-			magIncreased = new ArrayList<Boolean>();
+			ArrayList<Gun> arsenal = player.getArsenal();
+			
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
-			arsenal = player.getArsenal();
-			for(int i = 0; i < arsenal.size(); i++) {
+			for (int i = 0; i < arsenal.size(); i++) {
 				Gun g = arsenal.get(i);
-				magSizes.add(i, g.getMagSize());
-				ammoCaps.add(i, g.getAmmoCapacity());
-				gunsOwned.add(i, g.isOwned());
-				specialRounds.add(i, g.isSpecialRounds());
-				fireModes.add(i, g.isFullAuto());
-				magIncreased.add(i, g.isMagIncreased());
-			} 
-	         
+				GunBean b = new GunBean();
+				b.MagSize = g.getMagSize();
+				b.AmmoCap = g.getAmmoCapacity();
+				b.GunOwned = g.isOwned();
+				b.SpecialRound = g.isSpecialRounds();
+				b.FireMode = g.isFullAuto();
+				b.MagIncreased = g.isMagIncreased();
+				gunBeans.add(i, b);
+			}
+	        
 	        out.writeObject(this);
 	        out.close();
 	        file.close();
@@ -68,7 +69,7 @@ public class SaveData implements Serializable {
 		}
 	}
 	
-	public SaveData loadFromFile(String filename) {
+	public static SaveData loadFromFile(String filename) {
 		try {
 			FileInputStream file = new FileInputStream(filename);
 			ObjectInputStream in = new ObjectInputStream(file);
@@ -76,7 +77,7 @@ public class SaveData implements Serializable {
 			in.close();
 			file.close();
 			System.out.println("Loaded game state from: " + filename);
-			return temp;		
+			return temp;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return null;
@@ -91,12 +92,13 @@ public class SaveData implements Serializable {
 		Program.spawnSys.setLevel(level);
 		for (int i = 0; i < arsenal.size(); i++) {
 			Gun g = arsenal.get(i);
-			g.setMagSize(magSizes.get(i));
-			g.setAmmoCapacity(ammoCaps.get(i));
-			g.setOwned(gunsOwned.get(i));
-			g.setFullAuto(fireModes.get(i));
-			g.setSpecialRounds(specialRounds.get(i));
-			g.setMagIncreased(magIncreased.get(i));
+			GunBean b = gunBeans.get(i);
+			g.setMagSize(b.MagSize);
+			g.setAmmoCapacity(b.AmmoCap);
+			g.setOwned(b.GunOwned);
+			g.setFullAuto(b.FireMode);
+			g.setSpecialRounds(b.SpecialRound);
+			g.setMagIncreased(b.MagIncreased);
 			g.resetAmmo();
 		}
 		player.autoEquip();

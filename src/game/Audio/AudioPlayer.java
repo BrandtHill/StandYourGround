@@ -17,7 +17,7 @@ import game.Program.STATE;
 public class AudioPlayer {
 
 	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Map<String, Music> musicMap = new HashMap<String, Music>();	
+	private static Map<String, Music> musicMap = new HashMap<String, Music>();
 	private static Music dying;
 	
 	private static void loadSounds() {
@@ -76,7 +76,6 @@ public class AudioPlayer {
 	
 	private static void stateChange(STATE curr) {
 		float pos = dying.getPosition();
-		dying.stop();
 		
 		switch (curr) {
 		case GameOver:	dying.loop(0.65f, 0.25f);

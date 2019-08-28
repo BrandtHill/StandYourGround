@@ -9,8 +9,8 @@ import static java.lang.Math.cos;
 import org.newdawn.slick.Sound;
 
 import game.Handler;
-import game.Player;
-import game.Projectile;
+import game.Pieces.Player;
+import game.Pieces.Projectile;
 
 public abstract class Gun {
 	protected double damage, spread;
@@ -85,7 +85,7 @@ public abstract class Gun {
 	public void resetAmmo() {
 		ammoLoaded = magSize;
 		ammoExtra = ammoCapacity;
-		shooting = false;
+		shooting = currentlyReloading = false;
 		chambered = true;
 		chamberTicks = reloadTicks = 0;
 		if (reloadSound.playing()) reloadSound.stop();

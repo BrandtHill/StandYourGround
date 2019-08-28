@@ -1,7 +1,7 @@
 package game.Weapons;
 
-import game.Projectile;
 import game.Audio.AudioPlayer;
+import game.Pieces.Projectile;
 
 public class Model57 extends Gun {
 

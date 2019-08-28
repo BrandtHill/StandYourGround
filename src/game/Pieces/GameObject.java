@@ -1,6 +1,9 @@
-package game;
+package game.Pieces;
 
 import java.awt.Graphics;
+
+import game.Handler;
+import game.Program;
 
 import static java.lang.Math.sqrt;
 

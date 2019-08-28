@@ -1,4 +1,4 @@
-package game;
+package game.Pieces;
 
 import static java.lang.Math.atan2;
 
@@ -14,8 +14,9 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
+import game.Program;
 import game.Audio.AudioPlayer;
-import game.Enemies.Zombie;
+import game.Pieces.Enemies.Zombie;
 import game.Program.STATE;
 import game.Weapons.AR15;
 import game.Weapons.Gun;

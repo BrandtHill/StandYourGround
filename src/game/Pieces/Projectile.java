@@ -1,4 +1,4 @@
-package game;
+package game.Pieces;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -6,7 +6,8 @@ import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
 import java.util.Random;
 
-import game.Enemies.Zombie;
+import game.Program;
+import game.Pieces.Enemies.Zombie;
 import game.Weapons.Gun;
 
 import static java.lang.Math.sin;

@@ -1,7 +1,10 @@
-package game;
+package game.Inputs;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
+
+import game.Program;
+import game.Pieces.Reticle;
 
 public class MouseMotionInput extends MouseMotionAdapter {
 	

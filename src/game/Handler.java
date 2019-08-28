@@ -4,9 +4,12 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
-import game.Enemies.DodgingZombie;
-import game.Enemies.FastZombie;
-import game.Enemies.Zombie;
+import game.Pieces.Blood;
+import game.Pieces.GameObject;
+import game.Pieces.Projectile;
+import game.Pieces.Enemies.DodgingZombie;
+import game.Pieces.Enemies.FastZombie;
+import game.Pieces.Enemies.Zombie;
 import game.SpawnSystem.REGION;
 import game.SpawnSystem.ZOMBIE;
 

@@ -1,9 +1,11 @@
-package game;
+package game.Inputs;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
+import game.Program;
+import game.Store;
+import game.Pieces.Player;
 import game.Program.STATE;
 
 public class KeyInput extends KeyAdapter{

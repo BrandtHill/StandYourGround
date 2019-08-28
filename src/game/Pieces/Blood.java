@@ -1,4 +1,4 @@
-package game;
+package game.Pieces;
 
 import java.awt.Color;
 import java.awt.Graphics;

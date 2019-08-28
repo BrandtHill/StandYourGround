@@ -2,8 +2,8 @@ package game.Weapons;
 
 import java.awt.Color;
 
-import game.Projectile;
 import game.Audio.AudioPlayer;
+import game.Pieces.Projectile;
 
 public class PX4Compact extends Gun {
 

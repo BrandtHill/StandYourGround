@@ -1,9 +1,10 @@
-package game;
+package game.Pieces;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
+import game.Program;
 import game.Program.STATE;
 
 public class Reticle extends GameObject {

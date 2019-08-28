@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
 
+import game.Pieces.Player;
 import game.Weapons.Gun;
 
 public class HUD {

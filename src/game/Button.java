@@ -5,6 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import game.Pieces.Player;
 import game.Store.Menu;
 import game.Weapons.Gun;
 

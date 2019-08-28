@@ -12,8 +12,13 @@ import java.time.Duration;
 
 import javax.imageio.ImageIO;
 
-import game.Audio.AudioMap;
 import game.Audio.AudioPlayer;
+import game.Inputs.KeyInput;
+import game.Inputs.MouseInput;
+import game.Inputs.MouseMotionInput;
+import game.Inputs.StoreMotion;
+import game.Pieces.Player;
+import game.Pieces.Reticle;
 
 public class Program extends Canvas implements Runnable{
 
@@ -48,8 +53,7 @@ public class Program extends Canvas implements Runnable{
 	private static STATE prevState;
 	
 	public Program() {
-		//AudioPlayer.init();
-		AudioMap.init();
+		AudioPlayer.init();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
@@ -283,7 +287,7 @@ public class Program extends Canvas implements Runnable{
 	}
 	
 	public static void loadFromFile(String filename) {
-		saveData = saveData.loadFromFile(filename);
+		saveData = SaveData.loadFromFile(filename);
 		if (saveData!= null) saveData.setPlayerAfterLoad(player);
 		else System.out.println("Player load was not successful.");
 	}

@@ -1,4 +1,4 @@
-package game.Enemies;
+package game.Pieces.Enemies;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -11,10 +11,10 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
-import game.Blood;
-import game.GameObject;
-import game.Player;
 import game.Program;
+import game.Pieces.Blood;
+import game.Pieces.GameObject;
+import game.Pieces.Player;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;

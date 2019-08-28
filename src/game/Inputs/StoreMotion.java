@@ -1,9 +1,12 @@
-package game;
+package game.Inputs;
 
 import java.awt.Color;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 
+import game.Button;
+import game.Program;
+import game.Store;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
 
