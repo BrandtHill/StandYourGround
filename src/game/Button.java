@@ -5,8 +5,9 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Point;
 
+import game.Inputs.Store;
+import game.Inputs.Store.Menu;
 import game.Pieces.Player;
-import game.Store.Menu;
 import game.Weapons.Gun;
 
 public class Button {

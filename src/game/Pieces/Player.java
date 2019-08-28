@@ -233,14 +233,16 @@ public class Player extends GameObject{
 		else if (gunSidearm != null) gunWielded = gunSidearm;
 	}
 	
-	public void equipPrimary(Gun g) {equipGun(g, gunPrimary);}
-	public void equipSecondary(Gun g) {equipGun(g, gunSecondary);}
-	public void equipSidearm(Gun g) {equipGun(g, gunSidearm);}
+	public void equipPrimary(Gun g) {equipGun(g, 0);}
+	public void equipSecondary(Gun g) {equipGun(g, 1);}
+	public void equipSidearm(Gun g) {equipGun(g, 2);}
 	
-	private void equipGun(Gun g, Gun ref) {
+	private void equipGun(Gun g, int ref) {
 		if (g.isOwned() && !g.isLockedIn()) {
 			if (g.isEquipped()) g.unequip();
-			ref = g;
+			if (ref == 0) gunPrimary = g;
+			if (ref == 1) gunSecondary = g;
+			if (ref == 2) gunSidearm = g;
 			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}

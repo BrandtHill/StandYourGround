@@ -6,7 +6,6 @@ import java.awt.event.MouseMotionAdapter;
 
 import game.Button;
 import game.Program;
-import game.Store;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
 
