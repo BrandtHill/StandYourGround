@@ -127,7 +127,7 @@ public class Program extends Canvas implements Runnable{
 	        lastTime = currTime;
 	        
 	        while (delta >=1) {
-				tick();
+	        	tick();
 				delta--;
 	        }
 	        
@@ -138,7 +138,6 @@ public class Program extends Canvas implements Runnable{
 				System.out.println("FPS: " + (frames > 1000 ? "1000+" : frames));
 				frames = 0;
 			}
-	        
 	        if (delta < 0.9) delay(Duration.ofMillis(1));
         }
         stop();

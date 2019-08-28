@@ -91,7 +91,7 @@ public abstract class Gun {
 		if (reloadSound.playing()) reloadSound.stop();
 	}
 	
-	public void swapGun() {
+	public void onSwap() {
 		if (reloadSound.playing()) reloadSound.stop();
 		currentlyReloading = false;
 		chamberTicks = reloadTicks = 0;

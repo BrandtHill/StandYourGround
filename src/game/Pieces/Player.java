@@ -179,24 +179,17 @@ public class Player extends GameObject{
 	public Gun searchGun(GUN id) {
 		return arsenal.stream().filter(g -> g.getId() == id).findFirst().orElse(null);
 	}
-	public void switchToPrimary() {
-		if (gunPrimary != null && gunWielded != gunPrimary) {
-			gunWielded.swapGun();
-			gunWielded = gunPrimary;
+	public void switchToPrimary() {switchToGun(gunPrimary);}
+	public void switchToSecondary() {switchToGun(gunSecondary);}
+	public void switchToSidearm() {switchToGun(gunSidearm);}
+	
+	private void switchToGun(Gun g) {
+		if (g != null && gunWielded != g) {
+			gunWielded.onSwap();
+			gunWielded = g;
 		}
 	}
-	public void switchToSecondary() {
-		if (gunSecondary != null && gunWielded != gunSecondary) {
-			gunWielded.swapGun();
-			gunWielded = gunSecondary;
-		}
-	}
-	public void switchToSidearm() {
-		if (gunSidearm != null && gunWielded != gunSidearm) {
-			gunWielded.swapGun();
-			gunWielded = gunSidearm;
-		}
-	}
+	
 	public void resetAllAmmo() {
 		arsenal.forEach(g -> g.resetAmmo());
 	}
@@ -240,26 +233,14 @@ public class Player extends GameObject{
 		else if (gunSidearm != null) gunWielded = gunSidearm;
 	}
 	
-	public void equipPrimary(Gun g) {
-		if (g.isOwned() && !g.isLockedIn()) {
-			if (g.isEquipped()) g.unequip();
-			gunPrimary = g;
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
-		}
-	}
+	public void equipPrimary(Gun g) {equipGun(g, gunPrimary);}
+	public void equipSecondary(Gun g) {equipGun(g, gunSecondary);}
+	public void equipSidearm(Gun g) {equipGun(g, gunSidearm);}
 	
-	public void equipSecondary(Gun g) {
+	private void equipGun(Gun g, Gun ref) {
 		if (g.isOwned() && !g.isLockedIn()) {
 			if (g.isEquipped()) g.unequip();
-			gunSecondary = g;
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
-		}
-	}
-	
-	public void equipSidearm(Gun g) {
-		if (g.isOwned() && !g.isLockedIn()) {
-			if (g.isEquipped()) g.unequip();
-			gunSidearm = g;
+			ref = g;
 			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}
