@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import game.Program;
 import game.Pieces.Player;
 import game.Program.STATE;
+import game.Weapons.Gun;
 
 public class KeyInput extends KeyAdapter{
 	
@@ -46,6 +47,12 @@ public class KeyInput extends KeyAdapter{
 				Program.gameState = STATE.PauseMenu;
 				w = a = s = d = false;
 				break;
+			case KeyEvent.VK_SPACE:
+				Gun gun = player.getGunWielded();
+				if (gun.isFullAuto()) {
+					gun.resetTickDivier();
+					gun.setShooting(true);
+				} else gun.shoot();
 			default:
 				break;
 			}
@@ -147,6 +154,8 @@ public class KeyInput extends KeyAdapter{
 		case KeyEvent.VK_S: s = false;
 			break;
 		case KeyEvent.VK_D: d = false;
+			break;
+		case KeyEvent.VK_SPACE: player.getGunWielded().setShooting(false);
 			break;
 		default:
 			break;

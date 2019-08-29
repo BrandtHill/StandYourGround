@@ -4,7 +4,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.Line2D;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import game.Program;
 import game.Pieces.Enemies.Zombie;
@@ -20,6 +22,7 @@ public class Projectile extends GameObject {
 	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;
 	public int hits;
 	public Color color;
+	private Set<Zombie> hitZombies;
 	
 	public Projectile(Gun g) {
 		super(g.muzzlePointX(), g.muzzlePointY());
@@ -34,6 +37,7 @@ public class Projectile extends GameObject {
 		this.hits = g.getHits();
 		this.color = Color.YELLOW;
 		this.angleMulti = 0.5;
+		this.hitZombies = new HashSet<Zombie>();
 		
 		if (g.isSpecialRounds()) g.makeRoundSpecial(this);
 	}
@@ -59,7 +63,8 @@ public class Projectile extends GameObject {
 			GameObject obj = handler.getObjectAt(i);
 			if (obj instanceof Zombie) {
 				Zombie zomb = (Zombie) obj;
-				if (zomb.getBounds().intersectsLine(this.getBounds())) {
+				if (zomb.getBounds().intersectsLine(this.getBounds()) && !hitZombies.contains(zomb)) {
+					hitZombies.add(zomb);
 					zomb.damageMe(damage, angle, knockBack);
 					hits--;
 					damage /= 1.4;

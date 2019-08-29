@@ -25,7 +25,7 @@ public abstract class Gun {
 	protected static Handler handler;
 	protected Sound reloadSound;
 	protected float reloadSoundPosition;
-	protected long tickDivider;
+	protected long ticks;
 	protected int reloadTicks, chamberTicks;
 	protected Random r;
 	protected GUN gunId;
@@ -53,6 +53,7 @@ public abstract class Gun {
 			currentlyReloading = true;
 		}
 	}
+	
 	private void reloadFinish() {
 		int reloadAmount = magSize - ammoLoaded;
 
@@ -103,7 +104,11 @@ public abstract class Gun {
 	 * X value corrected for player rotation.
 	 */
 	public double muzzlePointX() {
-		return player.getX() + 10 + xOffset*cos(player.getAngle()) + yOffset*sin(player.getAngle());
+		return offsetPointX(xOffset, yOffset);
+	}
+	
+	public double offsetPointX(double xo, double yo) {
+		return player.getX() + 10 + xo*cos(player.getAngle()) + yo*sin(player.getAngle());
 	}
 	
 	/**
@@ -112,7 +117,11 @@ public abstract class Gun {
 	 * X value corrected for player rotation.
 	 */
 	public double muzzlePointY() {
-		return player.getY() + 10 + yOffset*cos(player.getAngle()) - xOffset*sin(player.getAngle());
+		return offsetPointY(xOffset, yOffset);
+	}
+	
+	public double offsetPointY(double xo, double yo) {
+		return player.getY() + 10 + yo*cos(player.getAngle()) - xo*sin(player.getAngle());
 	}
 	
 	public double getDamage() {return damage;}
@@ -147,7 +156,7 @@ public abstract class Gun {
 	public void setMagIncreased(boolean isMagIncreased) {this.isMagIncreased = isMagIncreased;}
 	public static void setPlayer(Player player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
-	public void resetTickDivier() {tickDivider = 0;}
+	public void resetTickDivier() {ticks = 0;}
 	public void lockIn() {lockedIn = true;}
 	public void unLock() {lockedIn = false;}
 	

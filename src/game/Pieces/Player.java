@@ -11,6 +11,9 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -34,7 +37,9 @@ public class Player extends GameObject{
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
-	private ArrayList<Gun> arsenal;
+	private List<Gun> arsenal;
+	private Map<String, Gun> arsenalStringMap;
+	private Map<GUN, Gun> arsenalEnumMap;
 	private Reticle reticle;
 	private double angle;
 	private double speed;
@@ -50,14 +55,20 @@ public class Player extends GameObject{
 		super(x, y);
 		Gun.setPlayer(this);
 		Gun.setHandler(Program.handler);
-		arsenal = new ArrayList<Gun>();
+		arsenalStringMap = new HashMap<>();
+		arsenalEnumMap = new HashMap<>();
+		arsenal = new ArrayList<>();
 		arsenal.add(new AR15());
 		arsenal.add(new M77());
 		arsenal.add(new OverUnder());
 		arsenal.add(new Model57());
 		arsenal.add(new PX4Compact());
 		arsenal.add(new Titan());
-		gunSidearm = searchGun(GUN.Titan);
+		arsenal.stream().forEach(g -> {
+			arsenalStringMap.put(g.getName(), g);
+			arsenalEnumMap.put(g.getId(), g);
+		});
+		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
 		tickDivider = 0;
@@ -149,7 +160,7 @@ public class Player extends GameObject{
 	public Gun getGunPrimary() {return gunPrimary;}
 	public Gun getGunSecondary() {return gunSecondary;}
 	public Gun getGunSidearm() {return gunSidearm;}
-	public ArrayList<Gun> getArsenal() {return arsenal;}
+	public List<Gun> getArsenal() {return arsenal;}
 	public double getAngle() {return angle;}
 	public double getSpeed() {return speed;}
 	public int getMoney() {return money;}
@@ -173,12 +184,8 @@ public class Player extends GameObject{
 	public void setMoneyAtRoundStart(int money) {this.moneyAtRoundStart = money;}
 	public void setLevel(int level) {this.level = level;}
 	
-	public Gun searchGun(String name) {
-		return arsenal.stream().filter(g -> g.getName().equals(name)).findFirst().orElse(null);
-	}
-	public Gun searchGun(GUN id) {
-		return arsenal.stream().filter(g -> g.getId() == id).findFirst().orElse(null);
-	}
+	public Gun getGun(String name) {return arsenalStringMap.get(name);}
+	public Gun getGun(GUN id) {return arsenalEnumMap.get(id);}
 	public void switchToPrimary() {switchToGun(gunPrimary);}
 	public void switchToSecondary() {switchToGun(gunSecondary);}
 	public void switchToSidearm() {switchToGun(gunSidearm);}

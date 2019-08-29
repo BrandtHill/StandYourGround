@@ -3,6 +3,7 @@ package game.Weapons;
 import java.awt.Color;
 
 import game.Audio.AudioPlayer;
+import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class PX4Compact extends Gun {
@@ -28,6 +29,7 @@ public class PX4Compact extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
+			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 2), offsetPointY(xOffset, yOffset - 2), 2, 2, 4 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 2));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(0.95f, 0.3f);
 		} 

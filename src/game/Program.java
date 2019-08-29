@@ -21,7 +21,7 @@ import game.Inputs.StoreMotion;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 
-public class Program extends Canvas implements Runnable{
+public class Program extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = -1499886446881465910L;
 	private boolean running;
@@ -80,8 +80,8 @@ public class Program extends Canvas implements Runnable{
 			e.printStackTrace();
 		}
 
-		saveToFile("res/saves/newgame.syg/");
-		saveToFile("res/saves/autosave.syg/");
+		saveToFile("res/saves/newgame.syg");
+		saveToFile("res/saves/autosave.syg");
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -99,7 +99,7 @@ public class Program extends Canvas implements Runnable{
 			running = false;
 		}
 		catch(Exception e) {
-			System.out.println(e.toString());
+			e.printStackTrace();
 		}
 	}
 

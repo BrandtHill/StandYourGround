@@ -28,7 +28,7 @@ public class Titan extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
-			handler.addBrass(new Brass(1, 1));
+			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 2), offsetPointY(xOffset, yOffset - 2), 2, 2, 3 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 2));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
 		} 

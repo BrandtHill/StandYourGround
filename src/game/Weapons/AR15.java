@@ -1,6 +1,7 @@
 package game.Weapons;
 
 import game.Audio.AudioPlayer;
+import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class AR15 extends Gun {
@@ -25,20 +26,21 @@ public class AR15 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
+			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 6), offsetPointY(xOffset, yOffset - 6), 3, 2, 7 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 1.8));
 			handler.addObject(new Projectile(this));
 			onShotFired();
 			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
-		} 
+		}
 		reloadIfNeeded();	
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		if ((tickDivider % 4) == 0 && isFullAuto && shooting) {
+		if ((ticks % 4) == 0 && isFullAuto && shooting) {
 			shoot();
 		}
-		tickDivider++;
+		ticks++;
 	}
 
 	@Override

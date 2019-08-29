@@ -1,10 +1,10 @@
 package game;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
-
-import javax.swing.text.AbstractDocument.BranchElement;
 
 import game.Pieces.Blood;
 import game.Pieces.Brass;
@@ -24,13 +24,13 @@ import static java.lang.Math.abs;
  */
 public class Handler {
 	
-	private LinkedList<GameObject> 	gameObjs;
-	private LinkedList<Blood>	   	bloodList;
-	private LinkedList<Brass>		brassList;
-	private Random 					r;
+	private List<GameObject>	gameObjs;
+	private List<Blood>	   		bloodList;
+	private List<Brass>			brassList;
+	private Random 				r;
 	
 	public Handler() {
-		gameObjs = new LinkedList<GameObject>();
+		gameObjs = new ArrayList<GameObject>();
 		bloodList = new LinkedList<Blood>();
 		brassList = new LinkedList<Brass>();
 		Zombie.loadSprites();
@@ -50,12 +50,12 @@ public class Handler {
 	}
 	
 	public void render(Graphics g) {
-		for (Blood b : bloodList) {
-			b.render(g);
+		for (Blood b : bloodList) b.render(g);
+		
+		for (int i = 0; i < brassList.size(); i++) {
+			brassList.get(i).render(g);
 		}
-		for (Brass b : brassList) {
-			b.render(g);
-		}
+		
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			getObjectAt(i).render(g);
 		}
@@ -175,5 +175,5 @@ public class Handler {
 	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
 	public void removeBrass(Brass brass)		{brassList.remove(brass);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
-	public LinkedList<GameObject> getObjList()	{return gameObjs;}
+	public List<GameObject> getObjList()		{return gameObjs;}
 }

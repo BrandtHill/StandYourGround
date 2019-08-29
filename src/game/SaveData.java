@@ -9,6 +9,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.text.MessageFormat;
 import java.util.ArrayList;
+import java.util.List;
 
 import game.Pieces.Player;
 import game.Program.STATE;
@@ -24,6 +25,7 @@ public class SaveData implements Serializable {
 	private ArrayList<GunBean> gunBeans;
 
 	class GunBean implements Serializable {
+		private static final long serialVersionUID = -7906334672407292428L;
 		int MagSize;
 		int AmmoCap;
 		boolean GunOwned;
@@ -42,7 +44,7 @@ public class SaveData implements Serializable {
 		try {
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
-			ArrayList<Gun> arsenal = player.getArsenal();
+			List<Gun> arsenal = player.getArsenal();
 			
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
@@ -85,7 +87,7 @@ public class SaveData implements Serializable {
 	}
 	
 	public void setPlayerAfterLoad(Player player) {
-		ArrayList<Gun> arsenal = player.getArsenal();
+		List<Gun> arsenal = player.getArsenal();
 		player.setMoney(moneyAtRoundStart);
 		player.setMoneyAtRoundStart(moneyAtRoundStart);
 		player.setLevel(level);

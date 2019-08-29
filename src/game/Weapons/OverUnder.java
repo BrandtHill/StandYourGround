@@ -38,13 +38,13 @@ public class OverUnder extends Gun {
 	
 	@Override
 	public int getHits() {
-		return r.nextInt(3) + 1;
+		return r.nextInt(2) + 1;
 	}
 
 	@Override
 	public void makeRoundSpecial(Projectile p) {
 		p.angle = player.getAngle();
-		p.hits = 7;
+		p.hits = 8;
 		p.magnitude *= 1.30;
 		p.damage *= 3;
 		p.knockBack *= 1.4;

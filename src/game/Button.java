@@ -30,7 +30,7 @@ public class Button {
 		this.line1 = line1;
 		this.line2 = line2;
 		this.line3 = line3;
-		this.gun = player.searchGun(line2);
+		this.gun = player.getGun(line2);
 		this.updateColor();
 		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Arial", 1, 12);

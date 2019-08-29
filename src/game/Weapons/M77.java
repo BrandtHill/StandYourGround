@@ -3,6 +3,7 @@ package game.Weapons;
 import java.awt.Color;
 
 import game.Audio.AudioPlayer;
+import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class M77 extends Gun {
@@ -30,12 +31,33 @@ public class M77 extends Gun {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
-			if (ammoLoaded > 1) AudioPlayer.getSound("CycleM77").play();
+			if (ammoLoaded > 1) {
+				AudioPlayer.getSound("CycleM77").play();
+				ticks = 30;
+			}
 			onShotFired();
 		}
 		reloadIfNeeded();
 	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		ticks = Math.max(0, ticks - 1);
+		if (ticks == 1) {
+			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 6), offsetPointY(xOffset, yOffset - 6), 4, 2, 7 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 1.8));
+		}
+	}
 
+	@Override
+	public void reload() {
+		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+			reloadSound.play(1f, 1f);
+			currentlyReloading = true;
+			ticks = 30;
+		}
+	}
+	
 	@Override
 	public void makeRoundSpecial(Projectile p) {
 		p.angleMulti = 0.1;
