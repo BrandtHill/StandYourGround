@@ -30,7 +30,7 @@ public class M77 extends Gun {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
-			if(ammoLoaded > 1) AudioPlayer.getSound("CycleM77").play();
+			if (ammoLoaded > 1) AudioPlayer.getSound("CycleM77").play();
 			onShotFired();
 		}
 		reloadIfNeeded();

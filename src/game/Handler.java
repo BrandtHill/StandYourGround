@@ -4,7 +4,10 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 import java.util.Random;
 
+import javax.swing.text.AbstractDocument.BranchElement;
+
 import game.Pieces.Blood;
+import game.Pieces.Brass;
 import game.Pieces.GameObject;
 import game.Pieces.Projectile;
 import game.Pieces.Enemies.DodgingZombie;
@@ -23,11 +26,13 @@ public class Handler {
 	
 	private LinkedList<GameObject> 	gameObjs;
 	private LinkedList<Blood>	   	bloodList;
+	private LinkedList<Brass>		brassList;
 	private Random 					r;
 	
 	public Handler() {
 		gameObjs = new LinkedList<GameObject>();
 		bloodList = new LinkedList<Blood>();
+		brassList = new LinkedList<Brass>();
 		Zombie.loadSprites();
 		r = new Random();
 	}
@@ -36,6 +41,9 @@ public class Handler {
 		for (int i = 0; i < bloodList.size(); i++) {
 			bloodList.get(i).tick();
 		}
+		for (int i = 0; i < brassList.size(); i++) {
+			brassList.get(i).tick();
+		}
 		for (int i = 0; i < gameObjs.size(); i++) {
 			getObjectAt(i).tick();
 		}
@@ -43,6 +51,9 @@ public class Handler {
 	
 	public void render(Graphics g) {
 		for (Blood b : bloodList) {
+			b.render(g);
+		}
+		for (Brass b : brassList) {
 			b.render(g);
 		}
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
@@ -54,10 +65,14 @@ public class Handler {
 		bloodList.clear();
 	}
 	
+	public void removeBrass() {
+		brassList.clear();
+	}
+	
 	public void removeProjectiles() {
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj instanceof Projectile) {
+			if (obj instanceof Projectile) {
 				removeObject(obj);
 			}
 		}
@@ -66,7 +81,7 @@ public class Handler {
 	public void removeZombies() {
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			GameObject obj = getObjectAt(i);
-			if(obj instanceof Zombie) {
+			if (obj instanceof Zombie) {
 				removeObject(obj);
 			}
 		}
@@ -155,8 +170,10 @@ public class Handler {
 	
 	public void addObject(GameObject obj)		{gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
+	public void addBrass(Brass brass)			{brassList.add(brass);}
 	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
 	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
+	public void removeBrass(Brass brass)		{brassList.remove(brass);}
 	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
 	public LinkedList<GameObject> getObjList()	{return gameObjs;}
 }

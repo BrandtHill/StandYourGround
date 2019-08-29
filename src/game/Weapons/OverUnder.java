@@ -1,5 +1,7 @@
 package game.Weapons;
 
+import java.awt.Color;
+
 import game.Audio.AudioPlayer;
 import game.Pieces.Projectile;
 
@@ -25,7 +27,7 @@ public class OverUnder extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			for (int i = 0; i < 9; i++) {
+			for (int i = 0; i < (isSpecialRounds() ? 1 : 9); i++) {
 				handler.addObject(new Projectile(this));
 			}
 			onShotFired();
@@ -41,5 +43,12 @@ public class OverUnder extends Gun {
 
 	@Override
 	public void makeRoundSpecial(Projectile p) {
+		p.angle = player.getAngle();
+		p.hits = 7;
+		p.magnitude *= 1.30;
+		p.damage *= 3;
+		p.knockBack *= 1.4;
+		p.angleMulti = 0;
+		p.color = Color.WHITE;
 	}
 }

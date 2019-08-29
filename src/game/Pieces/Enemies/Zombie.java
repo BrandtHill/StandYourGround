@@ -20,7 +20,7 @@ import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
 import static java.lang.Math.cos;
 
-public class Zombie extends GameObject{
+public class Zombie extends GameObject {
 
 	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	protected Random r;

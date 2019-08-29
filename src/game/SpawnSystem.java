@@ -54,12 +54,14 @@ public class SpawnSystem {
 		player.setMoneyAtRoundStart(player.getMoney());
 
 		handler.removeBlood();
+		handler.removeBrass();
 		handler.removeProjectiles();
 		handler.removeZombies();
 	}
 
 	public void commenceLevel() {
 		handler.removeBlood();
+		handler.removeBrass();
 		handler.removeProjectiles();
 		handler.removeZombies();
 		player.setX(Program.WIDTH / 2 - 10);

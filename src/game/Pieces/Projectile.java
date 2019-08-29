@@ -14,7 +14,7 @@ import static java.lang.Math.sin;
 import static java.lang.Math.PI;
 import static java.lang.Math.cos;
 
-public class Projectile extends GameObject{
+public class Projectile extends GameObject {
 	
 	// public variables because I'm not about to make all these getters and setters
 	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;

@@ -1,6 +1,7 @@
 package game.Weapons;
 
 import game.Audio.AudioPlayer;
+import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class Titan extends Gun {
@@ -27,6 +28,7 @@ public class Titan extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			handler.addObject(new Projectile(this));
+			handler.addBrass(new Brass(1, 1));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
 		} 
