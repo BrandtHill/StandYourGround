@@ -2,16 +2,21 @@ package game.Weapons;
 
 import java.awt.Color;
 
+import org.newdawn.slick.Sound;
+
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class M77 extends Gun {
 
+	private Sound cycleSound;
+	
 	public M77() {
 		super();
 		gunId = GUN.M77;
 		reloadSound = AudioPlayer.getSound("ReloadM77");
+		cycleSound = AudioPlayer.getSound("CycleM77");
 		reloadTime = 3000;
 		chamberTime = 1250;
 		gunName = "M77";
@@ -29,11 +34,11 @@ public class M77 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObject(new Projectile(this));
+			handler.addObjectAsync(new Projectile(this));
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
 			if (ammoLoaded > 1) {
-				AudioPlayer.getSound("CycleM77").play();
-				ticks = 30;
+				cycleSound.play();
+				ticks = 20;
 			}
 			onShotFired();
 		}
@@ -45,8 +50,26 @@ public class M77 extends Gun {
 		super.tick();
 		ticks = Math.max(0, ticks - 1);
 		if (ticks == 1) {
-			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 6), offsetPointY(xOffset, yOffset - 6), 4, 2, 7 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 1.8));
+			handler.addObjectAsync(new Brass(
+				offsetPointX(xOffset, yOffset - 9),
+				offsetPointY(xOffset, yOffset - 9),
+				4,
+				2,
+				3 + 2 * r.nextDouble(),
+				player.getAngle() - Math.PI / 1.8));
 		}
+	}
+	
+	@Override
+	public void onSwapFrom() {
+		super.onSwapFrom();
+		if (cycleSound.playing()) cycleSound.stop();
+	}
+	
+	@Override
+	public void onSwapTo() {
+		super.onSwapTo();
+		if (!chambered && ammoLoaded > 0) cycleSound.play();
 	}
 
 	@Override
@@ -54,7 +77,7 @@ public class M77 extends Gun {
 		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			reloadSound.play(1f, 1f);
 			currentlyReloading = true;
-			ticks = 30;
+			ticks = 20;
 		}
 	}
 	

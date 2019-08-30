@@ -25,8 +25,8 @@ public class Blood extends GameObject {
 		y += velY;
 		velX *= 0.75;
 		velY *= 0.75;
-		alpha -= ticks / 60;
-		if (alpha <= 0) handler.removeBlood(this);
+		alpha -= ticks / 120;
+		if (alpha <= 0) handler.addDeadObject(this);
 		ticks++;
 	}
 

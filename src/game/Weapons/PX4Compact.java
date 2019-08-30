@@ -18,7 +18,7 @@ public class PX4Compact extends Gun {
 		ammoLoaded = magSize = 15;
 		ammoExtra = ammoCapacity = 30;
 		damage = 31;
-		spread = 5;
+		spread = 6;
 		xOffset = -2;
 		yOffset = 11;
 		velocity = 23;
@@ -28,8 +28,14 @@ public class PX4Compact extends Gun {
 
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObject(new Projectile(this));
-			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 2), offsetPointY(xOffset, yOffset - 2), 2, 2, 4 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 2));
+			handler.addObjectAsync(new Projectile(this));
+			handler.addObjectAsync(new Brass(
+				offsetPointX(xOffset, yOffset - 2),
+				offsetPointY(xOffset, yOffset - 2),
+				2,
+				2,
+				4 + 2 * r.nextDouble(),
+				player.getAngle() - Math.PI / 2));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(0.95f, 0.3f);
 		} 
@@ -39,6 +45,7 @@ public class PX4Compact extends Gun {
 	@Override
 	public void makeRoundSpecial(Projectile p) {
 		p.color = new Color(243, 144, 0);
-		p.damage *= 1.75;
+		p.damage *= 1.85;
+		p.knockBack *= 1.15;
 	}
 }

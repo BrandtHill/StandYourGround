@@ -33,7 +33,7 @@ public class Brass extends GameObject {
 		velY *= 0.85;
 		if (ticks++ > 600) {
 			c = new Color(c.getRed(), c.getGreen(), c.getBlue(), --alpha);
-			if (alpha <= 0) handler.removeBrass(this);
+			if (alpha <= 0) handler.addDeadObject(this);
 		}
 	}
 

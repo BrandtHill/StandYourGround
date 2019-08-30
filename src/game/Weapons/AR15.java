@@ -26,8 +26,14 @@ public class AR15 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addBrass(new Brass(offsetPointX(xOffset, yOffset - 6), offsetPointY(xOffset, yOffset - 6), 3, 2, 7 + 2 * r.nextDouble(), player.getAngle() - Math.PI / 1.8));
-			handler.addObject(new Projectile(this));
+			handler.addObjectAsync(new Projectile(this));
+			handler.addObjectAsync(new Brass(
+				offsetPointX(xOffset, yOffset - 9),
+				offsetPointY(xOffset, yOffset - 9),
+				3,
+				2,
+				7 + 2 * r.nextDouble(),
+				player.getAngle() - Math.PI / 1.8));
 			onShotFired();
 			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
 		}

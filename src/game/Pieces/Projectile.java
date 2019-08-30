@@ -54,27 +54,27 @@ public class Projectile extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.removeObject(this);
+		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.addDeadObject(this);
 		else detectCollision();
 	}
 	
 	public void detectCollision() {
-		for (int i = 1; i < handler.getObjList().size(); i++) {
-			GameObject obj = handler.getObjectAt(i);
-			if (obj instanceof Zombie) {
-				Zombie zomb = (Zombie) obj;
-				if (zomb.getBounds().intersectsLine(this.getBounds()) && !hitZombies.contains(zomb)) {
-					hitZombies.add(zomb);
-					zomb.damageMe(damage, angle, knockBack);
-					hits--;
-					damage /= 1.4;
-					magnitude /= 1.2;
-					angle += (new Random().nextDouble() - 0.5) * angleMulti;
-					xScale = sin(angle);
-					yScale = cos(angle);
-				}
-			}
-		}
+		handler.getObjList().stream()
+			.filter(z -> z instanceof Zombie)
+			.map(z -> (Zombie)z)
+			.filter(z -> z.getBounds().intersectsLine(this.getBounds()))
+			.filter(z -> !hitZombies.contains(z))
+			.filter(z -> z.getHealth() > 0)
+			.forEach(z -> {
+				z.damageMe(damage, angle, knockBack);
+				hitZombies.add(z);
+				hits--;
+				damage /= 1.4;
+				magnitude /= 1.2;
+				angle += (new Random().nextDouble() - 0.5) * angleMulti;
+				xScale = sin(angle);
+				yScale = cos(angle);
+			});
 	}
 
 	public void render(Graphics g) {

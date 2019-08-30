@@ -26,7 +26,7 @@ public abstract class Gun {
 	protected Sound reloadSound;
 	protected float reloadSoundPosition;
 	protected long ticks;
-	protected int reloadTicks, chamberTicks;
+	protected long reloadTicks, chamberTicks;
 	protected Random r;
 	protected GUN gunId;
 	public static enum GUN {
@@ -88,15 +88,17 @@ public abstract class Gun {
 		ammoExtra = ammoCapacity;
 		shooting = currentlyReloading = false;
 		chambered = true;
-		chamberTicks = reloadTicks = 0;
+		chamberTicks = reloadTicks = ticks = 0;
 		if (reloadSound.playing()) reloadSound.stop();
 	}
 	
-	public void onSwap() {
+	public void onSwapFrom() {
 		if (reloadSound.playing()) reloadSound.stop();
 		currentlyReloading = false;
 		chamberTicks = reloadTicks = 0;
 	}
+	
+	public void onSwapTo() {}
 	
 	/**
 	 * This function takes in the location of the muzzle of the gun 

@@ -1,7 +1,7 @@
 package game;
 
 import java.awt.Graphics;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -27,34 +27,47 @@ public class Handler {
 	private List<GameObject>	gameObjs;
 	private List<Blood>	   		bloodList;
 	private List<Brass>			brassList;
+	private List<GameObject>	deadQueue;
+	private List<GameObject>	asyncQueue;
 	private Random 				r;
 	
 	public Handler() {
-		gameObjs = new ArrayList<GameObject>();
-		bloodList = new LinkedList<Blood>();
-		brassList = new LinkedList<Brass>();
+		gameObjs = new LinkedList<>();
+		bloodList = new LinkedList<>();
+		brassList = new LinkedList<>();
+		deadQueue = new LinkedList<>();
+		asyncQueue = Collections.synchronizedList(new LinkedList<>());
 		Zombie.loadSprites();
 		r = new Random();
 	}
 	
 	public void tick() {
-		for (int i = 0; i < bloodList.size(); i++) {
-			bloodList.get(i).tick();
+		addQueued();
+		bloodList.stream().forEach(b -> b.tick());
+		brassList.stream().forEach(b -> b.tick());
+		gameObjs.stream().forEach(o -> o.tick());
+		cullDead();
+	}
+	
+	private void addQueued() {
+		for (GameObject o : asyncQueue) {
+			if (o instanceof Brass) addBrass((Brass)o);
+			else if (o instanceof Blood) addBlood((Blood)o);
+			else addObject(o);
 		}
-		for (int i = 0; i < brassList.size(); i++) {
-			brassList.get(i).tick();
-		}
-		for (int i = 0; i < gameObjs.size(); i++) {
-			getObjectAt(i).tick();
-		}
+		asyncQueue.clear();
+	}
+	
+	private void cullDead() {
+		bloodList.removeAll(deadQueue);
+		brassList.removeAll(deadQueue);
+		gameObjs.removeAll(deadQueue);
+		deadQueue.clear();
 	}
 	
 	public void render(Graphics g) {
-		for (Blood b : bloodList) b.render(g);
-		
-		for (int i = 0; i < brassList.size(); i++) {
-			brassList.get(i).render(g);
-		}
+		bloodList.stream().forEach(b -> b.render(g));
+		brassList.stream().forEach(b -> b.render(g));
 		
 		for (int i = gameObjs.size() - 1; i >= 0; i--) {
 			getObjectAt(i).render(g);
@@ -70,21 +83,11 @@ public class Handler {
 	}
 	
 	public void removeProjectiles() {
-		for (int i = gameObjs.size() - 1; i >= 0; i--) {
-			GameObject obj = getObjectAt(i);
-			if (obj instanceof Projectile) {
-				removeObject(obj);
-			}
-		}
+		gameObjs.removeIf(p -> p instanceof Projectile);
 	}
 	
 	public void removeZombies() {
-		for (int i = gameObjs.size() - 1; i >= 0; i--) {
-			GameObject obj = getObjectAt(i);
-			if (obj instanceof Zombie) {
-				removeObject(obj);
-			}
-		}
+		gameObjs.removeIf(z -> z instanceof Zombie);
 	}
 	
 	public void addRandomZombie() {
@@ -168,6 +171,8 @@ public class Handler {
 		}
 	}
 	
+	public void addObjectAsync(GameObject nu)	{asyncQueue.add(nu);}
+	public void addDeadObject(GameObject dead) 	{deadQueue.add(dead);}
 	public void addObject(GameObject obj)		{gameObjs.add(obj);}
 	public void addBlood(Blood blood)			{bloodList.add(blood);}
 	public void addBrass(Brass brass)			{brassList.add(brass);}

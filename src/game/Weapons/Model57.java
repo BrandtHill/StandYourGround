@@ -1,6 +1,7 @@
 package game.Weapons;
 
 import game.Audio.AudioPlayer;
+import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class Model57 extends Gun {
@@ -15,7 +16,7 @@ public class Model57 extends Gun {
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 18;
 		damage = 65;
-		spread = 2;
+		spread = 3;
 		xOffset = -2;
 		yOffset = 16;
 		velocity = 37;
@@ -27,12 +28,28 @@ public class Model57 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObject(new Projectile(this));
+			handler.addObjectAsync(new Projectile(this));
 			AudioPlayer.getSound("Pistol").play(0.50f,0.45f);
 			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
-			onShotFired();	
+			onShotFired();
 		}
 		reloadIfNeeded();
+	}
+	
+	@Override
+	public void tick() {
+		super.tick();
+		if (reloadTicks == 30) {
+			for (int i = 0; i < magSize; i++) {
+				handler.addObjectAsync(new Brass(
+					offsetPointX(xOffset, yOffset - 2) + 4 * r.nextDouble(),
+					offsetPointY(xOffset, yOffset - 2) + 4 * r.nextDouble(),
+					2,
+					2,
+					3 * r.nextDouble(),
+					player.getAngle() + Math.PI / 3));
+			}
+		}
 	}
 
 	@Override

@@ -68,7 +68,7 @@ public class Player extends GameObject{
 			arsenalStringMap.put(g.getName(), g);
 			arsenalEnumMap.put(g.getId(), g);
 		});
-		gunSidearm = getGun(GUN.Titan);
+		gunSidearm = getGun(GUN.Model57);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
 		tickDivider = 0;
@@ -96,9 +96,7 @@ public class Player extends GameObject{
 		if (velX != 0 && velY != 0) {
 			x += (HALFSQRT2*velX);
 			y += (HALFSQRT2*velY);
-		}
-		
-		else {
+		} else {
 			x += velX;
 			y += velY;
 		}
@@ -138,8 +136,8 @@ public class Player extends GameObject{
 		if (handler.getObjList().stream()
 				.filter(o -> o instanceof Zombie)
 				.map(o -> (Zombie)o)
-				.anyMatch(z -> z.getBounds().intersects(this.getBounds()))
-				) Program.gameState = STATE.GameOver;
+				.anyMatch(z -> z.getBounds().intersects(this.getBounds())))
+				Program.gameState = STATE.GameOver;
 	}
 
 	public void render(Graphics g) {
@@ -160,12 +158,8 @@ public class Player extends GameObject{
 	public Gun getGunPrimary() {return gunPrimary;}
 	public Gun getGunSecondary() {return gunSecondary;}
 	public Gun getGunSidearm() {return gunSidearm;}
-	public List<Gun> getArsenal() {return arsenal;}
-	public double getAngle() {return angle;}
-	public double getSpeed() {return speed;}
-	public int getMoney() {return money;}
-	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
-	public int getLevel() {return level;}
+	public Gun getGun(String name) {return arsenalStringMap.get(name);}
+	public Gun getGun(GUN id) {return arsenalEnumMap.get(id);}
 	public Gun getGunAt(int i) {return arsenal.get(i);}
 	public int getGunWeildedIndex() {
 		if (gunWielded == gunPrimary) return 0;
@@ -173,27 +167,32 @@ public class Player extends GameObject{
 		if (gunWielded == gunSidearm) return 2;
 		return 0;
 	}
+	public List<Gun> getArsenal() {return arsenal;}
+	public double getAngle() {return angle;}
+	public double getSpeed() {return speed;}
+	public int getMoney() {return money;}
+	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
+	public int getLevel() {return level;}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
 	public void setGunSecondary(Gun g) {this.gunSecondary = g;}
 	public void setGunSidearm(Gun g) {this.gunSidearm = g;}
 	public void setAngle(double angle) {this.angle = angle;}
-	public void setArsenal(ArrayList<Gun> arsenal) {this.arsenal = arsenal;}
+	public void setArsenal(List<Gun> arsenal) {this.arsenal = arsenal;}
 	public void setSpeed(double speed) {this.speed = speed;}
 	public void setMoney(int money) {this.money = money;}
 	public void setMoneyAtRoundStart(int money) {this.moneyAtRoundStart = money;}
 	public void setLevel(int level) {this.level = level;}
 	
-	public Gun getGun(String name) {return arsenalStringMap.get(name);}
-	public Gun getGun(GUN id) {return arsenalEnumMap.get(id);}
 	public void switchToPrimary() {switchToGun(gunPrimary);}
 	public void switchToSecondary() {switchToGun(gunSecondary);}
 	public void switchToSidearm() {switchToGun(gunSidearm);}
 	
 	private void switchToGun(Gun g) {
 		if (g != null && gunWielded != g) {
-			gunWielded.onSwap();
+			gunWielded.onSwapFrom();
 			gunWielded = g;
+			gunWielded.onSwapTo();
 		}
 	}
 	

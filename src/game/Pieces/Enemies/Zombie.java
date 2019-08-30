@@ -65,7 +65,7 @@ public class Zombie extends GameObject {
 			spriteNum++;
 		}
 		
-		if (health<20) speed *= 1.001;
+		if (health < 20) speed *= 1.001;
 		
 		tickDivider++;
 	}
@@ -109,9 +109,11 @@ public class Zombie extends GameObject {
 		if (health <= 0) {
 			player.setMoney(moneyValue + player.getMoney());
 			player.zombiesLeft--;
-			handler.removeObject(this);
+			handler.addDeadObject(this);
 		}
 	}
+	
+	public double getHealth() {return health;}
 	
 	public static void loadSprites() {
 		FileInputStream file;
