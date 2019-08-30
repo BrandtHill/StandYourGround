@@ -68,7 +68,7 @@ public class Player extends GameObject{
 			arsenalStringMap.put(g.getName(), g);
 			arsenalEnumMap.put(g.getId(), g);
 		});
-		gunSidearm = getGun(GUN.Model57);
+		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
 		tickDivider = 0;

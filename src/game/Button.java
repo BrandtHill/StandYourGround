@@ -59,10 +59,11 @@ public class Button {
 			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 		} else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
-					&& (line1.contains("Hollow") ? !gun.isSpecialRounds() : true)
-					&& (line1.contains("Loads") ? !gun.isSpecialRounds() : true)
-					&& (line1.contains("Auto") ? !gun.isFullAuto() : true)
-					&& (line1.contains("Mag Size") ? !gun.isMagIncreased() : true);
+					|| line1.contains("Hollow") && !gun.isSpecialRounds()
+					|| line1.contains("Loads") && !gun.isSpecialRounds()
+					|| line1.contains("Buck") && !gun.isSpecialRounds()
+					|| line1.contains("Auto") && !gun.isFullAuto()
+					|| line1.contains("Mag Size") && !gun.isMagIncreased();
 			this.mainColor = gun.isOwned() ? 
 							(isClickable() ?
 								  Color.WHITE

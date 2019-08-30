@@ -23,7 +23,6 @@ public class OverUnder extends Gun {
 		yOffset = 21;
 		velocity = 15;
 		knock = 6;
-		owned = specialRounds = true;
 	}
 	
 	@Override
@@ -65,6 +64,7 @@ public class OverUnder extends Gun {
 		p.angle = player.getAngle();
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
+		p.knockBack *= 1.10;
 		p.damage *= 1.35;
 		p.color = new Color(243, 144, 0);;
 	}
