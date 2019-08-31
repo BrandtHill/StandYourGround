@@ -12,6 +12,8 @@ import game.Weapons.Gun;
 
 public class Button {
 
+	private static Color COLOR_NOT_CLICKABLE = new Color(160, 160, 240);
+	private static Color COLOR_EQUIPPED = new Color(131, 53, 214);
 	private int x, y, w, h;
 	private int amount;
 	private String line1, line2, line3;
@@ -59,24 +61,24 @@ public class Button {
 			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 		} else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
-					&& line1.contains("Increase Ammo")
+					&&(line1.contains("Increase Ammo")
 					|| line1.contains("Hollow") && !gun.isSpecialRounds()
 					|| line1.contains("Loads") && !gun.isSpecialRounds()
 					|| line1.contains("Buck") && !gun.isSpecialRounds()
 					|| line1.contains("Auto") && !gun.isFullAuto()
-					|| line1.contains("Mag Size") && !gun.isMagIncreased();
+					|| line1.contains("Mag Size") && !gun.isMagIncreased());
 			this.mainColor = gun.isOwned() ?
 							(isClickable() ?
 								  Color.WHITE
-								: new Color(160, 160, 240))
+								: COLOR_NOT_CLICKABLE)
 								: Color.GRAY;
 		} else {
 			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
 			this.mainColor = gun.isOwned() ?
 							(gun.isEquipped() ? 
 							(gun.isLockedIn() ?
-								  new Color(131, 53, 214)
-								: new Color(160, 160, 240))
+								  COLOR_EQUIPPED
+								: COLOR_NOT_CLICKABLE)
 								: Color.WHITE) 
 								: Color.GRAY;
 		}

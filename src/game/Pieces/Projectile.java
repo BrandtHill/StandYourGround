@@ -54,12 +54,12 @@ public class Projectile extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.addDeadObject(this);
+		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.removeObjectAsync(this);
 		else detectCollision();
 	}
 	
 	public void detectCollision() {
-		handler.getObjList().stream()
+		handler.getObjectStream()
 			.filter(z -> z instanceof Zombie)
 			.map(z -> (Zombie)z)
 			.filter(z -> z.getBounds().intersectsLine(this.getBounds()))

@@ -16,6 +16,7 @@ public class Reticle extends GameObject {
 	private double xDisplay, yDisplay;
 	private double xPlayer, yPlayer;
 	private boolean wantToLimitRange; //functionality exists
+	private static Color COLOR_TRUE_COORDINATES = new Color(255,255,255,11);
 	
 	public Reticle(double x, double y) {
 		super(x, y);
@@ -46,7 +47,7 @@ public class Reticle extends GameObject {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.setColor(Color.WHITE);
 		g2d.drawPolyline(xLine, yLine, 5);
-		g2d.setColor(new Color(255,255,255,15));
+		g2d.setColor(COLOR_TRUE_COORDINATES);
 		g2d.drawOval((int)x-3, (int)y-3, 6, 6);
 	}
 	
@@ -62,5 +63,4 @@ public class Reticle extends GameObject {
 	
 	public double getXDisplay() {return xDisplay;}
 	public double getYDisplay() {return yDisplay;}
-
 }

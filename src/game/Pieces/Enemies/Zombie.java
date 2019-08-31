@@ -42,7 +42,6 @@ public class Zombie extends GameObject {
 		this.health = health;	
 		this.speed = speed;
 		this.zombieSprites = zombieSprites1;
-
 		this.r = new Random();
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
@@ -51,7 +50,7 @@ public class Zombie extends GameObject {
 	}
 
 	public void tick() {
-		angle = getAngleToPlayer();
+		angle = getAdjustedAngle(5);
 		xBias = speed*sin(angle);
 		yBias = speed*cos(angle);
 		velX = r.nextInt(31)/10.0 - 1.5 + xBias;
@@ -71,13 +70,27 @@ public class Zombie extends GameObject {
 	}
 	
 	protected double getAngleToPlayer() {
-		xPlayer = player.getX()+10;
-		yPlayer = player.getY()+10;
-		return atan2(xPlayer-x, yPlayer-y);
+		return atan2(player.getX() + 10 - x, player.getY() + 10 - y);
+	}
+	
+	protected double getAngleToPlayerDiff() {
+		double angleToPlayer = getAngleToPlayer();
+		double diff = angleToPlayer - angle;
+		if (diff < -Math.PI) diff += 2 * Math.PI;
+		if (diff > Math.PI) diff -= 2 * Math.PI;
+		return diff;
+	}
+	
+	protected double getAdjustedAngle(double maxChangeDegrees) {
+		double diff = getAngleToPlayerDiff();
+		double diffSign = diff >= 0 ? 1 : -1;
+		double diffAbs = Math.abs(diff);
+		double maxChange = maxChangeDegrees * (Math.PI / 180);
+		return (angle + diffSign * Math.min(diffAbs, maxChange)) % (2 * Math.PI);
 	}
 	
 	public void detectCollision() {
-		handler.getObjList().stream()
+		handler.getObjectStream()
 				.filter(o -> o instanceof Zombie)
 				.map(o -> (Zombie)o)
 				.filter(z -> z.getBounds().intersects(this.getBounds()))
@@ -102,14 +115,14 @@ public class Zombie extends GameObject {
 	
 	public void damageMe(double damage, double angle, double knock) {
 		health -= damage;
-		handler.addBlood(new Blood(x+10, y+10));
+		handler.addObjectAsync(new Blood(x+10, y+10));
 		x += sin(angle)*knock;
 		y += cos(angle)*knock;
 		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
 		if (health <= 0) {
 			player.setMoney(moneyValue + player.getMoney());
 			player.zombiesLeft--;
-			handler.addDeadObject(this);
+			handler.removeObjectAsync(this);
 		}
 	}
 	
@@ -118,13 +131,13 @@ public class Zombie extends GameObject {
 	static { 
 		FileInputStream file;
 		try {
-			file = new FileInputStream("res/ZombieSprite_1.png");
+			file = new FileInputStream("./res/ZombieSprite_1.png");
 			spriteSheet1 = ImageIO.read(file);
 			file.close();
-			file = new FileInputStream("res/ZombieSprite_2.png");
+			file = new FileInputStream("./res/ZombieSprite_2.png");
 			spriteSheet2 = ImageIO.read(file);
 			file.close();
-			file = new FileInputStream("res/ZombieSprite_3.png");
+			file = new FileInputStream("./res/ZombieSprite_3.png");
 			spriteSheet3 = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) { e.printStackTrace(); }

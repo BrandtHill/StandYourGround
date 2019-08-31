@@ -7,8 +7,7 @@ public class SpawnSystem {
 
 	private static Handler handler;
 	private static Player player;
-	private boolean doneCommencing, doneSpawning;
-	private int zombiesLeft;
+	private boolean doneCommencing, doneSpawning, zedsDead;
 	private int level, wave, ticks, delayMillis;
 
 	public enum REGION {
@@ -24,7 +23,6 @@ public class SpawnSystem {
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
-		zombiesLeft = 0;
 		ticks = 0;
 		delayMillis = 0;
 		wave = 1;
@@ -34,8 +32,12 @@ public class SpawnSystem {
 		ticks++;
 		if (doneCommencing) {
 			if (!doneSpawning && ticks > delayTicks()) spawn();
-			zombiesLeft = player.zombiesLeft;
-			if (zombiesLeft <= 0) completeLevel();
+			if (getRemaining() <= 0 && !zedsDead) {
+				delayMillis = 2000;
+				ticks = 0;
+				zedsDead = true;
+			}
+			if (zedsDead && ticks > delayTicks()) completeLevel();
 		}
 	}
 
@@ -71,6 +73,7 @@ public class SpawnSystem {
 		player.setMoneyAtRoundStart(player.getMoney());
 		wave = 1;
 		doneSpawning = false;
+		zedsDead = false;
 
 		switch (level) {
 
@@ -365,7 +368,7 @@ public class SpawnSystem {
 	}
 
 	public int getRemaining() {
-		return zombiesLeft;
+		return player.zombiesLeft;
 	}
 
 	public int getLevel() {

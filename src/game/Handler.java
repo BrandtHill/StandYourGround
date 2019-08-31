@@ -5,11 +5,14 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Stream;
 
 import game.Pieces.Blood;
 import game.Pieces.Brass;
 import game.Pieces.GameObject;
+import game.Pieces.Player;
 import game.Pieces.Projectile;
+import game.Pieces.Reticle;
 import game.Pieces.Enemies.DodgingZombie;
 import game.Pieces.Enemies.FastZombie;
 import game.Pieces.Enemies.Zombie;
@@ -25,16 +28,12 @@ import static java.lang.Math.abs;
 public class Handler {
 	
 	private List<GameObject>	gameObjs;
-	private List<Blood>	   		bloodList;
-	private List<Brass>			brassList;
 	private List<GameObject>	deadQueue;
 	private List<GameObject>	asyncQueue;
 	private Random 				r;
 	
 	public Handler() {
 		gameObjs = new LinkedList<>();
-		bloodList = new LinkedList<>();
-		brassList = new LinkedList<>();
 		deadQueue = new LinkedList<>();
 		asyncQueue = Collections.synchronizedList(new LinkedList<>());
 		r = new Random();
@@ -42,43 +41,36 @@ public class Handler {
 	
 	public void tick() {
 		addQueued();
-		bloodList.stream().forEach(b -> b.tick());
-		brassList.stream().forEach(b -> b.tick());
 		gameObjs.stream().forEach(o -> o.tick());
 		cullDead();
 	}
 	
 	private void addQueued() {
-		for (GameObject o : asyncQueue) {
-			if (o instanceof Brass) addBrass((Brass)o);
-			else if (o instanceof Blood) addBlood((Blood)o);
-			else addObject(o);
-		}
+		asyncQueue.stream().forEach(o -> addObject(o));
 		asyncQueue.clear();
 	}
 	
 	private void cullDead() {
-		bloodList.removeAll(deadQueue);
-		brassList.removeAll(deadQueue);
 		gameObjs.removeAll(deadQueue);
 		deadQueue.clear();
 	}
 	
 	public void render(Graphics g) {
-		bloodList.stream().forEach(b -> b.render(g));
-		brassList.stream().forEach(b -> b.render(g));
-		
-		for (int i = gameObjs.size() - 1; i >= 0; i--) {
-			getObjectAt(i).render(g);
-		}
+		gameObjs.stream().filter(o -> o instanceof Blood).forEach(b -> b.render(g));
+		gameObjs.stream().filter(o -> o instanceof Brass).forEach(b -> b.render(g));
+		gameObjs.stream().filter(o -> o instanceof Projectile).forEach(p -> p.render(g));
+		gameObjs.stream().filter(o -> o instanceof Zombie).forEach(z -> z.render(g));
+		gameObjs.stream().filter(o -> o instanceof Reticle).findFirst().get().render(g);
+		gameObjs.stream().filter(o -> o instanceof Player).findFirst().get().render(g);
 	}
 
 	public void removeBlood() {
-		bloodList.clear();
+		gameObjs.removeIf(b -> b instanceof Blood);
 	}
 	
 	public void removeBrass() {
-		brassList.clear();
+		gameObjs.removeIf(b -> b instanceof Brass);
+		
 	}
 	
 	public void removeProjectiles() {
@@ -164,20 +156,16 @@ public class Handler {
 	}
 	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
-		addBlood(new Blood(x, y, knock, angle));
+		addObjectAsync(new Blood(x, y, knock, angle));
 		for (int i = 1; i < num; i++) {
-			addBlood(new Blood(x, y, knock * (r.nextDouble() * 0.5 + 0.5 ), angle + (r.nextDouble() - 0.5)*1.55));
+			addObjectAsync(new Blood(x, y, knock * (r.nextDouble() * 0.5 + 0.5 ), angle + (r.nextDouble() - 0.5)*1.55));
 		}
 	}
 	
-	public void addObjectAsync(GameObject nu)	{asyncQueue.add(nu);}
-	public void addDeadObject(GameObject dead) 	{deadQueue.add(dead);}
-	public void addObject(GameObject obj)		{gameObjs.add(obj);}
-	public void addBlood(Blood blood)			{bloodList.add(blood);}
-	public void addBrass(Brass brass)			{brassList.add(brass);}
-	public void removeObject(GameObject obj) 	{gameObjs.remove(obj);}
-	public void removeBlood(Blood blood)		{bloodList.remove(blood);}
-	public void removeBrass(Brass brass)		{brassList.remove(brass);}
-	public GameObject getObjectAt(int i)		{return gameObjs.get(i);}
-	public List<GameObject> getObjList()		{return gameObjs;}
+	public void addObjectAsync(GameObject nu) 		{asyncQueue.add(nu);}
+	public void removeObjectAsync(GameObject dead) 	{deadQueue.add(dead);}
+	public void addObject(GameObject obj) 			{gameObjs.add(obj);}
+	public void removeObject(GameObject obj) 		{gameObjs.remove(obj);}
+	public GameObject getObjectAt(int i) 			{return gameObjs.get(i);}
+	public Stream<GameObject> getObjectStream() 	{return gameObjs.stream();}
 }

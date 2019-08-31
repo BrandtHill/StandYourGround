@@ -10,7 +10,7 @@ public class Model57 extends Gun {
 		super();
 		gunId = GUN.Model57;
 		reloadSound = AudioPlayer.getSound("ReloadModel57");
-		reloadTime = 3000;
+		reloadTime = 4000;
 		chamberTime = 200;
 		gunName = "Model 57";
 		ammoLoaded = magSize = 6;

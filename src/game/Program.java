@@ -30,8 +30,9 @@ public class Program extends Canvas implements Runnable {
 	private Store store;
 	private StoreMotion storeMotion;
 	public static BufferedImage background;
-	private BufferedImage background1;
-	private BufferedImage background2;
+	public static BufferedImage backgroundSlice;
+	private static BufferedImage background1;
+	private static BufferedImage background2;
 	public static SpawnSystem spawnSys;
 	public static SaveData saveData;
 	public static Reticle reticle;
@@ -73,15 +74,16 @@ public class Program extends Canvas implements Runnable {
 		addMouseMotionListener(new MouseMotionInput());
 		
 		try {
-			background1 = ImageIO.read(new File("res/GrassBackground.png"));
-			background2 = ImageIO.read(new File("res/StreetBackground.png"));
+			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
+			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
 			background = background1;
+			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 
-		saveToFile("res/saves/newgame.syg");
-		saveToFile("res/saves/autosave.syg");
+		saveToFile("./res/saves/newgame.syg");
+		saveToFile("./res/saves/autosave.syg");
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 		
@@ -252,7 +254,8 @@ public class Program extends Canvas implements Runnable {
 			break;
 		case StoreMenu:
 			addMouseMotionListener(storeMotion);
-			saveToFile("res/saves/autosave.syg/");
+			saveToFile("./res/saves/autosave.syg");
+			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			Store.menu = Store.Menu.BuyGuns;
 			store.onMenuUpdate();
 			break;

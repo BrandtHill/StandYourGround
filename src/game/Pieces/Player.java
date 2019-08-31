@@ -43,9 +43,9 @@ public class Player extends GameObject{
 	private Reticle reticle;
 	private double angle;
 	private double speed;
-	private byte tickDivider;
-	private static transient BufferedImage spriteSheet;
-	private static transient BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
+	private byte ticks;
+	private static BufferedImage spriteSheet;
+	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
 	private int level;
@@ -71,7 +71,7 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		tickDivider = 0;
+		ticks = 0;
 		spriteNum = 0;
 		money = 0;
 		moneyAtRoundStart = 0;
@@ -107,14 +107,14 @@ public class Player extends GameObject{
 		
 		gunWielded.tick();
 		
-		if (tickDivider % 4 == 0) {
+		if (ticks % 4 == 0) {
 			detectCollision();
 			gunNum = getGunSpriteNum(gunWielded);
 			if (velX != 0 || velY != 0) spriteNum++;
 			spriteNum %= 8;
 		}
 		
-		tickDivider++;	
+		ticks++;	
 	}
 	
 	public static int getGunSpriteNum(Gun g) {
@@ -129,7 +129,7 @@ public class Player extends GameObject{
 	}
 	
 	public void detectCollision() {
-		if (handler.getObjList().stream()
+		if (handler.getObjectStream()
 				.filter(o -> o instanceof Zombie)
 				.map(o -> (Zombie)o)
 				.anyMatch(z -> z.getBounds().intersects(this.getBounds())))
@@ -146,7 +146,7 @@ public class Player extends GameObject{
 	
 	public void renderPreview(Graphics g, Gun gun) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawImage(Program.background.getSubimage(0, 20, 120, 40), 260, 360, 450, 150, null);
+		g2d.drawImage(Program.backgroundSlice, 260, 360, 450, 150, null);
 		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 600, 380, 80, 128, null);
 		if (gun != null) g2d.drawImage(gun.getSprite(), 260, 360, 300, 150, null);
 		
@@ -284,7 +284,7 @@ public class Player extends GameObject{
 	
 	static {
 		try {
-			FileInputStream file = new FileInputStream("res/PlayerSprite.png");
+			FileInputStream file = new FileInputStream("./res/PlayerSprite.png");
 			spriteSheet = ImageIO.read(file);
 			file.close();
 		} catch (IOException e) {

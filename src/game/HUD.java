@@ -52,6 +52,6 @@ public class HUD {
 			g.drawString(String.valueOf(i + 1), 310 + i * 20, 42);
 		}
 		
-		g.drawImage(gun.getSprite(), 240, 15, 80, 40, null);
+		g.drawImage(gun.getSprite(), 240, 20, 60, 30, null);
 	}
 }

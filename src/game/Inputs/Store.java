@@ -15,7 +15,7 @@ import game.Pieces.Player;
 import game.Program.STATE;
 import game.Weapons.Gun;
 
-public class Store extends MouseAdapter{
+public class Store extends MouseAdapter {
 
 	private static Player player;
 	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
@@ -156,17 +156,17 @@ public class Store extends MouseAdapter{
 			buttons[10]= new Button(buttonX[10], buttonY[10], true, "000 Buck Shot", "Over-Under", "$525");
 			break;
 		case SelectPrimary:
-			for (int i = 0; i < player.getArsenal().size(); i++) {
+			for (int i = 0; i < Player.NUMGUNS; i++) {
 				buttons[i] = new Button(buttonX[i], buttonY[i], true, "", player.getGunAt(i).getName(), "");
 			}
 			break;
 		case SelectSecondary:
-			for (int i = 0; i < player.getArsenal().size(); i++) {
+			for (int i = 0; i < Player.NUMGUNS; i++) {
 				buttons[i] = new Button(buttonX[i], buttonY[i], true, "", player.getGunAt(i).getName(), "");
 			}
 			break;
 		case SelectSidearm:
-			for (int i = 0; i < player.getArsenal().size(); i++) {
+			for (int i = 0; i < Player.NUMGUNS; i++) {
 				buttons[i] = new Button(buttonX[i], buttonY[i], player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "");
 			}
 			break;
