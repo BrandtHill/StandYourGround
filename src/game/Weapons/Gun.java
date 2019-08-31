@@ -2,7 +2,12 @@ package game.Weapons;
 
 import static java.lang.Math.sin;
 
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.Random;
+
+import javax.imageio.ImageIO;
 
 import static java.lang.Math.cos;
 
@@ -37,10 +42,18 @@ public abstract class Gun {
 		PX4Compact, 
 		Model57
 	}
+	protected static BufferedImage gunSheet;
+	protected BufferedImage gunSprite;
 	
 	public Gun() {
 		r = new Random();
 		hits = 1;
+		gunSprite = gunSheet.getSubimage(
+				0,
+				512 * Player.getGunSpriteNum(this),
+				1024,
+				512
+		);
 	}
 	
 	public abstract void shoot();
@@ -144,6 +157,7 @@ public abstract class Gun {
 	public boolean isMagIncreased() {return isMagIncreased;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
+	public BufferedImage getSprite() {return gunSprite;}
 
 	public void setDamage(double damage) {this.damage = damage;}
 	public void setSpread(double spread) {this.spread = spread;}
@@ -186,5 +200,15 @@ public abstract class Gun {
 	
 	protected int ticksForChamber() {
 		return (int) ((60f / 1000) * chamberTime);
+	}
+	
+	static {
+		try {
+			FileInputStream file = new FileInputStream("res/GunSprite.png");
+			gunSheet = ImageIO.read(file);
+			file.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

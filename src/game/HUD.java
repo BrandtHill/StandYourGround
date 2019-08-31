@@ -13,6 +13,7 @@ public class HUD {
 	private String gunInfo, levelInfo;
 	private Color[] colors;
 	private Color sel, unsel;
+	private Gun gun;
 	
 	public HUD() {
 		player = Program.player;
@@ -24,33 +25,33 @@ public class HUD {
 	
 
 	public void tick() {
-		Gun gun = player.getGunWielded();
+		gun = player.getGunWielded();
 		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + "/" + gun.getMagSize() + "   " + gun.getAmmoExtra();
 		levelInfo = "Level " + spawnSys.getLevel() + "    " + "Zombies Remaining: " + spawnSys.getRemaining() +	"     $"+ player.getMoney();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < colors.length; i++) {
 			colors[i] = (i == player.getGunWeildedIndex()) ? sel : unsel;
 		}		
 	}
 	
 	public void render(Graphics g) {
-		g.setColor(new Color(100,20,20,127));
-		g.fillRect(40, 20, 290, 30);
-		g.fillRect(370, 20, 370, 30);
+		g.setColor(new Color(100, 20, 20, 127));
+		g.fillRect(20, 20, 350, 30);
+		g.fillRect(390, 20, 370, 30);
 		
-		g.setColor(new Color(100,20,20));
-		g.draw3DRect(40, 20, 290, 30, true);
-		g.draw3DRect(370, 20, 370, 30, true);
+		g.setColor(new Color(100, 20, 20));
+		g.draw3DRect(20, 20, 350, 30, true);
+		g.draw3DRect(390, 20, 370, 30, true);
 		
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 16));
-		g.drawString(gunInfo, 60, 42);
-		g.drawString(levelInfo, 390, 42);
+		g.drawString(gunInfo, 40, 42);
+		g.drawString(levelInfo, 410, 42);
 		
-		g.setColor(colors[0]);
-		g.drawString("1", 270, 42);
-		g.setColor(colors[1]);
-		g.drawString("2", 290, 42);
-		g.setColor(colors[2]);
-		g.drawString("3", 310, 42);
+		for (int i = 0; i < colors.length; i++) {
+			g.setColor(colors[i]);
+			g.drawString(String.valueOf(i + 1), 310 + i * 20, 42);
+		}
+		
+		g.drawImage(gun.getSprite(), 240, 15, 80, 40, null);
 	}
 }

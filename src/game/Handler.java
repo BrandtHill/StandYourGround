@@ -37,7 +37,6 @@ public class Handler {
 		brassList = new LinkedList<>();
 		deadQueue = new LinkedList<>();
 		asyncQueue = Collections.synchronizedList(new LinkedList<>());
-		Zombie.loadSprites();
 		r = new Random();
 	}
 	

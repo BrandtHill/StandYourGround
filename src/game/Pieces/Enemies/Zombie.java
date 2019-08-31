@@ -115,7 +115,7 @@ public class Zombie extends GameObject {
 	
 	public double getHealth() {return health;}
 	
-	public static void loadSprites() {
+	static { 
 		FileInputStream file;
 		try {
 			file = new FileInputStream("res/ZombieSprite_1.png");

@@ -31,8 +31,8 @@ import game.Weapons.PX4Compact;
 import game.Weapons.Titan;
 
 public class Player extends GameObject{
-	private final static int NUMSPRITECYCLES = 8;
-	private final static int NUMGUNS = 6;
+	public final static int NUMSPRITECYCLES = 8;
+	public final static int NUMGUNS = 6;
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
@@ -78,7 +78,6 @@ public class Player extends GameObject{
 		speed = 2;
 		reticle = null;
 		level = 1;
-		loadSprites();
 	}
 	
 	public Rectangle getBounds() {
@@ -118,18 +117,15 @@ public class Player extends GameObject{
 		tickDivider++;	
 	}
 	
-	private int getGunSpriteNum(Gun g) {
-		if (g == null) return 0;
-
-		switch(g.getId()) {
-		case Titan:			return 0;
-		case PX4Compact:	return 1;
-		case Model57:		return 2;
-		case AR15: 			return 3;
-		case OverUnder:		return 4;
-		case M77:			return 5;
-		default: 			return 0;
-		}
+	public static int getGunSpriteNum(Gun g) {
+		if (g == null) 					return 0;
+		if (g instanceof Titan) 		return 0;
+		if (g instanceof PX4Compact)	return 1;
+		if (g instanceof Model57) 		return 2;
+		if (g instanceof OverUnder) 	return 3;
+		if (g instanceof M77) 			return 4;
+		if (g instanceof AR15) 			return 5;
+		return 0;
 	}
 	
 	public void detectCollision() {
@@ -150,8 +146,10 @@ public class Player extends GameObject{
 	
 	public void renderPreview(Graphics g, Gun gun) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawImage(Program.background.getSubimage(40, 20, 40, 40), 560, 360, 150, 150, null);
+		g2d.drawImage(Program.background.getSubimage(0, 20, 120, 40), 260, 360, 450, 150, null);
 		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 600, 380, 80, 128, null);
+		if (gun != null) g2d.drawImage(gun.getSprite(), 260, 360, 300, 150, null);
+		
 	}
 
 	public Gun getGunWielded() {return gunWielded;}
@@ -284,7 +282,7 @@ public class Player extends GameObject{
 		return -1;
 	}
 	
-	public void loadSprites() {
+	static {
 		try {
 			FileInputStream file = new FileInputStream("res/PlayerSprite.png");
 			spriteSheet = ImageIO.read(file);

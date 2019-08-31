@@ -59,15 +59,16 @@ public class Button {
 			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
 		} else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
+					&& line1.contains("Increase Ammo")
 					|| line1.contains("Hollow") && !gun.isSpecialRounds()
 					|| line1.contains("Loads") && !gun.isSpecialRounds()
 					|| line1.contains("Buck") && !gun.isSpecialRounds()
 					|| line1.contains("Auto") && !gun.isFullAuto()
 					|| line1.contains("Mag Size") && !gun.isMagIncreased();
-			this.mainColor = gun.isOwned() ? 
+			this.mainColor = gun.isOwned() ?
 							(isClickable() ?
 								  Color.WHITE
-								: new Color(160, 160, 240)) 
+								: new Color(160, 160, 240))
 								: Color.GRAY;
 		} else {
 			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
