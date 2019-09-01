@@ -6,7 +6,6 @@ import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -22,31 +21,29 @@ import static java.lang.Math.cos;
 
 public class Zombie extends GameObject {
 
+	public final static int NUMZOMBIETYPES = 4; 
 	protected double health, xPlayer, yPlayer, xBias, yBias, angle, speed;
 	protected Random r;
 	protected Player player;
-	private static BufferedImage spriteSheet1;
-	private static BufferedImage spriteSheet2;
-	private static BufferedImage spriteSheet3;
+	protected static BufferedImage[][] spriteSheets = new BufferedImage[NUMZOMBIETYPES][8];
 	protected BufferedImage[] zombieSprites;
-	protected static BufferedImage[] zombieSprites1 = new BufferedImage[8];
-	protected static BufferedImage[] zombieSprites2 = new BufferedImage[8];
-	protected static BufferedImage[] zombieSprites3 = new BufferedImage[8];
-	protected int tickDivider;
+	protected int ticks;
 	protected int spriteNum;
 	protected int moneyValue;
+	protected int maxAngleChangeDegrees;
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
 		this.player = Program.player;
 		this.health = health;	
 		this.speed = speed;
-		this.zombieSprites = zombieSprites1;
+		this.zombieSprites = spriteSheets[0];
 		this.r = new Random();
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
-		tickDivider = 0;
+		ticks = 0;
 		moneyValue = 23;
+		maxAngleChangeDegrees = 5;
 	}
 
 	public void tick() {
@@ -59,14 +56,14 @@ public class Zombie extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (tickDivider % 8 == 0) {
+		if (ticks % 8 == 0) {
 			detectCollision();
 			spriteNum++;
 		}
 		
 		if (health < 20) speed *= 1.001;
 		
-		tickDivider++;
+		ticks++;
 	}
 	
 	protected double getAngleToPlayer() {
@@ -129,20 +126,13 @@ public class Zombie extends GameObject {
 	public double getHealth() {return health;}
 	
 	static { 
-		FileInputStream file;
-		try {
-			file = new FileInputStream("./res/ZombieSprite_1.png");
-			spriteSheet1 = ImageIO.read(file);
-			file.close();
-			file = new FileInputStream("./res/ZombieSprite_2.png");
-			spriteSheet2 = ImageIO.read(file);
-			file.close();
-			file = new FileInputStream("./res/ZombieSprite_3.png");
-			spriteSheet3 = ImageIO.read(file);
-			file.close();
-		} catch (IOException e) { e.printStackTrace(); }
-		for (int i = 0; i < 8; i++) zombieSprites1[i] = spriteSheet1.getSubimage(20 * i, 0, 20, 24);
-		for (int i = 0; i < 8; i++) zombieSprites2[i] = spriteSheet2.getSubimage(20 * i, 0, 20, 24);
-		for (int i = 0; i < 8; i++) zombieSprites3[i] = spriteSheet3.getSubimage(20 * i, 0, 20, 24);
+		for (int i = 1; i <= NUMZOMBIETYPES; i++) {
+			try (FileInputStream fis = new FileInputStream("./res/ZombieSprite_" + i + ".png")) {
+				BufferedImage img = ImageIO.read(fis);
+				for (int j = 0; j < 8; j++) spriteSheets[i-1][j] = img.getSubimage(20 * j, 0, 20, 24);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}	
 	}
 }

@@ -159,12 +159,7 @@ public class Player extends GameObject{
 	public Gun getGun(String name) {return arsenalStringMap.get(name);}
 	public Gun getGun(GUN id) {return arsenalEnumMap.get(id);}
 	public Gun getGunAt(int i) {return arsenal.get(i);}
-	public int getGunWeildedIndex() {
-		if (gunWielded == gunPrimary) return 0;
-		if (gunWielded == gunSecondary) return 1;
-		if (gunWielded == gunSidearm) return 2;
-		return 0;
-	}
+	public int getGunWeildedIndex() {return getIndexOfGun(gunWielded);}
 	public List<Gun> getArsenal() {return arsenal;}
 	public double getAngle() {return angle;}
 	public double getSpeed() {return speed;}
@@ -194,6 +189,18 @@ public class Player extends GameObject{
 		}
 	}
 	
+	public void switchToNext() {
+		if (gunWielded == gunSidearm && gunSecondary != null) {
+			switchToSecondary();
+		} else switchToPrimary();
+	}
+	
+	public void switchToPrevious() {
+		if (gunWielded == gunPrimary && gunSecondary != null) {
+			switchToSecondary();
+		} else switchToSidearm();
+	}
+	
 	public void resetAllAmmo() {
 		arsenal.forEach(g -> g.resetAmmo());
 	}
@@ -201,26 +208,16 @@ public class Player extends GameObject{
 	public void autoEquip() {
 		gunPrimary = gunSecondary = gunSidearm = gunWielded = null;
 		
-		while (numGunsAvailable() > 0) {
-			if (gunPrimary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
-				gunPrimary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
-				continue;
-			}
-			if (gunSecondary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
-				gunSecondary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
-				continue;
-			}
-			if (gunSidearm == null && numSidearmsAvailable() > 0) {
-				gunSidearm = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
-				continue;
-			}
-			break;
+		if (gunPrimary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
+			gunPrimary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
+		}
+		if (gunSecondary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
+			gunSecondary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
+		}
+		if (gunSidearm == null && numSidearmsAvailable() > 0) {
+			gunSidearm = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
 		}
 		autoWield();
-	}
-	
-	private int numGunsAvailable() {
-		return (int) arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).count();
 	}
 	
 	private int numPrimariesAvailable() {

@@ -3,12 +3,15 @@ package game.Pieces.Enemies;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
+import org.newdawn.slick.tests.SpriteSheetFontTest;
+
 public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y, double speed, double health) {
 		super(x, y, speed, health);
 		this.moneyValue = 36;
-		this.zombieSprites = zombieSprites3;
+		this.zombieSprites = Zombie.spriteSheets[2];
+		this.maxAngleChangeDegrees = 3;
 	}
 	
 	@Override
@@ -22,7 +25,7 @@ public class FastZombie extends Zombie {
 		x += velX;
 		y += velY;
 		
-		if (tickDivider % 4 == 0) {
+		if (ticks % 4 == 0) {
 			detectCollision();
 			spriteNum++;
 		}
@@ -30,7 +33,7 @@ public class FastZombie extends Zombie {
 		speed *= 1.0005;
 		speed = Math.max(speed, 2.5);
 		
-		tickDivider++;
+		ticks++;
 	}
 	
 	@Override

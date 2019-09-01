@@ -15,6 +15,7 @@ import game.Pieces.Projectile;
 import game.Pieces.Reticle;
 import game.Pieces.Enemies.DodgingZombie;
 import game.Pieces.Enemies.FastZombie;
+import game.Pieces.Enemies.ThiccZombie;
 import game.Pieces.Enemies.Zombie;
 import game.SpawnSystem.REGION;
 import game.SpawnSystem.ZOMBIE;
@@ -88,8 +89,7 @@ public class Handler {
 		do {
 			x = r.nextInt(2 * Program.WIDTH) - Program.WIDTH;
 			y = r.nextInt(Program.HEIGHT);
-		}
-		while (abs(x-xPlayer) < 300 && abs(y-yPlayer) < 300);
+		} while (abs(x-xPlayer) < 300 && abs(y-yPlayer) < 300);
 		
 		double zombieDist = r.nextGaussian();
 		if 		(zombieDist < -1) 	addDodgingZombie(x, y);
@@ -97,7 +97,7 @@ public class Handler {
 		else						addNormalZombie(x, y);
 	}
 	
-	public void addZombie(ZOMBIE zombie, REGION region) {
+	public void addZombie(REGION region, ZOMBIE zombie) {
 		double x, y;
 		
 		switch (region) {
@@ -123,14 +123,13 @@ public class Handler {
 		}
 		
 		switch(zombie) {
-		case DODGING:
-			addDodgingZombie(x, y);
+		case DODGING:	addDodgingZombie(x, y);
 			break;
-		case FAST:
-			addFastZombie(x, y); 
+		case FAST:		addFastZombie(x, y); 
 			break;
-		case NORMAL:
-			addNormalZombie(x, y); 
+		case NORMAL:	addNormalZombie(x, y); 
+			break;
+		case THICC:		addThiccZombie(x, y);
 			break;
 		default:
 			break;
@@ -155,6 +154,12 @@ public class Handler {
 		addObject(new FastZombie(x, y, speed, hp));
 	}
 	
+	public void addThiccZombie(double x, double y) {
+		double hp = 140 + 6 * Program.player.getLevel();
+		double speed = 0.9 + Program.player.getLevel() * 0.02;
+		addObject(new ThiccZombie(x, y, speed, hp));
+	}
+	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
 		addObjectAsync(new Blood(x, y, knock, angle));
 		for (int i = 1; i < num; i++) {
@@ -166,6 +171,5 @@ public class Handler {
 	public void removeObjectAsync(GameObject dead) 	{deadQueue.add(dead);}
 	public void addObject(GameObject obj) 			{gameObjs.add(obj);}
 	public void removeObject(GameObject obj) 		{gameObjs.remove(obj);}
-	public GameObject getObjectAt(int i) 			{return gameObjs.get(i);}
 	public Stream<GameObject> getObjectStream() 	{return gameObjs.stream();}
 }

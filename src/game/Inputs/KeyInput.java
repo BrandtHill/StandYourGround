@@ -11,13 +11,13 @@ import game.Weapons.Gun;
 public class KeyInput extends KeyAdapter{
 	
 	private Store store;
-	private static Player player;
+	private Player player;
 	private boolean w, a, s, d;
 	private double speed = 2;
 	
-	public KeyInput(Store store) {
-		this.store = store;
-		KeyInput.player = Program.player;
+	public KeyInput() {
+		this.store = Program.store;
+		this.player = Program.player;
 	}
 	
 	public void keyPressed(KeyEvent e) {

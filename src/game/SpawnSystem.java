@@ -15,7 +15,7 @@ public class SpawnSystem {
 	}
 
 	public enum ZOMBIE {
-		NORMAL, DODGING, FAST
+		NORMAL, DODGING, FAST, THICC
 	}
 
 	public SpawnSystem() {
@@ -185,7 +185,7 @@ public class SpawnSystem {
 		case 3:
 			switch (wave) {
 			case 1:
-				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 1);
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
@@ -202,15 +202,17 @@ public class SpawnSystem {
 		case 4:
 			switch (wave) {
 			case 1:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
-				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
-				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 4);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 1);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 2);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 1);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
 				delayMillis = 5000;
 				break;
 
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 3);
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
 				doneSpawning = true;
 				break;
@@ -220,8 +222,9 @@ public class SpawnSystem {
 		case 5:
 			switch (wave) {
 			case 1:
-				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 15);
-				delayMillis = 6000;
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 10);
+				spawnZombies(REGION.UP, ZOMBIE.THICC, 5);
+				delayMillis = 9000;
 				break;
 
 			case 2:
@@ -236,14 +239,18 @@ public class SpawnSystem {
 		case 6:
 			switch (wave) {
 			case 1:
-				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 3);
-				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 3);
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 1);
+				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.LEFT, ZOMBIE.THICC, 1);
 				delayMillis = 7500;
 				break;
 
 			case 2:
-				spawnZombies(REGION.UP, ZOMBIE.DODGING, 4);
-				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 5);
+				spawnZombies(REGION.UP, ZOMBIE.DODGING, 1);
+				spawnZombies(REGION.UP, ZOMBIE.THICC, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 1);
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 4);
 				doneSpawning = true;
 				break;
 			}
@@ -253,12 +260,12 @@ public class SpawnSystem {
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 7);
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 7);
+				spawnZombies(REGION.LEFT, ZOMBIE.THICC, 7);
 				delayMillis = 7500;
 				break;
 
 			case 2:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 7);
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 7);
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 7);
 				delayMillis = 5000;
 				break;
@@ -274,31 +281,35 @@ public class SpawnSystem {
 		case 8:
 			switch (wave) {
 			case 1:
-				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);
 				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
-				delayMillis = 2250;
+				spawnZombies(REGION.LEFT, ZOMBIE.THICC, 1);
+				delayMillis = 2750;
 				break;
 
 			case 2:
-				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 2);
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
-				delayMillis = 2250;
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 1);
+				delayMillis = 2750;
 				break;
 
 			case 3:
-				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.UP, ZOMBIE.FAST, 1);
-				delayMillis = 2250;
+				spawnZombies(REGION.UP, ZOMBIE.THICC, 1);
+				delayMillis = 2750;
 				break;
 
 			case 4:
-				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 2);
 				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 1);
-				delayMillis = 2250;
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 1);
+				delayMillis = 2750;
 				break;
 
 			case 5:
@@ -326,12 +337,18 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
-				delayMillis = 8000;
+				delayMillis = 11000;
 				break;
 			
 			case 3:
-				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 6);
-				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 6);
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 2);
+				delayMillis = 3000;
+				break;
+				
+			case 4:
+				spawnZombies(REGION.RIGHT, ZOMBIE.DODGING, 4);
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 4);
 				spawnZombies(REGION.UP, ZOMBIE.DODGING, 7);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 7);
 				doneSpawning = true;
@@ -363,7 +380,7 @@ public class SpawnSystem {
 
 	private void spawnZombies(REGION region, ZOMBIE zombie, int num) {
 		for (int i = 0; i < num; i++) {
-			handler.addZombie(zombie, region);
+			handler.addZombie(region, zombie);
 		}
 	}
 

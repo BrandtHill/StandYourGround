@@ -31,7 +31,7 @@ public class Brass extends GameObject {
 		y += velY;
 		velX *= 0.85;
 		velY *= 0.85;
-		if (ticks++ > 600) {
+		if (ticks++ > 1500) {
 			c = new Color(c.getRed(), c.getGreen(), c.getBlue(), --alpha);
 			if (alpha <= 0) handler.removeObjectAsync(this);
 		}

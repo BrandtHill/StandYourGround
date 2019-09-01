@@ -148,7 +148,7 @@ public class Store extends MouseAdapter {
 			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "Over-Under", "$250", 8);
 			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Ammo", "Model 57", "$200", 12);
 			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Increase Ammo", "PX4 Compact", "$175", 15);
-			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Ammo", "Titan", "$150", 14);
+			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Ammo", "Titan", "$100", 14);
 			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Increase Mag Size", "AR-15", "$500", 10);
 			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Drop-In Auto Sear", "AR-15", "$1100");
 			buttons[8] = new Button(buttonX[8], buttonY[8], true, "Hollow Points", "PX4 Compact", "$350");
@@ -283,5 +283,26 @@ public class Store extends MouseAdapter {
 			gun.setOwned(true);
 			player.setMoney(player.getMoney() - money);
 		}
+	}
+	
+	public void mouseMoved(MouseEvent e) {	
+		if (Program.gameState == STATE.StoreMenu) {
+			Arrays.stream(buttons)
+			.filter(b -> b != null)
+			.filter(b -> b.isClickable() || b.displayColor == Color.GREEN)
+			.forEach(b -> {
+				if (b.inBounds(e.getPoint())) {
+					if (b.displayColor == b.mainColor) {
+						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+					}
+					b.displayColor = Color.GREEN;
+				}
+				else b.displayColor = b.mainColor;
+			});
+		}
+	}
+	
+	public void mouseDragged(MouseEvent e) {
+		mouseMoved(e);
 	}
 }

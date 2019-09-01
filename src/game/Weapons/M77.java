@@ -17,8 +17,8 @@ public class M77 extends Gun {
 		gunId = GUN.M77;
 		reloadSound = AudioPlayer.getSound("ReloadM77");
 		cycleSound = AudioPlayer.getSound("CycleM77");
-		reloadTime = 3000;
-		chamberTime = 1250;
+		reloadTime = 2500;
+		chamberTime = 1050;
 		gunName = "M77";
 		ammoLoaded = magSize = 3;
 		ammoExtra = ammoCapacity = 15;
@@ -86,7 +86,7 @@ public class M77 extends Gun {
 		p.angleMulti = 0.1;
 		p.color = new Color(243, 144, 0);
 		p.hits += 3;
-		p.damage *= 1.25;
+		p.damage *= 1.65;
 		p.magnitude *= 1.15;
 		p.knockBack *= 1.2;
 	}

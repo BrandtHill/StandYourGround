@@ -15,9 +15,7 @@ import javax.imageio.ImageIO;
 import game.Audio.AudioPlayer;
 import game.Inputs.KeyInput;
 import game.Inputs.MouseInput;
-import game.Inputs.MouseMotionInput;
 import game.Inputs.Store;
-import game.Inputs.StoreMotion;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 
@@ -26,9 +24,8 @@ public class Program extends Canvas implements Runnable {
 	private static final long serialVersionUID = -1499886446881465910L;
 	private boolean running;
 	private Thread gameThread;
-	private HUD hud;
-	private Store store;
-	private StoreMotion storeMotion;
+	public static HUD hud;
+	public static Store store;
 	public static BufferedImage background;
 	public static BufferedImage backgroundSlice;
 	private static BufferedImage background1;
@@ -65,13 +62,16 @@ public class Program extends Canvas implements Runnable {
 		saveData = new SaveData();
 		spawnSys = new SpawnSystem();
 		store = new Store();
-		storeMotion = new StoreMotion(store);
 		hud = new HUD();
 		
-		addKeyListener(new KeyInput(store));
-		addMouseListener(new MouseInput());
+		MouseInput mi = new MouseInput();
+		addKeyListener(new KeyInput());
+		addMouseListener(mi);
+		addMouseWheelListener(mi);
+		addMouseMotionListener(mi);
 		addMouseListener(store);
-		addMouseMotionListener(new MouseMotionInput());
+		addMouseMotionListener(store);
+		
 		
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
@@ -99,8 +99,7 @@ public class Program extends Canvas implements Runnable {
 		try {
 			gameThread.join();
 			running = false;
-		}
-		catch(Exception e) {
+		} catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
@@ -250,10 +249,10 @@ public class Program extends Canvas implements Runnable {
 		case InGame:
 			background = (player.getLevel() < 6) ? background1 : background2;
 			if (prevState != STATE.PauseMenu) commenceLevel();
-			removeMouseMotionListener(storeMotion);
+			removeMouseMotionListener(store);
 			break;
 		case StoreMenu:
-			addMouseMotionListener(storeMotion);
+			addMouseMotionListener(store);
 			saveToFile("./res/saves/autosave.syg");
 			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			Store.menu = Store.Menu.BuyGuns;

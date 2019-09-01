@@ -17,7 +17,7 @@ public class OverUnder extends Gun {
 		gunName = "Over-Under";
 		ammoLoaded = magSize = 2;
 		ammoExtra = ammoCapacity = 10;
-		damage = 29;
+		damage = 27;
 		spread = 9;
 		xOffset = -3;
 		yOffset = 21;
@@ -64,7 +64,7 @@ public class OverUnder extends Gun {
 		p.angle = player.getAngle();
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
-		p.knockBack *= 1.10;
+		p.knockBack *= 1.15;
 		p.damage *= 1.35;
 		p.color = new Color(243, 144, 0);;
 	}
