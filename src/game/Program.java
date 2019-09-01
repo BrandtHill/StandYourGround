@@ -58,7 +58,6 @@ public class Program extends Canvas implements Runnable {
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
 		handler.addObject(player);
 		handler.addObject(reticle);
-		player.addReticle(reticle);
 		saveData = new SaveData();
 		spawnSys = new SpawnSystem();
 		store = new Store();

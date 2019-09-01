@@ -3,10 +3,17 @@ package game.Inputs;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Arrays;
+
+import javax.imageio.ImageIO;
 
 import game.Button;
 import game.Program;
@@ -21,6 +28,8 @@ public class Store extends MouseAdapter {
 	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
 	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
 	public Button[] buttons = new Button[12];
+	public Button hover;
+	public static BufferedImage pegboard;
 	public static Menu menu = Menu.Other;
 	
 	public static enum Menu{
@@ -183,6 +192,10 @@ public class Store extends MouseAdapter {
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			g.drawImage(pegboard, 220, 320, 384, 192, null);
+			if (hover != null) {
+				g.drawImage(hover.getGun().getSprite(), 220, 320, 384, 192, null);
+			}
 			break;
 		case BuyUpgrades:
 			g.setColor(Color.WHITE);
@@ -234,10 +247,6 @@ public class Store extends MouseAdapter {
 		g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 70, 390);
 		g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 70, 405);
 		g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 70, 420);
-	}
-	
-	public boolean inBounds(Point p, int i) {
-		return buttons[i].inBounds(p);
 	}
 	
 	private void upgradeCapacity(Gun gun, int ammo, int money) {
@@ -295,14 +304,24 @@ public class Store extends MouseAdapter {
 					if (b.displayColor == b.mainColor) {
 						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
 					}
+					hover = b;
 					b.displayColor = Color.GREEN;
+				} else {
+					b.displayColor = b.mainColor;
 				}
-				else b.displayColor = b.mainColor;
 			});
 		}
 	}
 	
 	public void mouseDragged(MouseEvent e) {
 		mouseMoved(e);
+	}
+	
+	static {
+		try (FileInputStream fis = new FileInputStream("./res/Pegboard.png")) {
+			pegboard = ImageIO.read(fis);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

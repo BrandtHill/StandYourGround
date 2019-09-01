@@ -71,7 +71,6 @@ public class Handler {
 	
 	public void removeBrass() {
 		gameObjs.removeIf(b -> b instanceof Brass);
-		
 	}
 	
 	public void removeProjectiles() {
@@ -155,8 +154,8 @@ public class Handler {
 	}
 	
 	public void addThiccZombie(double x, double y) {
-		double hp = 140 + 6 * Program.player.getLevel();
-		double speed = 0.9 + Program.player.getLevel() * 0.02;
+		double hp = 120 + 4 * Program.player.getLevel();
+		double speed = 1.0 + Program.player.getLevel() * 0.02;
 		addObject(new ThiccZombie(x, y, speed, hp));
 	}
 	

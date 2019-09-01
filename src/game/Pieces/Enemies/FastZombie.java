@@ -3,8 +3,6 @@ package game.Pieces.Enemies;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import org.newdawn.slick.tests.SpriteSheetFontTest;
-
 public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y, double speed, double health) {
@@ -39,7 +37,7 @@ public class FastZombie extends Zombie {
 	@Override
 	public void damageMe(double damage, double angle, double knock) {
 		knock *= 1.8;
-		speed *= 0.95;
+		speed *= 0.90;
 		super.damageMe(damage, angle, knock);
 	}
 

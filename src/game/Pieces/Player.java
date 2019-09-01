@@ -40,7 +40,6 @@ public class Player extends GameObject{
 	private List<Gun> arsenal;
 	private Map<String, Gun> arsenalStringMap;
 	private Map<GUN, Gun> arsenalEnumMap;
-	private Reticle reticle;
 	private double angle;
 	private double speed;
 	private byte ticks;
@@ -76,7 +75,6 @@ public class Player extends GameObject{
 		money = 0;
 		moneyAtRoundStart = 0;
 		speed = 2;
-		reticle = null;
 		level = 1;
 	}
 	
@@ -103,7 +101,7 @@ public class Player extends GameObject{
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-26);
 		
-		angle = atan2(reticle.getXDisplay() - (x + 10), reticle.getYDisplay() - (y + 10));
+		angle = atan2(Program.reticle.getXDisplay() - (x + 10), Program.reticle.getYDisplay() - (y + 10));
 		
 		gunWielded.tick();
 		
@@ -229,9 +227,9 @@ public class Player extends GameObject{
 	}
 	
 	public void autoWield() {
+		if (gunSidearm != null) gunWielded = gunSidearm;
+		if (gunSecondary != null) gunWielded = gunSecondary;
 		if (gunPrimary != null) gunWielded = gunPrimary;
-		else if (gunSecondary != null) gunWielded = gunSecondary;
-		else if (gunSidearm != null) gunWielded = gunSidearm;
 	}
 	
 	public void equipPrimary(Gun g) {equipGun(g, 0);}
@@ -292,9 +290,5 @@ public class Player extends GameObject{
 				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
 			}
 		}
-	}
-	
-	public void addReticle(Reticle r) {
-		reticle = r;
 	}
 }
