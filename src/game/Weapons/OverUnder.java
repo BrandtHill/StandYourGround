@@ -28,7 +28,7 @@ public class OverUnder extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			for (int i = 0; i < (specialRounds ? 6 : 9); i++) {
+			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
 				handler.addObjectAsync(new Projectile(this));
 			}
 			onShotFired();
@@ -65,7 +65,7 @@ public class OverUnder extends Gun {
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
 		p.knockBack *= 1.15;
-		p.damage *= 1.35;
+		p.damage *= 1.375;
 		p.color = new Color(243, 144, 0);;
 	}
 }

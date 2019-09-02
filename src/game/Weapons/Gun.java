@@ -155,6 +155,7 @@ public abstract class Gun {
 	public boolean isSidearm() {return isSidearm;}
 	public boolean isSpecialRounds() {return specialRounds;}
 	public boolean isMagIncreased() {return isMagIncreased;}
+	public boolean isReloading() {return currentlyReloading;}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 	public BufferedImage getSprite() {return gunSprite;}

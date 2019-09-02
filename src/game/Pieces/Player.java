@@ -42,7 +42,7 @@ public class Player extends GameObject{
 	private Map<GUN, Gun> arsenalEnumMap;
 	private double angle;
 	private double speed;
-	private byte ticks;
+	private int ticks;
 	private static BufferedImage spriteSheet;
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
@@ -164,6 +164,7 @@ public class Player extends GameObject{
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
 	public int getLevel() {return level;}
+	public boolean isReloading() {return gunWielded != null &&gunWielded.isReloading();}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
 	public void setGunSecondary(Gun g) {this.gunSecondary = g;}
