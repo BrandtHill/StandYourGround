@@ -67,10 +67,12 @@ public class Handler {
 
 	public void removeBlood() {
 		gameObjs.removeIf(b -> b instanceof Blood);
+		asyncQueue.removeIf(b -> b instanceof Blood);
 	}
 	
 	public void removeBrass() {
 		gameObjs.removeIf(b -> b instanceof Brass);
+		asyncQueue.removeIf(b -> b instanceof Brass);
 	}
 	
 	public void removeProjectiles() {

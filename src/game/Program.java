@@ -71,7 +71,6 @@ public class Program extends Canvas implements Runnable {
 		addMouseListener(store);
 		addMouseMotionListener(store);
 		
-		
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
@@ -85,7 +84,6 @@ public class Program extends Canvas implements Runnable {
 		saveToFile("./res/saves/autosave.syg");
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
-		
 	}
 	
 	public synchronized void start() {

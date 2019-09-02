@@ -3,14 +3,10 @@ package game.Inputs;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
@@ -25,8 +21,8 @@ import game.Weapons.Gun;
 public class Store extends MouseAdapter {
 
 	private static Player player;
-	private int buttonX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
-	private int buttonY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
+	private int bX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
+	private int bY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
 	public Button[] buttons = new Button[12];
 	public Button hover;
 	public static BufferedImage pegboard;
@@ -44,7 +40,6 @@ public class Store extends MouseAdapter {
 	
 	public Store() {
 		player = Program.player;
-		Button.setPlayer(player);
 	}
 	
 	public void mousePressed(MouseEvent e) {
@@ -145,43 +140,46 @@ public class Store extends MouseAdapter {
 		
 		switch (menu) {
 		case BuyGuns:
-			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Buy", "AR-15", "$875");
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Buy", "M77", "$650");
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Buy", "Over-Under", "$525");
-			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Buy", "Model 57", "$475");
-			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Buy", "PX4 Compact", "$350");
+			buttons[0] = new Button(bX[0], bY[0], true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
+			buttons[1] = new Button(bX[1], bY[1], true, "Buy", "M77", "$650", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
+			buttons[2] = new Button(bX[2], bY[2], true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
+			buttons[3] = new Button(bX[3], bY[3], true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");
+			buttons[4] = new Button(bX[4], bY[4], true, "Buy", "PX4 Compact", "$350", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
+			buttons[5] = new Button(bX[5], bY[5], true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyUpgrades:
-			buttons[0] = new Button(buttonX[0], buttonY[0], true, "Increase Ammo", "AR-15", "$300", 30);
-			buttons[1] = new Button(buttonX[1], buttonY[1], true, "Increase Ammo", "M77", "$300", 9);
-			buttons[2] = new Button(buttonX[2], buttonY[2], true, "Increase Ammo", "Over-Under", "$250", 8);
-			buttons[3] = new Button(buttonX[3], buttonY[3], true, "Increase Ammo", "Model 57", "$200", 12);
-			buttons[4] = new Button(buttonX[4], buttonY[4], true, "Increase Ammo", "PX4 Compact", "$175", 15);
-			buttons[5] = new Button(buttonX[5], buttonY[5], true, "Increase Ammo", "Titan", "$100", 14);
-			buttons[6] = new Button(buttonX[6], buttonY[6], true, "Increase Mag Size", "AR-15", "$500", 10);
-			buttons[7] = new Button(buttonX[7], buttonY[7], true, "Drop-In Auto Sear", "AR-15", "$1100");
-			buttons[8] = new Button(buttonX[8], buttonY[8], true, "Hollow Points", "PX4 Compact", "$350");
-			buttons[9] = new Button(buttonX[9], buttonY[9], true, "Hand Loads", "M77", "$500");
-			buttons[10]= new Button(buttonX[10], buttonY[10], true, "000 Buck Shot", "Over-Under", "$525");
+			buttons[0] = new Button(bX[0], bY[0], true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
+			buttons[1] = new Button(bX[1], bY[1], true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
+			buttons[2] = new Button(bX[2], bY[2], true, "Increase Ammo", "Over-Under", "$250", "8 more shells", 8);
+			buttons[3] = new Button(bX[3], bY[3], true, "Increase Ammo", "Model 57", "$200", "12 more rounds", 12);
+			buttons[4] = new Button(bX[4], bY[4], true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
+			buttons[5] = new Button(bX[5], bY[5], true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
+			buttons[6] = new Button(bX[6], bY[6], true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
+			buttons[7] = new Button(bX[7], bY[7], true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
+			buttons[8] = new Button(bX[8], bY[8], true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
+			buttons[9] = new Button(bX[9], bY[9], true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
+			buttons[10]= new Button(bX[10], bY[10], true, "000 Buckshot", "Over-Under", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			break;
 		case SelectPrimary:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(buttonX[i], buttonY[i], true, "", player.getGunAt(i).getName(), "");
+				buttons[i] = new Button(bX[i], bY[i], true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSecondary:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(buttonX[i], buttonY[i], true, "", player.getGunAt(i).getName(), "");
+				buttons[i] = new Button(bX[i], bY[i], true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSidearm:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(buttonX[i], buttonY[i], player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "");
+				buttons[i] = new Button(bX[i], bY[i], player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		default:
 			break;
 		}
+		
+		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.updateColor());
 	}
 	
 	public void render(Graphics g) {
@@ -195,6 +193,7 @@ public class Store extends MouseAdapter {
 			g.drawImage(pegboard, 220, 320, 384, 192, null);
 			if (hover != null) {
 				g.drawImage(hover.getGun().getSprite(), 220, 320, 384, 192, null);
+				hover.renderTooltip(g);
 			}
 			break;
 		case BuyUpgrades:
@@ -202,6 +201,7 @@ public class Store extends MouseAdapter {
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			if (hover != null) hover.renderTooltip(g);
 			break;
 		case SelectPrimary:
 			g.setColor(Color.WHITE);
@@ -298,18 +298,19 @@ public class Store extends MouseAdapter {
 		if (Program.gameState == STATE.StoreMenu) {
 			Arrays.stream(buttons)
 			.filter(b -> b != null)
-			.filter(b -> b.isClickable() || b.displayColor == Color.GREEN)
-			.forEach(b -> {
-				if (b.inBounds(e.getPoint())) {
-					if (b.displayColor == b.mainColor) {
-						AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-					}
-					hover = b;
-					b.displayColor = Color.GREEN;
-				} else {
-					b.displayColor = b.mainColor;
-				}
-			});
+			.filter(b -> b != hover)
+			.forEach(b -> b.displayColor = b.mainColor);
+			
+			hover = Arrays.stream(buttons)
+			.filter(b -> b != null)
+			.filter(b -> b.inBounds(e.getPoint()))
+			.findFirst()
+			.orElse(null);
+			
+			if (hover != null && hover.isClickable()) {
+				if (hover.displayColor == hover.mainColor) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+				hover.displayColor = Color.GREEN;
+			}
 		}
 	}
 	
