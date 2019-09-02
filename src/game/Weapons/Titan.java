@@ -37,8 +37,7 @@ public class Titan extends Gun {
 				player.getAngle() - Math.PI / 2));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(1.2f, 0.25f);
-		} 
-		reloadIfNeeded();
+		}
 	}
 
 	@Override

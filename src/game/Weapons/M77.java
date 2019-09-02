@@ -36,20 +36,17 @@ public class M77 extends Gun {
 		if (canShoot()) {
 			handler.addObjectAsync(new Projectile(this));
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
-			if (ammoLoaded > 1) {
-				cycleSound.play();
-				ticks = 20;
-			}
+			if (ammoLoaded > 1) cycleSound.play();
 			onShotFired();
+			ticks = 0;
 		}
-		reloadIfNeeded();
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		ticks = Math.max(0, ticks - 1);
-		if (ticks == 1) {
+		ticks++;
+		if (ticks == 20 && (!chambered || currentlyReloading)) {
 			handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),

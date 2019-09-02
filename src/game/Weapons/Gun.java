@@ -35,12 +35,14 @@ public abstract class Gun {
 	protected Random r;
 	protected GUN gunId;
 	public static enum GUN {
-		AR15,
-		OverUnder,
-		M77,
 		Titan,
-		PX4Compact, 
-		Model57
+		PX4Compact,
+		Judge,
+		Model57,
+		OverUnder,
+		Model12,
+		M77,
+		AR15,
 	}
 	protected static BufferedImage gunSheet;
 	protected BufferedImage gunSprite;
@@ -193,6 +195,7 @@ public abstract class Gun {
 	protected void onShotFired() {
 		ammoLoaded--;
 		chambered = false;
+		reloadIfNeeded();
 	}
 	
 	protected int ticksForReload() {

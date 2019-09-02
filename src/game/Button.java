@@ -89,6 +89,7 @@ public class Button {
 	public Gun getGun() {return this.gun;}
 	public int getAmount() {return this.amount;}
 	public int getPrice() {return (!line3.isEmpty()) ? Integer.parseInt(line3.substring(1)) : 0;}
+	public boolean isActive() {return active;}
 	
 	public boolean inBounds(Point p) {
 		return p.getX() > x && p.getX() < (x + w) && p.getY() > y && p.getY() < (y + h);

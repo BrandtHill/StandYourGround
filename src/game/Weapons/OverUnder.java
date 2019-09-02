@@ -34,7 +34,6 @@ public class OverUnder extends Gun {
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
 		}
-		reloadIfNeeded();
 	}
 	
 	@Override
@@ -64,8 +63,8 @@ public class OverUnder extends Gun {
 		p.angle = player.getAngle();
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
-		p.knockBack *= 1.15;
+		p.knockBack *= 1.20;
 		p.damage *= 1.375;
-		p.color = new Color(243, 144, 0);;
+		p.color = new Color(243, 144, 0);
 	}
 }

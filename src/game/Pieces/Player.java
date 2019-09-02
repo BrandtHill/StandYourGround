@@ -24,7 +24,9 @@ import game.Program.STATE;
 import game.Weapons.AR15;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
+import game.Weapons.Judge;
 import game.Weapons.M77;
+import game.Weapons.Model12;
 import game.Weapons.Model57;
 import game.Weapons.OverUnder;
 import game.Weapons.PX4Compact;
@@ -32,7 +34,7 @@ import game.Weapons.Titan;
 
 public class Player extends GameObject{
 	public final static int NUMSPRITECYCLES = 8;
-	public final static int NUMGUNS = 6;
+	public final static int NUMGUNS = 8;
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
@@ -59,8 +61,10 @@ public class Player extends GameObject{
 		arsenal = new ArrayList<>();
 		arsenal.add(new AR15());
 		arsenal.add(new M77());
+		arsenal.add(new Model12());
 		arsenal.add(new OverUnder());
 		arsenal.add(new Model57());
+		arsenal.add(new Judge());
 		arsenal.add(new PX4Compact());
 		arsenal.add(new Titan());
 		arsenal.stream().forEach(g -> {
@@ -72,7 +76,7 @@ public class Player extends GameObject{
 		gunWielded = gunSidearm;
 		ticks = 0;
 		spriteNum = 0;
-		money = 0;
+		money = 10000;//0;
 		moneyAtRoundStart = 0;
 		speed = 2;
 		level = 1;
@@ -119,10 +123,12 @@ public class Player extends GameObject{
 		if (g == null) 					return 0;
 		if (g instanceof Titan) 		return 0;
 		if (g instanceof PX4Compact)	return 1;
-		if (g instanceof Model57) 		return 2;
-		if (g instanceof OverUnder) 	return 3;
-		if (g instanceof M77) 			return 4;
-		if (g instanceof AR15) 			return 5;
+		if (g instanceof Judge) 		return 2;
+		if (g instanceof Model57) 		return 3;
+		if (g instanceof OverUnder) 	return 4;
+		if (g instanceof Model12) 		return 5;
+		if (g instanceof M77) 			return 6;
+		if (g instanceof AR15) 			return 7;
 		return 0;
 	}
 	
@@ -147,7 +153,6 @@ public class Player extends GameObject{
 		g2d.drawImage(Program.backgroundSlice, 260, 360, 450, 150, null);
 		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 600, 380, 80, 128, null);
 		if (gun != null) g2d.drawImage(gun.getSprite(), 260, 360, 300, 150, null);
-		
 	}
 
 	public Gun getGunWielded() {return gunWielded;}

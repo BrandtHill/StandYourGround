@@ -33,7 +33,6 @@ public class Model57 extends Gun {
 			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
 			onShotFired();
 		}
-		reloadIfNeeded();
 	}
 	
 	@Override

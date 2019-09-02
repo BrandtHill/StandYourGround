@@ -54,7 +54,7 @@ public class Projectile extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (hits <= 0 || x < 0 || x > Program.WIDTH || y < 0 || y > Program.HEIGHT) handler.removeObjectAsync(this);
+		if (hits <= 0 || x < -100 || x > Program.WIDTH + 100 || y < -100 || y > Program.HEIGHT + 100) handler.removeObjectAsync(this);
 		else detectCollision();
 	}
 	

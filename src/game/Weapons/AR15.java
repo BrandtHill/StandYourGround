@@ -37,13 +37,12 @@ public class AR15 extends Gun {
 			onShotFired();
 			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
 		}
-		reloadIfNeeded();	
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		if ((ticks % 4) == 0 && isFullAuto && shooting) {
+		if ((ticks % 4) == 0 && shooting) {
 			shoot();
 		}
 		ticks++;

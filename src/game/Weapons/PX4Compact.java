@@ -38,8 +38,7 @@ public class PX4Compact extends Gun {
 				player.getAngle() - Math.PI / 2));
 			onShotFired();
 			AudioPlayer.getSound("Pistol").play(0.95f, 0.3f);
-		} 
-		reloadIfNeeded();
+		}
 	}
 
 	@Override

@@ -21,9 +21,9 @@ import game.Weapons.Gun;
 public class Store extends MouseAdapter {
 
 	private static Player player;
-	private int bX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
-	private int bY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300};
-	public Button[] buttons = new Button[12];
+	private int bX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
+	private int bY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 400};
+	public Button[] buttons = new Button[16];
 	public Button hover;
 	public static BufferedImage pegboard;
 	public static Menu menu = Menu.Other;
@@ -140,39 +140,44 @@ public class Store extends MouseAdapter {
 		
 		switch (menu) {
 		case BuyGuns:
-			buttons[0] = new Button(bX[0], bY[0], true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
-			buttons[1] = new Button(bX[1], bY[1], true, "Buy", "M77", "$650", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
-			buttons[2] = new Button(bX[2], bY[2], true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
-			buttons[3] = new Button(bX[3], bY[3], true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");
-			buttons[4] = new Button(bX[4], bY[4], true, "Buy", "PX4 Compact", "$350", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
-			buttons[5] = new Button(bX[5], bY[5], true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
+			buttonHelper(0, true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
+			buttonHelper(1, true, "Buy", "M77", "$750", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
+			buttonHelper(2, true, "Buy", "Model 12", "$625", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
+			buttonHelper(3, true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
+			buttonHelper(4, true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");
+			buttonHelper(5, true, "Buy", "Judge", "$475", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
+			buttonHelper(6, true, "Buy", "PX4 Compact", "$350", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
+			buttonHelper(7, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyUpgrades:
-			buttons[0] = new Button(bX[0], bY[0], true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
-			buttons[1] = new Button(bX[1], bY[1], true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
-			buttons[2] = new Button(bX[2], bY[2], true, "Increase Ammo", "Over-Under", "$250", "8 more shells", 8);
-			buttons[3] = new Button(bX[3], bY[3], true, "Increase Ammo", "Model 57", "$200", "12 more rounds", 12);
-			buttons[4] = new Button(bX[4], bY[4], true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
-			buttons[5] = new Button(bX[5], bY[5], true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
-			buttons[6] = new Button(bX[6], bY[6], true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
-			buttons[7] = new Button(bX[7], bY[7], true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
-			buttons[8] = new Button(bX[8], bY[8], true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
-			buttons[9] = new Button(bX[9], bY[9], true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
-			buttons[10]= new Button(bX[10], bY[10], true, "000 Buckshot", "Over-Under", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
+			buttonHelper(0, true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
+			buttonHelper(1, true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
+			buttonHelper(2, true, "Increase Ammo", "Model 12", "$200", "6 more shells", 6);
+			buttonHelper(3, true, "Increase Ammo", "Over-Under", "$250", "8 more shells", 8);
+			buttonHelper(4, true, "Increase Ammo", "Model 57", "$200", "12 more rounds", 12);
+			buttonHelper(5, true, "Increase Ammo", "Judge", "$200", "12 more rounds", 12);
+			buttonHelper(6, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
+			buttonHelper(7, true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
+			buttonHelper(8, true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
+			buttonHelper(9, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
+			buttonHelper(10,true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
+			buttonHelper(11,true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
+			buttonHelper(12,true, "000 Buckshot", "Over-Under", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
+			buttonHelper(13,true, "000 Buckshot", "Model 12", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			break;
 		case SelectPrimary:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(bX[i], bY[i], true, "", player.getGunAt(i).getName(), "", "");
+				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSecondary:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(bX[i], bY[i], true, "", player.getGunAt(i).getName(), "", "");
+				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSidearm:
 			for (int i = 0; i < Player.NUMGUNS; i++) {
-				buttons[i] = new Button(bX[i], bY[i], player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
+				buttonHelper(i, player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		default:
@@ -180,6 +185,14 @@ public class Store extends MouseAdapter {
 		}
 		
 		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.updateColor());
+	}
+	
+	private void buttonHelper(int i, boolean active, String l1, String l2, String l3, String tooltip, int amt) {
+		buttons[i] = new Button(bX[i], bY[i], active, l1, l2, l3, tooltip, amt);
+	}
+	
+	private void buttonHelper(int i, boolean active, String l1, String l2, String l3, String tooltip) {
+		buttons[i] = new Button(bX[i], bY[i], active, l1, l2, l3, tooltip);
 	}
 	
 	public void render(Graphics g) {
@@ -299,6 +312,7 @@ public class Store extends MouseAdapter {
 			Arrays.stream(buttons)
 			.filter(b -> b != null)
 			.filter(b -> b != hover)
+			.filter(b -> b.isActive())
 			.forEach(b -> b.displayColor = b.mainColor);
 			
 			hover = Arrays.stream(buttons)
