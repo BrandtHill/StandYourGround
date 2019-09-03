@@ -11,6 +11,7 @@ import game.Pieces.Projectile;
 public class M77 extends Gun {
 
 	private Sound cycleSound;
+	private int ejTicks;
 	
 	public M77() {
 		super();
@@ -38,15 +39,15 @@ public class M77 extends Gun {
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
 			if (ammoLoaded > 1) cycleSound.play();
 			onShotFired();
-			ticks = 0;
+			ejTicks = 0;
 		}
 	}
 	
 	@Override
 	public void tick() {
 		super.tick();
-		ticks++;
-		if (ticks == 20 && (!chambered || currentlyReloading)) {
+		ejTicks++;
+		if (ejTicks == 20 && !chambered) {
 			handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),

@@ -17,11 +17,11 @@ public class OverUnder extends Gun {
 		gunName = "Over-Under";
 		ammoLoaded = magSize = 2;
 		ammoExtra = ammoCapacity = 10;
-		damage = 27;
+		damage = 29;
 		spread = 9;
 		xOffset = -3;
 		yOffset = 21;
-		velocity = 15;
+		velocity = 17;
 		knock = 6;
 	}
 	

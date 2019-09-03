@@ -17,11 +17,11 @@ public class Judge extends Gun {
 		gunName = "Judge";
 		ammoLoaded = magSize = 5;
 		ammoExtra = ammoCapacity = 15;
-		damage = 20;
-		spread = 12;
+		damage = 24;
+		spread = 11.5;
 		xOffset = -2;
 		yOffset = 15;
-		velocity = 14;
+		velocity = 15;
 		knock = 4;
 		isSidearm = true;
 	}
@@ -29,7 +29,7 @@ public class Judge extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			for (int i = 0; i < 5; i++) {
+			for (int i = 0; i < 4; i++) {
 				handler.addObjectAsync(new Projectile(this));
 			}
 			onShotFired();

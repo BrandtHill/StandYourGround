@@ -11,6 +11,7 @@ import game.Pieces.Projectile;
 public class Model12 extends Gun {
 
 	private Sound cycleSound;
+	private int ejTicks;
 	
 	public Model12() {
 		super();
@@ -22,12 +23,12 @@ public class Model12 extends Gun {
 		gunName = "Model 12";
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 12;
-		damage = 29;
-		spread = 8;
+		damage = 27;
+		spread = 8.5;
 		xOffset = -3;
 		yOffset = 21;
-		velocity = 16;
-		knock = 5;
+		velocity = 17;
+		knock = 5.5;
 		isFullAuto = true; //Pump-action with slam fire
 	}
 
@@ -38,7 +39,7 @@ public class Model12 extends Gun {
 				handler.addObjectAsync(new Projectile(this));
 			}
 			if (ammoLoaded > 1) cycleSound.play();
-			ticks = 0;
+			ejTicks = 0;
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(0.925f, 0.275f);
 		}
@@ -48,7 +49,8 @@ public class Model12 extends Gun {
 	public void tick() {
 		super.tick();
 		ticks++;
-		if (ticks == 20 && (!chambered || currentlyReloading)) {
+		ejTicks++;
+		if (ejTicks == 20 && !chambered) {
 			handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),

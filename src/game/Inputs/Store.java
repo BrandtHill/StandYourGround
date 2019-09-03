@@ -197,6 +197,7 @@ public class Store extends MouseAdapter {
 	
 	public void render(Graphics g) {
 		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.render(g));
+		Button b;
 		switch (menu) {
 		case BuyGuns:
 			g.setColor(Color.WHITE);
@@ -204,9 +205,9 @@ public class Store extends MouseAdapter {
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
 			g.drawImage(pegboard, 220, 320, 384, 192, null);
-			if (hover != null) {
-				g.drawImage(hover.getGun().getSprite(), 220, 320, 384, 192, null);
-				hover.renderTooltip(g);
+			if ((b = hover) != null) {
+				g.drawImage(b.getGun().getSprite(), 220, 320, 384, 192, null);
+				b.renderTooltip(g);
 			}
 			break;
 		case BuyUpgrades:
@@ -214,7 +215,7 @@ public class Store extends MouseAdapter {
 			g.setFont(new Font("Arial", 1, 24));
 			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
 			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
-			if (hover != null) hover.renderTooltip(g);
+			if ((b = hover) != null) b.renderTooltip(g);
 			break;
 		case SelectPrimary:
 			g.setColor(Color.WHITE);
