@@ -32,8 +32,11 @@ public class AudioPlayer {
 			soundMap.put("ReloadOverUnder", new Sound("./res/ReloadOverUnderSound.ogg"));
 			soundMap.put("ReloadM77", 		new Sound("./res/ReloadM77Sound.ogg"));
 			soundMap.put("ReloadModel57", 	new Sound("./res/ReloadModel57Sound.ogg"));
+			soundMap.put("ReloadModel12", 	new Sound("./res/ReloadModel12Sound.ogg"));
+			soundMap.put("ReloadEmptyModel12", 	new Sound("./res/ReloadEmptyModel12Sound.ogg"));
 			soundMap.put("CycleM77", 		new Sound("./res/CycleM77Sound.ogg"));
 			soundMap.put("CockModel57", 	new Sound("./res/CockModel57Sound.ogg"));
+			soundMap.put("CycleModel12", 	new Sound("./res/CycleModel12Sound.ogg"));
 			soundMap.put("BlipMinor", 		new Sound("./res/BlipMinor.wav"));
 			soundMap.put("BlipMajor", 		new Sound("./res/BlipMajor.wav"));
 		} catch (SlickException e) {

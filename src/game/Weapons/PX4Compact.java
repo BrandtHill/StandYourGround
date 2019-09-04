@@ -22,7 +22,7 @@ public class PX4Compact extends Gun {
 		xOffset = -2;
 		yOffset = 11;
 		velocity = 23;
-		knock = 7;
+		knock = 9;
 		isSidearm = true;
 	}
 

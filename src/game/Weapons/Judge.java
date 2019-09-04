@@ -32,9 +32,9 @@ public class Judge extends Gun {
 			for (int i = 0; i < 4; i++) {
 				handler.addObjectAsync(new Projectile(this));
 			}
+			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(1.3f, 0.25f);
-			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
 		}
 	}
 	

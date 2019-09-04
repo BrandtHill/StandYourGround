@@ -25,10 +25,9 @@ public class MouseInput extends MouseAdapter {
 		if (Program.gameState == STATE.InGame) {
 			if (button == MouseEvent.BUTTON1) {
 				Gun gun = player.getGunWielded();
-				if (gun.isFullAuto()) {
-					gun.resetTickDivier();
-					gun.setShooting(true);
-				} else gun.shoot();
+				gun.setShooting(true);
+				if (gun.isFullAuto()) gun.resetTickDivier();
+				else gun.shoot();
 			}
 		}
 		else if(Program.gameState == STATE.GameOver);

@@ -69,7 +69,7 @@ public abstract class Gun {
 		}
 	}
 	
-	private void reloadFinish() {
+	protected void reloadFinish() {
 		int reloadAmount = magSize - ammoLoaded;
 
 		if (ammoExtra >= reloadAmount) {

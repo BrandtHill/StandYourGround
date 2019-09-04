@@ -11,15 +11,21 @@ import game.Pieces.Projectile;
 public class Model12 extends Gun {
 
 	private Sound cycleSound;
+	private Sound reloadEmptySound;
 	private int ejTicks;
+	private int reloadTimeBase;
+	private int reloadTimeEmpty;
 	
 	public Model12() {
 		super();
 		gunId = GUN.Model12;
-		reloadSound = AudioPlayer.getSound("ReloadM77");
-		cycleSound = AudioPlayer.getSound("CycleM77");
-		reloadTime = 5000;
-		chamberTime = 900;
+		reloadSound = AudioPlayer.getSound("ReloadModel12");
+		reloadEmptySound = AudioPlayer.getSound("ReloadEmptyModel12");
+		cycleSound = AudioPlayer.getSound("CycleModel12");
+		reloadTimeBase = 750;
+		reloadTimeEmpty = 1250;
+		reloadTime = reloadTimeBase;
+		chamberTime = 600;
 		gunName = "Model 12";
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 12;
@@ -38,13 +44,38 @@ public class Model12 extends Gun {
 			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
 				handler.addObjectAsync(new Projectile(this));
 			}
-			if (ammoLoaded > 1) cycleSound.play();
+			if (ammoLoaded > 1) cycleSound.play(1f, 0.80f);
 			ejTicks = 0;
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(0.925f, 0.275f);
 		}
 	}
 
+	@Override
+	public void reload() {
+		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+			if (ammoLoaded > 0) {
+				reloadSound.play(1f, 1f);
+				reloadTime = reloadTimeBase;
+			}
+			else {
+				reloadEmptySound.play(1f, 1f);
+				reloadTime = reloadTimeEmpty;
+			}
+			currentlyReloading = true;
+		}
+	}
+	
+	@Override
+	protected void reloadFinish() {
+		ammoExtra--;
+		ammoLoaded++;
+		
+		currentlyReloading = false;
+		reloadTicks = 0;
+		if (!shooting) reload();
+	}
+	
 	@Override
 	public void tick() {
 		super.tick();

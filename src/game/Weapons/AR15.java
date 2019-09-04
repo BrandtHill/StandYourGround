@@ -15,12 +15,12 @@ public class AR15 extends Gun {
 		gunName = "AR-15";
 		ammoLoaded = magSize = 30;
 		ammoExtra = ammoCapacity = 30;
-		damage = 35;
+		damage = 38;
 		spread = 2;
 		xOffset = -3;
 		yOffset = 19;
 		velocity = 30;
-		knock = 17.5;
+		knock = 12;
 	}
 	
 	@Override
@@ -46,6 +46,11 @@ public class AR15 extends Gun {
 			shoot();
 		}
 		ticks++;
+	}
+	
+	@Override
+	public int getHits() {
+		return r.nextDouble() > 0.833 ? 2 : 1;
 	}
 
 	@Override
