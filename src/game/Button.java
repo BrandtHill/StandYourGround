@@ -13,8 +13,10 @@ import game.Weapons.Gun;
 
 public class Button {
 
-	private static Color COLOR_NOT_CLICKABLE = new Color(160, 160, 240);
-	private static Color COLOR_EQUIPPED = new Color(131, 53, 214);
+	private static Color COLOR_LIGHT_PURPLE = new Color(160, 160, 240);
+	private static Color COLOR_DEEP_PURPLE = new Color(96, 64, 112);
+	private static Color COLOR_RED_GRAY = new Color(120, 100, 100);
+	private static Color COLOR_FADED_GREEN = new Color(80, 192, 128);
 	private int x, y, w, h;
 	private int amount;
 	private String line1, line2, line3, tooltip;
@@ -36,7 +38,7 @@ public class Button {
 		this.line3 = line3;
 		this.tooltip = tooltip;
 		this.gun = player.getGun(line2);
-		this.updateColor();
+		this.update();
 		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Ariel", 1, 12);
 	}
@@ -57,10 +59,10 @@ public class Button {
 
 	public boolean isClickable() {return clickable;}
 
-	public void updateColor() {
+	public void update() {
 		if (Store.menu == Menu.BuyGuns) {
 			this.clickable = active && !gun.isOwned();
-			this.mainColor = gun.isOwned() ? Color.GRAY : Color.WHITE;
+			this.mainColor = gun.isOwned() ? COLOR_RED_GRAY : Color.WHITE;
 		} else if(Store.menu == Menu.BuyUpgrades) {
 			this.clickable = active && gun.isOwned() 
 					&&(line1.contains("Increase Ammo")
@@ -72,16 +74,18 @@ public class Button {
 			this.mainColor = gun.isOwned() ?
 							(isClickable() ?
 								  Color.WHITE
-								: COLOR_NOT_CLICKABLE)
+								: COLOR_RED_GRAY)
 								: Color.GRAY;
 		} else {
-			this.clickable = active && gun.isOwned() && !gun.isLockedIn();
+			this.clickable = active && gun.isOwned() && !gun.isLockedIn() && !gun.isWielded();							
 			this.mainColor = gun.isOwned() ?
-							(gun.isEquipped() ? 
 							(gun.isLockedIn() ?
-								  COLOR_EQUIPPED
-								: COLOR_NOT_CLICKABLE)
-								: Color.WHITE) 
+								  COLOR_RED_GRAY :
+							(gun.isEquipped() ?
+							(gun.isWielded() ?
+								  COLOR_DEEP_PURPLE 
+								: COLOR_LIGHT_PURPLE)
+								: Color.WHITE))
 								: Color.GRAY;
 		}
 	}
@@ -90,6 +94,9 @@ public class Button {
 	public int getAmount() {return this.amount;}
 	public int getPrice() {return (!line3.isEmpty()) ? Integer.parseInt(line3.substring(1)) : 0;}
 	public boolean isActive() {return active;}
+	public boolean isMainColor() {return this.displayColor == this.mainColor;}
+	public void updateDisplay() {displayColor = mainColor;}
+	public void updateHoverDisplay() {displayColor = clickable ? COLOR_FADED_GREEN : mainColor;}
 	
 	public boolean inBounds(Point p) {
 		return p.getX() > x && p.getX() < (x + w) && p.getY() > y && p.getY() < (y + h);

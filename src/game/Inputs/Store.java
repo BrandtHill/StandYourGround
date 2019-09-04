@@ -62,20 +62,25 @@ public class Store extends MouseAdapter {
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
+				player.switchToSidearm();
 				break;
 			case SelectPrimary:
 				player.equipPrimary(b.getGun());
+				player.switchToPrimary();
 				break;
 			case SelectSecondary:
 				player.equipSecondary(b.getGun());
+				player.switchToSecondary();
 				break;
 			default:
 				break;
 			}
 			
-			Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.updateColor());
+			Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.update());
 			
 			player.setMoneyAtRoundStart(player.getMoney());
+			
+			mouseMoved(e);
 		}
 	}
 
@@ -87,14 +92,17 @@ public class Store extends MouseAdapter {
 			break;
 		case BuyUpgrades: 
 			menu = Menu.SelectSidearm;
+			player.switchToSidearm();
 			break;
 		case SelectSidearm: 
 			menu = Menu.SelectPrimary;
 			if (player.getGunSidearm() != null) player.getGunSidearm().lockIn();
+			player.switchToPrimary();
 			break;
 		case SelectPrimary: 
 			menu = Menu.SelectSecondary;
 			if (player.getGunPrimary() != null) player.getGunPrimary().lockIn();
+			player.switchToSecondary();
 			break;
 		case SelectSecondary: 
 			menu = Menu.Final;
@@ -121,14 +129,17 @@ public class Store extends MouseAdapter {
 		case SelectPrimary: 
 			menu = Menu.SelectSidearm;
 			if (player.getGunSidearm() != null) player.getGunSidearm().unLock();
+			player.switchToSidearm();
 			break;
 		case SelectSecondary: 
 			menu = Menu.SelectPrimary;
 			if (player.getGunPrimary() != null) player.getGunPrimary().unLock();
+			player.switchToPrimary();
 			break;
 		case Final:
 			menu = Menu.SelectSecondary;
 			if (player.getGunSecondary() != null) player.getGunSecondary().unLock();
+			player.switchToSecondary();
 		default:
 			break;		
 		}
@@ -184,7 +195,7 @@ public class Store extends MouseAdapter {
 			break;
 		}
 		
-		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.updateColor());
+		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.update());
 	}
 	
 	private void buttonHelper(int i, boolean active, String l1, String l2, String l3, String tooltip, int amt) {
@@ -310,22 +321,22 @@ public class Store extends MouseAdapter {
 	
 	public void mouseMoved(MouseEvent e) {	
 		if (Program.gameState == STATE.StoreMenu) {
-			Arrays.stream(buttons)
-			.filter(b -> b != null)
-			.filter(b -> b != hover)
-			.filter(b -> b.isActive())
-			.forEach(b -> b.displayColor = b.mainColor);
-			
 			hover = Arrays.stream(buttons)
 			.filter(b -> b != null)
 			.filter(b -> b.inBounds(e.getPoint()))
 			.findFirst()
 			.orElse(null);
 			
-			if (hover != null && hover.isClickable()) {
-				if (hover.displayColor == hover.mainColor) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
-				hover.displayColor = Color.GREEN;
-			}
+			Arrays.stream(buttons)
+			.filter(b -> b != null)
+			.filter(b -> b != hover)
+			.filter(b -> b.isActive())
+			.forEach(b -> b.updateDisplay());
+			
+			if (hover == null || !hover.isActive()) return;
+			
+			if (hover.isClickable() && hover.isMainColor()) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+			hover.updateHoverDisplay();
 		}
 	}
 	

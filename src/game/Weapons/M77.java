@@ -72,9 +72,9 @@ public class M77 extends Gun {
 
 	@Override
 	public void reload() {
-		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			reloadSound.play(1f, 1f);
-			currentlyReloading = true;
+			reloading = true;
 			ticks = 20;
 		}
 	}

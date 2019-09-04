@@ -53,7 +53,7 @@ public class Model12 extends Gun {
 
 	@Override
 	public void reload() {
-		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			if (ammoLoaded > 0) {
 				reloadSound.play(1f, 1f);
 				reloadTime = reloadTimeBase;
@@ -62,7 +62,7 @@ public class Model12 extends Gun {
 				reloadEmptySound.play(1f, 1f);
 				reloadTime = reloadTimeEmpty;
 			}
-			currentlyReloading = true;
+			reloading = true;
 		}
 	}
 	
@@ -71,7 +71,7 @@ public class Model12 extends Gun {
 		ammoExtra--;
 		ammoLoaded++;
 		
-		currentlyReloading = false;
+		reloading = false;
 		reloadTicks = 0;
 		if (!shooting) reload();
 	}
@@ -91,7 +91,15 @@ public class Model12 extends Gun {
 				player.getAngle() - Math.PI / 1.8,
 				Color.RED));
 		}
-		if (shooting) shoot();
+		if (shooting) {
+			if (reloading && ammoLoaded > 0) {
+				if (reloadSound.playing()) reloadSound.stop();
+				if (reloadEmptySound.playing()) reloadEmptySound.stop();
+				reloading = false;
+				chamberTicks = reloadTicks = 0;
+			}
+			shoot();
+		}
 	}
 	
 	@Override

@@ -169,7 +169,7 @@ public class Player extends GameObject{
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
 	public int getLevel() {return level;}
-	public boolean isReloading() {return gunWielded != null &&gunWielded.isReloading();}
+	public boolean isReloading() {return gunWielded != null && gunWielded.isReloading();}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
 	public void setGunSecondary(Gun g) {this.gunSecondary = g;}

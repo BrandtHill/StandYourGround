@@ -23,7 +23,7 @@ public abstract class Gun {
 	protected int xOffset, yOffset; //From center of player
 	protected int ammoLoaded, ammoCapacity, ammoExtra, magSize, hits;
 	protected boolean owned, lockedIn, isSidearm, specialRounds, isMagIncreased;
-	protected boolean currentlyReloading, isFullAuto, shooting, chambered;
+	protected boolean reloading, isFullAuto, shooting, chambered;
 	protected long reloadTime, chamberTime;
 	protected String gunName;
 	protected static Player player;
@@ -63,9 +63,9 @@ public abstract class Gun {
 	public abstract void makeRoundSpecial(Projectile p);
 	
 	public void reload() {
-		if (!currentlyReloading && ammoExtra > 0 && ammoLoaded < magSize) {
+		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			reloadSound.play(1f, 1f);
-			currentlyReloading = true;
+			reloading = true;
 		}
 	}
 	
@@ -80,7 +80,7 @@ public abstract class Gun {
 			ammoExtra = 0;
 		}
 		
-		currentlyReloading = false;
+		reloading = false;
 		reloadTicks = 0;
 	}
 	
@@ -93,7 +93,7 @@ public abstract class Gun {
 		reloadIfNeeded();
 		
 		if (!chambered)	chamberTicks++;
-		if (currentlyReloading) reloadTicks++;
+		if (reloading) reloadTicks++;
 		if (chamberTicks > ticksForChamber()) chamberFinish();
 		if (reloadTicks > ticksForReload()) reloadFinish();
 	}
@@ -101,7 +101,7 @@ public abstract class Gun {
 	public void resetAmmo() {
 		ammoLoaded = magSize;
 		ammoExtra = ammoCapacity;
-		shooting = currentlyReloading = false;
+		shooting = reloading = false;
 		chambered = true;
 		chamberTicks = reloadTicks = ticks = 0;
 		if (reloadSound.playing()) reloadSound.stop();
@@ -109,7 +109,7 @@ public abstract class Gun {
 	
 	public void onSwapFrom() {
 		if (reloadSound.playing()) reloadSound.stop();
-		currentlyReloading = false;
+		reloading = false;
 		chamberTicks = reloadTicks = 0;
 	}
 	
@@ -157,7 +157,8 @@ public abstract class Gun {
 	public boolean isSidearm() {return isSidearm;}
 	public boolean isSpecialRounds() {return specialRounds;}
 	public boolean isMagIncreased() {return isMagIncreased;}
-	public boolean isReloading() {return currentlyReloading;}
+	public boolean isReloading() {return reloading;}
+	public boolean isWielded() {return this == player.getGunWielded();}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 	public BufferedImage getSprite() {return gunSprite;}
@@ -185,7 +186,7 @@ public abstract class Gun {
 	public void unequip() {player.unequip(this);}
 	
 	protected boolean canShoot() {
-		return ammoLoaded > 0 && !currentlyReloading && chambered;
+		return ammoLoaded > 0 && !reloading && chambered;
 	}
 	
 	protected void reloadIfNeeded() {
