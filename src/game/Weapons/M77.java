@@ -22,7 +22,7 @@ public class M77 extends Gun {
 		chamberTime = 1050;
 		gunName = "M77";
 		ammoLoaded = magSize = 3;
-		ammoExtra = ammoCapacity = 15;
+		ammoExtra = ammoCapacity = 9;
 		damage = 110;
 		spread = 0;
 		xOffset = -3;

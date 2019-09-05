@@ -60,23 +60,26 @@ public class Button {
 	public boolean isClickable() {return clickable;}
 
 	public void update() {
-		if (Store.menu == Menu.BuyGuns) {
+		switch (Store.menu) {
+		case BuyGuns:
 			this.clickable = active && !gun.isOwned();
 			this.mainColor = gun.isOwned() ? COLOR_RED_GRAY : Color.WHITE;
-		} else if(Store.menu == Menu.BuyUpgrades) {
+			break;
+
+		case BuyAmmo:
+		case BuyUpgrades:
 			this.clickable = active && gun.isOwned() 
 					&&(line1.contains("Increase Ammo")
-					|| line1.contains("Hollow") && !gun.isSpecialRounds()
-					|| line1.contains("Loads") && !gun.isSpecialRounds()
-					|| line1.contains("Buck") && !gun.isSpecialRounds()
+					|| line1.matches(".*(Hollow|Loads|Buck).*") && !gun.isSpecialRounds()
 					|| line1.contains("Auto") && !gun.isFullAuto()
 					|| line1.contains("Mag Size") && !gun.isMagIncreased());
 			this.mainColor = gun.isOwned() ?
-							(isClickable() ?
+					   		(isClickable() ?
 								  Color.WHITE
 								: COLOR_RED_GRAY)
 								: Color.GRAY;
-		} else {
+			break;
+		default:
 			this.clickable = active && gun.isOwned() && !gun.isLockedIn() && !gun.isWielded();							
 			this.mainColor = gun.isOwned() ?
 							(gun.isLockedIn() ?
@@ -86,7 +89,8 @@ public class Button {
 								  COLOR_DEEP_PURPLE 
 								: COLOR_LIGHT_PURPLE)
 								: Color.WHITE))
-								: Color.GRAY;
+								: Color.GRAY;			
+			break;
 		}
 	}
 	

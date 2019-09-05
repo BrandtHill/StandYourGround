@@ -28,7 +28,7 @@ public class Model12 extends Gun {
 		chamberTime = 550;
 		gunName = "Model 12";
 		ammoLoaded = magSize = 6;
-		ammoExtra = ammoCapacity = 12;
+		ammoExtra = ammoCapacity = 6;
 		damage = 27;
 		spread = 8.5;
 		xOffset = -3;

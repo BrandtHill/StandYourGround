@@ -116,7 +116,7 @@ public class Program extends Canvas implements Runnable {
 		long lastTime = System.nanoTime();
 		long currTime = System.nanoTime();
         double ticksPerSec = 60.0;
-        double nsPerTick = 1000000000 / ticksPerSec;
+        double nsPerTick = 1_000_000_000 / ticksPerSec;
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
@@ -160,7 +160,7 @@ public class Program extends Canvas implements Runnable {
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("YOU DIED", 250, 200);
+			g.drawString("YOU DIED", 300, 200);
 			g.setFont(new Font("Arial", 1, 28));
 			g.drawString("R: RETRY FROM AUTOSAVE", 150, 400);
 			g.drawString("N: NEW GAME", 150, 450);
@@ -183,9 +183,9 @@ public class Program extends Canvas implements Runnable {
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
 			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("GAME PAUSED", 200, 200);
+			g.drawString("GAME PAUSED", 210, 200);
 			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS 'ESC' TO RESUME", 160, 400);
+			g.drawString("PRESS 'ESC' TO RESUME", 170, 400);
 			reticle.render(g);
 			break;
 			

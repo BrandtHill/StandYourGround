@@ -16,7 +16,7 @@ public class OverUnder extends Gun {
 		chamberTime = 250;
 		gunName = "Over-Under";
 		ammoLoaded = magSize = 2;
-		ammoExtra = ammoCapacity = 10;
+		ammoExtra = ammoCapacity = 6;
 		damage = 29;
 		spread = 9;
 		xOffset = -3;

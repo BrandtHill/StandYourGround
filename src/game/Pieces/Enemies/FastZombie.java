@@ -7,7 +7,7 @@ public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y, double speed, double health) {
 		super(x, y, speed, health);
-		this.moneyValue = 30;
+		this.moneyValue = 27;
 		this.zombieSprites = Zombie.spriteSheets[2];
 		this.maxAngleChangeDegrees = 3;
 	}

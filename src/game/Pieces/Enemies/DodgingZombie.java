@@ -12,7 +12,7 @@ public class DodgingZombie extends Zombie {
 		this.zombieSprites = Zombie.spriteSheets[1];
 		this.maxTicksInSight = r.nextInt(60) + 20;
 		this.ticksInSight = 0;
-		this.moneyValue = 27;
+		this.moneyValue = 23;
 		this.maxAngleChangeDegrees = 10;
 	}
 

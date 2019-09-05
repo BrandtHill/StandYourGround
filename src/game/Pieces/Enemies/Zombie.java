@@ -42,7 +42,7 @@ public class Zombie extends GameObject {
 		
 		xPlayer = yPlayer = xBias = yBias = angle = 0;
 		ticks = 0;
-		moneyValue = 21;
+		moneyValue = 19;
 		maxAngleChangeDegrees = 5;
 	}
 

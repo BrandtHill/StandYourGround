@@ -14,7 +14,7 @@ public class Titan extends Gun {
 		chamberTime = 50;
 		gunName = "Titan";
 		ammoLoaded = magSize = 7;
-		ammoExtra = ammoCapacity = 56;
+		ammoExtra = ammoCapacity = 42;
 		damage = 22;
 		spread = 7;
 		xOffset = -2;

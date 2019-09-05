@@ -16,7 +16,7 @@ public class PX4Compact extends Gun {
 		chamberTime = 50;
 		gunName = "PX4 Compact";
 		ammoLoaded = magSize = 15;
-		ammoExtra = ammoCapacity = 30;
+		ammoExtra = ammoCapacity = 15;
 		damage = 31;
 		spread = 6;
 		xOffset = -2;

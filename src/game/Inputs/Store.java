@@ -7,6 +7,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.text.MessageFormat;
 import java.util.Arrays;
 
 import javax.imageio.ImageIO;
@@ -31,6 +32,7 @@ public class Store extends MouseAdapter {
 	public static enum Menu{
 		Other,
 		BuyGuns,
+		BuyAmmo,
 		BuyUpgrades,
 		SelectSidearm,
 		SelectPrimary,
@@ -52,13 +54,13 @@ public class Store extends MouseAdapter {
 			case BuyGuns:
 				buyGun(b.getGun(), b.getPrice());
 				break;
+			case BuyAmmo:
+				upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
+				break;
 			case BuyUpgrades:
-				if (b.getFirstLine().contains("Ammo")) 		upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
-				if (b.getFirstLine().contains("Mag")) 		upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
-				if (b.getFirstLine().contains("Hollow"))	upgradeRounds(b.getGun(), b.getPrice());
-				if (b.getFirstLine().contains("Loads")) 	upgradeRounds(b.getGun(), b.getPrice());
-				if (b.getFirstLine().contains("Buck"))		upgradeRounds(b.getGun(), b.getPrice());
-				if (b.getFirstLine().contains("Auto")) 		upgradeFireMode(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Mag")) 					upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
+				if (b.getFirstLine().matches(".*(Hollow|Loads|Buck).*"))upgradeRounds(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Auto")) 					upgradeFireMode(b.getGun(), b.getPrice());
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
@@ -87,8 +89,11 @@ public class Store extends MouseAdapter {
 	public void nextMenu() {
 		switch (menu) {
 		case BuyGuns: 
-			menu = Menu.BuyUpgrades;
+			menu = Menu.BuyAmmo;
 			player.autoEquip();
+			break;
+		case BuyAmmo: 
+			menu = Menu.BuyUpgrades;
 			break;
 		case BuyUpgrades: 
 			menu = Menu.SelectSidearm;
@@ -120,8 +125,11 @@ public class Store extends MouseAdapter {
 	
 	public void prevMenu() {
 		switch (menu) {
-		case BuyUpgrades: 
+		case BuyAmmo: 
 			menu = Menu.BuyGuns;
+			break;
+		case BuyUpgrades: 
+			menu = Menu.BuyAmmo;
 			break;
 		case SelectSidearm: 
 			menu = Menu.BuyUpgrades;
@@ -152,24 +160,26 @@ public class Store extends MouseAdapter {
 		
 		switch (menu) {
 		case BuyGuns:
-			buttonHelper(i++, true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
-			buttonHelper(i++, true, "Buy", "M77", "$750", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
-			buttonHelper(i++, true, "Buy", "Model 12", "$625", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
-			buttonHelper(i++, true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
-			buttonHelper(i++, true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");			
-			buttonHelper(i++, true, "Buy", "PX4 Compact", "$425", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
-			buttonHelper(i++, true, "Buy", "Judge", "$375", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
+			buttonHelper(i++, true, "Buy", "AR-15", "$1100", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
+			buttonHelper(i++, true, "Buy", "M77", "$800", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
+			buttonHelper(i++, true, "Buy", "Model 12", "$750", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
+			buttonHelper(i++, true, "Buy", "Over-Under", "$575", "Double-Barreled Shotgun_12 Gauge, 2rd");
+			buttonHelper(i++, true, "Buy", "Model 57", "$525", "S&W Magnum Revolver_.41 Magnum, 6rd");			
+			buttonHelper(i++, true, "Buy", "PX4 Compact", "$450", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
+			buttonHelper(i++, true, "Buy", "Judge", "$350", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
 			buttonHelper(i++, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
-		case BuyUpgrades:
-			buttonHelper(i++, true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
+		case BuyAmmo:
+			buttonHelper(i++, true, "Increase Ammo", "AR-15", "$475", "30 more rounds", 30);
 			buttonHelper(i++, true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
 			buttonHelper(i++, true, "Increase Ammo", "Model 12", "$200", "6 more shells", 6);
-			buttonHelper(i++, true, "Increase Ammo", "Over-Under", "$200", "6 more shells", 8);
+			buttonHelper(i++, true, "Increase Ammo", "Over-Under", "$200", "6 more shells", 6);
 			buttonHelper(i++, true, "Increase Ammo", "Model 57", "$250", "12 more rounds", 12);
 			buttonHelper(i++, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
 			buttonHelper(i++, true, "Increase Ammo", "Judge", "$200", "10 more shells", 10);
-			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
+			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
+			break;
+		case BuyUpgrades:
 			buttonHelper(i++, true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
 			buttonHelper(i++, true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
@@ -213,44 +223,38 @@ public class Store extends MouseAdapter {
 		Button b;
 		switch (menu) {
 		case BuyGuns:
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			drawComponents(g, true, false, true, null);
+			if ((b = hover) != null) b.renderTooltip(g);
 			g.drawImage(pegboard, 220, 320, 384, 192, null);
 			if ((b = hover) != null) {
 				g.drawImage(b.getGun().getSprite(), 220, 320, 384, 192, null);
 				b.renderTooltip(g);
 			}
 			break;
+		case BuyAmmo:
+			drawComponents(g, true, true, true, null);
+			if ((b = hover) != null) {
+				b.renderTooltip(g);
+				g.setFont(new Font("Arial", 1, 24));
+				g.drawString(MessageFormat.format("{0} : {1} (+ {2})", b.getGun().getName(), b.getGun().getMagSize(), b.getGun().getAmmoCapacity()), 300, 450);
+			}
+			break;
 		case BuyUpgrades:
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("MONEY: $" + player.getMoney(), 340, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			drawComponents(g, true, true, true, null);
 			if ((b = hover) != null) b.renderTooltip(g);
 			break;
 		case SelectPrimary:
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("SELECT PRIMARY", 280, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			drawComponents(g, false, true, true, "SELECT PRIMARY");
 			player.renderPreview(g, player.getGunPrimary());
 			drawEquipped(g);
 			break;
 		case SelectSidearm:
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("SELECT SIDEARM", 280, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			drawComponents(g, false, true, true, "SELECT SIDEARM");
 			player.renderPreview(g, player.getGunSidearm());
 			drawEquipped(g);
 			break;
 		case SelectSecondary:
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("SELECT SECONDARY", 280, 50);
-			g.drawString("PRESS SPACE TO CONTINUE", 210, 550);
+			drawComponents(g, false, true, true, "SELECT SECONDARY");
 			player.renderPreview(g, player.getGunSecondary());
 			drawEquipped(g);
 			break;
@@ -266,6 +270,19 @@ public class Store extends MouseAdapter {
 		default:
 			break;
 		}	
+	}
+	
+	private void drawComponents(Graphics g, boolean doMoney, boolean doBack, boolean doForward, String header) {
+		g.setColor(Color.WHITE);
+		g.setFont(new Font("Arial", 1, 24));
+		if (doMoney) g.drawString("MONEY: $" + player.getMoney(), 340, 50);
+		if (header != null) g.drawString(header, 280, 50);
+		g.setFont(new Font("Arial", 1, 12));
+		if (doBack) g.drawString("BACKSPACE", 100, 543);
+		if (doForward) g.drawString("SPACE", 663, 543);
+		g.setFont(new Font("Arial", 1, 48));
+		if (doBack) g.drawString("←", 40, 550);
+		if (doForward) g.drawString("→", 715, 550);
 	}
 	
 	private void drawEquipped(Graphics g) {

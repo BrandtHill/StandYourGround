@@ -16,7 +16,7 @@ public class Judge extends Gun {
 		chamberTime = 250;
 		gunName = "Judge";
 		ammoLoaded = magSize = 5;
-		ammoExtra = ammoCapacity = 15;
+		ammoExtra = ammoCapacity = 10;
 		damage = 24;
 		spread = 11.5;
 		xOffset = -2;
