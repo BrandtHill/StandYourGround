@@ -1,5 +1,7 @@
 package game.Weapons;
 
+import java.awt.Color;
+
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -53,6 +55,10 @@ public class Model57 extends Gun {
 
 	@Override
 	public void makeRoundSpecial(Projectile p) {
+		p.color = new Color(243, 144, 0);
+		p.damage *= 1.50;
+		p.knockBack *= 1.10;
+		p.magnitude *= 1.10;
+		p.hits += r.nextInt(2);
 	}
-
 }

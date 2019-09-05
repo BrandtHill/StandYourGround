@@ -14,6 +14,7 @@ import java.util.List;
 import game.Pieces.Player;
 import game.Program.STATE;
 import game.Weapons.Gun;
+import game.Weapons.Gun.GUN;
 
 public class SaveData implements Serializable {
 
@@ -26,6 +27,7 @@ public class SaveData implements Serializable {
 
 	class GunBean implements Serializable {
 		private static final long serialVersionUID = -7906334672407292428L;
+		GUN Id;
 		int MagSize;
 		int AmmoCap;
 		boolean GunOwned;
@@ -49,9 +51,11 @@ public class SaveData implements Serializable {
 			money = player.getMoney();
 			moneyAtRoundStart = player.getMoneyAtRoundStart();
 			level = player.getLevel();
+			gunBeans.clear();
 			for (int i = 0; i < arsenal.size(); i++) {
 				Gun g = arsenal.get(i);
 				GunBean b = new GunBean();
+				b.Id = g.getId();
 				b.MagSize = g.getMagSize();
 				b.AmmoCap = g.getAmmoCapacity();
 				b.GunOwned = g.isOwned();
@@ -87,14 +91,12 @@ public class SaveData implements Serializable {
 	}
 	
 	public void setPlayerAfterLoad(Player player) {
-		List<Gun> arsenal = player.getArsenal();
 		player.setMoney(moneyAtRoundStart);
 		player.setMoneyAtRoundStart(moneyAtRoundStart);
 		player.setLevel(level);
 		Program.spawnSys.setLevel(level);
-		for (int i = 0; i < arsenal.size(); i++) {
-			Gun g = arsenal.get(i);
-			GunBean b = gunBeans.get(i);
+		for (GunBean b : gunBeans) {
+			Gun g = player.getGun(b.Id);
 			g.setMagSize(b.MagSize);
 			g.setAmmoCapacity(b.AmmoCap);
 			g.setOwned(b.GunOwned);

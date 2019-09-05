@@ -148,46 +148,48 @@ public class Store extends MouseAdapter {
 	
 	public void onMenuUpdate() {
 		Arrays.fill(buttons, null);
+		int i = 0;
 		
 		switch (menu) {
 		case BuyGuns:
-			buttonHelper(0, true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
-			buttonHelper(1, true, "Buy", "M77", "$750", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
-			buttonHelper(2, true, "Buy", "Model 12", "$625", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
-			buttonHelper(3, true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
-			buttonHelper(4, true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");
-			buttonHelper(5, true, "Buy", "Judge", "$475", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
-			buttonHelper(6, true, "Buy", "PX4 Compact", "$350", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
-			buttonHelper(7, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
+			buttonHelper(i++, true, "Buy", "AR-15", "$925", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
+			buttonHelper(i++, true, "Buy", "M77", "$750", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
+			buttonHelper(i++, true, "Buy", "Model 12", "$625", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
+			buttonHelper(i++, true, "Buy", "Over-Under", "$525", "Double-Barreled Shotgun_12 Gauge, 2rd");
+			buttonHelper(i++, true, "Buy", "Model 57", "$475", "S&W Magnum Revolver_.41 Magnum, 6rd");			
+			buttonHelper(i++, true, "Buy", "PX4 Compact", "$425", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
+			buttonHelper(i++, true, "Buy", "Judge", "$375", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
+			buttonHelper(i++, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyUpgrades:
-			buttonHelper(0, true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
-			buttonHelper(1, true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
-			buttonHelper(2, true, "Increase Ammo", "Model 12", "$200", "6 more shells", 6);
-			buttonHelper(3, true, "Increase Ammo", "Over-Under", "$250", "8 more shells", 8);
-			buttonHelper(4, true, "Increase Ammo", "Model 57", "$200", "12 more rounds", 12);
-			buttonHelper(5, true, "Increase Ammo", "Judge", "$200", "12 more rounds", 12);
-			buttonHelper(6, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
-			buttonHelper(7, true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
-			buttonHelper(8, true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
-			buttonHelper(9, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
-			buttonHelper(10,true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
-			buttonHelper(11,true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
-			buttonHelper(12,true, "000 Buckshot", "Over-Under", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
-			buttonHelper(13,true, "000 Buckshot", "Model 12", "$525", "Triple-Ought Buckshot -_Six heavy shot per shell");
+			buttonHelper(i++, true, "Increase Ammo", "AR-15", "$375", "30 more rounds", 30);
+			buttonHelper(i++, true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
+			buttonHelper(i++, true, "Increase Ammo", "Model 12", "$200", "6 more shells", 6);
+			buttonHelper(i++, true, "Increase Ammo", "Over-Under", "$200", "6 more shells", 8);
+			buttonHelper(i++, true, "Increase Ammo", "Model 57", "$250", "12 more rounds", 12);
+			buttonHelper(i++, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
+			buttonHelper(i++, true, "Increase Ammo", "Judge", "$200", "10 more shells", 10);
+			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "14 more rounds", 14);
+			buttonHelper(i++, true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
+			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
+			buttonHelper(i++, true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
+			buttonHelper(i++, true, "Bear Loads", "Model 57", "$450", "Powerful rounds suitable_for stopping bears");
+			buttonHelper(i++, true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
+			buttonHelper(i++, true, "000 Buckshot", "Over-Under", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
+			buttonHelper(i++, true, "000 Buckshot", "Model 12", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			break;
 		case SelectPrimary:
-			for (int i = 0; i < Player.NUMGUNS; i++) {
+			for (i = 0; i < Player.NUMGUNS; i++) {
 				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSecondary:
-			for (int i = 0; i < Player.NUMGUNS; i++) {
+			for (i = 0; i < Player.NUMGUNS; i++) {
 				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			}
 			break;
 		case SelectSidearm:
-			for (int i = 0; i < Player.NUMGUNS; i++) {
+			for (i = 0; i < Player.NUMGUNS; i++) {
 				buttonHelper(i, player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
 			}
 			break;

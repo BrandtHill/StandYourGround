@@ -43,8 +43,6 @@ public class Reticle extends GameObject {
 	
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-		//g2d.setColor(Color.WHITE);
-		//g2d.drawPolyline(xLine, yLine, 5);
 		if (player.isReloading()) {
 			g2d.drawImage(spriteSheet[spriteIndex%8], (int)xDisplay - 10, (int)yDisplay - 10, 21, 21, null);
 		} else {

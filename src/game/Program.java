@@ -156,7 +156,6 @@ public class Program extends Canvas implements Runnable {
 		
 		switch (gameState) {
 		case GameOver:
-			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(30,60,30));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -180,7 +179,6 @@ public class Program extends Canvas implements Runnable {
 			break;
 			
 		case PauseMenu:
-			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(115,48,168));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -192,7 +190,6 @@ public class Program extends Canvas implements Runnable {
 			break;
 			
 		case StartMenu:
-			g.fillRect(0, 0, WIDTH, HEIGHT);
 			g.setColor(new Color(150,48,30));
 			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
 			g.setColor(Color.WHITE);
@@ -204,7 +201,6 @@ public class Program extends Canvas implements Runnable {
 			break;
 			
 		case StoreMenu:
-			g.fillRect(0, 0, WIDTH, HEIGHT);
 			store.render(g);
 			reticle.render(g);
 			break;

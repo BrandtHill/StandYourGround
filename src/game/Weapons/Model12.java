@@ -22,10 +22,10 @@ public class Model12 extends Gun {
 		reloadSound = AudioPlayer.getSound("ReloadModel12");
 		reloadEmptySound = AudioPlayer.getSound("ReloadEmptyModel12");
 		cycleSound = AudioPlayer.getSound("CycleModel12");
-		reloadTimeBase = 750;
+		reloadTimeBase = 900;
 		reloadTimeEmpty = 1250;
 		reloadTime = reloadTimeBase;
-		chamberTime = 600;
+		chamberTime = 550;
 		gunName = "Model 12";
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 12;
@@ -44,7 +44,7 @@ public class Model12 extends Gun {
 			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
 				handler.addObjectAsync(new Projectile(this));
 			}
-			if (ammoLoaded > 1) cycleSound.play(1f, 0.80f);
+			if (ammoLoaded > 1) cycleSound.play(1f, 0.60f);
 			ejTicks = 0;
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(0.925f, 0.275f);

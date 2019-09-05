@@ -42,7 +42,7 @@ public class AR15 extends Gun {
 	@Override
 	public void tick() {
 		super.tick();
-		if ((ticks % 4) == 0 && shooting) {
+		if ((ticks % 4) == 0 && shooting && isFullAuto) {
 			shoot();
 		}
 		ticks++;

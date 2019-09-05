@@ -64,8 +64,8 @@ public class Player extends GameObject{
 		arsenal.add(new Model12());
 		arsenal.add(new OverUnder());
 		arsenal.add(new Model57());
-		arsenal.add(new Judge());
 		arsenal.add(new PX4Compact());
+		arsenal.add(new Judge());
 		arsenal.add(new Titan());
 		arsenal.stream().forEach(g -> {
 			arsenalStringMap.put(g.getName(), g);
@@ -76,7 +76,8 @@ public class Player extends GameObject{
 		gunWielded = gunSidearm;
 		ticks = 0;
 		spriteNum = 0;
-		money = 10000;//0;
+		//money = 10000; //For debugging
+		money = 0;
 		moneyAtRoundStart = 0;
 		speed = 2;
 		level = 1;
