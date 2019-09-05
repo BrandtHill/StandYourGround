@@ -20,10 +20,12 @@ import game.Pieces.Projectile;
 public abstract class Gun {
 	protected double damage, spread;
 	protected double velocity, knock;
+	protected double reloadFactor;
 	protected int xOffset, yOffset; //From center of player
 	protected int ammoLoaded, ammoCapacity, ammoExtra, magSize, hits;
-	protected boolean owned, lockedIn, isSidearm, specialRounds, isMagIncreased;
-	protected boolean reloading, isFullAuto, shooting, chambered;
+	protected boolean owned, lockedIn, isSidearm;
+	protected boolean reloading, shooting, chambered;
+	protected boolean isFullAuto, specialRounds, isMagIncreased, isReloadImproved;
 	protected long reloadTime, chamberTime;
 	protected String gunName;
 	protected static Player player;
@@ -50,6 +52,7 @@ public abstract class Gun {
 	public Gun() {
 		r = new Random();
 		hits = 1;
+		reloadFactor = 1.0;
 		gunSprite = gunSheet.getSubimage(
 				0,
 				512 * Player.getGunSpriteNum(this),
@@ -158,6 +161,7 @@ public abstract class Gun {
 	public boolean isSpecialRounds() {return specialRounds;}
 	public boolean isMagIncreased() {return isMagIncreased;}
 	public boolean isReloading() {return reloading;}
+	public boolean isReloadImproved() {return isReloadImproved;}
 	public boolean isWielded() {return this == player.getGunWielded();}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
@@ -174,6 +178,7 @@ public abstract class Gun {
 	public void setOwned(boolean owned) {this.owned = owned;}
 	public void setSpecialRounds(boolean specialRounds) {this.specialRounds = specialRounds;}
 	public void setMagIncreased(boolean isMagIncreased) {this.isMagIncreased = isMagIncreased;}
+	public void setReloadImproved(boolean isReloadImproved) {this.isReloadImproved = isReloadImproved;}
 	public static void setPlayer(Player player) {Gun.player = player;}
 	public static void setHandler(Handler handler) {Gun.handler = handler;}
 	public void resetTickDivier() {ticks = 0;}
@@ -200,7 +205,7 @@ public abstract class Gun {
 	}
 	
 	protected int ticksForReload() {
-		return (int) ((60f / 1000) * reloadTime);
+		return (int) ((60f / 1000) * reloadTime * (isReloadImproved ? reloadFactor : 1));
 	}
 	
 	protected int ticksForChamber() {

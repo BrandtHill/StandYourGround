@@ -6,7 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import game.Inputs.Store;
-import game.Inputs.Store.Menu;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 import game.Weapons.Gun;
@@ -70,15 +69,17 @@ public class Button {
 		case BuyUpgrades:
 			this.clickable = active && gun.isOwned() 
 					&&(line1.contains("Increase Ammo")
-					|| line1.matches(".*(Hollow|Loads|Buck).*") && !gun.isSpecialRounds()
-					|| line1.contains("Auto") && !gun.isFullAuto()
-					|| line1.contains("Mag Size") && !gun.isMagIncreased());
+					|| line1.contains("Auto")  && !gun.isFullAuto()
+					|| line1.contains("Mags")  && !gun.isMagIncreased())
+					|| line1.contains("Speed") && !gun.isReloadImproved()
+					|| line1.matches(".*(Hollow|Loads|Buck).*") && !gun.isSpecialRounds();
 			this.mainColor = gun.isOwned() ?
 					   		(isClickable() ?
 								  Color.WHITE
 								: COLOR_RED_GRAY)
 								: Color.GRAY;
 			break;
+			
 		default:
 			this.clickable = active && gun.isOwned() && !gun.isLockedIn() && !gun.isWielded();							
 			this.mainColor = gun.isOwned() ?

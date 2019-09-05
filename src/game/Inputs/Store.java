@@ -58,9 +58,10 @@ public class Store extends MouseAdapter {
 				upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
 				break;
 			case BuyUpgrades:
-				if (b.getFirstLine().contains("Mag")) 					upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
-				if (b.getFirstLine().matches(".*(Hollow|Loads|Buck).*"))upgradeRounds(b.getGun(), b.getPrice());
-				if (b.getFirstLine().contains("Auto")) 					upgradeFireMode(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Mags")) upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
+				if (b.getFirstLine().contains("Auto")) upgradeFireMode(b.getGun(), b.getPrice());
+				if (b.getFirstLine().contains("Speed")) upgradeReload(b.getGun(), b.getPrice());
+				if (b.getFirstLine().matches(".*(Hollow|Loads|Buck).*")) upgradeRounds(b.getGun(), b.getPrice());
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
@@ -180,10 +181,12 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
 			break;
 		case BuyUpgrades:
-			buttonHelper(i++, true, "Increase Mag Size", "AR-15", "$500", "40-round AR-15_magazines", 10);
+			buttonHelper(i++, true, "Extended Mags", "AR-15", "$500", "40-round AR-15_magazines", 10);
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
+			buttonHelper(i++, true, "Extended Mags", "PX4 Compact", "$500", "Use full-size PX4_Storm 20-round_extended magazsines", 5);
 			buttonHelper(i++, true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
 			buttonHelper(i++, true, "Bear Loads", "Model 57", "$450", "Powerful rounds suitable_for stopping bears");
+			buttonHelper(i++, true, "Speed Loaders", "Model 57", "$400", "Load cylinder with six_rounds at once");
 			buttonHelper(i++, true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
 			buttonHelper(i++, true, "000 Buckshot", "Over-Under", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			buttonHelper(i++, true, "000 Buckshot", "Model 12", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
@@ -312,6 +315,14 @@ public class Store extends MouseAdapter {
 			gun.setMagIncreased(true);
 			player.setMoney(m - money);
 		}		
+	}
+	
+	private void upgradeReload(Gun gun, int money) {
+		if (gun.isOwned() && player.getMoney() >= money) {
+			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			gun.setReloadImproved(true);
+			player.setMoney(player.getMoney() - money);
+		}
 	}
 	
 	private void upgradeRounds(Gun gun, int money) {

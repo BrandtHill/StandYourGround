@@ -16,6 +16,7 @@ import game.Audio.AudioPlayer;
 import game.Inputs.KeyInput;
 import game.Inputs.MouseInput;
 import game.Inputs.Store;
+import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 

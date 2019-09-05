@@ -20,9 +20,7 @@ public abstract class GameObject {
 		velX = velY = 0;
 	}
 	
-	public GameObject() {
-		
-	}
+	public GameObject() {}
 	
 	public abstract void tick();
 	public abstract void render(Graphics g);

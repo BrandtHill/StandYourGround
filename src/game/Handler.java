@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 import game.Pieces.Blood;
 import game.Pieces.Brass;
 import game.Pieces.GameObject;
+import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Projectile;
 import game.Pieces.Reticle;
@@ -59,6 +60,7 @@ public class Handler {
 	public void render(Graphics g) {
 		gameObjs.stream().filter(o -> o instanceof Blood).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Brass).forEach(b -> b.render(g));
+		gameObjs.stream().filter(o -> o instanceof Obstacle).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Projectile).forEach(p -> p.render(g));
 		gameObjs.stream().filter(o -> o instanceof Zombie).forEach(z -> z.render(g));
 		gameObjs.stream().filter(o -> o instanceof Reticle).findFirst().get().render(g);

@@ -34,6 +34,7 @@ public class SaveData implements Serializable {
 		boolean FireMode;
 		boolean SpecialRound;
 		boolean MagIncreased;
+		boolean ReloadImproved;
 	}
 	
 	public SaveData() {
@@ -62,6 +63,7 @@ public class SaveData implements Serializable {
 				b.SpecialRound = g.isSpecialRounds();
 				b.FireMode = g.isFullAuto();
 				b.MagIncreased = g.isMagIncreased();
+				b.ReloadImproved = g.isReloadImproved();
 				gunBeans.add(i, b);
 			}
 	        
@@ -103,6 +105,7 @@ public class SaveData implements Serializable {
 			g.setFullAuto(b.FireMode);
 			g.setSpecialRounds(b.SpecialRound);
 			g.setMagIncreased(b.MagIncreased);
+			g.setReloadImproved(b.ReloadImproved);
 			g.resetAmmo();
 		}
 		player.autoEquip();
