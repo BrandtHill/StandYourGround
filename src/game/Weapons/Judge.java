@@ -18,7 +18,7 @@ public class Judge extends Gun {
 		ammoLoaded = magSize = 5;
 		ammoExtra = ammoCapacity = 10;
 		damage = 24;
-		spread = 11.5;
+		spread = 9;
 		xOffset = -2;
 		yOffset = 15;
 		velocity = 15;

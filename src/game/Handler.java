@@ -175,4 +175,6 @@ public class Handler {
 	public void addObject(GameObject obj) 			{gameObjs.add(obj);}
 	public void removeObject(GameObject obj) 		{gameObjs.remove(obj);}
 	public Stream<GameObject> getObjectStream() 	{return gameObjs.stream();}
+	public Stream<Zombie> getZombies()				{return gameObjs.stream().filter(z -> z instanceof Zombie).map(z -> (Zombie)z);}
+	public Stream<Obstacle> getObstacles()			{return gameObjs.stream().filter(o -> o instanceof Obstacle).map(o -> (Obstacle)o);}
 }

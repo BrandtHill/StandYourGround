@@ -59,22 +59,22 @@ public class Projectile extends GameObject {
 	}
 	
 	public void detectCollision() {
-		handler.getObjectStream()
-			.filter(z -> z instanceof Zombie)
-			.map(z -> (Zombie)z)
-			.filter(z -> z.getBounds().intersectsLine(this.getBounds()))
-			.filter(z -> !hitZombies.contains(z))
-			.filter(z -> z.getHealth() > 0)
-			.forEach(z -> {
-				z.damageMe(damage, angle, knockBack);
-				hitZombies.add(z);
-				hits--;
-				damage /= 1.4;
-				magnitude /= 1.2;
-				angle += (new Random().nextDouble() - 0.5) * angleMulti;
-				xScale = sin(angle);
-				yScale = cos(angle);
-			});
+		handler.getZombies()
+		.filter(z -> z.getBounds().intersectsLine(this.getBounds()))
+		.filter(z -> !hitZombies.contains(z))
+		.filter(z -> z.getHealth() > 0)
+		.forEach(z -> {
+			z.damageMe(damage, angle, knockBack);
+			hitZombies.add(z);
+			hits--;
+			damage /= 1.4;
+			magnitude /= 1.2;
+			angle += (new Random().nextDouble() - 0.5) * angleMulti;
+			xScale = sin(angle);
+			yScale = cos(angle);
+		});
+		
+		if (handler.getObstacles().anyMatch(o -> o.getBounds().intersectsLine(getBounds()))) handler.removeObjectAsync(this);
 	}
 
 	public void render(Graphics g) {

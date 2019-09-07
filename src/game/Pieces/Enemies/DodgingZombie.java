@@ -18,7 +18,7 @@ public class DodgingZombie extends Zombie {
 
 	@Override
 	public void tick() {
-		if (ticksSinceDodge > 360) {
+		if (ticksSinceDodge++ > 360) {
 			ticksInSight = isLineOfSight() ? ticksInSight + 1 : 0;
 			if (ticksInSight >= maxTicksInSight) initDodge();
 		}
@@ -28,18 +28,16 @@ public class DodgingZombie extends Zombie {
 			super.tick();
 			if (isLineOfSight()) {
 				double phi = angle + (strafeDir ? 1 : -1) * Math.PI / 2;
-				x += 1.2 * Math.sin(phi);
-				y += 1.2 * Math.cos(phi);
+				velX = 1.2 * Math.sin(phi);
+				velY = 1.2 * Math.cos(phi);
+				move();
 			}
 		}
 		
-		if (ticksSinceStrafe > 300) {
+		if (ticksSinceStrafe++ > 300) {
 			strafeDir = r.nextBoolean();
 			ticksSinceStrafe = 0;
 		}
-		
-		ticksSinceDodge++;
-		ticksSinceStrafe++;
 	}
 	
 	private boolean isLineOfSight() {
@@ -59,8 +57,9 @@ public class DodgingZombie extends Zombie {
 		double tempSpeed = 0.75 + dodgeTicks / 25f;
 		theta += r.nextGaussian() * 0.1f;
 		angle = getAngleToPlayer();
-		x += tempSpeed * speed * Math.sin(theta);
-		y += tempSpeed * speed * Math.cos(theta);
+		velX = tempSpeed * speed * Math.sin(theta);
+		velY = tempSpeed * speed * Math.cos(theta);
+		move();
 		if (--dodgeTicks <= 0) isDodging = false;
 		if (r.nextBoolean()) spriteNum++;
 	}

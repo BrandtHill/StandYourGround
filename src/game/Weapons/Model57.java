@@ -2,8 +2,6 @@ package game.Weapons;
 
 import java.awt.Color;
 
-import org.newdawn.slick.Sound;
-
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;

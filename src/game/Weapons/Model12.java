@@ -30,7 +30,7 @@ public class Model12 extends Gun {
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 6;
 		damage = 27;
-		spread = 8.5;
+		spread = 7;
 		xOffset = -3;
 		yOffset = 21;
 		velocity = 17;

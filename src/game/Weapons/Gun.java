@@ -220,10 +220,9 @@ public abstract class Gun {
 	}
 	
 	static {
-		try {
-			FileInputStream file = new FileInputStream("./res/GunSprite.png");
-			gunSheet = ImageIO.read(file);
-			file.close();
+		try (FileInputStream fis = new FileInputStream("./res/GunSprite.png")) {
+			gunSheet = ImageIO.read(fis);
+			fis.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

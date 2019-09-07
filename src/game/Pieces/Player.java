@@ -19,7 +19,6 @@ import javax.imageio.ImageIO;
 
 import game.Program;
 import game.Audio.AudioPlayer;
-import game.Pieces.Enemies.Zombie;
 import game.Program.STATE;
 import game.Weapons.AR15;
 import game.Weapons.Gun;
@@ -74,17 +73,17 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		ticks = 0;
-		spriteNum = 0;
 		//money = 10000; //For debugging
-		money = 0;
-		moneyAtRoundStart = 0;
 		speed = 2;
 		level = 1;
 	}
 	
 	public Rectangle getBounds() {
-		return new Rectangle((int)x, (int)y, 20, 20);
+		return getBounds(0, 0);
+	}
+	
+	private Rectangle getBounds(double xDiff, double yDiff) {
+		return new Rectangle((int)(x + xDiff), (int)(y + yDiff), 20, 20);
 	}
 	
 	public Polygon getSightBounds() {
@@ -95,13 +94,11 @@ public class Player extends GameObject{
 	}
 
 	public void tick() {
-		if (velX != 0 && velY != 0) {
-			x += (HALFSQRT2*velX);
-			y += (HALFSQRT2*velY);
-		} else {
-			x += velX;
-			y += velY;
-		}
+		double xDiff = (velX == 0 || velY == 0) ? velX : velX * HALFSQRT2;
+		double yDiff = (velX == 0 || velY == 0) ? velY : velY * HALFSQRT2;
+		
+		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(xDiff, 0)))) x += xDiff;
+		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(0, yDiff)))) y += yDiff;
 		
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-26);
@@ -110,14 +107,12 @@ public class Player extends GameObject{
 		
 		gunWielded.tick();
 		
-		if (ticks % 4 == 0) {
+		if (ticks++ % 4 == 0) {
 			detectCollision();
 			gunNum = getGunSpriteNum(gunWielded);
 			if (velX != 0 || velY != 0) spriteNum++;
 			spriteNum %= 8;
 		}
-		
-		ticks++;	
 	}
 	
 	public static int getGunSpriteNum(Gun g) {
@@ -134,11 +129,7 @@ public class Player extends GameObject{
 	}
 	
 	public void detectCollision() {
-		if (handler.getObjectStream()
-				.filter(o -> o instanceof Zombie)
-				.map(o -> (Zombie)o)
-				.anyMatch(z -> z.getBounds().intersects(this.getBounds())))
-				Program.gameState = STATE.GameOver;
+		if (handler.getZombies().anyMatch(z -> z.getBounds().intersects(getBounds()))) Program.gameState = STATE.GameOver;
 	}
 
 	public void render(Graphics g) {
@@ -285,17 +276,16 @@ public class Player extends GameObject{
 	}
 	
 	static {
-		try {
-			FileInputStream file = new FileInputStream("./res/PlayerSprite.png");
-			spriteSheet = ImageIO.read(file);
-			file.close();
+		try (FileInputStream fis = new FileInputStream("./res/PlayerSprite.png")) {
+			spriteSheet = ImageIO.read(fis);
+			fis.close();
+			for (int i = 0; i < NUMSPRITECYCLES; i++) {
+				for (int j = 0; j < NUMGUNS; j++) {
+					playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
+				}
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-		for (int i = 0; i < NUMSPRITECYCLES; i++) {
-			for (int j = 0; j < NUMGUNS; j++) {
-				playerSprites[i][j] = spriteSheet.getSubimage(20 * i, 32 * j, 20, 32);
-			}
 		}
 	}
 }

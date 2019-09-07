@@ -15,23 +15,18 @@ public class FastZombie extends Zombie {
 	@Override
 	public void tick() {
 		angle = getAngleToPlayer();
-		xBias = speed*sin(angle);
-		yBias = speed*cos(angle);
-		velX = r.nextInt(31)/10.0 - 1.5 + xBias;
-		velY = r.nextInt(31)/10.0 - 1.5 + yBias;
+		angle += correctForObstacles();
+		velX = r.nextGaussian() * 1.5 + speed*sin(angle);
+		velY = r.nextGaussian() * 1.5 + speed*cos(angle);
+		move();
 		
-		x += velX;
-		y += velY;
-		
-		if (ticks % 4 == 0) {
+		if (ticks++ % 4 == 0) {
 			detectCollision();
 			spriteNum++;
 		}
 		
 		speed *= 1.0005;
 		speed = Math.max(speed, 2.5);
-		
-		ticks++;
 	}
 	
 	@Override
