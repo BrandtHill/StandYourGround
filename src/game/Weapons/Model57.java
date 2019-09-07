@@ -2,16 +2,19 @@ package game.Weapons;
 
 import java.awt.Color;
 
+import org.newdawn.slick.Sound;
+
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
 public class Model57 extends Gun {
-
+	
 	public Model57() {
 		super();
 		gunId = GUN.Model57;
 		reloadSound = AudioPlayer.getSound("ReloadModel57");
+		speedReloadSound = AudioPlayer.getSound("SpeedReloadModel57");
 		reloadTime = 4000;
 		reloadFactor = 0.50;
 		chamberTime = 200;

@@ -23,8 +23,14 @@ public class AudioPlayer {
 	private static void loadSounds() {
 		try {
 			soundMap.put("Pistol", 			new Sound("./res/PistolSound.wav"));
+			//.put("Pistol2", 		new Sound("./res/PistolSound2.wav"));
+			//soundMap.put("Pistol3", 		new Sound("./res/PistolSound3.wav"));
+			//soundMap.put("Pistol4", 		new Sound("./res/PistolSound4.wav"));
+			//soundMap.put("Pistol5", 		new Sound("./res/PistolSound5.wav"));
 			soundMap.put("Rifle", 			new Sound("./res/RifleSound.wav"));
+			//soundMap.put("Rifle2", 			new Sound("./res/RifleSound2.wav"));
 			soundMap.put("Shotgun", 		new Sound("./res/ShotgunSound.wav"));
+			//soundMap.put("Shotgun2", 		new Sound("./res/ShotgunSound2.wav"));
 			soundMap.put("Sniper", 			new Sound("./res/SniperSound.wav"));
 			soundMap.put("ReloadTitan", 	new Sound("./res/ReloadTitanSound.ogg"));
 			soundMap.put("ReloadPX4", 		new Sound("./res/ReloadPX4Sound.wav"));
@@ -33,6 +39,7 @@ public class AudioPlayer {
 			soundMap.put("ReloadM77", 		new Sound("./res/ReloadM77Sound.ogg"));
 			soundMap.put("ReloadModel57", 	new Sound("./res/ReloadModel57Sound.ogg"));
 			soundMap.put("ReloadModel12", 	new Sound("./res/ReloadModel12Sound.ogg"));
+			soundMap.put("SpeedReloadModel57", 	new Sound("./res/SpeedReloadModel57Sound.ogg"));
 			soundMap.put("ReloadEmptyModel12", 	new Sound("./res/ReloadEmptyModel12Sound.ogg"));
 			soundMap.put("CycleM77", 		new Sound("./res/CycleM77Sound.ogg"));
 			soundMap.put("CockModel57", 	new Sound("./res/CockModel57Sound.ogg"));

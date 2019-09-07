@@ -31,6 +31,7 @@ public abstract class Gun {
 	protected static Player player;
 	protected static Handler handler;
 	protected Sound reloadSound;
+	protected Sound speedReloadSound;
 	protected float reloadSoundPosition;
 	protected long ticks;
 	protected long reloadTicks, chamberTicks;
@@ -67,7 +68,8 @@ public abstract class Gun {
 	
 	public void reload() {
 		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
-			reloadSound.play(1f, 1f);
+			if (isReloadImproved) speedReloadSound.play(1f, 1f);
+			else reloadSound.play(1f, 1f);
 			reloading = true;
 		}
 	}
@@ -107,17 +109,22 @@ public abstract class Gun {
 		shooting = reloading = false;
 		chambered = true;
 		chamberTicks = reloadTicks = ticks = 0;
-		if (reloadSound.playing()) reloadSound.stop();
+		stopReloadSound();
 	}
 	
 	public void onSwapFrom() {
-		if (reloadSound.playing()) reloadSound.stop();
+		stopReloadSound();
 		reloading = false;
 		chamberTicks = reloadTicks = 0;
 	}
 	
 	public void onSwapTo() {}
 	
+	
+	protected void stopReloadSound() {
+		if (reloadSound != null && reloadSound.playing()) reloadSound.stop();
+		if (speedReloadSound != null && speedReloadSound.playing()) speedReloadSound.stop();
+	}
 	/**
 	 * This function takes in the location of the muzzle of the gun 
 	 * relative to the center of the player sprite and returns the
