@@ -23,14 +23,14 @@ public class AudioPlayer {
 	private static void loadSounds() {
 		try {
 			soundMap.put("Pistol", 			new Sound("./res/PistolSound.wav"));
-			//.put("Pistol2", 		new Sound("./res/PistolSound2.wav"));
-			//soundMap.put("Pistol3", 		new Sound("./res/PistolSound3.wav"));
-			//soundMap.put("Pistol4", 		new Sound("./res/PistolSound4.wav"));
-			//soundMap.put("Pistol5", 		new Sound("./res/PistolSound5.wav"));
+			soundMap.put("Pistol2", 		new Sound("./res/PistolSound2.ogg"));
+			soundMap.put("Pistol3", 		new Sound("./res/PistolSound3.ogg"));
+			soundMap.put("Pistol4", 		new Sound("./res/PistolSound4.ogg"));
+			soundMap.put("Pistol5", 		new Sound("./res/PistolSound5.ogg"));
 			soundMap.put("Rifle", 			new Sound("./res/RifleSound.wav"));
-			//soundMap.put("Rifle2", 			new Sound("./res/RifleSound2.wav"));
+			soundMap.put("Rifle2", 			new Sound("./res/RifleSound2.ogg"));
 			soundMap.put("Shotgun", 		new Sound("./res/ShotgunSound.wav"));
-			//soundMap.put("Shotgun2", 		new Sound("./res/ShotgunSound2.wav"));
+			soundMap.put("Shotgun2", 		new Sound("./res/ShotgunSound2.ogg"));
 			soundMap.put("Sniper", 			new Sound("./res/SniperSound.wav"));
 			soundMap.put("ReloadTitan", 	new Sound("./res/ReloadTitanSound.ogg"));
 			soundMap.put("ReloadPX4", 		new Sound("./res/ReloadPX4Sound.wav"));
@@ -44,6 +44,7 @@ public class AudioPlayer {
 			soundMap.put("CycleM77", 		new Sound("./res/CycleM77Sound.ogg"));
 			soundMap.put("CockModel57", 	new Sound("./res/CockModel57Sound.ogg"));
 			soundMap.put("CycleModel12", 	new Sound("./res/CycleModel12Sound.ogg"));
+			soundMap.put("LevelEnd", 		new Sound("./res/LevelEnd.ogg"));
 			soundMap.put("BlipMinor", 		new Sound("./res/BlipMinor.wav"));
 			soundMap.put("BlipMajor", 		new Sound("./res/BlipMajor.wav"));
 		} catch (SlickException e) {

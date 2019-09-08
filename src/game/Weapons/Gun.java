@@ -219,7 +219,7 @@ public abstract class Gun {
 		return (int) ((60f / 1000) * chamberTime);
 	}
 	
-	static {
+	public static void loadAssets() {
 		try (FileInputStream fis = new FileInputStream("./res/GunSprite.png")) {
 			gunSheet = ImageIO.read(fis);
 			fis.close();

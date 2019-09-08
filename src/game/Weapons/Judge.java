@@ -34,7 +34,7 @@ public class Judge extends Gun {
 			}
 			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
 			onShotFired();
-			AudioPlayer.getSound("Shotgun").play(1.3f, 0.25f);
+			AudioPlayer.getSound("Pistol2").play(0.75f, 0.85f);
 		}
 	}
 	

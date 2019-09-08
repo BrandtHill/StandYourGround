@@ -65,7 +65,7 @@ public class Reticle extends GameObject {
 	public double getXDisplay() {return xDisplay;}
 	public double getYDisplay() {return yDisplay;}
 	
-	static {
+	public static void loadAssets() {
 		try (FileInputStream fis = new FileInputStream("./res/Reticle.png")) {
 			BufferedImage img = ImageIO.read(fis);
 			for (int i = 0; i < 8; i++) spriteSheet[i] = img.getSubimage(0, i * 21, 21, 21);

@@ -1,7 +1,9 @@
 package game;
 
+import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Program.STATE;
+import game.Audio.AudioPlayer;
 
 public class SpawnSystem {
 
@@ -26,6 +28,9 @@ public class SpawnSystem {
 		ticks = 0;
 		delayMillis = 0;
 		wave = 1;
+		//handler.addObject(new Obstacle(200, 200, 10, 110));
+		//handler.addObject(new Obstacle(200, 200, 110, 10));
+		//handler.addObject(new Obstacle(200, 300, 110, 10));
 	}
 
 	public void tick() {
@@ -36,6 +41,7 @@ public class SpawnSystem {
 				delayMillis = 2000;
 				ticks = 0;
 				zedsDead = true;
+				AudioPlayer.getSound("LevelEnd").play(1.0f, 1.0f);
 			}
 			if (zedsDead && ticks > delayTicks()) completeLevel();
 		}
@@ -350,7 +356,7 @@ public class SpawnSystem {
 				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 1);
 				spawnZombies(REGION.UP, ZOMBIE.FAST, 1);
 				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 1);
-				delayMillis = 9000;
+				delayMillis = 6500;
 				break;
 			
 			case 2:
@@ -455,5 +461,5 @@ public class SpawnSystem {
 	public void setLevel(int l) {
 		level = l;
 	}
-
+	public boolean zedsDead() {return zedsDead;}
 }

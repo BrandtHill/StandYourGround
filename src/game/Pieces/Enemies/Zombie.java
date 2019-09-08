@@ -1,11 +1,9 @@
 package game.Pieces.Enemies;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.util.Random;
@@ -53,12 +51,9 @@ public class Zombie extends GameObject {
 		velY = r.nextGaussian() + speed*cos(angle);
 		
 		move();
+		detectCollision();
 		
-		if (ticks++ % 8 == 0) {
-			detectCollision();
-			spriteNum++;
-		}
-		
+		if (ticks++ % 8 == 0) spriteNum++;
 		if (health < 20) speed *= 1.0015;
 	}
 	
@@ -92,11 +87,12 @@ public class Zombie extends GameObject {
 	
 	public void detectCollision() {
 		handler.getZombies()
+		.filter(z -> z != this)
 		.filter(z -> z.getBounds().intersects(this.getBounds()))
 		.forEach(z -> {
 			double theta = atan2(x - z.getX(), y - z.getY());
-			velX = 2.5 * cos(theta);
-			velY = 2.5 * sin(theta);
+			velX = 2.0 * cos(theta);
+			velY = 2.0 * sin(theta);
 			move();
 		});
 	}
@@ -121,8 +117,8 @@ public class Zombie extends GameObject {
 	protected Polygon getSightBounds(double theta) {
 		double phi = angle + theta;
 		return new Polygon(
-				new int[]{(int)(x + 10 + 10*cos(phi) - 10*sin(phi)), (int)(x + 10 - 10*cos(phi) - 10*sin(phi)), (int)(x + 10 + 120 * Math.sin(phi))},
-				new int[]{(int)(y + 10 - 10*cos(phi) - 10*sin(phi)), (int)(y + 10 - 10*cos(phi) + 10*sin(phi)), (int)(y + 10 + 120 * Math.cos(phi))},
+				new int[]{(int)(x + 10 + 10*cos(phi) - 10*sin(phi)), (int)(x + 10 - 10*cos(phi) - 10*sin(phi)), (int)(x + 10 + 60 * Math.sin(phi))},
+				new int[]{(int)(y + 10 - 10*cos(phi) - 10*sin(phi)), (int)(y + 10 - 10*cos(phi) + 10*sin(phi)), (int)(y + 10 + 60 * Math.cos(phi))},
 				3);
 	}
 
@@ -131,6 +127,7 @@ public class Zombie extends GameObject {
 		g2d.rotate(-angle, x+10, y+10);
 		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
+		//g2d.draw(getSightBounds());
 	}
 	
 	public void damageMe(double damage, double angle, double knock) {
@@ -149,7 +146,7 @@ public class Zombie extends GameObject {
 	
 	public double getHealth() {return health;}
 	
-	static { 
+	public static void loadAssets() {
 		for (int i = 1; i <= NUMZOMBIETYPES; i++) {
 			try (FileInputStream fis = new FileInputStream("./res/ZombieSprite_" + i + ".png")) {
 				BufferedImage img = ImageIO.read(fis);

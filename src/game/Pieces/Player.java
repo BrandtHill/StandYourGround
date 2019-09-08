@@ -275,7 +275,7 @@ public class Player extends GameObject{
 		return -1;
 	}
 	
-	static {
+	public static void loadAssets() {
 		try (FileInputStream fis = new FileInputStream("./res/PlayerSprite.png")) {
 			spriteSheet = ImageIO.read(fis);
 			fis.close();

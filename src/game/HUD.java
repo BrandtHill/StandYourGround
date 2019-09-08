@@ -12,7 +12,7 @@ public class HUD {
 	private static SpawnSystem spawnSys;
 	private String gunInfo, levelInfo;
 	private int selectedIndex;
-	private double alpha;
+	private double alpha, endAlpha;
 	private Gun gun;
 	
 	public HUD() {
@@ -27,6 +27,7 @@ public class HUD {
 		levelInfo = "Level " + spawnSys.getLevel() + "    " + "Zombies Remaining: " + spawnSys.getRemaining() +	"     $"+ player.getMoney();
 		selectedIndex = player.getGunWeildedIndex();
 		alpha = calcAlpha();
+		endAlpha = spawnSys.zedsDead() ? endAlpha + 1 : 0;
 	}
 	
 	public void render(Graphics g) {
@@ -49,6 +50,11 @@ public class HUD {
 		}
 		
 		g.drawImage(gun.getSprite(), 240, 20, 60, 30, null);
+		
+		if (spawnSys.zedsDead()) {
+			g.setColor(new Color(0, 0, 0, (int)endAlpha));
+			g.fillRect(0, 0, Program.WIDTH, Program.HEIGHT);
+		}
 	}
 	
 	private double calcAlpha() {

@@ -16,9 +16,10 @@ import game.Audio.AudioPlayer;
 import game.Inputs.KeyInput;
 import game.Inputs.MouseInput;
 import game.Inputs.Store;
-import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
+import game.Pieces.Enemies.Zombie;
+import game.Weapons.Gun;
 
 public class Program extends Canvas implements Runnable {
 
@@ -53,7 +54,7 @@ public class Program extends Canvas implements Runnable {
 	private static STATE prevState;
 	
 	public Program() {
-		AudioPlayer.init();
+		loadAssets();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
@@ -72,6 +73,21 @@ public class Program extends Canvas implements Runnable {
 		addMouseListener(store);
 		addMouseMotionListener(store);
 		
+
+
+		saveToFile("./res/saves/newgame.syg");
+		saveToFile("./res/saves/autosave.syg");
+		
+		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
+	}
+	
+	private void loadAssets() {
+		AudioPlayer.init();
+		Player.loadAssets();
+		Gun.loadAssets();
+		Zombie.loadAssets();
+		Store.loadAssets();
+		Reticle.loadAssets();
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
@@ -80,13 +96,8 @@ public class Program extends Canvas implements Runnable {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		saveToFile("./res/saves/newgame.syg");
-		saveToFile("./res/saves/autosave.syg");
-		
-		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 	}
-	
+
 	public synchronized void start() {
 		running = true;
 		gameThread = new Thread(this, "Main Game Thread");

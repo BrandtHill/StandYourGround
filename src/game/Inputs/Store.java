@@ -374,7 +374,7 @@ public class Store extends MouseAdapter {
 		mouseMoved(e);
 	}
 	
-	static {
+	public static void loadAssets() {
 		try (FileInputStream fis = new FileInputStream("./res/Pegboard.png")) {
 			pegboard = ImageIO.read(fis);
 		} catch (Exception e) {

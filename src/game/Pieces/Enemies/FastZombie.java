@@ -19,11 +19,9 @@ public class FastZombie extends Zombie {
 		velX = r.nextGaussian() * 1.5 + speed*sin(angle);
 		velY = r.nextGaussian() * 1.5 + speed*cos(angle);
 		move();
+		detectCollision();
 		
-		if (ticks++ % 4 == 0) {
-			detectCollision();
-			spriteNum++;
-		}
+		if (ticks++ % 4 == 0) spriteNum++;
 		
 		speed *= 1.0005;
 		speed = Math.max(speed, 2.5);

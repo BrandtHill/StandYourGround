@@ -29,7 +29,7 @@ public class Model12 extends Gun {
 		gunName = "Model 12";
 		ammoLoaded = magSize = 6;
 		ammoExtra = ammoCapacity = 6;
-		damage = 27;
+		damage = 25.5;
 		spread = 7;
 		xOffset = -3;
 		yOffset = 21;
@@ -47,7 +47,7 @@ public class Model12 extends Gun {
 			if (ammoLoaded > 1) cycleSound.play(1f, 0.60f);
 			ejTicks = 0;
 			onShotFired();
-			AudioPlayer.getSound("Shotgun").play(0.925f, 0.275f);
+			AudioPlayer.getSound("Shotgun2").play(1f, 0.275f);
 		}
 	}
 
