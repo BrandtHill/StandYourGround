@@ -85,6 +85,10 @@ public class Handler {
 		gameObjs.removeIf(z -> z instanceof Zombie);
 	}
 	
+	public void removeObstacles() {
+		gameObjs.removeIf(o -> o instanceof Obstacle);
+	}
+	
 	public void addRandomZombie() {
 		double x, y;
 		double xPlayer = Program.player.getX();
@@ -140,26 +144,26 @@ public class Handler {
 	}
 	
 	public void addNormalZombie(double x, double y) {
-		double hp = 40 + 4 * Program.player.getLevel();
-		double speed = 1.3 + Program.player.getLevel() * 0.015;
+		double hp = 40 + 4 * Program.spawnSys.getLevel();
+		double speed = 1.3 + Program.spawnSys.getLevel() * 0.015;
 		addObject(new Zombie(x, y, speed, hp));
 	}
 	
 	public void addDodgingZombie(double x, double y) {
-		double hp = 36 + 3 * Program.player.getLevel();
-		double speed = 1.5 + Program.player.getLevel() * 0.015;
+		double hp = 36 + 3 * Program.spawnSys.getLevel();
+		double speed = 1.5 + Program.spawnSys.getLevel() * 0.015;
 		addObject(new DodgingZombie(x, y, speed, hp));
 	}
 	
 	public void addFastZombie(double x, double y) {
-		double hp = 40 + 4 * Program.player.getLevel();
-		double speed = 1.9 + Program.player.getLevel() * 0.015;
+		double hp = 40 + 4 * Program.spawnSys.getLevel();
+		double speed = 1.9 + Program.spawnSys.getLevel() * 0.015;
 		addObject(new FastZombie(x, y, speed, hp));
 	}
 	
 	public void addThiccZombie(double x, double y) {
-		double hp = 120 + 4 * Program.player.getLevel();
-		double speed = 1.1 + Program.player.getLevel() * 0.015;
+		double hp = 120 + 4 * Program.spawnSys.getLevel();
+		double speed = 1.1 + Program.spawnSys.getLevel() * 0.015;
 		addObject(new ThiccZombie(x, y, speed, hp));
 	}
 	

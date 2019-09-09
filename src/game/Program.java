@@ -32,8 +32,8 @@ public class Program extends Canvas implements Runnable {
 	public static BufferedImage backgroundSlice;
 	private static BufferedImage background1;
 	private static BufferedImage background2;
+	private static BufferedImage background3;
 	public static SpawnSystem spawnSys;
-	public static SaveData saveData;
 	public static Reticle reticle;
 	public static Player player;
 	public static Handler handler;
@@ -60,7 +60,6 @@ public class Program extends Canvas implements Runnable {
 		reticle = new Reticle(WIDTH/2-10, HEIGHT/2-30);
 		handler.addObject(player);
 		handler.addObject(reticle);
-		saveData = new SaveData();
 		spawnSys = new SpawnSystem();
 		store = new Store();
 		hud = new HUD();
@@ -91,6 +90,7 @@ public class Program extends Canvas implements Runnable {
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
+			background3 = ImageIO.read(new File("./res/UrbanBackground.png"));
 			background = background1;
 			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 		} catch (IOException e) {
@@ -252,7 +252,10 @@ public class Program extends Canvas implements Runnable {
 		
 		switch (gameState) {
 		case InGame:
-			background = (player.getLevel() < 6) ? background1 : background2;
+			if (spawnSys.getLevel() <= 5) background = background1;
+			else if (spawnSys.getLevel() <= 10) background = background2;
+			else background = background3;
+			
 			if (prevState != STATE.PauseMenu) commenceLevel();
 			removeMouseMotionListener(store);
 			break;
@@ -290,13 +293,11 @@ public class Program extends Canvas implements Runnable {
 	}
 	
 	public static void saveToFile(String filename) {
-		saveData.saveToFile(filename, player);
+		SaveData.saveToFile(filename);
 	}
 	
 	public static void loadFromFile(String filename) {
-		saveData = SaveData.loadFromFile(filename);
-		if (saveData!= null) saveData.setPlayerAfterLoad(player);
-		else System.out.println("Player load was not successful.");
+		SaveData.loadFromFile(filename);
 	}
 	
 	public static void delay(Duration duration) {

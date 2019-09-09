@@ -28,9 +28,9 @@ public class SpawnSystem {
 		ticks = 0;
 		delayMillis = 0;
 		wave = 1;
-		//handler.addObject(new Obstacle(200, 200, 10, 110));
-		//handler.addObject(new Obstacle(200, 200, 110, 10));
-		//handler.addObject(new Obstacle(200, 300, 110, 10));
+		handler.addObject(new Obstacle(200, 200, 10, 110));
+		handler.addObject(new Obstacle(200, 200, 110, 10));
+		handler.addObject(new Obstacle(200, 300, 110, 10));
 	}
 
 	public void tick() {
@@ -58,13 +58,13 @@ public class SpawnSystem {
 		level++;
 
 		player.resetAllAmmo();
-		player.setLevel(level);
 		player.setMoneyAtRoundStart(player.getMoney());
 
 		handler.removeBlood();
 		handler.removeBrass();
 		handler.removeProjectiles();
 		handler.removeZombies();
+		handler.removeObstacles();
 	}
 
 	public void commenceLevel() {
@@ -72,6 +72,7 @@ public class SpawnSystem {
 		handler.removeBrass();
 		handler.removeProjectiles();
 		handler.removeZombies();
+		handler.removeObstacles();
 		player.setX(Program.WIDTH / 2 - 10);
 		player.setY(Program.HEIGHT / 2 - 30);
 		player.resetAllAmmo();
@@ -133,6 +134,14 @@ public class SpawnSystem {
 			delayMillis = 2000;
 			break;
 
+		case 11:
+			player.zombiesLeft = 24;
+			delayMillis = 3000;
+			handler.addObjectAsync(new Obstacle(-100, 270, 490, 17));
+			handler.addObjectAsync(new Obstacle(575, 270, 450, 17));
+			handler.addObjectAsync(new Obstacle(640, 60, 92, 155));
+			break;
+			
 		default:
 			player.zombiesLeft = 10 * level;
 			for (int i = 0; i < 10 * level; i++) {
@@ -437,6 +446,28 @@ public class SpawnSystem {
 				break;
 			}
 			break;
+			
+		case 11:
+			switch (wave) {
+			case 1:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 3);
+				delayMillis = 6000;
+				break;
+				
+			case 2:
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 3);
+				delayMillis = 6000;
+				break;
+				
+			case 3:
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 8);
+				spawnZombies(REGION.LEFT, ZOMBIE.THICC, 4);
+				doneSpawning = true;
+				break;
+			}
+			
 		default:
 			doneSpawning = true;
 			break;
@@ -450,16 +481,8 @@ public class SpawnSystem {
 		}
 	}
 
-	public int getRemaining() {
-		return player.zombiesLeft;
-	}
-
-	public int getLevel() {
-		return level;
-	}
-
-	public void setLevel(int l) {
-		level = l;
-	}
+	public int getRemaining() {return player.zombiesLeft;}
+	public int getLevel() {return level;}
+	public void setLevel(int level) {this.level = level;}
 	public boolean zedsDead() {return zedsDead;}
 }

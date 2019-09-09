@@ -1,9 +1,11 @@
 package game.Pieces.Enemies;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.util.Random;
@@ -77,6 +79,7 @@ public class Zombie extends GameObject {
 	}
 	
 	protected double correctForObstacles() {
+		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersectsLine(getSightToPlayer()))) return 0;
 		for (int i = 0; i < 180; i += 10) {
 			double theta = i * Math.PI / 180;
 			if (!handler.getObstacles().anyMatch(o -> getSightBounds(theta).intersects(o.getBounds()))) return theta;
@@ -121,12 +124,18 @@ public class Zombie extends GameObject {
 				new int[]{(int)(y + 10 - 10*cos(phi) - 10*sin(phi)), (int)(y + 10 - 10*cos(phi) + 10*sin(phi)), (int)(y + 10 + 60 * Math.cos(phi))},
 				3);
 	}
+	
+	protected Line2D.Double getSightToPlayer() {
+		return new Line2D.Double(x + 10, y + 10, player.getX() + 10, player.getY() + 10);
+	}
 
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		g2d.rotate(-angle, x+10, y+10);
 		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
+		g2d.setColor(new Color(0, 255, 0, 63));
+		//g2d.draw(getSightToPlayer());
 		//g2d.draw(getSightBounds());
 	}
 	

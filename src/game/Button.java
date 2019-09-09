@@ -68,11 +68,11 @@ public class Button {
 		case BuyAmmo:
 		case BuyUpgrades:
 			this.clickable = active && gun.isOwned() 
-					&&(line1.contains("Increase Ammo")
+					&&(line1.contains("Ammo")
+					|| line1.matches(".*(Hollow|Loads|Buck).*") && !gun.isSpecialRounds()
 					|| line1.contains("Auto")  && !gun.isFullAuto()
-					|| line1.contains("Mags")  && !gun.isMagIncreased())
-					|| line1.contains("Speed") && !gun.isReloadImproved()
-					|| line1.matches(".*(Hollow|Loads|Buck).*") && !gun.isSpecialRounds();
+					|| line1.contains("Mags")  && !gun.isMagIncreased()
+					|| line1.contains("Speed") && !gun.isReloadImproved());
 			this.mainColor = gun.isOwned() ?
 					   		(isClickable() ?
 								  Color.WHITE

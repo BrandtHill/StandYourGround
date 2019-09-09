@@ -21,7 +21,6 @@ public class SaveData implements Serializable {
 	private static final long serialVersionUID = 6194456681958310352L;
 	
 	private int money;
-	private int moneyAtRoundStart;
 	private int level;
 	private ArrayList<GunBean> gunBeans;
 
@@ -43,15 +42,21 @@ public class SaveData implements Serializable {
 		gunBeans = new ArrayList<>();
 	}
 	
-	public void saveToFile(String filename, Player player) {
+	public static void saveToFile(String filename) {
+		SaveData s = new SaveData();
+		s.saveInstanceToFile(filename);
+	}
+	
+	private void saveInstanceToFile(String filename) {
 		try {
+			Player player = Program.player;
+			SpawnSystem spawnSys = Program.spawnSys;
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
 			List<Gun> arsenal = player.getArsenal();
 			
-			money = player.getMoney();
-			moneyAtRoundStart = player.getMoneyAtRoundStart();
-			level = player.getLevel();
+			money = player.getMoneyAtRoundStart();
+			level = spawnSys.getLevel();
 			gunBeans.clear();
 			for (int i = 0; i < arsenal.size(); i++) {
 				Gun g = arsenal.get(i);
@@ -77,26 +82,27 @@ public class SaveData implements Serializable {
 		}
 	}
 	
-	public static SaveData loadFromFile(String filename) {
+	public static void loadFromFile(String filename) {
 		try {
 			FileInputStream file = new FileInputStream(filename);
 			ObjectInputStream in = new ObjectInputStream(file);
-			SaveData temp = (SaveData)in.readObject();
+			SaveData s = (SaveData)in.readObject();
 			in.close();
 			file.close();
 			System.out.println("Loaded game state from: " + filename);
-			return temp;
+			s.setAfterLoad();
 		} catch (Exception e) {
 			e.printStackTrace();
-			return null;
 		}
 	}
 	
-	public void setPlayerAfterLoad(Player player) {
-		player.setMoney(moneyAtRoundStart);
-		player.setMoneyAtRoundStart(moneyAtRoundStart);
-		player.setLevel(level);
-		Program.spawnSys.setLevel(level);
+	private void setAfterLoad() {
+		Player player = Program.player;
+		SpawnSystem spawnSys = Program.spawnSys;
+		
+		player.setMoney(money);
+		player.setMoneyAtRoundStart(money);
+		spawnSys.setLevel(level);
 		for (GunBean b : gunBeans) {
 			Gun g = player.getGun(b.Id);
 			g.setMagSize(b.MagSize);

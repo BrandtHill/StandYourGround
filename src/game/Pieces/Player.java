@@ -48,7 +48,6 @@ public class Player extends GameObject{
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
-	private int level;
 	public int zombiesLeft;
 	
 	public Player(double x, double y) {
@@ -75,7 +74,6 @@ public class Player extends GameObject{
 		gunWielded = gunSidearm;
 		//money = 10000; //For debugging
 		speed = 2;
-		level = 1;
 	}
 	
 	public Rectangle getBounds() {
@@ -160,7 +158,6 @@ public class Player extends GameObject{
 	public double getSpeed() {return speed;}
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
-	public int getLevel() {return level;}
 	public boolean isReloading() {return gunWielded != null && gunWielded.isReloading();}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
@@ -171,7 +168,6 @@ public class Player extends GameObject{
 	public void setSpeed(double speed) {this.speed = speed;}
 	public void setMoney(int money) {this.money = money;}
 	public void setMoneyAtRoundStart(int money) {this.moneyAtRoundStart = money;}
-	public void setLevel(int level) {this.level = level;}
 	
 	public void switchToPrimary() {switchToGun(gunPrimary);}
 	public void switchToSecondary() {switchToGun(gunSecondary);}

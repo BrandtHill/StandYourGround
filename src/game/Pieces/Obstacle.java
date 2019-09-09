@@ -1,5 +1,6 @@
 package game.Pieces;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
@@ -26,6 +27,7 @@ public class Obstacle extends GameObject {
 
 	@Override
 	public void render(Graphics g) {
+		g.setColor(new Color(0, 255, 0));
 		g.drawRect((int)x, (int)y, (int)w, (int)h);
 	}
 
