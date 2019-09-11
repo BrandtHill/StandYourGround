@@ -1,10 +1,13 @@
 package game.Pieces;
 
 import static java.lang.Math.atan2;
+import static java.lang.Math.sin;
+import static java.lang.Math.cos;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
@@ -17,6 +20,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import game.Handler;
 import game.Program;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
@@ -72,7 +76,7 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		//money = 10000; //For debugging
+		//money = moneyAtRoundStart = 10000; //For debugging
 		speed = 2;
 	}
 	
@@ -86,8 +90,8 @@ public class Player extends GameObject{
 	
 	public Polygon getSightBounds() {
 		return new Polygon(
-				new int[]{(int)x + 10, (int)(x + 10 + 220 * Math.sin(angle - 0.075)), (int)(x + 10 + 220 * Math.sin(angle + 0.075))}, 
-				new int[]{(int)y + 10, (int)(y + 10 + 220 * Math.cos(angle - 0.075)), (int)(y + 10 + 220 * Math.cos(angle + 0.075))},
+				new int[]{(int)x + 10, (int)(x + 10 + 220 * sin(angle - 0.075)), (int)(x + 10 + 220 * sin(angle + 0.075))}, 
+				new int[]{(int)y + 10, (int)(y + 10 + 220 * cos(angle - 0.075)), (int)(y + 10 + 220 * cos(angle + 0.075))},
 				3);
 	}
 
@@ -136,6 +140,7 @@ public class Player extends GameObject{
 		g2d.rotate(-angle, x + 10, y + 10);
 		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x + 10, y + 10);
+		//g2d.draw(getGridNode());
 	}
 	
 	public void renderPreview(Graphics g, Gun gun) {
@@ -269,6 +274,10 @@ public class Player extends GameObject{
 		if (g == gunSecondary) return 1;
 		if (g == gunSidearm) return 2;
 		return -1;
+	}
+	
+	public Rectangle getGridNode() {
+		return handler.getGridNode(new Point((int)x + 10, (int)y + 10));
 	}
 	
 	public static void loadAssets() {

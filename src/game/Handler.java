@@ -1,6 +1,9 @@
 package game;
 
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,12 +36,22 @@ public class Handler {
 	private List<GameObject>	deadQueue;
 	private List<GameObject>	asyncQueue;
 	private Random 				r;
+	public Rectangle[][]		grid;
+	public static final int 	REC_SIZE = 40;
+	public static final int		GRID_WIDTH = Program.WIDTH / REC_SIZE;
+	public static final int		GRID_HEIGHT = Program.HEIGHT / REC_SIZE;
 	
 	public Handler() {
 		gameObjs = new LinkedList<>();
 		deadQueue = new LinkedList<>();
 		asyncQueue = Collections.synchronizedList(new LinkedList<>());
 		r = new Random();
+		grid = new Rectangle[GRID_WIDTH][GRID_HEIGHT];
+		for (int x = 0; x < GRID_WIDTH; x++) {
+			for (int y = 0; y < GRID_HEIGHT; y++) {
+				grid[x][y] = new Rectangle(x * REC_SIZE, y * REC_SIZE, REC_SIZE, REC_SIZE);
+			}
+		}
 	}
 	
 	public void tick() {
@@ -65,6 +78,7 @@ public class Handler {
 		gameObjs.stream().filter(o -> o instanceof Zombie).forEach(z -> z.render(g));
 		gameObjs.stream().filter(o -> o instanceof Reticle).findFirst().get().render(g);
 		gameObjs.stream().filter(o -> o instanceof Player).findFirst().get().render(g);
+		//for (Rectangle[] arr : grid) for (Rectangle r : arr) ((Graphics2D)g).draw(r);
 	}
 
 	public void removeBlood() {
@@ -172,6 +186,22 @@ public class Handler {
 		for (int i = 1; i < num; i++) {
 			addObjectAsync(new Blood(x, y, knock * (r.nextDouble() * 0.5 + 0.5 ), angle + (r.nextDouble() - 0.5)*1.55));
 		}
+	}
+	
+	public Rectangle getGridNode(Point position) {
+		int x = position.x;
+		int y = position.y;
+		return x / REC_SIZE < 0
+			|| x / REC_SIZE >= GRID_WIDTH
+			|| y / REC_SIZE < 0
+			|| y / REC_SIZE >= GRID_HEIGHT
+			? null : grid[x / REC_SIZE][y / REC_SIZE];
+	}
+	
+	public List<Rectangle> aStar(Point start, Point dest) {
+		List<Rectangle> path = new LinkedList<>();
+		
+		return path;
 	}
 	
 	public void addObjectAsync(GameObject nu) 		{asyncQueue.add(nu);}

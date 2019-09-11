@@ -21,7 +21,7 @@ public class SpawnSystem {
 	}
 
 	public SpawnSystem() {
-		level = 1;
+		level = 1;//11;
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
@@ -143,6 +143,9 @@ public class SpawnSystem {
 			break;
 			
 		default:
+			handler.addObjectAsync(new Obstacle(-100, 270, 490, 17));
+			handler.addObjectAsync(new Obstacle(575, 270, 450, 17));
+			handler.addObjectAsync(new Obstacle(640, 60, 92, 155));
 			player.zombiesLeft = 10 * level;
 			for (int i = 0; i < 10 * level; i++) {
 				handler.addRandomZombie();
@@ -467,6 +470,7 @@ public class SpawnSystem {
 				doneSpawning = true;
 				break;
 			}
+			break;
 			
 		default:
 			doneSpawning = true;

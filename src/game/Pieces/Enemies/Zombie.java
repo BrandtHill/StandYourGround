@@ -3,6 +3,7 @@ package game.Pieces.Enemies;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Polygon;
 import java.awt.Rectangle;
 import java.awt.geom.Line2D;
@@ -12,6 +13,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import game.Handler;
 import game.Program;
 import game.Pieces.Blood;
 import game.Pieces.GameObject;
@@ -23,7 +25,7 @@ import static java.lang.Math.cos;
 
 public class Zombie extends GameObject {
 
-	public final static int NUMZOMBIETYPES = 4; 
+	public final static int NUMZOMBIETYPES = 4;
 	protected double health, angle, speed;
 	protected Random r;
 	protected Player player;
@@ -117,14 +119,6 @@ public class Zombie extends GameObject {
 		return getSightBounds(0);
 	}
 	
-	protected Polygon getSightBounds(double theta) {
-		double phi = angle + theta;
-		return new Polygon(
-				new int[]{(int)(x + 10 + 10*cos(phi) - 10*sin(phi)), (int)(x + 10 - 10*cos(phi) - 10*sin(phi)), (int)(x + 10 + 60 * Math.sin(phi))},
-				new int[]{(int)(y + 10 - 10*cos(phi) - 10*sin(phi)), (int)(y + 10 - 10*cos(phi) + 10*sin(phi)), (int)(y + 10 + 60 * Math.cos(phi))},
-				3);
-	}
-	
 	protected Line2D.Double getSightToPlayer() {
 		return new Line2D.Double(x + 10, y + 10, player.getX() + 10, player.getY() + 10);
 	}
@@ -137,6 +131,8 @@ public class Zombie extends GameObject {
 		g2d.setColor(new Color(0, 255, 0, 63));
 		//g2d.draw(getSightToPlayer());
 		//g2d.draw(getSightBounds());
+		//Rectangle r = getGridNode();
+		//if (r != null) g2d.draw(r);
 	}
 	
 	public void damageMe(double damage, double angle, double knock) {
@@ -155,6 +151,18 @@ public class Zombie extends GameObject {
 	
 	public double getHealth() {return health;}
 	
+	protected Polygon getSightBounds(double theta) {
+		double phi = angle + theta;
+		return new Polygon(
+				new int[]{(int)(x + 10 + 10*cos(phi) - 10*sin(phi)), (int)(x + 10 - 10*cos(phi) - 10*sin(phi)), (int)(x + 10 + 60*sin(phi))},
+				new int[]{(int)(y + 10 - 10*cos(phi) - 10*sin(phi)), (int)(y + 10 - 10*cos(phi) + 10*sin(phi)), (int)(y + 10 + 60*cos(phi))},
+				3);
+	}
+	
+	public Rectangle getGridNode() {
+		return handler.getGridNode(new Point((int)x + 10, (int)y + 10));
+	}
+
 	public static void loadAssets() {
 		for (int i = 1; i <= NUMZOMBIETYPES; i++) {
 			try (FileInputStream fis = new FileInputStream("./res/ZombieSprite_" + i + ".png")) {
