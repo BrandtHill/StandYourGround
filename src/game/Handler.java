@@ -4,10 +4,14 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.Shape;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.stream.Stream;
 
 import game.Pieces.Blood;
@@ -189,19 +193,85 @@ public class Handler {
 	}
 	
 	public Rectangle getGridNode(Point position) {
-		int x = position.x;
-		int y = position.y;
-		return x / REC_SIZE < 0
-			|| x / REC_SIZE >= GRID_WIDTH
-			|| y / REC_SIZE < 0
-			|| y / REC_SIZE >= GRID_HEIGHT
-			? null : grid[x / REC_SIZE][y / REC_SIZE];
+		int x = position.x / REC_SIZE;
+		int y = position.y / REC_SIZE;
+		return validGridIndex(x, y) ? grid[x][y] : null;
 	}
 	
-	public List<Rectangle> aStar(Point start, Point dest) {
-		List<Rectangle> path = new LinkedList<>();
-		
+	public List<Node> aStar(Point start, Point dest) {
+		List<Node> path = new LinkedList<>();
+		Set<Node> open = new HashSet<>();
+		Set<Node> closed = new HashSet<>();
+		Node sNode = new Node(start);
+		Node dNode = new Node(dest);
+		sNode.f = sNode.g = sNode.h = 0;
+		open.add(sNode);
+		Node curr;
+		while (open.size() > 0) {
+			curr = open.stream().min(compF).get();
+			open.remove(curr);
+			closed.add(curr);
+		}
 		return path;
+	}
+	
+	private List <Node> generateChildren(Node antecedent) {
+		List<Node> list = new LinkedList<>();
+		int x = antecedent.getX();
+		int y = antecedent.getY();
+		Node n;
+		int[][] offsets = new int[][] {{x-1, y-1}, {x+1, y-1}, {x-1, y+1}, {x+1, y+1},  //0-3 diagonal children 
+									   {x  , y-1}, {x  , y+1}, {x-1, y  }, {x+1, y  }}; //4-7 normal children
+		
+		for (int i = 0; i < offsets.length; i++) {
+			int xo = offsets[i][0];
+			int yo = offsets[i][1];
+			boolean diagonal = i < 4; //First 4 offsets are diagonal, Last 4 are normal
+			if (validGridIndex(xo, yo) && !getObstacles().anyMatch(o -> o.getBounds().intersects(grid[xo][yo]))) {
+				n = new Node(xo, yo);
+				n.calcH();
+				n.g = REC_SIZE * (diagonal ? GameObject.SQRT2 : 1.0); //Diagonal children are farther away
+				n.calcF();
+				list.add(n);
+			}
+		}
+		
+		return list;
+	}
+	
+	private boolean validGridIndex(int x, int y) {
+		return x >= 0
+			&& x < GRID_WIDTH
+			&& y >= 0
+			&& y < GRID_HEIGHT;
+	}
+	
+	private static Comparator<Node> compF = Comparator.comparing(Node::getF);
+	private static Comparator<Node> compG = Comparator.comparing(Node::getG);
+	private static Comparator<Node> compH = Comparator.comparing(Node::getH);
+	
+	class Node {
+		public Node(int x, int y) {
+			this(grid[x][y]);
+		}
+		public Node(Point p) {
+			this(p.x / REC_SIZE, p.y / REC_SIZE);
+		}
+		public Node(Rectangle r) {
+			this.rectangle = r;
+		}
+		public void calcH() {h = Point.distance(rectangle.getCenterX(), rectangle.getCenterY(), Program.player.getX(), Program.player.getY());}
+		public void calcG() {}
+		public void calcF() {f = g + h;}
+		public double getF() {return f;}
+		public double getG() {return g;}
+		public double getH() {return h;}
+		public int getX() {return rectangle.x / REC_SIZE;}
+		public int getY() {return rectangle.y / REC_SIZE;}
+		
+		Node parent;
+		Rectangle rectangle;
+		double f = Double.POSITIVE_INFINITY, g = Double.POSITIVE_INFINITY, h = Double.POSITIVE_INFINITY;
 	}
 	
 	public void addObjectAsync(GameObject nu) 		{asyncQueue.add(nu);}

@@ -11,6 +11,7 @@ public abstract class GameObject {
 
 	protected double x, y, velX, velY;
 	public static final double HALFSQRT2 = sqrt(2)/2;
+	public static final double SQRT2 = sqrt(2);
 	protected Handler handler;
 	
 	public GameObject(double x, double y) {

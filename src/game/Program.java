@@ -288,6 +288,10 @@ public class Program extends Canvas implements Runnable {
 		return Math.min(Math.max(val, min), max);
 	}
 	
+	public static int clamp(int val, int min, int max) {
+		return Math.min(Math.max(val, min), max);
+	}
+	
 	public static void commenceLevel() {
 		spawnSys.commenceLevel();
 	}
