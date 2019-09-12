@@ -228,13 +228,12 @@ public class Program extends Canvas implements Runnable {
 	private void tick() {
 		
 		switch (gameState) {
-		case GameOver:
-			break;	
 		case InGame:
 			handler.tick();
 			hud.tick();
 			spawnSys.tick();
 			break;
+		case GameOver:
 		case PauseMenu:
 		case StartMenu:
 		case StoreMenu:
@@ -256,7 +255,7 @@ public class Program extends Canvas implements Runnable {
 			else if (spawnSys.getLevel() <= 10) background = background2;
 			else background = background3;
 			
-			if (prevState != STATE.PauseMenu) commenceLevel();
+			if (prevState != STATE.PauseMenu) spawnSys.commenceLevel();
 			removeMouseMotionListener(store);
 			break;
 		case StoreMenu:
@@ -290,10 +289,6 @@ public class Program extends Canvas implements Runnable {
 	
 	public static int clamp(int val, int min, int max) {
 		return Math.min(Math.max(val, min), max);
-	}
-	
-	public static void commenceLevel() {
-		spawnSys.commenceLevel();
 	}
 	
 	public static void saveToFile(String filename) {

@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.stream.Stream;
 
 import game.Pieces.Blood;
@@ -31,14 +32,15 @@ import game.SpawnSystem.ZOMBIE;
 import static java.lang.Math.abs;
 
 /*
- * This class contains the list of game objects and ticks
- * and renders each them.
+ * The handler maintains a list of game pieces and ticks and renders them in order. It provides methods for accessing streams of game pieces,
+ * adding game pieces asynchronously (e.g. triggered by user input), adding zombies based on type and location, detecting collision with 
+ * obstacles, and calculating paths using the A* algorithm in the case that a straight-line path intersects with an obstacle.
  */
 public class Handler {
 	
 	private List<GameObject>	gameObjs;
 	private List<GameObject>	deadQueue;
-	private List<GameObject>	asyncQueue;
+	private ConcurrentLinkedQueue<GameObject>	asyncQueue;
 	private Random 				r;
 	public Rectangle[][]		grid;
 	public static final int 	REC_SIZE = 25;
@@ -48,7 +50,7 @@ public class Handler {
 	public Handler() {
 		gameObjs = new LinkedList<>();
 		deadQueue = new LinkedList<>();
-		asyncQueue = Collections.synchronizedList(new LinkedList<>());
+		asyncQueue = new ConcurrentLinkedQueue<GameObject>();
 		r = new Random();
 		grid = new Rectangle[GRID_WIDTH][GRID_HEIGHT];
 		for (int x = 0; x < GRID_WIDTH; x++) {
@@ -65,8 +67,7 @@ public class Handler {
 	}
 	
 	private void addQueued() {
-		asyncQueue.stream().forEach(o -> addObject(o));
-		asyncQueue.clear();
+		asyncQueue.forEach(___ -> addObject(asyncQueue.remove()));
 	}
 	
 	private void cullDead() {

@@ -24,7 +24,7 @@ public class FastZombie extends Zombie {
 		
 		speed *= 1.0005;
 		speed = Math.max(speed, 2.5);
-		if (ticks % 60 == 0) findPathIfNeeded();
+		if (ticks % 30 == 0) findPathIfNeeded();
 	}
 	
 	@Override

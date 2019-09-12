@@ -97,7 +97,6 @@ public class KeyInput extends KeyAdapter{
 			switch (key) {
 			case KeyEvent.VK_SPACE:
 				Program.gameState = STATE.InGame;
-				Program.commenceLevel();
 				break;
 			case KeyEvent.VK_1:
 				Program.loadFromFile("./res/saves/save1.syg");
