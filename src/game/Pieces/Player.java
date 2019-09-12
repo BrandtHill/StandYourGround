@@ -20,7 +20,6 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import game.Handler;
 import game.Program;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
@@ -99,8 +98,8 @@ public class Player extends GameObject{
 		double xDiff = (velX == 0 || velY == 0) ? velX : velX * HALFSQRT2;
 		double yDiff = (velX == 0 || velY == 0) ? velY : velY * HALFSQRT2;
 		
-		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(xDiff, 0)))) x += xDiff;
-		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(0, yDiff)))) y += yDiff;
+		if (!handler.hitsObstacle(getBounds(xDiff, 0))) x += xDiff;
+		if (!handler.hitsObstacle(getBounds(0, yDiff))) y += yDiff;
 		
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-26);
@@ -140,7 +139,6 @@ public class Player extends GameObject{
 		g2d.rotate(-angle, x + 10, y + 10);
 		g2d.drawImage(playerSprites[spriteNum][gunNum], (int)x, (int)y, null);
 		g2d.rotate(angle, x + 10, y + 10);
-		//g2d.draw(getGridNode());
 	}
 	
 	public void renderPreview(Graphics g, Gun gun) {

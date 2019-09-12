@@ -1,10 +1,10 @@
 package game;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.Polygon;
 import java.awt.Rectangle;
-import java.awt.Shape;
+import java.awt.geom.Line2D;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -41,7 +41,7 @@ public class Handler {
 	private List<GameObject>	asyncQueue;
 	private Random 				r;
 	public Rectangle[][]		grid;
-	public static final int 	REC_SIZE = 40;
+	public static final int 	REC_SIZE = 25;
 	public static final int		GRID_WIDTH = Program.WIDTH / REC_SIZE;
 	public static final int		GRID_HEIGHT = Program.HEIGHT / REC_SIZE;
 	
@@ -82,7 +82,6 @@ public class Handler {
 		gameObjs.stream().filter(o -> o instanceof Zombie).forEach(z -> z.render(g));
 		gameObjs.stream().filter(o -> o instanceof Reticle).findFirst().get().render(g);
 		gameObjs.stream().filter(o -> o instanceof Player).findFirst().get().render(g);
-		//for (Rectangle[] arr : grid) for (Rectangle r : arr) ((Graphics2D)g).draw(r);
 	}
 
 	public void removeBlood() {
@@ -192,54 +191,81 @@ public class Handler {
 		}
 	}
 	
+	public boolean hitsObstacle(Rectangle r) {
+		return getObstacles().anyMatch(o -> o.getBounds().intersects(r));
+	}
+	
+	public boolean hitsObstacle(Line2D.Double l) {
+		return getObstacles().anyMatch(o -> o.getBounds().intersectsLine(l));
+	}
+	
+	public boolean hitsObstacle(Polygon p) {
+		return getObstacles().anyMatch(o -> p.getBounds().intersects(o.getBounds()));
+	}
+	
 	public Rectangle getGridNode(Point position) {
-		int x = position.x / REC_SIZE;
-		int y = position.y / REC_SIZE;
+		int x = nodeX(position.x);
+		int y = nodeY(position.y);
 		return validGridIndex(x, y) ? grid[x][y] : null;
 	}
 	
-	public List<Node> aStar(Point start, Point dest) {
-		List<Node> path = new LinkedList<>();
+	public List<Rectangle> aStar(Point startPoint, Point destPoint) {
+		Node[][] nodes = generateNodes();
+		List<Rectangle> path = new LinkedList<>();
 		Set<Node> open = new HashSet<>();
 		Set<Node> closed = new HashSet<>();
-		Node sNode = new Node(start);
-		Node dNode = new Node(dest);
-		sNode.f = sNode.g = sNode.h = 0;
-		open.add(sNode);
-		Node curr;
-		while (open.size() > 0) {
-			curr = open.stream().min(compF).get();
+		Node start = nodes[nodeX(startPoint.x)][nodeY(startPoint.y)];
+		Node dest = nodes[nodeX(destPoint.x)][nodeY(destPoint.y)];
+		path.add(dest.rectangle);
+		start.f = start.g = start.h = 0;
+		open.add(start);
+		Node curr = null;
+		while (!open.isEmpty()) {
+			if ((curr = open.stream().min(compF).get()) == dest) break;
 			open.remove(curr);
 			closed.add(curr);
+			
+			int x = curr.getX();
+			int y = curr.getY();
+			Node n = null;
+			int[][] offsets = new int[][] {{x-1, y-1}, {x+1, y-1}, {x-1, y+1}, {x+1, y+1},  //0-3 diagonal children 
+										   {x  , y-1}, {x  , y+1}, {x-1, y  }, {x+1, y  }}; //4-7 normal children
+			
+			for (int i = 0; i < offsets.length; i++) {
+				int xo = offsets[i][0];
+				int yo = offsets[i][1];
+				boolean diagonal = i < 4; //First 4 offsets are diagonal, Last 4 are normal
+				if (validGridIndex(xo, yo) && !closed.contains(n = nodes[xo][yo]) && (!hitsObstacle(n.rectangle) || n == dest) && curr.g + gVal(diagonal) < n.g) {
+					n.parent = curr;
+					n.calcH(dest);
+					n.calcG(diagonal);
+					n.calcF();
+					open.add(n);
+				}
+			}
+		}
+		while (curr != start) {
+			path.add(0, curr.rectangle);
+			curr = curr.parent;
 		}
 		return path;
 	}
 	
-	private List <Node> generateChildren(Node antecedent) {
-		List<Node> list = new LinkedList<>();
-		int x = antecedent.getX();
-		int y = antecedent.getY();
-		Node n;
-		int[][] offsets = new int[][] {{x-1, y-1}, {x+1, y-1}, {x-1, y+1}, {x+1, y+1},  //0-3 diagonal children 
-									   {x  , y-1}, {x  , y+1}, {x-1, y  }, {x+1, y  }}; //4-7 normal children
-		
-		for (int i = 0; i < offsets.length; i++) {
-			int xo = offsets[i][0];
-			int yo = offsets[i][1];
-			boolean diagonal = i < 4; //First 4 offsets are diagonal, Last 4 are normal
-			if (validGridIndex(xo, yo) && !getObstacles().anyMatch(o -> o.getBounds().intersects(grid[xo][yo]))) {
-				n = new Node(xo, yo);
-				n.calcH();
-				n.g = REC_SIZE * (diagonal ? GameObject.SQRT2 : 1.0); //Diagonal children are farther away
-				n.calcF();
-				list.add(n);
+	public static int nodeX(int x) {return x / REC_SIZE;}
+	public static int nodeY(int y) {return y / REC_SIZE;}
+	public static double gVal(boolean diagonal) {return REC_SIZE * (diagonal ? GameObject.SQRT2 : 1.0);}
+	
+	private Node[][] generateNodes() {
+		Node[][] nodes = new Node[GRID_WIDTH][GRID_HEIGHT];
+		for (int x = 0; x < GRID_WIDTH; x++) {
+			for (int y = 0; y < GRID_HEIGHT; y++) {
+				nodes[x][y] = new Node(x, y);
 			}
 		}
-		
-		return list;
+		return nodes;
 	}
 	
-	private boolean validGridIndex(int x, int y) {
+	public static boolean validGridIndex(int x, int y) {
 		return x >= 0
 			&& x < GRID_WIDTH
 			&& y >= 0
@@ -247,25 +273,13 @@ public class Handler {
 	}
 	
 	private static Comparator<Node> compF = Comparator.comparing(Node::getF);
-	private static Comparator<Node> compG = Comparator.comparing(Node::getG);
-	private static Comparator<Node> compH = Comparator.comparing(Node::getH);
 	
 	class Node {
-		public Node(int x, int y) {
-			this(grid[x][y]);
-		}
-		public Node(Point p) {
-			this(p.x / REC_SIZE, p.y / REC_SIZE);
-		}
-		public Node(Rectangle r) {
-			this.rectangle = r;
-		}
-		public void calcH() {h = Point.distance(rectangle.getCenterX(), rectangle.getCenterY(), Program.player.getX(), Program.player.getY());}
-		public void calcG() {}
+		public Node(int x, int y) {this.rectangle = grid[x][y];}
+		public void calcH(Node dest) {h = Point.distance(rectangle.getCenterX(), rectangle.getCenterY(), dest.rectangle.getCenterX(), dest.rectangle.getCenterY());}
+		public void calcG(boolean diagonal) {g = parent.g + gVal(diagonal);}
 		public void calcF() {f = g + h;}
 		public double getF() {return f;}
-		public double getG() {return g;}
-		public double getH() {return h;}
 		public int getX() {return rectangle.x / REC_SIZE;}
 		public int getY() {return rectangle.y / REC_SIZE;}
 		

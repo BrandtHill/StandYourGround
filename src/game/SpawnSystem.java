@@ -21,7 +21,8 @@ public class SpawnSystem {
 	}
 
 	public SpawnSystem() {
-		level = 1;//11;
+		level = 1;
+		//level = 11;
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
@@ -453,6 +454,7 @@ public class SpawnSystem {
 		case 11:
 			switch (wave) {
 			case 1:
+				//spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 1);
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
 				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 3);
 				delayMillis = 6000;

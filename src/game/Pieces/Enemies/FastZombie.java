@@ -14,8 +14,7 @@ public class FastZombie extends Zombie {
 	
 	@Override
 	public void tick() {
-		angle = getAngleToPlayer();
-		angle += correctForObstacles();
+		angle = determineAngle();
 		velX = r.nextGaussian() * 1.5 + speed*sin(angle);
 		velY = r.nextGaussian() * 1.5 + speed*cos(angle);
 		move();
@@ -25,6 +24,7 @@ public class FastZombie extends Zombie {
 		
 		speed *= 1.0005;
 		speed = Math.max(speed, 2.5);
+		if (ticks % 60 == 0) findPathIfNeeded();
 	}
 	
 	@Override

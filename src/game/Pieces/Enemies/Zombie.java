@@ -9,6 +9,8 @@ import java.awt.Rectangle;
 import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -35,6 +37,7 @@ public class Zombie extends GameObject {
 	protected int spriteNum;
 	protected int moneyValue;
 	protected int maxAngleChangeDegrees;
+	protected List<Rectangle> path = new LinkedList<>();
 	
 	public Zombie(double x, double y, double speed, double health) {
 		super(x, y);
@@ -49,8 +52,7 @@ public class Zombie extends GameObject {
 	}
 
 	public void tick() {
-		angle = getAdjustedAngleToPlayer(5);
-		angle += correctForObstacles();
+		angle = determineAngle();
 		velX = r.nextGaussian() + speed*sin(angle);
 		velY = r.nextGaussian() + speed*cos(angle);
 		
@@ -59,6 +61,7 @@ public class Zombie extends GameObject {
 		
 		if (ticks++ % 8 == 0) spriteNum++;
 		if (health < 20) speed *= 1.0015;
+		if (ticks % 60 == 0) findPathIfNeeded();
 	}
 	
 	protected double getAngleToPlayer() {
@@ -72,22 +75,37 @@ public class Zombie extends GameObject {
 		return diff;
 	}
 	
-	protected double getAdjustedAngleToPlayer(double maxChangeDegrees) {
+	protected double getAdjustedAngle(double toAngle, double maxChangeDeg) {
 		double diff = getAngleDiff(getAngleToPlayer());
 		double diffSign = diff >= 0 ? 1 : -1;
 		double diffAbs = Math.abs(diff);
-		double maxChange = maxChangeDegrees * (Math.PI / 180);
+		double maxChange = maxChangeDeg * (Math.PI / 180);
 		return (angle + diffSign * Math.min(diffAbs, maxChange)) % (2 * Math.PI);
 	}
 	
+	protected double determineAngle() {
+		if (!handler.hitsObstacle(getSightToPlayer()) || path.isEmpty()) return getAdjustedAngle(getAngleToPlayer(), maxAngleChangeDegrees);
+		Rectangle r = path.get(0);
+		if (r == getGridNode() && path.size() > 1) {
+			path.remove(r);
+			r = path.get(0);
+		}
+		return atan2(r.getCenterX() - (x + 10), r.getCenterY() - (y + 10));
+	}
+	
+	//Path correcting function unrelated to A* path
 	protected double correctForObstacles() {
-		if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersectsLine(getSightToPlayer()))) return 0;
+		if (!handler.hitsObstacle(getSightToPlayer())) return 0;
 		for (int i = 0; i < 180; i += 10) {
 			double theta = i * Math.PI / 180;
-			if (!handler.getObstacles().anyMatch(o -> getSightBounds(theta).intersects(o.getBounds()))) return theta;
-			if (!handler.getObstacles().anyMatch(o -> getSightBounds(-theta).intersects(o.getBounds()))) return -theta;
+			if (!handler.hitsObstacle(getSightBounds(theta))) return theta;
+			if (!handler.hitsObstacle(getSightBounds(-theta))) return -theta;
 		}
 		return 0;
+	}
+	
+	protected void findPathIfNeeded() {
+		if (handler.hitsObstacle(getSightToPlayer()) && Handler.validGridIndex(Handler.nodeX((int)x + 10), Handler.nodeY((int)y + 10))) path = handler.aStar(new Point((int)x + 10, (int)y + 10), new Point((int)player.getX() + 10, (int)player.getY() + 10));
 	}
 	
 	public void detectCollision() {
@@ -103,8 +121,8 @@ public class Zombie extends GameObject {
 	}
 	
 	protected void move() {
-		 if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(velX, 0)))) x += velX;
-		 if (!handler.getObstacles().anyMatch(o -> o.getBounds().intersects(getBounds(0, velY)))) y += velY;
+		 if (!handler.hitsObstacle((getBounds(velX, 0)))) x += velX;
+		 if (!handler.hitsObstacle((getBounds(0, velY)))) y += velY;
 	}
 	
 	public Rectangle getBounds() {
@@ -128,11 +146,10 @@ public class Zombie extends GameObject {
 		g2d.rotate(-angle, x+10, y+10);
 		g2d.drawImage(zombieSprites[spriteNum % 8], (int)x, (int)y, null);
 		g2d.rotate(angle, x+10, y+10);
-		g2d.setColor(new Color(0, 255, 0, 63));
+		//g2d.setColor(new Color(0, 255, 0, 63));
 		//g2d.draw(getSightToPlayer());
 		//g2d.draw(getSightBounds());
-		//Rectangle r = getGridNode();
-		//if (r != null) g2d.draw(r);
+		//path.forEach(p -> g2d.draw(p));
 	}
 	
 	public void damageMe(double damage, double angle, double knock) {
@@ -151,6 +168,7 @@ public class Zombie extends GameObject {
 	
 	public double getHealth() {return health;}
 	
+	//Related to path-correcting unrelated to A* path
 	protected Polygon getSightBounds(double theta) {
 		double phi = angle + theta;
 		return new Polygon(

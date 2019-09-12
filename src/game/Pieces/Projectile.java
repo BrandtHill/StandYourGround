@@ -74,7 +74,7 @@ public class Projectile extends GameObject {
 			yScale = cos(angle);
 		});
 		
-		if (handler.getObstacles().anyMatch(o -> o.getBounds().intersectsLine(getBounds()))) handler.removeObjectAsync(this);
+		if (handler.hitsObstacle(getBounds())) handler.removeObjectAsync(this);
 	}
 
 	public void render(Graphics g) {
