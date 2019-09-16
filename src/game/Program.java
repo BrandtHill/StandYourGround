@@ -2,7 +2,6 @@ package game;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
@@ -72,10 +71,8 @@ public class Program extends Canvas implements Runnable {
 		addMouseListener(store);
 		addMouseMotionListener(store);
 		
-
-
-		saveToFile("./res/saves/newgame.syg");
-		saveToFile("./res/saves/autosave.syg");
+		SaveData.saveToFile("./res/saves/newgame.syg");
+		SaveData.saveToFile("./res/saves/autosave.syg");
 		
 		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
 	}
@@ -168,14 +165,8 @@ public class Program extends Canvas implements Runnable {
 		
 		switch (gameState) {
 		case GameOver:
-			g.setColor(new Color(30,60,30));
-			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("YOU DIED", 300, 200);
-			g.setFont(new Font("Arial", 1, 28));
-			g.drawString("R: RETRY FROM AUTOSAVE", 150, 400);
-			g.drawString("N: NEW GAME", 150, 450);
+			MenuHelpers.renderGameOverMenu(g);
+			reticle.render(g);
 			break;
 			
 		case InGame:
@@ -191,24 +182,12 @@ public class Program extends Canvas implements Runnable {
 			break;
 			
 		case PauseMenu:
-			g.setColor(new Color(115,48,168));
-			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("GAME PAUSED", 210, 200);
-			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS 'ESC' TO RESUME", 170, 400);
+			MenuHelpers.renderPauseMenu(g);
 			reticle.render(g);
 			break;
 			
 		case StartMenu:
-			g.setColor(new Color(150,48,30));
-			g.draw3DRect(100, 90, WIDTH-200, HEIGHT-200, true);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 42));
-			g.drawString("STAND YOUR GROUND", 160, 200);
-			g.setFont(new Font("Arial", 1, 36));
-			g.drawString("PRESS SPACE TO BEGIN", 180, 400);
+			MenuHelpers.renderStartMenu(g);
 			reticle.render(g);
 			break;
 			
@@ -260,7 +239,7 @@ public class Program extends Canvas implements Runnable {
 			break;
 		case StoreMenu:
 			addMouseMotionListener(store);
-			saveToFile("./res/saves/autosave.syg");
+			SaveData.saveToFile("./res/saves/autosave.syg");
 			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			Store.menu = Store.Menu.BuyGuns;
 			store.onMenuUpdate();
@@ -289,14 +268,6 @@ public class Program extends Canvas implements Runnable {
 	
 	public static int clamp(int val, int min, int max) {
 		return Math.min(Math.max(val, min), max);
-	}
-	
-	public static void saveToFile(String filename) {
-		SaveData.saveToFile(filename);
-	}
-	
-	public static void loadFromFile(String filename) {
-		SaveData.loadFromFile(filename);
 	}
 	
 	public static void delay(Duration duration) {

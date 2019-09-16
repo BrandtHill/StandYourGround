@@ -22,16 +22,13 @@ public class SpawnSystem {
 
 	public SpawnSystem() {
 		level = 1;
-		//level = 11;
+		level = 15;
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
 		ticks = 0;
 		delayMillis = 0;
 		wave = 1;
-		handler.addObject(new Obstacle(200, 200, 10, 110));
-		handler.addObject(new Obstacle(200, 200, 110, 10));
-		handler.addObject(new Obstacle(200, 300, 110, 10));
 	}
 
 	public void tick() {
@@ -136,17 +133,37 @@ public class SpawnSystem {
 			break;
 
 		case 11:
-			player.zombiesLeft = 24;
+			player.zombiesLeft = 16;
 			delayMillis = 3000;
-			handler.addObjectAsync(new Obstacle(-100, 270, 490, 17));
-			handler.addObjectAsync(new Obstacle(575, 270, 450, 17));
-			handler.addObjectAsync(new Obstacle(640, 60, 92, 155));
+			addObstaclesLvl11_15();
+			break;
+			
+		case 12:
+			player.zombiesLeft = 24;
+			delayMillis = 500;
+			addObstaclesLvl11_15();
+			break;
+			
+		case 13:
+			player.zombiesLeft = 40;
+			delayMillis = 1500;
+			addObstaclesLvl11_15();
+			break;
+			
+		case 14:
+			player.zombiesLeft = 55;
+			delayMillis = 1500;
+			addObstaclesLvl11_15();
+			break;
+			
+		case 15:
+			player.zombiesLeft = 80;
+			delayMillis = 1500;
+			addObstaclesLvl11_15();
 			break;
 			
 		default:
-			handler.addObjectAsync(new Obstacle(-100, 270, 490, 17));
-			handler.addObjectAsync(new Obstacle(575, 270, 450, 17));
-			handler.addObjectAsync(new Obstacle(640, 60, 92, 155));
+			addObstaclesLvl11_15();
 			player.zombiesLeft = 10 * level;
 			for (int i = 0; i < 10 * level; i++) {
 				handler.addRandomZombie();
@@ -454,26 +471,173 @@ public class SpawnSystem {
 		case 11:
 			switch (wave) {
 			case 1:
-				//spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 1);
-				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
-				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 4);
 				delayMillis = 6000;
 				break;
 				
 			case 2:
-				spawnZombies(REGION.UP, ZOMBIE.FAST, 3);
-				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 3);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 4);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
 				delayMillis = 6000;
 				break;
 				
 			case 3:
-				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 8);
 				spawnZombies(REGION.LEFT, ZOMBIE.THICC, 4);
 				doneSpawning = true;
 				break;
 			}
 			break;
 			
+		case 12:
+			switch (wave) {
+			case 1:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 6);
+				delayMillis = 3000;
+				break;
+				
+			case 2:
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 6);
+				delayMillis = 4000;
+				break;
+				
+			case 3:
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 12);
+				doneSpawning = true;
+				break;
+			}
+			break;
+			
+		case 13: //40
+			switch (wave) {
+			case 1:
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
+				delayMillis = 6000;
+				break;
+				
+			case 2:
+				spawnZombies(REGION.LEFT, ZOMBIE.FAST, 2);
+				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 2);
+				delayMillis = 5000;
+				break;
+				
+			case 3:
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 6);
+				spawnZombies(REGION.UP, ZOMBIE.THICC, 6);
+				delayMillis = 11000;
+				break;
+			
+			case 4:
+				spawnZombies(REGION.LEFT, ZOMBIE.DODGING, 4);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
+				delayMillis = 5000;
+				break;
+			
+			case 5:
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 4);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 4);
+				delayMillis = 2500;
+				break;
+				
+			case 7:
+				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
+				doneSpawning = true;
+				break;
+			}
+			break;
+		
+		case 14: //55
+			switch (wave) {
+			case 1:
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 8);
+				spawnZombies(REGION.UP, ZOMBIE.DODGING, 3);
+				delayMillis = 9000;
+				break;
+				
+			case 2:
+				spawnZombies(REGION.UP, ZOMBIE.THICC, 8);
+				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 3);
+				delayMillis = 9000;
+				break;
+				
+			case 3:
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 8);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				delayMillis = 9000;
+				break;
+				
+			case 4:
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 12);
+				spawnZombies(REGION.DOWN, ZOMBIE.FAST, 2);
+				delayMillis = 5000;
+				break;
+				
+			case 5:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 8);
+				doneSpawning = true;
+				break;
+			}
+			break;
+			
+		case 15: //80
+			switch (wave) {
+			case 1:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
+				delayMillis = 9000;
+				break;
+				
+			case 2:
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 2);
+				delayMillis = 9000;
+				break;
+			
+			case 3:
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
+				delayMillis = 9000;
+				break;
+			
+			case 4:
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.DODGING, 2);
+				delayMillis = 9000;
+				break;
+			
+			case 5:
+				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.DOWN, ZOMBIE.THICC, 2);
+				delayMillis = 9000;
+				break;
+				
+			case 6:
+				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 2);
+				delayMillis = 9000;
+				break;
+				
+			case 7:
+				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 5);
+				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
+				spawnZombies(REGION.UP, ZOMBIE.DODGING, 2);
+				delayMillis = 9000;
+				break;
+				
+			case 8:
+				spawnZombies(REGION.UP, ZOMBIE.FAST, 10);
+				doneSpawning = true;
+				break;
+			}
+			break;
 		default:
 			doneSpawning = true;
 			break;
@@ -481,6 +645,12 @@ public class SpawnSystem {
 		wave++;
 	}
 
+	private void addObstaclesLvl11_15() {
+		handler.addObjectAsync(new Obstacle(-50, 270, 428, 17));
+		handler.addObjectAsync(new Obstacle(585, 270, 265, 17));
+		handler.addObjectAsync(new Obstacle(640, 60, 87, 139));
+	}
+	
 	private void spawnZombies(REGION region, ZOMBIE zombie, int num) {
 		for (int i = 0; i < num; i++) {
 			handler.addZombie(region, zombie);

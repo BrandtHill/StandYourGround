@@ -13,6 +13,7 @@ import java.util.Arrays;
 import javax.imageio.ImageIO;
 
 import game.Button;
+import game.MenuHelpers;
 import game.Program;
 import game.Audio.AudioPlayer;
 import game.Pieces.Player;
@@ -192,19 +193,13 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "000 Buckshot", "Model 12", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			break;
 		case SelectPrimary:
-			for (i = 0; i < Player.NUMGUNS; i++) {
-				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
-			}
+			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			break;
 		case SelectSecondary:
-			for (i = 0; i < Player.NUMGUNS; i++) {
-				buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
-			}
+			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
 			break;
 		case SelectSidearm:
-			for (i = 0; i < Player.NUMGUNS; i++) {
-				buttonHelper(i, player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
-			}
+			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
 			break;
 		default:
 			break;
@@ -262,14 +257,11 @@ public class Store extends MouseAdapter {
 			drawEquipped(g);
 			break;
 		case Final:
-			g.setColor(Color.LIGHT_GRAY);
-			g.setFont(new Font("Arial", 1, 48));
-			g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 100, 200);
-			g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 100, 280);
-			g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 100, 360);
-			g.setColor(Color.WHITE);
-			g.setFont(new Font("Arial", 1, 24));
-			g.drawString("PRESS SPACE TO COMMENCE NEXT LEVEL", 150, 550);
+			drawEquippedFinal(g);
+			MenuHelpers.renderCommand(g, 225, 425, "Space", "Commence Next Level");
+			MenuHelpers.renderCommand(g, 225, 450, "1", "Save Current State to Save 1");
+			MenuHelpers.renderCommand(g, 225, 475, "2", "Save Current State to Save 2");
+			MenuHelpers.renderCommand(g, 225, 500, "3", "Save Current State to Save 3");
 		default:
 			break;
 		}	
@@ -290,10 +282,24 @@ public class Store extends MouseAdapter {
 	
 	private void drawEquipped(Graphics g) {
 		g.setColor(Color.GRAY);
-		g.setFont(new Font("Arial", 1, 10));
-		g.drawString("Primary      :   " + (player.getGunPrimary() != null ? player.getGunPrimary().getName() : " -"), 70, 390);
-		g.drawString("Secondary :   " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : " -"), 70, 405);
-		g.drawString("Sidearm     :   " + (player.getGunSidearm() != null ? player.getGunSidearm().getName() : " -"), 70, 420);
+		g.setFont(new Font("Monospaced", 0, 12));
+		g.drawString("Primary   :  " + (player.getGunPrimary()   != null ? player.getGunPrimary().getName()   : "-"), 60, 390);
+		g.drawString("Secondary :  " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : "-"), 60, 405);
+		g.drawString("Sidearm   :  " + (player.getGunSidearm()   != null ? player.getGunSidearm().getName()   : "-"), 60, 420);
+	}
+	
+	private void drawEquippedFinal(Graphics g) {
+		g.setColor(Color.LIGHT_GRAY);
+		g.setFont(new Font("Monospaced", 0, 30));
+		g.drawString("Primary   :  " + (player.getGunPrimary()   != null ? player.getGunPrimary().getName()   : "-"), 60, 150);
+		g.drawString("Secondary :  " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : "-"), 60, 250);
+		g.drawString("Sidearm   :  " + (player.getGunSidearm()   != null ? player.getGunSidearm().getName()   : "-"), 60, 350);
+		g.drawImage(pegboard, 550, 100, 160, 80, null);
+		g.drawImage(pegboard, 550, 200, 160, 80, null);
+		g.drawImage(pegboard, 550, 300, 160, 80, null);
+		if (player.getGunPrimary()   != null) g.drawImage(player.getGunPrimary().getSprite(),   550, 100, 160, 80, null);
+		if (player.getGunSecondary() != null) g.drawImage(player.getGunSecondary().getSprite(), 550, 200, 160, 80, null);
+		if (player.getGunSidearm()   != null) g.drawImage(player.getGunSidearm().getSprite(),   550, 300, 160, 80, null);
 	}
 	
 	private void upgradeCapacity(Gun gun, int ammo, int money) {
