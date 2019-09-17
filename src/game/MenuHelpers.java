@@ -11,8 +11,7 @@ public class MenuHelpers {
 	private static final Font ARIAL_48 = new Font("Arial", 1, 48);
 	private static final Font ARIAL_42 = new Font("Arial", 1, 42);
 	private static final Font ARIAL_36 = new Font("Arial", 1, 36);
-	private static final Font ARIAL_28 = new Font("Arial", 1, 28);
-	private static final Font ARIAL_20 = new Font("Arial", 0, 20);
+	private static final Font MONOSPACED_20 = new Font("Monospaced", 1, 20);
 	
 	public static void renderStartMenu(Graphics g) {
 		g.setColor(new Color(150,48,30));
@@ -43,18 +42,18 @@ public class MenuHelpers {
 		g.setFont(ARIAL_42);
 		g.drawString("YOU DIED", 300, 200);
 		renderCommand(g, 225, 350, "R", "Retry from Autosave");
-		renderCommand(g, 225, 375, "N", "New Game");
+		renderCommand(g, 225, 375, "N", "Main Menu (New Game)");
 		renderCommand(g, 225, 400, "1", "Save current state to Save 1");
 		renderCommand(g, 225, 425, "2", "Save current state to Save 2");
 		renderCommand(g, 225, 450, "3", "Save current state to Save 3");
 	}
 	
 	public static void renderCommand(Graphics g, int x, int y, String cmd, String desc) {
-		g.setFont(ARIAL_20);
-		g.setColor(Color.WHITE);
+		g.setFont(MONOSPACED_20);
+		g.setColor(Color.LIGHT_GRAY);
 		g.drawString(cmd, x, y);
-		g.drawString(":", x + 60, y);
-		g.drawString(desc, x + 90, y);
+		g.drawString(":", x + 65, y);
+		g.drawString(desc, x + 95, y);
 	}
 	
 	private static boolean saveFileExists(String save) {

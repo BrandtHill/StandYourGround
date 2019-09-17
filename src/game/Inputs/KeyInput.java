@@ -4,18 +4,16 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import game.Program;
-import game.SpawnSystem;
 import game.Pieces.Player;
 import game.Program.STATE;
 import game.SaveData;
 import game.Weapons.Gun;
 
-public class KeyInput extends KeyAdapter{
+public class KeyInput extends KeyAdapter {
 	
 	private Store store;
 	private Player player;
 	private boolean w, a, s, d;
-	private double speed = 2;
 	
 	public KeyInput() {
 		this.store = Program.store;
@@ -169,13 +167,13 @@ public class KeyInput extends KeyAdapter{
 	 * movement when opposing keys are pressed and released.
 	 */
 	private void changeVelocity() {
-		speed = player.getSpeed();
+		double speed = player.getSpeed();
 		
 		if	((w && s) || !(w || s))		player.setVelY(0);
-		if	(w && !s) 					player.setVelY(-1*speed);
+		if	(w && !s) 					player.setVelY(-speed);
 		if	(!w && s)					player.setVelY(speed);
 		if	((a && d) || !(a || d))		player.setVelX(0);
-		if	(a && !d)					player.setVelX(-1*speed);
+		if	(a && !d)					player.setVelX(-speed);
 		if	(!a && d)					player.setVelX(speed);
 	}
 }

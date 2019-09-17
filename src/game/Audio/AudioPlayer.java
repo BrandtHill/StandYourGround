@@ -1,6 +1,8 @@
 package game.Audio;
 
+import java.io.File;
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -17,8 +19,7 @@ import game.Program.STATE;
 public class AudioPlayer {
 
 	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Map<String, Music> musicMap = new HashMap<String, Music>();
-	private static Music dying;
+	private static Music music;
 	
 	private static void loadSounds() {
 		try {
@@ -63,18 +64,19 @@ public class AudioPlayer {
 	
 	private static void loadMusic() {
 		try {
-			musicMap.put("Dying", new Music("./res/Dying.ogg"));
-			//musicMap.put("Husk", new Music("./res/Husk.ogg"));
-			//musicMap.put("Mystic", new Music("./res/Mystic Beat.ogg"));
-			//musicMap.put("Fat", new Music("./res/Fat Beat.ogg"));
+			String fn = Arrays.stream(new File("./").list())
+			.filter(s -> s.matches("([^\\.]+(\\.(?i)(wav|ogg))$)"))
+			.findAny()
+			.orElse("./res/Dying.ogg");
+			
+			music = new Music(fn);
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private static void runMusicLoop() {
-		dying = getMusic("Dying");
-		dying.loop(1f, 0.25f);
+		music.loop(1f, 0.25f);
 		STATE prev = Program.gameState;
 		STATE curr = Program.gameState;
 		while (true) {
@@ -86,28 +88,24 @@ public class AudioPlayer {
 	}
 	
 	private static void stateChange(STATE curr) {
-		float pos = dying.getPosition();
+		float pos = music.getPosition();
 		
 		switch (curr) {
-		case GameOver:	dying.loop(0.65f, 0.25f);
+		case GameOver:	music.loop(0.65f, 0.25f);
 			break;
-		case InGame:	dying.loop(1f, 0.25f);
+		case InGame:	music.loop(1f, 0.25f);
 			break;
-		case PauseMenu: dying.loop(0.65f, 0.25f);
+		case PauseMenu: music.loop(0.65f, 0.25f);
 			break;
-		case StartMenu: dying.loop(1f, 0.25f);
+		case StartMenu: music.loop(1f, 0.25f);
 			break;
-		case StoreMenu: dying.loop(1.35f, 0.25f);
+		case StoreMenu: music.loop(1.35f, 0.25f);
 			break;
-		default:		dying.loop(1f, 0.25f);
+		default:		music.loop(1f, 0.25f);
 			break;
 		}
 		
-		dying.setPosition(pos);
-	}
-	
-	public static Music getMusic(String key) {
-		return musicMap.get(key);
+		music.setPosition(pos);
 	}
 	
 	public static Sound getSound(String key) {

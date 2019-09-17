@@ -22,7 +22,7 @@ public class SpawnSystem {
 
 	public SpawnSystem() {
 		level = 1;
-		level = 15;
+		//level = 15;
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;
@@ -180,7 +180,7 @@ public class SpawnSystem {
 		ticks = 0;
 
 		switch (level) {
-		case 1:
+		case 1: //6
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 3);
@@ -193,7 +193,7 @@ public class SpawnSystem {
 				break;
 			}
 			break;
-		case 2:
+		case 2: //12
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
@@ -218,7 +218,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 3:
+		case 3: //14
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.THICC, 1);
@@ -239,7 +239,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 4:
+		case 4: //20
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 4);
@@ -263,7 +263,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 5:
+		case 5: //30
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 10);
@@ -283,7 +283,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 6:
+		case 6: //15
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 2);
@@ -311,7 +311,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 7:
+		case 7: //30
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.UP, ZOMBIE.NORMAL, 3);
@@ -335,7 +335,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 8:
+		case 8: //36
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.NORMAL, 2);
@@ -379,7 +379,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 9:
+		case 9: //34
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.RIGHT, ZOMBIE.FAST, 1);
@@ -427,7 +427,7 @@ public class SpawnSystem {
 			}
 			break;
 
-		case 10:
+		case 10: //50
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.LEFT, ZOMBIE.NORMAL, 8);
@@ -468,7 +468,7 @@ public class SpawnSystem {
 			}
 			break;
 			
-		case 11:
+		case 11: //16
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 2);
@@ -489,7 +489,7 @@ public class SpawnSystem {
 			}
 			break;
 			
-		case 12:
+		case 12: //24
 			switch (wave) {
 			case 1:
 				spawnZombies(REGION.DOWN, ZOMBIE.NORMAL, 6);

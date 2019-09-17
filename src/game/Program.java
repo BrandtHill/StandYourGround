@@ -235,6 +235,7 @@ public class Program extends Canvas implements Runnable {
 			else background = background3;
 			
 			if (prevState != STATE.PauseMenu) spawnSys.commenceLevel();
+			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");
 			removeMouseMotionListener(store);
 			break;
 		case StoreMenu:
