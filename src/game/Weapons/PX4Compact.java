@@ -12,7 +12,7 @@ public class PX4Compact extends Gun {
 		super();
 		gunId = GUN.PX4Compact;
 		reloadSound = AudioPlayer.getSound("ReloadPX4");
-		reloadTime = 2000;
+		reloadTime = 1600;
 		chamberTime = 50;
 		gunName = "PX4 Compact";
 		ammoLoaded = magSize = 15;
