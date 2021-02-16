@@ -115,17 +115,13 @@ public class Program extends Canvas implements Runnable {
 		new Program();
 	}
 
-	/**
-	 * This method is the main game loop. It 'ticks' 60 times
-	 * per second. It renders the game as fast as possible and
-	 * prints the frame rate to console every second. 
-	 */
+	/** This method is the main game loop. Tick rate is 60/second. */
 	public void run() {
 		this.requestFocus();
 		long lastTime = System.nanoTime();
 		long currTime = System.nanoTime();
         double ticksPerSec = 60.0;
-        double nsPerTick = 1_000_000_000 / ticksPerSec;
+        double nsPerTick = 1e9 / ticksPerSec;
         double delta = 0;
         long timer = System.currentTimeMillis();
         int frames = 0;
@@ -137,16 +133,19 @@ public class Program extends Canvas implements Runnable {
 	        while (delta >=1) {
 	        	tick();
 				delta--;
+
+		        render();
+				frames++;
 	        }
 	        
-	        render();
-			frames++;
+	        
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer = System.currentTimeMillis();
-				System.out.println("FPS: " + (frames > 1000 ? "1000+" : frames));
+				System.out.println("FPS: " + frames);
 				frames = 0;
 			}
-	        if (delta < 0.9) delay(Duration.ofMillis(1));
+	        
+			delay(Duration.ofNanos(Math.max((long) (nsPerTick - (System.nanoTime() - currTime)), 0)));
         }
         stop();
 	}
@@ -273,7 +272,7 @@ public class Program extends Canvas implements Runnable {
 	
 	public static void delay(Duration duration) {
 		try {
-			Thread.sleep(duration.toMillis());
+			Thread.sleep(duration.toMillis(), (int) (duration.toNanosPart() % 1e6));
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}

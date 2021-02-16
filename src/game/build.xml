@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <project default="create_run_jar" name="Create Runnable Jar for StandYourGround">
     <property name="dir.buildfile" value="."/>
-    <property name="dir.project" value="${basedir}/.."/>
+    <property name="dir.project" value="${basedir}/../.."/>
     <property name="dir.bin" value="${dir.project}/bin"/>
     <property name="dir.lib" value="${dir.project}/lib"/>
     <property name="dir.res" value="${dir.project}/res"/>

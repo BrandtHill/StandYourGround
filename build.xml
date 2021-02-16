@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<project default="package" name="Create and Package Runnable Jar for StandYourGround">
+    <property name="dir.buildfile" value="."/>
+    <property name="dir.project" value="${basedir}/"/>
+    <property name="dir.src" value="${dir.project}/src"/>
+    <property name="dir.bin" value="${dir.project}/bin"/>
+    <property name="dir.lib" value="${dir.project}/lib"/>
+    <property name="dir.res" value="${dir.project}/res"/>
+    <property name="dir.out" value="${dir.project}/out"/>
+    <path id="class.path">
+        <fileset dir="${dir.lib}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+    <target name="clean">
+        <delete>
+            <fileset dir="${dir.bin}" includes="**/*.class"/>
+        </delete>
+        <delete file="${dir.bin}/SYG.jar"/>
+    </target>
+    <target name="compile" depends="clean">
+        <mkdir dir="${dir.bin}"/>
+        <javac srcdir="${dir.src}" destdir="${dir.bin}" encoding="UTF-8" classpathref="class.path"/>
+    </target> 
+    <target name="create_run_jar" depends="compile">
+        <jar destfile="${dir.bin}/SYG.jar" filesetmanifest="mergewithoutmain">
+            <manifest>
+                <attribute name="Main-Class" value="game.Program"/>
+                <attribute name="Class-Path" value="."/>
+            </manifest>
+            <zipfileset dir="${dir.bin}/game" prefix="game"/>
+            <!-- <zipfileset dir="${dir.res}" prefix="game/res"/> -->
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jinput.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jogg-0.0.7.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/jorbis-0.0.15.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/lwjgl.jar"/>
+            <zipfileset excludes="META-INF/*.SF" src="${dir.lib}/slick.jar"/>
+        </jar>
+    </target>
+    <target name="package" depends="create_run_jar">
+        <mkdir dir="${dir.out}"/>
+        <copy file="${dir.bin}/SYG.jar" todir="${dir.out}"/>
+        <copy todir="${dir.out}/res">
+            <fileset dir="${dir.res}" includes="**/*"/>
+        </copy>
+        <copy todir="${dir.out}">
+            <fileset dir="${dir.lib}/windows/" includes="*"/>
+        </copy>
+        <copy todir="${dir.out}">
+            <fileset dir="${dir.lib}/linux/" includes="*"/>
+        </copy>
+        <copy todir="${dir.out}">
+            <fileset dir="${dir.lib}/macosx/" includes="*"/>
+        </copy>
+    </target>
+</project>
