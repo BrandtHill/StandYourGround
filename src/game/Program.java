@@ -40,6 +40,7 @@ public class Program extends Canvas implements Runnable {
 	public static final int WIDTH = 800;
 	public static final int XTBOUND = -160;
 	public static final int YTBOUND = -140;
+	public static final double SCALE = 1.25;
 	
 	public static enum STATE{
 		InGame,
@@ -169,14 +170,13 @@ public class Program extends Canvas implements Runnable {
 			break;
 			
 		case InGame:
-			double xT = clamp(-player.getX() + (WIDTH/2 - 70), XTBOUND, 0);
-			double yT = clamp(-player.getY() + (HEIGHT/2 - 80), YTBOUND, 0);
-			g.scale(1.25, 1.25);
-			g.translate(xT, yT);
+			g.scale(SCALE, SCALE);
+			g.translate(player.getXOffset(), player.getYOffset());
 			g.drawImage(background, 0, 0, null);
 			handler.render(g);
-			g.translate(-xT, -yT);
-			g.scale(0.8, 0.8);
+			g.translate(-player.getXOffset(), -player.getYOffset());
+			g.scale(1/SCALE, 1/SCALE);
+			reticle.render(g);
 			hud.render(g);
 			break;
 			
@@ -253,12 +253,12 @@ public class Program extends Canvas implements Runnable {
 	}
 	
 	public static boolean isOnEdgeX() {
-		double x = -player.getX() + (WIDTH/2 - 70);
+		double x = -player.getX() + (WIDTH + YTBOUND)/2;
 		return x > 0 || x < XTBOUND;
 	}
 	
 	public static boolean isOnEdgeY() {
-		double y = -player.getY() + (HEIGHT/2 - 80);
+		double y = -player.getY() + (HEIGHT + XTBOUND)/2;
 		return y > 0 || y < YTBOUND;
 	}
 	

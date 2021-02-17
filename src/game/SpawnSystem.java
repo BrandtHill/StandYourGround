@@ -22,7 +22,7 @@ public class SpawnSystem {
 
 	public SpawnSystem() {
 		level = 1;
-		//level = 15;
+		//level = 11;
 		handler = Program.handler;
 		player = Program.player;
 		doneCommencing = doneSpawning = false;

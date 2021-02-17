@@ -14,6 +14,7 @@ import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,11 +42,15 @@ public class Player extends GameObject{
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
-	private List<Gun> arsenal;
+	private List<Gun> arsenal =
+			Arrays.asList(new AR15(), new M77(), new Model12(),new OverUnder(),
+					new Model57(), new PX4Compact(), new Judge(), new Titan());
 	private Map<String, Gun> arsenalStringMap;
 	private Map<GUN, Gun> arsenalEnumMap;
 	private double angle;
 	private double speed;
+	private double xOffset;
+	private double yOffset;
 	private int ticks;
 	private static BufferedImage spriteSheet;
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
@@ -59,15 +64,6 @@ public class Player extends GameObject{
 		Gun.setHandler(Program.handler);
 		arsenalStringMap = new HashMap<>();
 		arsenalEnumMap = new HashMap<>();
-		arsenal = new ArrayList<>();
-		arsenal.add(new AR15());
-		arsenal.add(new M77());
-		arsenal.add(new Model12());
-		arsenal.add(new OverUnder());
-		arsenal.add(new Model57());
-		arsenal.add(new PX4Compact());
-		arsenal.add(new Judge());
-		arsenal.add(new Titan());
 		arsenal.stream().forEach(g -> {
 			arsenalStringMap.put(g.getName(), g);
 			arsenalEnumMap.put(g.getId(), g);
@@ -104,7 +100,10 @@ public class Player extends GameObject{
 		x = Program.clamp(x, 0, Program.WIDTH-26);
 		y = Program.clamp(y, 0, Program.HEIGHT-26);
 		
-		angle = atan2(Program.reticle.getXDisplay() - (x + 10), Program.reticle.getYDisplay() - (y + 10));
+		xOffset = Program.clamp(-x + ((Program.WIDTH + Program.YTBOUND)/2), Program.XTBOUND, 0);
+		yOffset = Program.clamp(-y + ((Program.HEIGHT + Program.XTBOUND)/2), Program.YTBOUND, 0);
+		
+		angle = atan2(Program.reticle.getX()/Program.SCALE - (x + 10) - xOffset, Program.reticle.getY()/Program.SCALE - (y + 10) - yOffset);
 		
 		gunWielded.tick();
 		
@@ -159,6 +158,8 @@ public class Player extends GameObject{
 	public List<Gun> getArsenal() {return arsenal;}
 	public double getAngle() {return angle;}
 	public double getSpeed() {return speed;}
+	public double getXOffset() {return xOffset;}
+	public double getYOffset() {return yOffset;}
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
 	public boolean isReloading() {return gunWielded != null && gunWielded.isReloading();}
