@@ -142,11 +142,11 @@ public class Program extends Canvas implements Runnable {
 	        
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer = System.currentTimeMillis();
-				System.out.println("FPS: " + frames);
+				System.out.println("FPS: " + frames + " Curr: " + currTime);
 				frames = 0;
 			}
 	        
-			delay(Duration.ofNanos(Math.max((long) (nsPerTick - (System.nanoTime() - currTime)), 0)));
+			delay(Duration.ofMillis(1));
         }
         stop();
 	}
@@ -272,7 +272,7 @@ public class Program extends Canvas implements Runnable {
 	
 	public static void delay(Duration duration) {
 		try {
-			Thread.sleep(duration.toMillis(), (int) (duration.toNanosPart() % 1e6));
+			Thread.sleep(duration.toMillis());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
