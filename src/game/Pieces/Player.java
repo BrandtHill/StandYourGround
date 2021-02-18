@@ -24,6 +24,7 @@ import javax.imageio.ImageIO;
 import game.Program;
 import game.Audio.AudioPlayer;
 import game.Program.STATE;
+import game.Weapons.AKM;
 import game.Weapons.AR15;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
@@ -37,14 +38,13 @@ import game.Weapons.Titan;
 
 public class Player extends GameObject{
 	public final static int NUMSPRITECYCLES = 8;
-	public final static int NUMGUNS = 8;
+	public final static int NUMGUNS = 9;
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
-	private List<Gun> arsenal =
-			Arrays.asList(new AR15(), new M77(), new Model12(),new OverUnder(),
-					new Model57(), new PX4Compact(), new Judge(), new Titan());
+	private List<Gun> arsenal = Arrays.asList(new AKM(), new AR15(), new M77(), new Model12(),
+			new OverUnder(), new Model57(), new PX4Compact(), new Judge(), new Titan());
 	private Map<String, Gun> arsenalStringMap;
 	private Map<GUN, Gun> arsenalEnumMap;
 	private double angle;
@@ -125,6 +125,7 @@ public class Player extends GameObject{
 		if (g instanceof Model12) 		return 5;
 		if (g instanceof M77) 			return 6;
 		if (g instanceof AR15) 			return 7;
+		if (g instanceof AKM) 			return 8;
 		return 0;
 	}
 	

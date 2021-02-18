@@ -24,7 +24,7 @@ public class Store extends MouseAdapter {
 
 	private static Player player;
 	private int bX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
-	private int bY [] = {100, 100, 100, 100, 200, 200, 200, 200, 300, 300, 300, 300, 400, 400, 400, 400};
+	private int bY [] = {75, 75, 75, 75, 165, 165, 165, 165, 255, 255, 255, 255, 345, 345, 345, 345};
 	public Button[] buttons = new Button[16];
 	public Button hover;
 	public static BufferedImage pegboard;
@@ -162,6 +162,7 @@ public class Store extends MouseAdapter {
 		
 		switch (menu) {
 		case BuyGuns:
+			buttonHelper(i++, true, "Buy", "AKM", "$1200", "The klassic Kalashnikov_with a nice face lift_7.62x39mm, 30rd");
 			buttonHelper(i++, true, "Buy", "AR-15", "$1100", "The classic 'Black Rifle'_with modern furniture_5.56x45mm, 30rd");
 			buttonHelper(i++, true, "Buy", "M77", "$800", "Powerful Bolt Action Rifle_7mm Rem. Mag., 3rd");
 			buttonHelper(i++, true, "Buy", "Model 12", "$750", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
@@ -172,6 +173,7 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyAmmo:
+			buttonHelper(i++, true, "Increase Ammo", "AKM", "$500", "30 more rounds", 30);
 			buttonHelper(i++, true, "Increase Ammo", "AR-15", "$475", "30 more rounds", 30);
 			buttonHelper(i++, true, "Increase Ammo", "M77", "$300", "9 more rounds", 9);
 			buttonHelper(i++, true, "Increase Ammo", "Model 12", "$200", "6 more shells", 6);
@@ -182,6 +184,8 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
 			break;
 		case BuyUpgrades:
+			buttonHelper(i++, true, "RPK Mags", "AKM", "$600", "40-round RPK_magazines", 10);
+			buttonHelper(i++, true, "Full Auto Sear", "AKM", "$1300", "Restore the AK to its_former glory");
 			buttonHelper(i++, true, "Extended Mags", "AR-15", "$500", "40-round AR-15_magazines", 10);
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
 			buttonHelper(i++, true, "Extended Mags", "PX4 Compact", "$500", "Use full-size PX4_Storm 20-round_extended magazsines", 5);
@@ -223,9 +227,9 @@ public class Store extends MouseAdapter {
 		case BuyGuns:
 			drawComponents(g, true, false, true, null);
 			if ((b = hover) != null) b.renderTooltip(g);
-			g.drawImage(pegboard, 220, 320, 384, 192, null);
+			g.drawImage(pegboard, 220, 340, 384, 192, null);
 			if ((b = hover) != null) {
-				g.drawImage(b.getGun().getSprite(), 220, 320, 384, 192, null);
+				g.drawImage(b.getGun().getSprite(), 220, 340, 384, 192, null);
 				b.renderTooltip(g);
 			}
 			break;

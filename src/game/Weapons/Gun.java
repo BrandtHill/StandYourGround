@@ -46,6 +46,7 @@ public abstract class Gun {
 		Model12,
 		M77,
 		AR15,
+		AKM
 	}
 	protected static BufferedImage gunSheet;
 	protected BufferedImage gunSprite;

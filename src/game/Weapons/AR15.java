@@ -54,6 +54,5 @@ public class AR15 extends Gun {
 	}
 
 	@Override
-	public void makeRoundSpecial(Projectile p) {
-	}
+	public void makeRoundSpecial(Projectile p) {}
 }
