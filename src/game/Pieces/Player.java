@@ -56,7 +56,6 @@ public class Player extends GameObject{
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
-	public int zombiesLeft;
 	
 	public Player(double x, double y) {
 		super(x, y);

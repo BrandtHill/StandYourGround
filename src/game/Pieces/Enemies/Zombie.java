@@ -39,16 +39,16 @@ public class Zombie extends GameObject {
 	protected int maxAngleChangeDegrees;
 	protected List<Rectangle> path = new LinkedList<>();
 	
-	public Zombie(double x, double y, double speed, double health) {
+	public Zombie(double x, double y) {
 		super(x, y);
 		this.player = Program.player;
-		this.health = health;	
-		this.speed = speed;
 		this.zombieSprites = spriteSheets[0];
 		this.r = new Random();
 		
-		moneyValue = 19;
-		maxAngleChangeDegrees = 5;
+		this.health = 40 + 4 * Program.spawnSys.getLevel();
+		this.speed = 1.3 + Program.spawnSys.getLevel() * 0.015;
+		this.moneyValue = 19;
+		this.maxAngleChangeDegrees = 5;
 	}
 
 	public void tick() {
@@ -161,7 +161,7 @@ public class Zombie extends GameObject {
 		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
 		if (health <= 0) {
 			player.setMoney(moneyValue + player.getMoney());
-			player.zombiesLeft--;
+			Program.spawnSys.decrementRemaining();
 			handler.removeObjectAsync(this);
 		}
 	}

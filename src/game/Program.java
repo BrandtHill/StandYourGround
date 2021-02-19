@@ -18,6 +18,7 @@ import game.Inputs.Store;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 import game.Pieces.Enemies.Zombie;
+import game.SpawnSystem.SpawnSystem;
 import game.Weapons.Gun;
 
 public class Program extends Canvas implements Runnable {
@@ -142,7 +143,7 @@ public class Program extends Canvas implements Runnable {
 	        
 			if (System.currentTimeMillis() - timer > 1000) {
 				timer = System.currentTimeMillis();
-				System.out.println("FPS: " + frames + " Curr: " + currTime);
+				System.out.println("FPS: " + frames);
 				frames = 0;
 			}
 	        
@@ -233,7 +234,7 @@ public class Program extends Canvas implements Runnable {
 			else if (spawnSys.getLevel() <= 10) background = background2;
 			else background = background3;
 			
-			if (prevState != STATE.PauseMenu) spawnSys.commenceLevel();
+			if (prevState != STATE.PauseMenu) spawnSys.commence();
 			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");
 			removeMouseMotionListener(store);
 			break;

@@ -25,8 +25,8 @@ import game.Pieces.Enemies.DodgingZombie;
 import game.Pieces.Enemies.FastZombie;
 import game.Pieces.Enemies.ThiccZombie;
 import game.Pieces.Enemies.Zombie;
-import game.SpawnSystem.REGION;
-import game.SpawnSystem.ZOMBIE;
+import game.SpawnSystem.SpawnSystem.REGION;
+import game.SpawnSystem.SpawnSystem.ZOMBIE;
 
 import static java.lang.Math.abs;
 
@@ -107,81 +107,34 @@ public class Handler {
 	}
 	
 	public void addRandomZombie() {
-		double x, y;
-		double xPlayer = Program.player.getX();
-		double yPlayer = Program.player.getY();
-		do {
-			x = r.nextInt(2 * Program.WIDTH) - Program.WIDTH;
-			y = r.nextInt(Program.HEIGHT);
-		} while (abs(x-xPlayer) < 300 && abs(y-yPlayer) < 300);
-		
-		double zombieDist = r.nextGaussian();
-		if 		(zombieDist < -1) 	addDodgingZombie(x, y);
-		else if (zombieDist > 1.5) 	addFastZombie(x, y);
-		else						addNormalZombie(x, y);
+		int zRand = r.nextInt(ZOMBIE.values().length);
+		int rRand = r.nextInt(REGION.values().length);
+		ZOMBIE zombie = ZOMBIE.values()[zRand];
+		REGION region = REGION.values()[rRand];
+		addZombie(region, zombie);
+	}
+	
+	private double getRegionX(REGION region) {
+		if (region == REGION.RIGHT) return Program.WIDTH + 100;
+		if (region == REGION.LEFT) return -100;
+		return r.nextInt(Program.WIDTH);
+	}
+	
+	private double getRegionY(REGION region) {
+		if (region == REGION.DOWN) return Program.HEIGHT + 100;
+		if (region == REGION.UP) return -100;
+		return r.nextInt(Program.HEIGHT);
+	}
+	
+	private Zombie makeZombie(ZOMBIE zombie, double x, double y) {
+		if (zombie == ZOMBIE.DODGING) return new DodgingZombie(x, y); 
+		if (zombie == ZOMBIE.FAST) return new FastZombie(x, y);
+		if (zombie == ZOMBIE.THICC) return new ThiccZombie(x, y);
+		return new Zombie(x, y);
 	}
 	
 	public void addZombie(REGION region, ZOMBIE zombie) {
-		double x, y;
-		
-		switch (region) {
-		case DOWN:
-			x = r.nextInt(Program.WIDTH);
-			y = Program.HEIGHT + 100;
-			break;
-		case LEFT:
-			x = -100;
-			y = r.nextInt(Program.HEIGHT);
-			break;
-		case RIGHT:
-			x = Program.WIDTH + 100;
-			y = r.nextInt(Program.HEIGHT);
-			break;
-		case UP:
-			x = r.nextInt(Program.WIDTH);
-			y = -100;
-			break;
-		default:
-			x = y = 0;
-			break;
-		}
-		
-		switch(zombie) {
-		case DODGING:	addDodgingZombie(x, y);
-			break;
-		case FAST:		addFastZombie(x, y); 
-			break;
-		case NORMAL:	addNormalZombie(x, y); 
-			break;
-		case THICC:		addThiccZombie(x, y);
-			break;
-		default:
-			break;
-		}
-	}
-	
-	public void addNormalZombie(double x, double y) {
-		double hp = 40 + 4 * Program.spawnSys.getLevel();
-		double speed = 1.3 + Program.spawnSys.getLevel() * 0.015;
-		addObject(new Zombie(x, y, speed, hp));
-	}
-	
-	public void addDodgingZombie(double x, double y) {
-		double hp = 36 + 3 * Program.spawnSys.getLevel();
-		double speed = 1.5 + Program.spawnSys.getLevel() * 0.015;
-		addObject(new DodgingZombie(x, y, speed, hp));
-	}
-	
-	public void addFastZombie(double x, double y) {
-		double hp = 40 + 4 * Program.spawnSys.getLevel();
-		double speed = 1.9 + Program.spawnSys.getLevel() * 0.015;
-		addObject(new FastZombie(x, y, speed, hp));
-	}
-	
-	public void addThiccZombie(double x, double y) {
-		double hp = 120 + 4 * Program.spawnSys.getLevel();
-		double speed = 1.1 + Program.spawnSys.getLevel() * 0.015;
-		addObject(new ThiccZombie(x, y, speed, hp));
+		addObjectAsync(makeZombie(zombie, getRegionX(region), getRegionY(region)));
 	}
 	
 	public void bloodSplat(double x, double y, double knock, double angle, int num) {
