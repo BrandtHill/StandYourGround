@@ -3,7 +3,6 @@ package game;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.io.File;
 
 public class MenuHelpers {
 
@@ -15,7 +14,7 @@ public class MenuHelpers {
 	
 	public static void renderStartMenu(Graphics g) {
 		g.setColor(new Color(150,48,30));
-		g.draw3DRect(100, 90, Program.WIDTH-200, Program.HEIGHT-200, true);
+		g.draw3DRect(100, 90, Main.WIDTH-200, Main.HEIGHT-200, true);
 		g.setColor(Color.WHITE);
 		g.setFont(ARIAL_42);
 		g.drawString("STAND YOUR GROUND", 160, 200);
@@ -27,7 +26,7 @@ public class MenuHelpers {
 	
 	public static void renderPauseMenu(Graphics g) {
 		g.setColor(new Color(115,48,168));
-		g.draw3DRect(100, 90, Program.WIDTH-200, Program.HEIGHT-200, true);
+		g.draw3DRect(100, 90, Main.WIDTH-200, Main.HEIGHT-200, true);
 		g.setColor(Color.WHITE);
 		g.setFont(ARIAL_48);
 		g.drawString("GAME PAUSED", 210, 200);
@@ -37,7 +36,7 @@ public class MenuHelpers {
 	
 	public static void renderGameOverMenu(Graphics g) {
 		g.setColor(new Color(30,60,30));
-		g.draw3DRect(100, 90, Program.WIDTH-200, Program.HEIGHT-200, true);
+		g.draw3DRect(100, 90, Main.WIDTH-200, Main.HEIGHT-200, true);
 		g.setColor(Color.WHITE);
 		g.setFont(ARIAL_42);
 		g.drawString("YOU DIED", 300, 200);
@@ -54,9 +53,5 @@ public class MenuHelpers {
 		g.drawString(cmd, x, y);
 		g.drawString(":", x + 65, y);
 		g.drawString(desc, x + 95, y);
-	}
-	
-	private static boolean saveFileExists(String save) {
-		return new File("./res/saves/" + save + ".syg").exists();
 	}
 }

@@ -7,21 +7,21 @@ import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
 
-public class PX4Compact extends Gun {
+public class Security9 extends Gun {
 
-	public PX4Compact() {
-		super(GUN.PX4Compact);
+	public Security9() {
+		super(GUN.Security9);
 		reloadSound = AudioPlayer.getSound("ReloadPX4");
 		reloadTime = 1600;
-		chamberTime = 50;
-		gunName = "PX4 Compact";
+		chamberTime = 85;
+		gunName = "Security 9";
 		ammoLoaded = magSize = 15;
 		ammoExtra = ammoCapacity = 15;
 		damage = 31;
-		spread = 6;
+		spread = 6.5;
 		xOffset = -2;
-		yOffset = 11;
-		velocity = 23;
+		yOffset = 12;
+		velocity = 24;
 		knock = 9;
 		isSidearm = true;
 	}
@@ -37,7 +37,7 @@ public class PX4Compact extends Gun {
 				4 + 2 * r.nextDouble(),
 				Main.player.getAngle() - Math.PI / 2));
 			onShotFired();
-			AudioPlayer.getSound("Pistol").play(0.95f, 0.35f);
+			AudioPlayer.getSound("Pistol").play(1f, 0.3f);
 		}
 	}
 

@@ -11,10 +11,10 @@ import org.newdawn.slick.Music;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
-import static game.Program.delay;
+import static game.Main.delay;
 
-import game.Program;
-import game.Program.STATE;
+import game.Main;
+import game.Main.STATE;
 
 public class AudioPlayer {
 
@@ -81,10 +81,10 @@ public class AudioPlayer {
 	
 	private static void runMusicLoop() {
 		music.loop(1f, 0.25f);
-		STATE prev = Program.gameState;
-		STATE curr = Program.gameState;
+		STATE prev = Main.gameState;
+		STATE curr = Main.gameState;
 		while (true) {
-			curr = Program.gameState;
+			curr = Main.gameState;
 			if (curr != prev) stateChange(curr);
 			prev = curr;
 			delay(Duration.ofMillis(50));

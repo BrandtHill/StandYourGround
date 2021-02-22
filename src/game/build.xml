@@ -8,7 +8,7 @@
     <target name="create_run_jar">
         <jar destfile="${dir.bin}/SYG.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="game.Program"/>
+                <attribute name="Main-Class" value="game.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <zipfileset dir="${dir.bin}/game" prefix="game"/>

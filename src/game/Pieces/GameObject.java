@@ -3,7 +3,7 @@ package game.Pieces;
 import java.awt.Graphics;
 
 import game.Handler;
-import game.Program;
+import game.Main;
 
 import static java.lang.Math.sqrt;
 
@@ -17,7 +17,7 @@ public abstract class GameObject {
 	public GameObject(double x, double y) {
 		this.x = x;
 		this.y = y;
-		this.handler = Program.handler;
+		this.handler = Main.handler;
 		velX = velY = 0;
 	}
 	

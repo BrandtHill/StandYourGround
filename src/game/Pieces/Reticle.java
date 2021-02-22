@@ -8,12 +8,11 @@ import java.io.FileInputStream;
 
 import javax.imageio.ImageIO;
 
-import game.Program;
-import game.Program.STATE;
+import game.Main;
+import game.Main.STATE;
 
 public class Reticle extends GameObject {
 	private static Player player;
-	private double xPlayer, yPlayer;
 	private boolean wantToLimitRange; //functionality exists
 	private static Color COLOR_TRUE_COORDINATES = new Color(255,255,255,11);
 	private static BufferedImage[] spriteSheet = new BufferedImage[8];
@@ -21,18 +20,14 @@ public class Reticle extends GameObject {
 	
 	public Reticle(double x, double y) {
 		super(x, y);
-		player = Program.player;
-		xPlayer = player.getX();
-		yPlayer = player.getY();
+		player = Main.player;
 	}
 
 	public void tick() {
-		x = Program.clamp(x, 0, Program.WIDTH);
-		y = Program.clamp(y, 0, Program.HEIGHT);
+		x = Main.clamp(x, 0, Main.WIDTH * Main.getXScale());
+		y = Main.clamp(y, 0, Main.HEIGHT * Main.getYScale());
 		
-		if (Program.gameState == STATE.InGame) {
-			if (!Program.isOnEdgeX()) xPlayer = player.getX();
-			if (!Program.isOnEdgeY()) yPlayer = player.getY();
+		if (Main.gameState == STATE.InGame) {
 			if (wantToLimitRange) limitRange(200);
 		}
 		if (ticks++ % 4 == 0) spriteIndex++;
@@ -55,8 +50,8 @@ public class Reticle extends GameObject {
 		double yW = Math.abs(range * Math.cos(angle));
 		double xP = player.getX() + 10;
 		double yP = player.getY() + 10;
-		x = Program.clamp(x, xP - xW, xP + xW);
-		y = Program.clamp(y, yP - yW, yP + yW);
+		x = Main.clamp(x, xP - xW, xP + xW);
+		y = Main.clamp(y, yP - yW, yP + yW);
 	}
 	
 	public static void loadAssets() {

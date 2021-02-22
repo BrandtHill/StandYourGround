@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.newdawn.slick.Sound;
 
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -17,8 +18,7 @@ public class Model12 extends Gun {
 	private int reloadTimeEmpty;
 	
 	public Model12() {
-		super();
-		gunId = GUN.Model12;
+		super(GUN.Model12);
 		reloadSound = AudioPlayer.getSound("ReloadModel12");
 		reloadEmptySound = AudioPlayer.getSound("ReloadEmptyModel12");
 		cycleSound = AudioPlayer.getSound("CycleModel12");
@@ -42,7 +42,7 @@ public class Model12 extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
-				handler.addObjectAsync(new Projectile(this));
+				Main.handler.addObjectAsync(new Projectile(this));
 			}
 			if (ammoLoaded > 1) cycleSound.play(1f, 0.60f);
 			ejTicks = 0;
@@ -82,13 +82,13 @@ public class Model12 extends Gun {
 		ticks++;
 		ejTicks++;
 		if (ejTicks == 20 && !chambered) {
-			handler.addObjectAsync(new Brass(
+			Main.handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),
 				4,
 				2,
 				3 + 2 * r.nextDouble(),
-				player.getAngle() - Math.PI / 1.8,
+				Main.player.getAngle() - Math.PI / 1.8,
 				Color.RED));
 		}
 		if (shooting) {
@@ -109,7 +109,7 @@ public class Model12 extends Gun {
 	
 	@Override
 	public void makeRoundSpecial(Projectile p) {
-		p.angle = player.getAngle();
+		p.angle = Main.player.getAngle();
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
 		p.knockBack *= 1.20;

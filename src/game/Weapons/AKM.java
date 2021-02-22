@@ -2,6 +2,7 @@ package game.Weapons;
 
 import java.awt.Color;
 
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -9,8 +10,7 @@ import game.Pieces.Projectile;
 public class AKM extends Gun {
 
 	public AKM() {
-		super();
-		gunId = GUN.AKM;
+		super(GUN.AKM);
 		reloadSound = AudioPlayer.getSound("ReloadAKM");
 		reloadTime = 3000;
 		chamberTime = 95;
@@ -28,14 +28,14 @@ public class AKM extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObjectAsync(new Projectile(this));
-			handler.addObjectAsync(new Brass(
+			Main.handler.addObjectAsync(new Projectile(this));
+			Main.handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),
 				3,
 				2,
 				9 + 2 * r.nextDouble(),
-				player.getAngle() - Math.PI / 1.8,
+				Main.player.getAngle() - Math.PI / 1.8,
 				new Color(94, 85, 58)));
 			onShotFired();
 			AudioPlayer.getSound("AKM").play(1.0f, 0.8f);
@@ -58,8 +58,6 @@ public class AKM extends Gun {
 	
 	@Override
 	public void makeRoundSpecial(Projectile p) {
-		// TODO Auto-generated method stub
-
 	}
 
 }

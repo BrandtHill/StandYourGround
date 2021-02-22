@@ -3,14 +3,14 @@ package game.Pieces.Enemies;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import game.Program;
+import game.Main;
 
 public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y) {
 		super(x, y);
-		this.health = 40 + 4 * Program.spawnSys.getLevel();
-		this.speed = 1.9 + Program.spawnSys.getLevel() * 0.015;
+		this.health = 40 + 4 * Main.spawnSys.getLevel();
+		this.speed = 1.9 + Main.spawnSys.getLevel() * 0.015;
 		this.moneyValue = 27;
 		this.zombieSprites = Zombie.spriteSheets[2];
 		this.maxAngleChangeDegrees = 3;

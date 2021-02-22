@@ -17,8 +17,8 @@ public class HUD {
 	private Gun gun;
 	
 	public HUD() {
-		player = Program.player;
-		spawnSys = Program.spawnSys;
+		player = Main.player;
+		spawnSys = Main.spawnSys;
 	}
 	
 
@@ -54,12 +54,12 @@ public class HUD {
 		
 		if (spawnSys.zedsDead()) {
 			g.setColor(new Color(0, 0, 0, (int)endAlpha));
-			g.fillRect(0, 0, Program.WIDTH, Program.HEIGHT);
+			g.fillRect(0, 0, Main.WIDTH, Main.HEIGHT);
 		}
 	}
 	
 	private double calcAlpha() {
 		double delta = player.getY() < 50 ? 0.95 : 1.05;
-		return Program.clamp(delta * alpha, 0.25, 1);
+		return Main.clamp(delta * alpha, 0.25, 1);
 	}
 }

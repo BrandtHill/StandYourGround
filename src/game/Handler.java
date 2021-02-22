@@ -20,15 +20,12 @@ import game.Pieces.GameObject;
 import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Projectile;
-import game.Pieces.Reticle;
 import game.Pieces.Enemies.DodgingZombie;
 import game.Pieces.Enemies.FastZombie;
 import game.Pieces.Enemies.ThiccZombie;
 import game.Pieces.Enemies.Zombie;
 import game.SpawnSystem.SpawnSystem.REGION;
 import game.SpawnSystem.SpawnSystem.ZOMBIE;
-
-import static java.lang.Math.abs;
 
 /*
  * The handler maintains a list of game pieces and ticks and renders them in order. It provides methods for accessing streams of game pieces,
@@ -43,8 +40,8 @@ public class Handler {
 	private Random 				r;
 	public Rectangle[][]		grid;
 	public static final int 	REC_SIZE = 25;
-	public static final int		GRID_WIDTH = Program.WIDTH / REC_SIZE;
-	public static final int		GRID_HEIGHT = Program.HEIGHT / REC_SIZE;
+	public static final int		GRID_WIDTH = Main.WIDTH / REC_SIZE;
+	public static final int		GRID_HEIGHT = Main.HEIGHT / REC_SIZE;
 	
 	public Handler() {
 		gameObjs = new LinkedList<>();
@@ -115,15 +112,15 @@ public class Handler {
 	}
 	
 	private double getRegionX(REGION region) {
-		if (region == REGION.RIGHT) return Program.WIDTH + 100;
+		if (region == REGION.RIGHT) return Main.WIDTH + 100;
 		if (region == REGION.LEFT) return -100;
-		return r.nextInt(Program.WIDTH);
+		return r.nextInt(Main.WIDTH);
 	}
 	
 	private double getRegionY(REGION region) {
-		if (region == REGION.DOWN) return Program.HEIGHT + 100;
+		if (region == REGION.DOWN) return Main.HEIGHT + 100;
 		if (region == REGION.UP) return -100;
-		return r.nextInt(Program.HEIGHT);
+		return r.nextInt(Main.HEIGHT);
 	}
 	
 	private Zombie makeZombie(ZOMBIE zombie, double x, double y) {

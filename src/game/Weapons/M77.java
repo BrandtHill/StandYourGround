@@ -4,6 +4,7 @@ import java.awt.Color;
 
 import org.newdawn.slick.Sound;
 
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -14,8 +15,7 @@ public class M77 extends Gun {
 	private int ejTicks;
 	
 	public M77() {
-		super();
-		gunId = GUN.M77;
+		super(GUN.M77);
 		reloadSound = AudioPlayer.getSound("ReloadM77");
 		cycleSound = AudioPlayer.getSound("CycleM77");
 		reloadTime = 2500;
@@ -23,7 +23,7 @@ public class M77 extends Gun {
 		gunName = "M77";
 		ammoLoaded = magSize = 3;
 		ammoExtra = ammoCapacity = 9;
-		damage = 110;
+		damage = 115;
 		spread = 0;
 		xOffset = -3;
 		yOffset = 21;
@@ -35,7 +35,7 @@ public class M77 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObjectAsync(new Projectile(this));
+			Main.handler.addObjectAsync(new Projectile(this));
 			AudioPlayer.getSound("Sniper").play(1f, 0.4f);
 			if (ammoLoaded > 1) cycleSound.play();
 			onShotFired();
@@ -48,13 +48,13 @@ public class M77 extends Gun {
 		super.tick();
 		ejTicks++;
 		if (ejTicks == 20 && !chambered) {
-			handler.addObjectAsync(new Brass(
+			Main.handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),
 				4,
 				2,
 				3 + 2 * r.nextDouble(),
-				player.getAngle() - Math.PI / 1.8));
+				Main.player.getAngle() - Math.PI / 1.8));
 		}
 	}
 	
@@ -84,7 +84,7 @@ public class M77 extends Gun {
 		p.angleMulti = 0.1;
 		p.color = new Color(243, 144, 0);
 		p.hits += 3;
-		p.damage *= 1.65;
+		p.damage *= 1.72;
 		p.magnitude *= 1.15;
 		p.knockBack *= 1.2;
 	}

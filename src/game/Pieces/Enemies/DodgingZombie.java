@@ -1,6 +1,6 @@
 package game.Pieces.Enemies;
 
-import game.Program;
+import game.Main;
 
 public class DodgingZombie extends Zombie {
 	private int dodgeTicks = 0;
@@ -11,8 +11,8 @@ public class DodgingZombie extends Zombie {
 	
 	public DodgingZombie(double x, double y) {
 		super(x, y);
-		this.health = 36 + 3 * Program.spawnSys.getLevel();
-		this.speed = 1.5 + Program.spawnSys.getLevel() * 0.015;
+		this.health = 36 + 3 * Main.spawnSys.getLevel();
+		this.speed = 1.5 + Main.spawnSys.getLevel() * 0.015;
 		this.zombieSprites = Zombie.spriteSheets[1];
 		this.maxTicksInSight = r.nextInt(60) + 20;
 		this.ticksInSight = 0;

@@ -1,6 +1,5 @@
 package game.Pieces.Enemies;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -16,7 +15,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import game.Handler;
-import game.Program;
+import game.Main;
 import game.Pieces.Blood;
 import game.Pieces.GameObject;
 import game.Pieces.Player;
@@ -41,12 +40,12 @@ public class Zombie extends GameObject {
 	
 	public Zombie(double x, double y) {
 		super(x, y);
-		this.player = Program.player;
+		this.player = Main.player;
 		this.zombieSprites = spriteSheets[0];
 		this.r = new Random();
 		
-		this.health = 40 + 4 * Program.spawnSys.getLevel();
-		this.speed = 1.3 + Program.spawnSys.getLevel() * 0.015;
+		this.health = 40 + 4 * Main.spawnSys.getLevel();
+		this.speed = 1.3 + Main.spawnSys.getLevel() * 0.015;
 		this.moneyValue = 19;
 		this.maxAngleChangeDegrees = 5;
 	}
@@ -161,7 +160,7 @@ public class Zombie extends GameObject {
 		handler.bloodSplat(x+10, y+10, knock, angle, 2 + (int)(damage / 30));
 		if (health <= 0) {
 			player.setMoney(moneyValue + player.getMoney());
-			Program.spawnSys.decrementRemaining();
+			Main.spawnSys.decrementRemaining();
 			handler.removeObjectAsync(this);
 		}
 	}

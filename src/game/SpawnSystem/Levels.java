@@ -9,14 +9,14 @@ import java.lang.reflect.Field;
 
 public class Levels {
 	
-	private static Level l1 = l(1000, 
+	static Level l1 = l(1000, 
 			w(5000,	
 					s(LEFT, NORMAL, 3)),
 			w(0000, 
 					s(RIGHT, NORMAL, 3))
 			);
 	
-	private static Level l2 = l(1000, 
+	static Level l2 = l(1000, 
 			w(3000, 
 					s(UP, NORMAL, 5)),
 			w(4000, 
@@ -28,7 +28,7 @@ public class Levels {
 					s(RIGHT, NORMAL, 5))
 			);
 	
-	private static Level l3 = l(2500, 
+	static Level l3 = l(2500, 
 			w(10000, 
 					s(RIGHT, THICC, 1), 
 					s(LEFT, DODGING, 2)),
@@ -39,7 +39,7 @@ public class Levels {
 					s(UP, NORMAL, 5))
 			);
 	
-	private static Level l4 = l(500, 
+	static Level l4 = l(500, 
 			w(5000, 
 					s(RIGHT, NORMAL, 4), 
 					s(LEFT, NORMAL, 4)),
@@ -53,7 +53,7 @@ public class Levels {
 					s(LEFT, NORMAL, 3))
 			);
 	
-	private static Level l5 = l(1500, 
+	static Level l5 = l(1500, 
 			w(9000, 
 					s(UP, NORMAL, 10), 
 					s(UP, THICC, 5)),
@@ -64,7 +64,7 @@ public class Levels {
 					s(LEFT, NORMAL, 3))
 			);
 	
-	private static Level l6 = l(500, 
+	static Level l6 = l(500, 
 			w(7500, 
 					s(RIGHT, FAST, 2), 
 					s(LEFT, FAST, 1)),
@@ -79,7 +79,7 @@ public class Levels {
 					s(DOWN, THICC, 2))
 			);
 	
-	private static Level l7 = l(500, 
+	static Level l7 = l(500, 
 			w(12000, 
 					s(UP, NORMAL, 3), 
 					s(UP, DODGING, 3), 
@@ -93,9 +93,8 @@ public class Levels {
 					s(DOWN, FAST, 1))
 			);
 	
-	private static Level l8 = l(500, 
-			w(5500, 
-					s(RIGHT, NORMAL, 2), 
+	static Level l8 = l(500, 
+			w(5500, s(RIGHT, NORMAL, 2), 
 					s(RIGHT, DODGING, 2), 
 					s(LEFT, FAST, 1), 
 					s(LEFT, THICC, 1)),
@@ -119,7 +118,7 @@ public class Levels {
 					s(LEFT, THICC, 6))
 			);
 	
-	private static Level l9 = l(500, 
+	static Level l9 = l(500, 
 			w(6500, 
 					s(RIGHT, FAST, 1), 
 					s(LEFT, FAST, 1), 
@@ -151,7 +150,7 @@ public class Levels {
 					s(DOWN, THICC, 2))
 			);
 	
-	private static Level l10 = l(2000, 
+	static Level l10 = l(2000, 
 			w(5000, 
 					s(LEFT, NORMAL, 8), 
 					s(DOWN, DODGING, 2)),
@@ -173,7 +172,7 @@ public class Levels {
 					s(DOWN, DODGING, 2))
 			);
 	
-	private static Level l11 = l(3000, 
+	static Level l11 = l(3000, 
 			w(6000, 
 					s(DOWN, NORMAL, 2), 
 					s(DOWN, DODGING, 4)),
@@ -184,7 +183,7 @@ public class Levels {
 					s(LEFT, THICC, 4))
 			);
 	
-	private static Level l12 = l(500, 
+	static Level l12 = l(500, 
 			w(3000, 
 					s(DOWN, NORMAL, 6)),
 			w(4000, 
@@ -193,7 +192,7 @@ public class Levels {
 					s(UP, NORMAL, 12))
 			);
 	
-	private static Level l13 = l(1500, 
+	static Level l13 = l(1500, 
 			w(6000, 
 					s(RIGHT, FAST, 2), 
 					s(UP, FAST, 2)),
@@ -211,7 +210,7 @@ public class Levels {
 					s(UP, NORMAL, 4))
 			);
 	
-	private static Level l14 = l(1500, 
+	static Level l14 = l(1500, 
 			w(9000, 
 					s(DOWN, THICC, 8), 
 					s(UP, DODGING, 3)),
@@ -228,7 +227,7 @@ public class Levels {
 					s(DOWN, NORMAL, 8))
 			);
 	
-	private static Level l15 = l(1500, 
+	static Level l15 = l(1500, 
 			w(9000, 
 					s(DOWN, NORMAL, 5), 
 					s(UP, NORMAL, 3), 

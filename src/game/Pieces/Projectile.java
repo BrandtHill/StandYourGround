@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 
-import game.Program;
+import game.Main;
 import game.Pieces.Enemies.Zombie;
 import game.Weapons.Gun;
 
@@ -26,7 +26,7 @@ public class Projectile extends GameObject {
 	
 	public Projectile(Gun g) {
 		super(g.muzzlePointX(), g.muzzlePointY());
-		this.angle = Program.player.getAngle() + (new Random().nextDouble() - 0.5) * g.getSpread() * PI / 180;
+		this.angle = Main.player.getAngle() + (new Random().nextDouble() - 0.5) * g.getSpread() * PI / 180;
 		this.xScale = sin(angle);
 		this.yScale = cos(angle);
 		this.xPrev = x;
@@ -54,7 +54,7 @@ public class Projectile extends GameObject {
 		x += velX;
 		y += velY;
 		
-		if (hits <= 0 || x < -100 || x > Program.WIDTH + 100 || y < -100 || y > Program.HEIGHT + 100) handler.removeObjectAsync(this);
+		if (hits <= 0 || x < -100 || x > Main.WIDTH + 100 || y < -100 || y > Main.HEIGHT + 100) handler.removeObjectAsync(this);
 		else detectCollision();
 	}
 	

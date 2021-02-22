@@ -2,6 +2,7 @@ package game.Weapons;
 
 import java.awt.Color;
 
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -9,8 +10,7 @@ import game.Pieces.Projectile;
 public class OverUnder extends Gun {
 
 	public OverUnder() {
-		super();
-		gunId = GUN.OverUnder;
+		super(GUN.OverUnder);
 		reloadSound = AudioPlayer.getSound("ReloadOverUnder");
 		reloadTime = 2750;
 		chamberTime = 250;
@@ -29,7 +29,7 @@ public class OverUnder extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
-				handler.addObjectAsync(new Projectile(this));
+				Main.handler.addObjectAsync(new Projectile(this));
 			}
 			onShotFired();
 			AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
@@ -41,13 +41,13 @@ public class OverUnder extends Gun {
 		super.tick();
 		if (reloadTicks == 30) {
 			for (int i = 0; i < magSize; i++) {
-				handler.addObjectAsync(new Brass(
+				Main.handler.addObjectAsync(new Brass(
 					offsetPointX(xOffset, yOffset - 14) + 4 * r.nextDouble(),
 					offsetPointY(xOffset, yOffset - 14) + 4 * r.nextDouble(),
 					4,
 					2,
 					1 + 2 * r.nextDouble(),
-					player.getAngle() - Math.PI / 3,
+					Main.player.getAngle() - Math.PI / 3,
 					Color.RED));
 			}
 		}
@@ -60,7 +60,7 @@ public class OverUnder extends Gun {
 
 	@Override
 	public void makeRoundSpecial(Projectile p) {
-		p.angle = player.getAngle();
+		p.angle = Main.player.getAngle();
 		p.hits += r.nextInt(2) + 2;
 		p.magnitude *= 1.10;
 		p.knockBack *= 1.20;

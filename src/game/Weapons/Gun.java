@@ -5,6 +5,9 @@ import static java.lang.Math.sin;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
@@ -13,8 +16,7 @@ import static java.lang.Math.cos;
 
 import org.newdawn.slick.Sound;
 
-import game.Handler;
-import game.Pieces.Player;
+import game.Main;
 import game.Pieces.Projectile;
 
 public abstract class Gun {
@@ -28,8 +30,6 @@ public abstract class Gun {
 	protected boolean isFullAuto, specialRounds, isMagIncreased, isReloadImproved;
 	protected long reloadTime, chamberTime;
 	protected String gunName;
-	protected static Player player;
-	protected static Handler handler;
 	protected Sound reloadSound;
 	protected Sound speedReloadSound;
 	protected float reloadSoundPosition;
@@ -37,10 +37,14 @@ public abstract class Gun {
 	protected long reloadTicks, chamberTicks;
 	protected Random r;
 	protected GUN gunId;
+	protected static BufferedImage gunSheet;
+	protected BufferedImage gunSprite;
+	
 	public static enum GUN {
 		Titan,
-		PX4Compact,
+		Security9,
 		Judge,
+		PX4Compact,
 		Model57,
 		OverUnder,
 		Model12,
@@ -48,16 +52,37 @@ public abstract class Gun {
 		AR15,
 		AKM
 	}
-	protected static BufferedImage gunSheet;
-	protected BufferedImage gunSprite;
 	
-	public Gun() {
+	public static int getGunSpriteNum(Gun g) {
+		if (g == null) return 0;
+		return g.getId().ordinal();
+	}
+	
+	public static List<Gun> constructGuns() {
+		List<Gun> guns = Arrays.asList(
+				new Titan(),
+				new Security9(),
+				new Judge(),
+				new PX4Compact(),
+				new Model57(),
+				new OverUnder(),
+				new Model12(),
+				new M77(),
+				new AR15(),
+				new AKM()
+		);
+		Collections.reverse(guns);
+		return guns;
+	}
+	
+	public Gun(GUN id) {
+		gunId = id;
 		r = new Random();
 		hits = 1;
 		reloadFactor = 1.0;
 		gunSprite = gunSheet.getSubimage(
 				0,
-				512 * Player.getGunSpriteNum(this),
+				512 * Gun.getGunSpriteNum(this),
 				1024,
 				512
 		);
@@ -136,7 +161,7 @@ public abstract class Gun {
 	}
 	
 	public double offsetPointX(double xo, double yo) {
-		return player.getX() + 10 + xo*cos(player.getAngle()) + yo*sin(player.getAngle());
+		return Main.player.getX() + 10 + xo*cos(Main.player.getAngle()) + yo*sin(Main.player.getAngle());
 	}
 	
 	/**
@@ -149,7 +174,7 @@ public abstract class Gun {
 	}
 	
 	public double offsetPointY(double xo, double yo) {
-		return player.getY() + 10 + yo*cos(player.getAngle()) - xo*sin(player.getAngle());
+		return Main.player.getY() + 10 + yo*cos(Main.player.getAngle()) - xo*sin(Main.player.getAngle());
 	}
 	
 	public double getDamage() {return damage;}
@@ -170,7 +195,7 @@ public abstract class Gun {
 	public boolean isMagIncreased() {return isMagIncreased;}
 	public boolean isReloading() {return reloading;}
 	public boolean isReloadImproved() {return isReloadImproved;}
-	public boolean isWielded() {return this == player.getGunWielded();}
+	public boolean isWielded() {return this == Main.player.getGunWielded();}
 	public String getName() {return gunName;}
 	public GUN getId() {return gunId;}
 	public BufferedImage getSprite() {return gunSprite;}
@@ -187,16 +212,14 @@ public abstract class Gun {
 	public void setSpecialRounds(boolean specialRounds) {this.specialRounds = specialRounds;}
 	public void setMagIncreased(boolean isMagIncreased) {this.isMagIncreased = isMagIncreased;}
 	public void setReloadImproved(boolean isReloadImproved) {this.isReloadImproved = isReloadImproved;}
-	public static void setPlayer(Player player) {Gun.player = player;}
-	public static void setHandler(Handler handler) {Gun.handler = handler;}
 	public void resetTickDivier() {ticks = 0;}
 	public void lockIn() {lockedIn = true;}
 	public void unLock() {lockedIn = false;}
 	
 	// These are wrapper functions that interact with this gun in relation to the player
-	public int getIndexOf() {return player.getIndexOfGun(this);}
-	public boolean isEquipped() {return player.isEquipped(this);}
-	public void unequip() {player.unequip(this);}
+	public int getIndexOf() {return Main.player.getIndexOfGun(this);}
+	public boolean isEquipped() {return Main.player.isEquipped(this);}
+	public void unequip() {Main.player.unequip(this);}
 	
 	protected boolean canShoot() {
 		return ammoLoaded > 0 && !reloading && chambered;

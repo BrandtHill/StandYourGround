@@ -25,7 +25,7 @@
     <target name="create_run_jar" depends="compile">
         <jar destfile="${dir.bin}/SYG.jar" filesetmanifest="mergewithoutmain">
             <manifest>
-                <attribute name="Main-Class" value="game.Program"/>
+                <attribute name="Main-Class" value="game.Main"/>
                 <attribute name="Class-Path" value="."/>
             </manifest>
             <zipfileset dir="${dir.bin}/game" prefix="game"/>
@@ -43,6 +43,9 @@
         <copy todir="${dir.out}/res">
             <fileset dir="${dir.res}" includes="**/*"/>
         </copy>
+        <delete>
+            <fileset dir="${dir.out}/res/saves" includes="**/*.syg"/>
+        </delete>
         <copy todir="${dir.out}">
             <fileset dir="${dir.lib}/windows/" includes="*"/>
         </copy>

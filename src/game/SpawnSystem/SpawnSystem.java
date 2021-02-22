@@ -1,8 +1,8 @@
 package game.SpawnSystem;
 
 import game.Pieces.Obstacle;
-import game.Program.STATE;
-import game.Program;
+import game.Main.STATE;
+import game.Main;
 import game.Audio.AudioPlayer;
 
 public class SpawnSystem {
@@ -49,22 +49,22 @@ public class SpawnSystem {
 	}
 	
 	private void resetBoard() {
-		Program.handler.removeBlood();
-		Program.handler.removeBrass();
-		Program.handler.removeProjectiles();
-		Program.handler.removeZombies();
-		Program.handler.removeObstacles();
-		Program.player.setX(Program.WIDTH / 2 - 10);
-		Program.player.setY(Program.HEIGHT / 2 - 30);
-		Program.player.resetAllAmmo();
-		Program.player.autoWield();
-		Program.player.setMoneyAtRoundStart(Program.player.getMoney());
+		Main.handler.removeBlood();
+		Main.handler.removeBrass();
+		Main.handler.removeProjectiles();
+		Main.handler.removeZombies();
+		Main.handler.removeObstacles();
+		Main.player.setX(Main.WIDTH / 2 - 10);
+		Main.player.setY(Main.HEIGHT / 2 - 30);
+		Main.player.resetAllAmmo();
+		Main.player.autoWield();
+		Main.player.setMoneyAtRoundStart(Main.player.getMoney());
 	}
 	
 	public void completeLevel() {
 		doneCommencing = false;
 		doneSpawning = false;
-		Program.gameState = STATE.StoreMenu;
+		Main.gameState = STATE.StoreMenu;
 		currLevel = Levels.getLevel(++lvNum);
 
 		resetBoard();
@@ -98,14 +98,14 @@ public class SpawnSystem {
 	
 	private void spawn(Spawn spawn) {
 		for (int i = 0; i < spawn.getNum(); i++) {
-			Program.handler.addZombie(spawn.getRegion(), spawn.getZombie());
+			Main.handler.addZombie(spawn.getRegion(), spawn.getZombie());
 		}
 	}
 
 	private void addObstaclesLvl11_15() {
-		Program.handler.addObjectAsync(new Obstacle(-50, 270, 428, 17));
-		Program.handler.addObjectAsync(new Obstacle(585, 270, 265, 17));
-		Program.handler.addObjectAsync(new Obstacle(640, 60, 87, 139));
+		Main.handler.addObjectAsync(new Obstacle(-50, 270, 428, 17));
+		Main.handler.addObjectAsync(new Obstacle(585, 270, 265, 17));
+		Main.handler.addObjectAsync(new Obstacle(640, 60, 87, 139));
 	}
 
 	public int getRemaining() {return zombiesRemaining;}

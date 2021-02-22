@@ -13,38 +13,26 @@ import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import game.Program;
+import game.Main;
 import game.Audio.AudioPlayer;
-import game.Program.STATE;
-import game.Weapons.AKM;
-import game.Weapons.AR15;
+import game.Main.STATE;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
-import game.Weapons.Judge;
-import game.Weapons.M77;
-import game.Weapons.Model12;
-import game.Weapons.Model57;
-import game.Weapons.OverUnder;
-import game.Weapons.PX4Compact;
-import game.Weapons.Titan;
 
 public class Player extends GameObject{
 	public final static int NUMSPRITECYCLES = 8;
-	public final static int NUMGUNS = 9;
+	public final static int NUMGUNS = GUN.values().length;
 	private Gun gunWielded;
 	private Gun gunPrimary;
 	private Gun gunSecondary;
 	private Gun gunSidearm;
-	private List<Gun> arsenal = Arrays.asList(new AKM(), new AR15(), new M77(), new Model12(),
-			new OverUnder(), new Model57(), new PX4Compact(), new Judge(), new Titan());
+	private List<Gun> arsenal = Gun.constructGuns();
 	private Map<String, Gun> arsenalStringMap;
 	private Map<GUN, Gun> arsenalEnumMap;
 	private double angle;
@@ -59,8 +47,6 @@ public class Player extends GameObject{
 	
 	public Player(double x, double y) {
 		super(x, y);
-		Gun.setPlayer(this);
-		Gun.setHandler(Program.handler);
 		arsenalStringMap = new HashMap<>();
 		arsenalEnumMap = new HashMap<>();
 		arsenal.stream().forEach(g -> {
@@ -70,7 +56,7 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		//money = moneyAtRoundStart = 10000; //For debugging
+		money = moneyAtRoundStart = 10000; //For debugging
 		speed = 2;
 	}
 	
@@ -96,40 +82,26 @@ public class Player extends GameObject{
 		if (!handler.hitsObstacle(getBounds(xDiff, 0))) x += xDiff;
 		if (!handler.hitsObstacle(getBounds(0, yDiff))) y += yDiff;
 		
-		x = Program.clamp(x, 0, Program.WIDTH-26);
-		y = Program.clamp(y, 0, Program.HEIGHT-26);
+		x = Main.clamp(x, 0, Main.WIDTH-26);
+		y = Main.clamp(y, 0, Main.HEIGHT-20);
 		
-		xOffset = Program.clamp(-x + ((Program.WIDTH + Program.YTBOUND)/2), Program.XTBOUND, 0);
-		yOffset = Program.clamp(-y + ((Program.HEIGHT + Program.XTBOUND)/2), Program.YTBOUND, 0);
+		xOffset = Main.clamp(-x + ((Main.WIDTH + Main.YTBOUND)/2), Main.XTBOUND, 0);
+		yOffset = Main.clamp(-y + ((Main.HEIGHT + Main.XTBOUND)/2), Main.YTBOUND, 0);
 		
-		angle = atan2(Program.reticle.getX()/Program.SCALE - (x + 10) - xOffset, Program.reticle.getY()/Program.SCALE - (y + 10) - yOffset);
+		angle = atan2(Main.reticle.getX()/(Main.SCALE * Main.getXScale()) - (x + 10) - xOffset, Main.reticle.getY()/(Main.SCALE * Main.getYScale()) - (y + 10) - yOffset);
 		
 		gunWielded.tick();
 		
 		if (ticks++ % 4 == 0) {
 			detectCollision();
-			gunNum = getGunSpriteNum(gunWielded);
+			gunNum = Gun.getGunSpriteNum(gunWielded);
 			if (velX != 0 || velY != 0) spriteNum++;
 			spriteNum %= 8;
 		}
 	}
 	
-	public static int getGunSpriteNum(Gun g) {
-		if (g == null) 					return 0;
-		if (g instanceof Titan) 		return 0;
-		if (g instanceof PX4Compact)	return 1;
-		if (g instanceof Judge) 		return 2;
-		if (g instanceof Model57) 		return 3;
-		if (g instanceof OverUnder) 	return 4;
-		if (g instanceof Model12) 		return 5;
-		if (g instanceof M77) 			return 6;
-		if (g instanceof AR15) 			return 7;
-		if (g instanceof AKM) 			return 8;
-		return 0;
-	}
-	
 	public void detectCollision() {
-		if (handler.getZombies().anyMatch(z -> z.getBounds().intersects(getBounds()))) Program.gameState = STATE.GameOver;
+		if (handler.getZombies().anyMatch(z -> z.getBounds().intersects(getBounds()))) Main.gameState = STATE.GameOver;
 	}
 
 	public void render(Graphics g) {
@@ -142,8 +114,8 @@ public class Player extends GameObject{
 	
 	public void renderPreview(Graphics g, Gun gun) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.drawImage(Program.backgroundSlice, 260, 360, 450, 150, null);
-		g2d.drawImage(playerSprites[1][getGunSpriteNum(gun)], 600, 380, 80, 128, null);
+		g2d.drawImage(Main.backgroundSlice, 260, 360, 450, 150, null);
+		g2d.drawImage(playerSprites[1][Gun.getGunSpriteNum(gun)], 600, 380, 80, 128, null);
 		if (gun != null) g2d.drawImage(gun.getSprite(), 260, 360, 300, 150, null);
 	}
 

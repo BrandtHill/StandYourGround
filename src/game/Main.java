@@ -2,7 +2,9 @@ package game;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -10,6 +12,8 @@ import java.io.IOException;
 import java.time.Duration;
 
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+import javax.swing.JFrame;
 
 import game.Audio.AudioPlayer;
 import game.Inputs.KeyInput;
@@ -21,7 +25,7 @@ import game.Pieces.Enemies.Zombie;
 import game.SpawnSystem.SpawnSystem;
 import game.Weapons.Gun;
 
-public class Program extends Canvas implements Runnable {
+public class Main extends Canvas implements Runnable {
 
 	private static final long serialVersionUID = -1499886446881465910L;
 	private boolean running;
@@ -33,6 +37,7 @@ public class Program extends Canvas implements Runnable {
 	private static BufferedImage background1;
 	private static BufferedImage background2;
 	private static BufferedImage background3;
+	private static JFrame frame;
 	public static SpawnSystem spawnSys;
 	public static Reticle reticle;
 	public static Player player;
@@ -54,7 +59,7 @@ public class Program extends Canvas implements Runnable {
 	public static STATE gameState = STATE.StartMenu;
 	private static STATE prevState;
 	
-	public Program() {
+	public Main() {
 		loadAssets();
 		handler = new Handler();
 		player = new Player(WIDTH/2-10, HEIGHT/2-30);
@@ -76,7 +81,23 @@ public class Program extends Canvas implements Runnable {
 		SaveData.saveToFile("./res/saves/newgame.syg");
 		SaveData.saveToFile("./res/saves/autosave.syg");
 		
-		new Window(WIDTH,HEIGHT,"Stand Your Ground", this);
+		setupJFrame();
+		start();
+	}
+	
+	private void setupJFrame() {
+		Dimension dim = new Dimension(WIDTH, HEIGHT);
+		frame = new JFrame("Stand Your Ground");
+		frame.setPreferredSize(dim);
+		frame.setMinimumSize(dim);
+		frame.setBackground(Color.BLACK);
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(true);
+		frame.setLocationRelativeTo(null);
+		frame.setCursor(frame.getToolkit().createCustomCursor(new BufferedImage( 1, 1, BufferedImage.TYPE_INT_ARGB ),new Point(),null ));
+		frame.setIconImage(new ImageIcon("./res/Oscilloshape1.JPG").getImage());
+		frame.add(this);
+		frame.setVisible(true);
 	}
 	
 	private void loadAssets() {
@@ -114,7 +135,7 @@ public class Program extends Canvas implements Runnable {
 
 	public static void main(String[] args) {
 		System.out.println("Launching...");
-		new Program();
+		new Main();
 	}
 
 	/** This method is the main game loop. Tick rate is 60/second. */
@@ -156,43 +177,56 @@ public class Program extends Canvas implements Runnable {
 		BufferStrategy bs = this.getBufferStrategy();
 		if (bs == null) {
 			this.createBufferStrategy(3);
-			return;					
+			return;
 		}
 		
 		Graphics2D g = (Graphics2D)bs.getDrawGraphics();
 		
+		double xScale = getXScale();
+		double yScale = getYScale();
+		
 		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.fillRect(0, 0, (int) (WIDTH * xScale), (int) (HEIGHT * yScale));
 		
 		switch (gameState) {
 		case GameOver:
+			g.scale(xScale, yScale);
 			MenuHelpers.renderGameOverMenu(g);
+			g.scale(1/xScale, 1/yScale);
 			reticle.render(g);
 			break;
 			
 		case InGame:
-			g.scale(SCALE, SCALE);
+			g.scale(SCALE * xScale, SCALE * yScale);
 			g.translate(player.getXOffset(), player.getYOffset());
 			g.drawImage(background, 0, 0, null);
 			handler.render(g);
 			g.translate(-player.getXOffset(), -player.getYOffset());
-			g.scale(1/SCALE, 1/SCALE);
-			reticle.render(g);
+			g.scale(1/(SCALE * xScale), 1/(SCALE * yScale));
+			g.scale(xScale, yScale);
 			hud.render(g);
+			g.scale(1/xScale, 1/yScale);
+			reticle.render(g);
 			break;
 			
 		case PauseMenu:
+			g.scale(xScale, yScale);
 			MenuHelpers.renderPauseMenu(g);
+			g.scale(1/xScale, 1/yScale);
 			reticle.render(g);
 			break;
 			
 		case StartMenu:
+			g.scale(xScale, yScale);
 			MenuHelpers.renderStartMenu(g);
+			g.scale(1/xScale, 1/yScale);
 			reticle.render(g);
 			break;
 			
 		case StoreMenu:
+			g.scale(xScale, yScale);
 			store.render(g);
+			g.scale(1/xScale, 1/yScale);
 			reticle.render(g);
 			break;
 			
@@ -205,7 +239,7 @@ public class Program extends Canvas implements Runnable {
 	}
 
 	private void tick() {
-		
+		adjustSize();
 		switch (gameState) {
 		case InGame:
 			handler.tick();
@@ -276,6 +310,28 @@ public class Program extends Canvas implements Runnable {
 			Thread.sleep(duration.toMillis());
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static double getXScale() {
+		Dimension d = frame.getSize();
+		return d.getWidth() / WIDTH;
+	}
+	
+	public static double getYScale() {
+		Dimension d = frame.getSize();
+		return d.getHeight() / HEIGHT;
+	}
+	
+	public static double getXOffset() {
+		return (getXScale() - 1) * WIDTH / 2;
+	}
+	
+	private static void adjustSize() {
+		double scale = Math.min(getXScale(), getYScale());
+		if (getXScale() != getYScale()) {
+			System.out.println("Adjusting size to maintain aspect ratio - scale " + scale);
+			frame.setSize((int)(scale * WIDTH), (int)(scale * HEIGHT));
 		}
 	}
 }

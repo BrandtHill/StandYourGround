@@ -1,5 +1,6 @@
 package game.Weapons;
 
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
 import game.Pieces.Projectile;
@@ -7,8 +8,7 @@ import game.Pieces.Projectile;
 public class AR15 extends Gun {
 
 	public AR15() {
-		super();
-		gunId = GUN.AR15;
+		super(GUN.AR15);
 		reloadSound = AudioPlayer.getSound("ReloadAR15");
 		reloadTime = 2750;
 		chamberTime = 66;
@@ -26,14 +26,14 @@ public class AR15 extends Gun {
 	@Override
 	public void shoot() {
 		if (canShoot()) {
-			handler.addObjectAsync(new Projectile(this));
-			handler.addObjectAsync(new Brass(
+			Main.handler.addObjectAsync(new Projectile(this));
+			Main.handler.addObjectAsync(new Brass(
 				offsetPointX(xOffset, yOffset - 9),
 				offsetPointY(xOffset, yOffset - 9),
 				3,
 				2,
 				7 + 2 * r.nextDouble(),
-				player.getAngle() - Math.PI / 1.8));
+				Main.player.getAngle() - Math.PI / 1.8));
 			onShotFired();
 			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
 		}

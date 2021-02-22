@@ -3,6 +3,7 @@ package game.Inputs;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -14,10 +15,10 @@ import javax.imageio.ImageIO;
 
 import game.Button;
 import game.MenuHelpers;
-import game.Program;
+import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Player;
-import game.Program.STATE;
+import game.Main.STATE;
 import game.Weapons.Gun;
 
 public class Store extends MouseAdapter {
@@ -42,12 +43,18 @@ public class Store extends MouseAdapter {
 	}
 	
 	public Store() {
-		player = Program.player;
+		player = Main.player;
+	}
+	
+	private static Point correctMouse(Point p) {
+		return new Point((int)((p.getX() / Main.getXScale())), (int)(p.getY() / Main.getYScale()));
 	}
 	
 	public void mousePressed(MouseEvent e) {
-		if (Program.gameState == STATE.StoreMenu) {	
-			Button b = Arrays.stream(buttons).filter(x -> x != null && x.inBounds(e.getPoint()) && x.isClickable()).findAny().orElse(null);
+		Point mouse = correctMouse(e.getPoint());
+		
+		if (Main.gameState == STATE.StoreMenu) {	
+			Button b = Arrays.stream(buttons).filter(x -> x != null && x.inBounds(mouse) && x.isClickable()).findAny().orElse(null);
 			
 			if (b == null) return;
 			
@@ -118,7 +125,7 @@ public class Store extends MouseAdapter {
 		case Final:
 			menu = Menu.Other;
 			player.unselectAll();
-			Program.gameState = STATE.InGame;
+			Main.gameState = STATE.InGame;
 		default:
 			break;		
 		}
@@ -168,8 +175,9 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Buy", "Model 12", "$750", "Classic Winchester Pump_Shotgun - Can slam fire_12 Gauge, 6rd");
 			buttonHelper(i++, true, "Buy", "Over-Under", "$575", "Double-Barreled Shotgun_12 Gauge, 2rd");
 			buttonHelper(i++, true, "Buy", "Model 57", "$525", "S&W Magnum Revolver_.41 Magnum, 6rd");			
-			buttonHelper(i++, true, "Buy", "PX4 Compact", "$450", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
+			buttonHelper(i++, true, "Buy", "PX4 Compact", "$425", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
 			buttonHelper(i++, true, "Buy", "Judge", "$350", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
+			buttonHelper(i++, true, "Buy", "Security 9", "$325", "Ruger Handgun with nice_Tiffany Blue Cerakote_9x19mm, 15rd");
 			buttonHelper(i++, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyAmmo:
@@ -181,6 +189,7 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Increase Ammo", "Model 57", "$250", "12 more rounds", 12);
 			buttonHelper(i++, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
 			buttonHelper(i++, true, "Increase Ammo", "Judge", "$200", "10 more shells", 10);
+			buttonHelper(i++, true, "Increase Ammo", "Security 9", "$125", "15 more rounds", 15);
 			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
 			break;
 		case BuyUpgrades:
@@ -360,10 +369,12 @@ public class Store extends MouseAdapter {
 	}
 	
 	public void mouseMoved(MouseEvent e) {	
-		if (Program.gameState == STATE.StoreMenu) {
+		Point mouse = correctMouse(e.getPoint());
+		
+		if (Main.gameState == STATE.StoreMenu) {
 			hover = Arrays.stream(buttons)
 			.filter(b -> b != null)
-			.filter(b -> b.inBounds(e.getPoint()))
+			.filter(b -> b.inBounds(mouse))
 			.findFirst()
 			.orElse(null);
 			

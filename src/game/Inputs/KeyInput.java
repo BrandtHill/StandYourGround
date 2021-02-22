@@ -3,11 +3,10 @@ package game.Inputs;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import game.Program;
+import game.Main;
 import game.Pieces.Player;
-import game.Program.STATE;
+import game.Main.STATE;
 import game.SaveData;
-import game.Weapons.Gun;
 
 public class KeyInput extends KeyAdapter {
 	
@@ -16,14 +15,14 @@ public class KeyInput extends KeyAdapter {
 	private boolean w, a, s, d;
 	
 	public KeyInput() {
-		this.store = Program.store;
-		this.player = Program.player;
+		this.store = Main.store;
+		this.player = Main.player;
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		
-		switch (Program.gameState) {
+		switch (Main.gameState) {
 		
 		case InGame:
 			switch (key) {
@@ -44,7 +43,7 @@ public class KeyInput extends KeyAdapter {
 			case KeyEvent.VK_R: player.getGunWielded().reload();
 				break;
 			case KeyEvent.VK_ESCAPE:
-				Program.gameState = STATE.PauseMenu;
+				Main.gameState = STATE.PauseMenu;
 				w = a = s = d = false;
 				break;
 			default:
@@ -57,11 +56,11 @@ public class KeyInput extends KeyAdapter {
 			switch (key) {
 			case KeyEvent.VK_R:
 				SaveData.loadFromFile("./res/saves/autosave.syg");
-				Program.gameState = STATE.StoreMenu;
+				Main.gameState = STATE.StoreMenu;
 				break;
 			case KeyEvent.VK_N:
 				SaveData.loadFromFile("./res/saves/newgame.syg");
-				Program.gameState = STATE.StartMenu;
+				Main.gameState = STATE.StartMenu;
 				break;
 			case KeyEvent.VK_1:
 				SaveData.saveToFile("./res/saves/save1.syg");
@@ -80,7 +79,7 @@ public class KeyInput extends KeyAdapter {
 		case PauseMenu:
 			switch (key) {
 			case KeyEvent.VK_ESCAPE:
-				Program.gameState = STATE.InGame;
+				Main.gameState = STATE.InGame;
 				break;
 			default:
 				break;
@@ -90,7 +89,7 @@ public class KeyInput extends KeyAdapter {
 		case StartMenu:
 			switch (key) {
 			case KeyEvent.VK_SPACE:
-				Program.gameState = STATE.InGame;
+				Main.gameState = STATE.InGame;
 				break;
 			case KeyEvent.VK_1:
 				SaveData.loadFromFile("./res/saves/save1.syg");

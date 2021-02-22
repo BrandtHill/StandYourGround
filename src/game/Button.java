@@ -6,8 +6,6 @@ import java.awt.Graphics;
 import java.awt.Point;
 
 import game.Inputs.Store;
-import game.Pieces.Player;
-import game.Pieces.Reticle;
 import game.Weapons.Gun;
 
 public class Button {
@@ -22,8 +20,6 @@ public class Button {
 	public Color displayColor, mainColor;
 	private Font font;
 	private boolean clickable, active;
-	private static Player player = Program.player;
-	private static Reticle reticle = Program.reticle;
 	private Gun gun;
 	
 	public Button(int x, int y, boolean active, String line1, String line2, String line3, String tooltip) {
@@ -36,7 +32,7 @@ public class Button {
 		this.line2 = line2;
 		this.line3 = line3;
 		this.tooltip = tooltip;
-		this.gun = player.getGun(line2);
+		this.gun = Main.player.getGun(line2);
 		this.update();
 		this.displayColor = active ? this.mainColor : Color.DARK_GRAY;
 		this.font = new Font("Ariel", 1, 12);
@@ -113,14 +109,17 @@ public class Button {
 
 	public void renderTooltip(Graphics g) {
 		if (tooltip == null || tooltip.isEmpty()) return;
+		double s = Math.min(Main.getXScale(), Main.getYScale());
+		double x = Main.reticle.getX() / s;
+		double y = Main.reticle.getY() / s;
 		g.setFont(font);
 		g.setColor(Color.BLACK);
-		g.fillRect((int)reticle.getX(), (int)reticle.getY(), 160, 72);
+		g.fillRect((int)x, (int)y, 160, 72);
 		g.setColor(Color.WHITE);
-		g.drawRect((int)reticle.getX(), (int)reticle.getY(), 160, 72);
+		g.drawRect((int)x, (int)y, 160, 72);
 		String[] strs = tooltip.split("_");
 		for (int i = 0; i < strs.length; i++) {
-			g.drawString(strs[i], (int)reticle.getX() + 10, (int)reticle.getY() + 20 + i * 20);
+			g.drawString(strs[i], (int)x + 10, (int)y + 20 + i * 20);
 		}
 	}
 }

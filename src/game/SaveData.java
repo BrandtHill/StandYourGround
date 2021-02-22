@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import game.Pieces.Player;
-import game.Program.STATE;
+import game.Main.STATE;
 import game.SpawnSystem.SpawnSystem;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
@@ -50,8 +50,8 @@ public class SaveData implements Serializable {
 	
 	private void saveInstanceToFile(String filename) {
 		try {
-			Player player = Program.player;
-			SpawnSystem spawnSys = Program.spawnSys;
+			Player player = Main.player;
+			SpawnSystem spawnSys = Main.spawnSys;
 	        FileOutputStream file = new FileOutputStream(filename);
 	        ObjectOutputStream out = new ObjectOutputStream(file);
 			List<Gun> arsenal = player.getArsenal();
@@ -76,7 +76,7 @@ public class SaveData implements Serializable {
 	        out.writeObject(this);
 	        out.close();
 	        file.close();
-	        System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, player.getArsenal().stream().filter(g -> g.isOwned()).count()));
+	        System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, gunBeans.stream().filter(g -> g.GunOwned).count()));
 	        System.out.println("Saved current game state: " + filename);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -98,14 +98,12 @@ public class SaveData implements Serializable {
 	}
 	
 	private void setAfterLoad() {
-		Player player = Program.player;
-		SpawnSystem spawnSys = Program.spawnSys;
 		
-		player.setMoney(money);
-		player.setMoneyAtRoundStart(money);
-		spawnSys.setLevel(level);
+		Main.player.setMoney(money);
+		Main.player.setMoneyAtRoundStart(money);
+		Main.spawnSys.setLevel(level);
 		for (GunBean b : gunBeans) {
-			Gun g = player.getGun(b.Id);
+			Gun g = Main.player.getGun(b.Id);
 			g.setMagSize(b.MagSize);
 			g.setAmmoCapacity(b.AmmoCap);
 			g.setOwned(b.GunOwned);
@@ -115,9 +113,13 @@ public class SaveData implements Serializable {
 			g.setReloadImproved(b.ReloadImproved);
 			g.resetAmmo();
 		}
-		player.autoEquip();
+		Main.player.autoEquip();
 		
-		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, player.getArsenal().stream().filter(g -> g.isOwned()).count()));
-		Program.gameState = STATE.StoreMenu;
+		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, gunBeans.stream().filter(g -> g.GunOwned).count()));
+		Main.gameState = STATE.StoreMenu;
+	}
+	
+	public static boolean saveFileExists(String save) {
+		return new File("./res/saves/" + save + ".syg").exists();
 	}
 }
