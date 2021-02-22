@@ -56,7 +56,7 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		money = moneyAtRoundStart = 10000; //For debugging
+		//money = moneyAtRoundStart = 10000; //For debugging
 		speed = 2;
 	}
 	
