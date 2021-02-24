@@ -22,7 +22,7 @@ public class SpawnSystem {
 
 	public SpawnSystem() {
 		lvNum = 1;
-		lvNum = 16;
+		//lvNum = 16;
 		currLevel = Levels.getLevel(lvNum);
 		doneCommencing = doneSpawning = false;
 		ticks = 0;
