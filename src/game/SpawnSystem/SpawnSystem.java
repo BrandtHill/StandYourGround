@@ -76,7 +76,7 @@ public class SpawnSystem {
 	private void spawnLevel(Level level) {
 		resetBoard();
 		if (lvNum >= 11 && lvNum <= 15) addObstaclesLvl11_15();
-		else addObstaclesLvl16_20();
+		else if (lvNum >= 16) addObstaclesLvl16_20();
 		
 		this.ticks = 0;
 		this.wvNum = 0;

@@ -69,7 +69,7 @@ public class Store extends MouseAdapter {
 				if (b.getFirstLine().contains("Mags")) upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
 				if (b.getFirstLine().contains("Auto")) upgradeFireMode(b.getGun(), b.getPrice());
 				if (b.getFirstLine().contains("Speed")) upgradeReload(b.getGun(), b.getPrice());
-				if (b.getFirstLine().matches(".*(Hollow|Loads|Buck).*")) upgradeRounds(b.getGun(), b.getPrice());
+				if (b.getFirstLine().matches(".*(Hollow|Loads|Buck|Rounds).*")) upgradeRounds(b.getGun(), b.getPrice());
 				break;
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
@@ -194,6 +194,7 @@ public class Store extends MouseAdapter {
 			break;
 		case BuyUpgrades:
 			buttonHelper(i++, true, "RPK Mags", "AKM", "$600", "40-round RPK_magazines", 10);
+			buttonHelper(i++, true, "7N23 Rounds", "AKM", "$1000", "Steel-tipped_armor piercing");
 			buttonHelper(i++, true, "Full Auto Sear", "AKM", "$1300", "Restore the AK to its_former glory");
 			buttonHelper(i++, true, "Extended Mags", "AR-15", "$500", "40-round AR-15_magazines", 10);
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
