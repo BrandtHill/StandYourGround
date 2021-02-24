@@ -17,8 +17,10 @@ import javax.imageio.ImageIO;
 import game.Handler;
 import game.Main;
 import game.Pieces.Blood;
+import game.Pieces.DeadZed;
 import game.Pieces.GameObject;
 import game.Pieces.Player;
+import game.SpawnSystem.SpawnSystem;
 
 import static java.lang.Math.atan2;
 import static java.lang.Math.sin;
@@ -26,7 +28,7 @@ import static java.lang.Math.cos;
 
 public class Zombie extends GameObject {
 
-	public final static int NUMZOMBIETYPES = 4;
+	public final static int NUMZOMBIETYPES = SpawnSystem.ZOMBIE.values().length;
 	protected double health, angle, speed;
 	protected Random r;
 	protected Player player;
@@ -162,6 +164,7 @@ public class Zombie extends GameObject {
 			player.setMoney(moneyValue + player.getMoney());
 			Main.spawnSys.decrementRemaining();
 			handler.removeObjectAsync(this);
+			handler.addObjectAsync(new DeadZed(this.x, this.y, this.angle, this.getClass()));
 		}
 	}
 	

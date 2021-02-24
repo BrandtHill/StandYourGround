@@ -17,13 +17,13 @@ public class SpawnSystem {
 	}
 
 	public enum ZOMBIE {
-		NORMAL, DODGING, FAST, THICC
+		NORMAL, DODGING, FAST, THICC, CHARGING
 	}
 
 	public SpawnSystem() {
 		lvNum = 1;
+		lvNum = 16;
 		currLevel = Levels.getLevel(lvNum);
-		//level = 11;
 		doneCommencing = doneSpawning = false;
 		ticks = 0;
 		delayMillis = 0;
@@ -50,6 +50,7 @@ public class SpawnSystem {
 	
 	private void resetBoard() {
 		Main.handler.removeBlood();
+		Main.handler.removeDeadZeds();
 		Main.handler.removeBrass();
 		Main.handler.removeProjectiles();
 		Main.handler.removeZombies();
@@ -74,16 +75,23 @@ public class SpawnSystem {
 
 	private void spawnLevel(Level level) {
 		resetBoard();
-		this.currLevel = level;
-		this.zombiesRemaining = level.getTotalInLevel();
-		this.delayMillis = level.getDelay();
+		if (lvNum >= 11 && lvNum <= 15) addObstaclesLvl11_15();
+		else addObstaclesLvl16_20();
+		
 		this.ticks = 0;
 		this.wvNum = 0;
 		this.doneCommencing = true;
 		this.doneSpawning = false;
 		this.zedsDead = false;
-		this.currWave = level.getWaves().get(wvNum);
-		if (lvNum >= 11) addObstaclesLvl11_15();
+		if (level == null) {
+			System.out.println("Game Over. You Win.");
+			Main.gameState = STATE.GameOverWin;
+		} else {
+			this.currLevel = level;
+			this.zombiesRemaining = level.getTotalInLevel();
+			this.delayMillis = level.getDelay();
+			this.currWave = level.getWaves().get(wvNum);
+		}
 	}
 	
 	private void spawnWave(Wave wave) {
@@ -106,6 +114,13 @@ public class SpawnSystem {
 		Main.handler.addObjectAsync(new Obstacle(-50, 270, 428, 17));
 		Main.handler.addObjectAsync(new Obstacle(585, 270, 265, 17));
 		Main.handler.addObjectAsync(new Obstacle(640, 60, 87, 139));
+	}
+	
+	private void addObstaclesLvl16_20() {
+		Main.handler.addObjectAsync(new Obstacle(346, 458, 139, 87));
+		Main.handler.addObjectAsync(new Obstacle(500, 458, 139, 87));
+		Main.handler.addObjectAsync(new Obstacle(512, 580, 300, 60));
+		Main.handler.addObjectAsync(new Obstacle(784, -50, 50, 700));
 	}
 
 	public int getRemaining() {return zombiesRemaining;}

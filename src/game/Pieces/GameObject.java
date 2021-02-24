@@ -15,9 +15,9 @@ public abstract class GameObject {
 	protected Handler handler;
 	
 	public GameObject(double x, double y) {
+		this.handler = Main.handler;
 		this.x = x;
 		this.y = y;
-		this.handler = Main.handler;
 		velX = velY = 0;
 	}
 	

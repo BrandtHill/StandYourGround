@@ -19,6 +19,8 @@ import game.Audio.AudioPlayer;
 import game.Inputs.KeyInput;
 import game.Inputs.MouseInput;
 import game.Inputs.Store;
+import game.Pieces.DeadZed;
+import game.Pieces.GameObject;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 import game.Pieces.Enemies.Zombie;
@@ -37,6 +39,7 @@ public class Main extends Canvas implements Runnable {
 	private static BufferedImage background1;
 	private static BufferedImage background2;
 	private static BufferedImage background3;
+	private static BufferedImage background4;
 	private static JFrame frame;
 	public static SpawnSystem spawnSys;
 	public static Reticle reticle;
@@ -53,6 +56,7 @@ public class Main extends Canvas implements Runnable {
 		StoreMenu,
 		StartMenu,
 		GameOver,
+		GameOverWin,
 		PauseMenu;
 	}
 	
@@ -105,12 +109,14 @@ public class Main extends Canvas implements Runnable {
 		Player.loadAssets();
 		Gun.loadAssets();
 		Zombie.loadAssets();
+		DeadZed.loadAssets();
 		Store.loadAssets();
 		Reticle.loadAssets();
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
 			background3 = ImageIO.read(new File("./res/UrbanBackground.png"));
+			background4 = ImageIO.read(new File("./res/DeadendBackground.png"));
 			background = background1;
 			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 		} catch (IOException e) {
@@ -196,6 +202,13 @@ public class Main extends Canvas implements Runnable {
 			reticle.render(g);
 			break;
 			
+		case GameOverWin:
+			g.scale(xScale, yScale);
+			MenuHelpers.renderGameOverWinMenu(g);
+			g.scale(1/xScale, 1/yScale);
+			reticle.render(g);
+			break;
+			
 		case InGame:
 			g.scale(SCALE * xScale, SCALE * yScale);
 			g.translate(player.getXOffset(), player.getYOffset());
@@ -266,7 +279,8 @@ public class Main extends Canvas implements Runnable {
 		case InGame:
 			if (spawnSys.getLevel() <= 5) background = background1;
 			else if (spawnSys.getLevel() <= 10) background = background2;
-			else background = background3;
+			else if (spawnSys.getLevel() <= 15) background = background3;
+			else if (spawnSys.getLevel() <= 20) background = background4;
 			
 			if (prevState != STATE.PauseMenu) spawnSys.commence();
 			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");
@@ -303,6 +317,14 @@ public class Main extends Canvas implements Runnable {
 	
 	public static int clamp(int val, int min, int max) {
 		return Math.min(Math.max(val, min), max);
+	}
+	
+	public static double distance(double x1, double y1, double x2, double y2) {
+		return Math.sqrt(Math.pow(x2 - x1, 2) + Math.pow(y2 - y1, 2));
+	}
+	
+	public static double distance(GameObject g1, GameObject g2) {
+		return distance(g1.getX(), g1.getY(), g2.getX(), g2.getY());
 	}
 	
 	public static void delay(Duration duration) {

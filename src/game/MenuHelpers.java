@@ -47,6 +47,16 @@ public class MenuHelpers {
 		renderCommand(g, 225, 450, "3", "Save current state to Save 3");
 	}
 	
+	public static void renderGameOverWinMenu(Graphics g) {
+		g.setColor(new Color(30,60,30));
+		g.draw3DRect(100, 90, Main.WIDTH-200, Main.HEIGHT-200, true);
+		g.setColor(Color.WHITE);
+		g.setFont(ARIAL_42);
+		g.drawString("YOU WON", 300, 200);
+		g.drawString("More levels soon", 250, 240);
+		renderCommand(g, 225, 375, "N", "Main Menu (New Game)");
+	}
+	
 	public static void renderCommand(Graphics g, int x, int y, String cmd, String desc) {
 		g.setFont(MONOSPACED_20);
 		g.setColor(Color.LIGHT_GRAY);

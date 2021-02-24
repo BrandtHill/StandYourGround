@@ -16,10 +16,12 @@ import java.util.stream.Stream;
 
 import game.Pieces.Blood;
 import game.Pieces.Brass;
+import game.Pieces.DeadZed;
 import game.Pieces.GameObject;
 import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Projectile;
+import game.Pieces.Enemies.ChargingZombie;
 import game.Pieces.Enemies.DodgingZombie;
 import game.Pieces.Enemies.FastZombie;
 import game.Pieces.Enemies.ThiccZombie;
@@ -72,6 +74,7 @@ public class Handler {
 	}
 	
 	public void render(Graphics g) {
+		gameObjs.stream().filter(o -> o instanceof DeadZed).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Blood).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Brass).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Obstacle).forEach(b -> b.render(g));
@@ -84,6 +87,11 @@ public class Handler {
 	public void removeBlood() {
 		gameObjs.removeIf(b -> b instanceof Blood);
 		asyncQueue.removeIf(b -> b instanceof Blood);
+	}
+	
+	public void removeDeadZeds() {
+		gameObjs.removeIf(b -> b instanceof DeadZed);
+		asyncQueue.removeIf(b -> b instanceof DeadZed);
 	}
 	
 	public void removeBrass() {
@@ -127,6 +135,7 @@ public class Handler {
 		if (zombie == ZOMBIE.DODGING) return new DodgingZombie(x, y); 
 		if (zombie == ZOMBIE.FAST) return new FastZombie(x, y);
 		if (zombie == ZOMBIE.THICC) return new ThiccZombie(x, y);
+		if (zombie == ZOMBIE.CHARGING) return new ChargingZombie(x, y);
 		return new Zombie(x, y);
 	}
 	

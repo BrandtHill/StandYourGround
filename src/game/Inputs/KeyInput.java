@@ -51,7 +51,7 @@ public class KeyInput extends KeyAdapter {
 			}
 			changeVelocity();
 			break;
-			
+		case GameOverWin:
 		case GameOver:
 			switch (key) {
 			case KeyEvent.VK_R:

@@ -95,6 +95,7 @@ public class AudioPlayer {
 		float pos = music.getPosition();
 		
 		switch (curr) {
+		case GameOverWin:
 		case GameOver:	music.loop(0.65f, 0.25f);
 			break;
 		case InGame:	music.loop(1f, 0.25f);

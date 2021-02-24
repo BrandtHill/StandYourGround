@@ -22,7 +22,7 @@ public class Obstacle extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		//g.setColor(Color.GREEN);
-		//g.drawRect((int)x, (int)y, (int)w, (int)h);
+		//g.drawRect(bounds.x, bounds.y, bounds.width, bounds.height);
 	}
 
 }
