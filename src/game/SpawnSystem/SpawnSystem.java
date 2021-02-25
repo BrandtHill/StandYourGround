@@ -66,17 +66,21 @@ public class SpawnSystem {
 		doneCommencing = false;
 		doneSpawning = false;
 		Main.gameState = STATE.StoreMenu;
-		currLevel = Levels.getLevel(++lvNum);
+		lvNum++;
 
 		resetBoard();
 	}
 	
-	public void commence() {spawnLevel(currLevel);}
+	public void commence() {
+		currLevel = Levels.getLevel(lvNum);
+		spawnLevel(currLevel);
+	}
 
 	private void spawnLevel(Level level) {
 		resetBoard();
 		if (lvNum >= 11 && lvNum <= 15) addObstaclesLvl11_15();
-		else if (lvNum >= 16) addObstaclesLvl16_20();
+		else if (lvNum >= 16 && lvNum <= 20) addObstaclesLvl16_20();
+		else if (lvNum >= 21) addObstaclesLvl21_25();
 		
 		this.ticks = 0;
 		this.wvNum = 0;
@@ -87,7 +91,6 @@ public class SpawnSystem {
 			System.out.println("Game Over. You Win.");
 			Main.gameState = STATE.GameOverWin;
 		} else {
-			this.currLevel = level;
 			this.zombiesRemaining = level.getTotalInLevel();
 			this.delayMillis = level.getDelay();
 			this.currWave = level.getWaves().get(wvNum);
@@ -121,6 +124,14 @@ public class SpawnSystem {
 		Main.handler.addObjectAsync(new Obstacle(500, 458, 139, 87));
 		Main.handler.addObjectAsync(new Obstacle(512, 580, 300, 60));
 		Main.handler.addObjectAsync(new Obstacle(784, -50, 50, 700));
+		Main.handler.addObjectAsync(new Obstacle(253, 184, 59, 103));
+	}
+	
+	private void addObstaclesLvl21_25() {
+		Main.handler.addObjectAsync(new Obstacle(-10, -10, 353, 260));
+		Main.handler.addObjectAsync(new Obstacle(476, 348, 334, 262));
+		Main.handler.addObjectAsync(new Obstacle(476, -10, 324, 260));
+		Main.handler.addObjectAsync(new Obstacle(-10, 348, 353, 262));
 	}
 
 	public int getRemaining() {return zombiesRemaining;}

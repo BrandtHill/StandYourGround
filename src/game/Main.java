@@ -40,6 +40,7 @@ public class Main extends Canvas implements Runnable {
 	private static BufferedImage background2;
 	private static BufferedImage background3;
 	private static BufferedImage background4;
+	private static BufferedImage background5;
 	private static JFrame frame;
 	public static SpawnSystem spawnSys;
 	public static Reticle reticle;
@@ -117,6 +118,7 @@ public class Main extends Canvas implements Runnable {
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));
 			background3 = ImageIO.read(new File("./res/UrbanBackground.png"));
 			background4 = ImageIO.read(new File("./res/DeadendBackground.png"));
+			background5 = ImageIO.read(new File("./res/TunnelBackground.png"));
 			background = background1;
 			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 		} catch (IOException e) {
@@ -281,6 +283,7 @@ public class Main extends Canvas implements Runnable {
 			else if (spawnSys.getLevel() <= 10) background = background2;
 			else if (spawnSys.getLevel() <= 15) background = background3;
 			else if (spawnSys.getLevel() <= 20) background = background4;
+			else if (spawnSys.getLevel() <= 25) background = background5;
 			
 			if (prevState != STATE.PauseMenu) spawnSys.commence();
 			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");

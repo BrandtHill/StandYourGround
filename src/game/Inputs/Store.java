@@ -24,8 +24,6 @@ import game.Weapons.Gun;
 public class Store extends MouseAdapter {
 
 	private static Player player;
-	private int bX [] = {100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580, 100, 260, 420, 580};
-	private int bY [] = {75, 75, 75, 75, 165, 165, 165, 165, 255, 255, 255, 255, 345, 345, 345, 345};
 	public Button[] buttons = new Button[16];
 	public Button hover;
 	public static BufferedImage pegboard;
@@ -194,9 +192,10 @@ public class Store extends MouseAdapter {
 			break;
 		case BuyUpgrades:
 			buttonHelper(i++, true, "RPK Mags", "AKM", "$600", "40-round RPK_magazines", 10);
-			buttonHelper(i++, true, "7N23 Rounds", "AKM", "$1000", "Steel-tipped_armor piercing");
+			buttonHelper(i++, true, "7N23 Rounds", "AKM", "$1000", "Steel-tipped Russian_armor piercing");
 			buttonHelper(i++, true, "Full Auto Sear", "AKM", "$1300", "Restore the AK to its_former glory");
 			buttonHelper(i++, true, "Extended Mags", "AR-15", "$500", "40-round AR-15_magazines", 10);
+			buttonHelper(i++, true, "M855A1 Rounds", "AR-15", "$1100", "Enhanced Penetration_Rounds (EPR)");
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
 			buttonHelper(i++, true, "Extended Mags", "PX4 Compact", "$500", "Use full-size PX4_Storm 20-round_extended magazsines", 5);
 			buttonHelper(i++, true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
@@ -222,12 +221,15 @@ public class Store extends MouseAdapter {
 		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.update());
 	}
 	
+	private static int buttonX(int i) {return (i % 4) * 160 + 100;}
+	private static int buttonY(int i) {return (i / 4) * 90 + 75;}
+	
 	private void buttonHelper(int i, boolean active, String l1, String l2, String l3, String tooltip, int amt) {
-		buttons[i] = new Button(bX[i], bY[i], active, l1, l2, l3, tooltip, amt);
+		buttons[i] = new Button(buttonX(i), buttonY(i), active, l1, l2, l3, tooltip, amt);
 	}
 	
 	private void buttonHelper(int i, boolean active, String l1, String l2, String l3, String tooltip) {
-		buttons[i] = new Button(bX[i], bY[i], active, l1, l2, l3, tooltip);
+		buttonHelper(i, active, l1, l2, l3, tooltip, 0);
 	}
 	
 	public void render(Graphics g) {

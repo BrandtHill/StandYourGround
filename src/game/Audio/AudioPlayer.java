@@ -19,7 +19,8 @@ import game.Main.STATE;
 public class AudioPlayer {
 
 	private static Map<String, Sound> soundMap = new HashMap<String, Sound>();
-	private static Music music;
+	private static Music gameMusic, storeMusic;
+	private static float posG, posS;
 	
 	private static void loadSounds() {
 		try {
@@ -68,20 +69,20 @@ public class AudioPlayer {
 	
 	private static void loadMusic() {
 		try {
-			String fn = Arrays.stream(new File("./").list())
-			.filter(s -> s.matches("([^\\.]+(\\.(?i)(wav|ogg))$)"))
-			.findAny()
-			.orElse("./res/Dying.ogg");
+			//String fn = Arrays.stream(new File("./").list())
+			//.filter(s -> s.matches("([^\\.]+(\\.(?i)(wav|ogg))$)"))
+			//.findAny()
+			//.orElse("./res/Dying.ogg");
 			
-			music = new Music(fn);
+			gameMusic = new Music("./res/Dying.ogg");
+			storeMusic = new Music("./res/FadedBeat.ogg");
 		} catch (SlickException e) {
 			e.printStackTrace();
 		}
 	}
 	
 	private static void runMusicLoop() {
-		music.loop(1f, 0.25f);
-		STATE prev = Main.gameState;
+		STATE prev = null;
 		STATE curr = Main.gameState;
 		while (true) {
 			curr = Main.gameState;
@@ -92,25 +93,24 @@ public class AudioPlayer {
 	}
 	
 	private static void stateChange(STATE curr) {
-		float pos = music.getPosition();
+		if (gameMusic.playing()) posG = gameMusic.getPosition();
+		if (storeMusic.playing()) posS = storeMusic.getPosition();
 		
 		switch (curr) {
+		case PauseMenu:
 		case GameOverWin:
-		case GameOver:	music.loop(0.65f, 0.25f);
+		case GameOver:	gameMusic.loop(0.65f, 0.25f);
 			break;
-		case InGame:	music.loop(1f, 0.25f);
+		case StoreMenu: storeMusic.loop(1f, 0.15f);
 			break;
-		case PauseMenu: music.loop(0.65f, 0.25f);
-			break;
-		case StartMenu: music.loop(1f, 0.25f);
-			break;
-		case StoreMenu: music.loop(1.35f, 0.25f);
-			break;
-		default:		music.loop(1f, 0.25f);
+		case InGame:
+		case StartMenu:
+		default:		gameMusic.loop(1f, 0.25f);
 			break;
 		}
 		
-		music.setPosition(pos);
+		gameMusic.setPosition(posG);
+		storeMusic.setPosition(posS);
 	}
 	
 	public static Sound getSound(String key) {

@@ -231,7 +231,7 @@ public class Levels {
 			w(5000, 
 					s(UP, CHARGING, 2), 
 					s(DOWN, NORMAL, 12)),
-			w(0000, 
+			w(0, 
 					s(DOWN, NORMAL, 8))
 			);
 	
@@ -264,7 +264,7 @@ public class Levels {
 					s(DOWN, NORMAL, 5), 
 					s(UP, NORMAL, 3), 
 					s(UP, DODGING, 2)),
-			w(0000, 
+			w(0, 
 					s(UP, FAST, 5),
 					s(LEFT, CHARGING, 3))
 			);
@@ -275,9 +275,110 @@ public class Levels {
 					s(UP, CHARGING, 1)),
 			w(8000,
 					s(LEFT, NORMAL, 15),
-					s(DOWN, FAST, 3)),
-			w(0000, 
+					s(LEFT, FAST, 3)),
+			w(0, 
 					s(LEFT, FAST, 2))
+			);
+	
+	static Level l17 = l(500,
+			w(5000,
+					s(LEFT, NORMAL, 10)),
+			w(5000,
+					s(LEFT, NORMAL, 12)),
+			w(3000,
+					s(LEFT, NORMAL, 10)),
+			w(0,
+					s(UP, NORMAL, 10),
+					s(LEFT, NORMAL, 4))
+			);
+	
+	static Level l18 = l(2000,
+			w(6000,
+					s(LEFT, FAST, 4),
+					s(UP, CHARGING, 2)),
+			w(6000,
+					s(LEFT, FAST, 4),
+					s(UP, FAST, 4)),
+			w(6000,
+					s(LEFT, THICC, 4),
+					s(UP, CHARGING, 2)),
+			w(0,
+					s(LEFT, DODGING, 2),
+					s(UP, FAST, 4))
+			);
+	
+	static Level l19 = l(3000,
+			w(6000,
+					s(LEFT, THICC, 10),
+					s(UP, THICC, 10)),
+			w(10000,
+					s(UP, CHARGING, 5),
+					s(LEFT, NORMAL, 30)),
+			w(0,
+					s(LEFT, FAST, 2),
+					s(UP, FAST, 2))
+			);
+	
+	static Level l20 = l(5000,
+			w(15000,
+					s(LEFT, NORMAL, 30),
+					s(UP, DODGING, 8)),
+			w(0,
+					s(LEFT, CHARGING, 3),
+					s(LEFT, NORMAL, 20),
+					s(UP, CHARGING, 3),
+					s(UP, NORMAL, 20))
+			);
+	
+	static Level l21 = l(3000,
+			w(7500,
+					s(LEFT, NORMAL, 2),
+					s(UP, DODGING, 2)),
+			w(10000,
+					s(DOWN, FAST, 3),
+					s(LEFT, CHARGING, 2),
+					s(RIGHT, CHARGING, 1)),
+			w(0,
+					s(RIGHT, NORMAL, 5))
+			);
+	
+	static Level l22 = l(5000,
+			w(11000,
+					s(LEFT, FAST, 4),
+					s(RIGHT, THICC, 3)),
+			w(10000,
+					s(DOWN, FAST, 5),
+					s(UP, CHARGING, 3),
+					s(UP, THICC, 2)),
+			w(12000,
+					s(RIGHT, NORMAL, 5),
+					s(LEFT, NORMAL, 5)),
+			w(0,
+					s(UP, THICC, 4),
+					s(DOWN, CHARGING, 3),
+					s(RIGHT, DODGING, 5),
+					s(LEFT, NORMAL, 3))
+			);
+	
+	static Level l23 = l(4000,
+			w(8000,
+					s(LEFT, FAST, 3),
+					s(RIGHT, FAST, 2)),
+			w(8000,
+					s(RIGHT, FAST, 3),
+					s(DOWN, FAST, 2)),
+			w(8000,
+					s(UP, FAST, 3),
+					s(LEFT, FAST, 2)),
+			w(8000,
+					s(DOWN, FAST, 3),
+					s(UP, FAST, 2)),
+			w(8000,
+					s(LEFT, FAST, 3),
+					s(DOWN, FAST, 2)),
+			w(8000,
+					s(RIGHT, FAST, 3),
+					s(UP, FAST, 2))
 			);
 	
 	public static Level getLevel(int i) {
@@ -285,7 +386,7 @@ public class Levels {
 			Field f = Levels.class.getDeclaredField("l" + i);
 			return (Level) f.get(null);
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.out.println("Couldn't find static level. Returning null.");
 			return null;
 		}
 	}

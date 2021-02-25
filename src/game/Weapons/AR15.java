@@ -1,5 +1,7 @@
 package game.Weapons;
 
+import java.awt.Color;
+
 import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
@@ -50,9 +52,16 @@ public class AR15 extends Gun {
 	
 	@Override
 	public int getHits() {
-		return r.nextDouble() > 0.833 ? 2 : 1;
+		int h = r.nextDouble() > 0.833 ? 2 : 1; 
+		if (specialRounds) h += 2 + r.nextDouble() > 0.4 ? 1 : 0;
+		return h;
 	}
 
 	@Override
-	public void makeRoundSpecial(Projectile p) {}
+	public void makeRoundSpecial(Projectile p) {
+		p.color = new Color(243, 144, 0);
+		p.damage *= 1.325;
+		p.magnitude *= 1.25;
+		p.angleMulti *= 0.5;
+	}
 }

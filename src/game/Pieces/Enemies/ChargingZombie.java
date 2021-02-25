@@ -9,7 +9,7 @@ public class ChargingZombie extends Zombie {
 	
 	public ChargingZombie(double x, double y) {
 		super(x, y);
-		this.health = 90 + 3.5 * Main.spawnSys.getLevel();
+		this.health = 105 + 3.5 * Main.spawnSys.getLevel();
 		this.speed = 0.7 + Main.spawnSys.getLevel() * 0.015;
 		this.zombieSprites = Zombie.spriteSheets[4];
 		this.moneyValue = 30;
