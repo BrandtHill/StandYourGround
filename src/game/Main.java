@@ -276,15 +276,10 @@ public class Main extends Canvas implements Runnable {
 	
 	private void stateChange() {
 		hud.tick();
+		updateBackground();
 		
 		switch (gameState) {
 		case InGame:
-			if (spawnSys.getLevel() <= 5) background = background1;
-			else if (spawnSys.getLevel() <= 10) background = background2;
-			else if (spawnSys.getLevel() <= 15) background = background3;
-			else if (spawnSys.getLevel() <= 20) background = background4;
-			else if (spawnSys.getLevel() <= 25) background = background5;
-			
 			if (prevState != STATE.PauseMenu) spawnSys.commence();
 			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");
 			removeMouseMotionListener(store);
@@ -292,8 +287,8 @@ public class Main extends Canvas implements Runnable {
 		case StoreMenu:
 			addMouseMotionListener(store);
 			SaveData.saveToFile("./res/saves/autosave.syg");
-			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			Store.menu = Store.Menu.BuyGuns;
+			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			store.onMenuUpdate();
 			break;
 		case GameOver:
@@ -302,6 +297,14 @@ public class Main extends Canvas implements Runnable {
 		default:
 			break;
 		}
+	}
+	
+	private void updateBackground() {
+		if (spawnSys.getLevel() <= 5) background = background1;
+		else if (spawnSys.getLevel() <= 10) background = background2;
+		else if (spawnSys.getLevel() <= 15) background = background3;
+		else if (spawnSys.getLevel() <= 20) background = background4;
+		else if (spawnSys.getLevel() <= 25) background = background5;
 	}
 	
 	public static boolean isOnEdgeX() {

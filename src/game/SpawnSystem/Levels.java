@@ -343,43 +343,80 @@ public class Levels {
 			);
 	
 	static Level l22 = l(5000,
-			w(11000,
+			w(14000,
 					s(LEFT, FAST, 4),
 					s(RIGHT, THICC, 3)),
-			w(10000,
-					s(DOWN, FAST, 5),
-					s(UP, CHARGING, 3),
+			w(17000,
+					s(DOWN, FAST, 4),
+					s(UP, CHARGING, 2),
 					s(UP, THICC, 2)),
-			w(12000,
+			w(14000,
 					s(RIGHT, NORMAL, 5),
 					s(LEFT, NORMAL, 5)),
 			w(0,
 					s(UP, THICC, 4),
-					s(DOWN, CHARGING, 3),
+					s(DOWN, CHARGING, 2),
 					s(RIGHT, DODGING, 5),
 					s(LEFT, NORMAL, 3))
 			);
 	
 	static Level l23 = l(4000,
-			w(8000,
+			w(10000,
 					s(LEFT, FAST, 3),
 					s(RIGHT, FAST, 2)),
-			w(8000,
+			w(10000,
 					s(RIGHT, FAST, 3),
 					s(DOWN, FAST, 2)),
-			w(8000,
+			w(10000,
 					s(UP, FAST, 3),
 					s(LEFT, FAST, 2)),
-			w(8000,
+			w(10000,
 					s(DOWN, FAST, 3),
 					s(UP, FAST, 2)),
-			w(8000,
+			w(10000,
 					s(LEFT, FAST, 3),
 					s(DOWN, FAST, 2)),
 			w(8000,
 					s(RIGHT, FAST, 3),
 					s(UP, FAST, 2))
 			);
+	
+	static Level l24 = l(500,
+			w(12000,
+					s(LEFT, NORMAL, 5),
+					s(RIGHT, NORMAL, 5)),
+			w(4000,
+					s(LEFT, NORMAL, 5),
+					s(RIGHT, NORMAL, 5)),
+			w(4000,
+					s(UP, CHARGING, 1),
+					s(DOWN, CHARGING, 1)),
+			w(10000,
+					s(DOWN, NORMAL, 7),
+					s(DOWN, CHARGING, 1),
+					s(UP, NORMAL, 7),
+					s(UP, CHARGING, 1)),
+			w(0,
+					s(LEFT, NORMAL, 2),
+					s(RIGHT, NORMAL, 2))
+			);
+	
+	static Level l25 = l(2000,
+			w(12000,
+					s(LEFT, NORMAL, 5),
+					s(UP, DODGING, 4)),
+			w(4000,
+					s(LEFT, NORMAL, 8),
+					s(UP, FAST, 3)),
+			w(18000,
+					s(LEFT, THICC, 10)),
+			w(0,
+					s(DOWN, NORMAL, 4),
+					s(DOWN, CHARGING, 2),
+					s(LEFT, NORMAL, 8))
+			);
+	
+	
 	
 	public static Level getLevel(int i) {
 		try {

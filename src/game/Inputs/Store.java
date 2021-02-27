@@ -51,7 +51,7 @@ public class Store extends MouseAdapter {
 	public void mousePressed(MouseEvent e) {
 		Point mouse = correctMouse(e.getPoint());
 		
-		if (Main.gameState == STATE.StoreMenu) {	
+		if (Main.gameState == STATE.StoreMenu) {
 			Button b = Arrays.stream(buttons).filter(x -> x != null && x.inBounds(mouse) && x.isClickable()).findAny().orElse(null);
 			
 			if (b == null) return;
@@ -97,7 +97,7 @@ public class Store extends MouseAdapter {
 		switch (menu) {
 		case BuyGuns: 
 			menu = Menu.BuyAmmo;
-			player.autoEquip();
+			player.autoEquip(Main.spawnSys.sidearmsOnly());
 			break;
 		case BuyAmmo: 
 			menu = Menu.BuyUpgrades;
@@ -206,10 +206,10 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "000 Buckshot", "Model 12", "$425", "Triple-Ought Buckshot -_Six heavy shot per shell");
 			break;
 		case SelectPrimary:
-			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
+			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, primaryEnabled(i), "", player.getGunAt(i).getName(), "", "");
 			break;
 		case SelectSecondary:
-			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, true, "", player.getGunAt(i).getName(), "", "");
+			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, primaryEnabled(i), "", player.getGunAt(i).getName(), "", "");
 			break;
 		case SelectSidearm:
 			for (i = 0; i < Player.NUMGUNS; i++) buttonHelper(i, player.getGunAt(i).isSidearm(), "", player.getGunAt(i).getName(), "", "");
@@ -219,6 +219,10 @@ public class Store extends MouseAdapter {
 		}
 		
 		Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.update());
+	}
+	
+	private boolean primaryEnabled(int i) {
+		return !Main.spawnSys.sidearmsOnly() || player.getGunAt(i).isSidearm();
 	}
 	
 	private static int buttonX(int i) {return (i % 4) * 160 + 100;}
@@ -286,11 +290,12 @@ public class Store extends MouseAdapter {
 	private void drawComponents(Graphics g, boolean doMoney, boolean doBack, boolean doForward, String header) {
 		g.setColor(Color.WHITE);
 		g.setFont(new Font("Arial", 1, 24));
-		if (doMoney) g.drawString("MONEY: $" + player.getMoney(), 340, 50);
-		if (header != null) g.drawString(header, 280, 50);
+		if (doMoney) g.drawString("MONEY: $" + player.getMoney(), 340, 45);
+		if (header != null) g.drawString(header, 280, 45);
 		g.setFont(new Font("Arial", 1, 12));
 		if (doBack) g.drawString("BACKSPACE", 100, 543);
 		if (doForward) g.drawString("SPACE", 663, 543);
+		if (Main.spawnSys.sidearmsOnly()) g.drawString("PISTOLS ONLY THIS LEVEL", 330, 65);
 		g.setFont(new Font("Arial", 1, 48));
 		if (doBack) g.drawString("←", 40, 550);
 		if (doForward) g.drawString("→", 715, 550);
@@ -336,7 +341,7 @@ public class Store extends MouseAdapter {
 			gun.setAmmoCapacity(cap + ammo);
 			gun.setMagIncreased(true);
 			player.setMoney(m - money);
-		}		
+		}
 	}
 	
 	private void upgradeReload(Gun gun, int money) {
@@ -371,7 +376,7 @@ public class Store extends MouseAdapter {
 		}
 	}
 	
-	public void mouseMoved(MouseEvent e) {	
+	public void mouseMoved(MouseEvent e) {
 		Point mouse = correctMouse(e.getPoint());
 		
 		if (Main.gameState == STATE.StoreMenu) {

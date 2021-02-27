@@ -42,6 +42,21 @@ public class Projectile extends GameObject {
 		if (g.isSpecialRounds()) g.makeRoundSpecial(this);
 	}
 	
+	public Projectile(Grenade g, double angle) {
+		super(g.getX(), g.getY());
+		this.angle = angle;
+		this.xScale = sin(angle);
+		this.yScale = cos(angle);
+		this.xPrev = x;
+		this.yPrev = y;
+		this.damage = g.getDamage();
+		this.knockBack = g.getKnock();
+		this.magnitude = g.getVelocity();
+		this.hits = 1;
+		this.color = Color.YELLOW;
+		this.hitZombies = new HashSet<Zombie>();
+	}
+	
 	public Line2D.Double getBounds() {
 		return new Line2D.Double(x, y, xPrev, yPrev);
 	}

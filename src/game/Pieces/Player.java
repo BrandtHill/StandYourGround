@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.Main;
 import game.Audio.AudioPlayer;
@@ -56,7 +57,7 @@ public class Player extends GameObject{
 		gunSidearm = getGun(GUN.Titan);
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
-		//money = moneyAtRoundStart = 10000; //For debugging
+		//money = moneyAtRoundStart = 100_000; //For debugging
 		speed = 2;
 	}
 	
@@ -173,7 +174,13 @@ public class Player extends GameObject{
 		arsenal.forEach(g -> g.resetAmmo());
 	}
 	
-	public void autoEquip() {
+	public void autoEquip(boolean sidearmsOnly) {
+		if (sidearmsOnly) autoEquipSidearms();
+		else autoEquip();
+	}
+	
+	
+	private void autoEquip() {
 		gunPrimary = gunSecondary = gunSidearm = gunWielded = null;
 		
 		if (gunPrimary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
@@ -181,6 +188,21 @@ public class Player extends GameObject{
 		}
 		if (gunSecondary == null && (numPrimariesAvailable() > 0 || numSidearmsAvailable() > 1)) {
 			gunSecondary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped()).findFirst().get();
+		}
+		if (gunSidearm == null && numSidearmsAvailable() > 0) {
+			gunSidearm = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
+		}
+		autoWield();
+	}
+	
+	private void autoEquipSidearms() {
+		gunPrimary = gunSecondary = gunSidearm = gunWielded = null;
+		
+		if (gunPrimary == null && (numSidearmsAvailable() > 1)) {
+			gunPrimary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
+		}
+		if (gunSecondary == null && (numSidearmsAvailable() > 1)) {
+			gunSecondary = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();
 		}
 		if (gunSidearm == null && numSidearmsAvailable() > 0) {
 			gunSidearm = arsenal.stream().filter(g -> g.isOwned() && !g.isEquipped() && g.isSidearm()).findFirst().get();

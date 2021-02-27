@@ -18,6 +18,7 @@ import game.Pieces.Blood;
 import game.Pieces.Brass;
 import game.Pieces.DeadZed;
 import game.Pieces.GameObject;
+import game.Pieces.Grenade;
 import game.Pieces.Obstacle;
 import game.Pieces.Player;
 import game.Pieces.Projectile;
@@ -80,6 +81,7 @@ public class Handler {
 		gameObjs.stream().filter(o -> o instanceof Obstacle).forEach(b -> b.render(g));
 		gameObjs.stream().filter(o -> o instanceof Projectile).forEach(p -> p.render(g));
 		gameObjs.stream().filter(o -> o instanceof Zombie).forEach(z -> z.render(g));
+		gameObjs.stream().filter(o -> o instanceof Grenade).forEach(x -> x.render(g));
 		//gameObjs.stream().filter(o -> o instanceof Reticle).findFirst().get().render(g);
 		gameObjs.stream().filter(o -> o instanceof Player).findFirst().get().render(g);
 	}
@@ -97,6 +99,11 @@ public class Handler {
 	public void removeBrass() {
 		gameObjs.removeIf(b -> b instanceof Brass);
 		asyncQueue.removeIf(b -> b instanceof Brass);
+	}
+	
+	public void removeGrenades() {
+		gameObjs.removeIf(g -> g instanceof Grenade);
+		asyncQueue.removeIf(g -> g instanceof Grenade);
 	}
 	
 	public void removeProjectiles() {

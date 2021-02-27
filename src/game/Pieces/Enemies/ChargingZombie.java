@@ -9,8 +9,8 @@ public class ChargingZombie extends Zombie {
 	
 	public ChargingZombie(double x, double y) {
 		super(x, y);
-		this.health = 105 + 3.5 * Main.spawnSys.getLevel();
-		this.speed = 0.7 + Main.spawnSys.getLevel() * 0.015;
+		this.health = 105 + 3.5 * currLevelOrMax(30);
+		this.speed = 0.7 + currLevelOrMax(20) * 0.015;
 		this.zombieSprites = Zombie.spriteSheets[4];
 		this.moneyValue = 30;
 		this.maxAngleChangeDegrees = 2;
@@ -18,7 +18,7 @@ public class ChargingZombie extends Zombie {
 
 	@Override
 	public void tick() {
-		if (ticksSinceCharge++ > 420 
+		if (ticksSinceCharge++ > 330 
 				&& !handler.hitsObstacle(getSightToPlayer())
 				&& Main.distance(this, player) < 225) {
 			initCharge();

@@ -11,8 +11,8 @@ public class DodgingZombie extends Zombie {
 	
 	public DodgingZombie(double x, double y) {
 		super(x, y);
-		this.health = 36 + 3 * Main.spawnSys.getLevel();
-		this.speed = 1.5 + Main.spawnSys.getLevel() * 0.015;
+		this.health = 36 + 3 * currLevelOrMax(15);
+		this.speed = 1.5 + currLevelOrMax(15) * 0.015;
 		this.zombieSprites = Zombie.spriteSheets[1];
 		this.maxTicksInSight = r.nextInt(60) + 20;
 		this.ticksInSight = 0;

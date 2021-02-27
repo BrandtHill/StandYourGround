@@ -1,6 +1,5 @@
 package game.Pieces.Enemies;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -47,8 +46,8 @@ public class Zombie extends GameObject {
 		this.zombieSprites = spriteSheets[0];
 		this.r = new Random();
 		
-		this.health = 40 + 4 * Main.spawnSys.getLevel();
-		this.speed = 1.3 + Main.spawnSys.getLevel() * 0.015;
+		this.health = 40 + 4 * currLevelOrMax(15);
+		this.speed = 1.3 + currLevelOrMax(15) * 0.015;
 		this.moneyValue = 19;
 		this.maxAngleChangeDegrees = 5;
 	}
@@ -192,6 +191,11 @@ public class Zombie extends GameObject {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}	
+		}
+	}
+	
+	//For scaling Zombie stats by level but max out at given cap
+	static int currLevelOrMax(int cap) {
+		return Math.min(Main.spawnSys.getLevel(), cap);
 	}
 }

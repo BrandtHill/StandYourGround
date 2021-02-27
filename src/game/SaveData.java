@@ -113,7 +113,7 @@ public class SaveData implements Serializable {
 			g.setReloadImproved(b.ReloadImproved);
 			g.resetAmmo();
 		}
-		Main.player.autoEquip();
+		Main.player.autoEquip(Main.spawnSys.sidearmsOnly());
 		
 		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, gunBeans.stream().filter(g -> g.GunOwned).count()));
 		Main.gameState = STATE.StoreMenu;

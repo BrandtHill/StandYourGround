@@ -22,7 +22,7 @@ public class SpawnSystem {
 
 	public SpawnSystem() {
 		lvNum = 1;
-		//lvNum = 16;
+		//lvNum = 20;
 		currLevel = Levels.getLevel(lvNum);
 		doneCommencing = doneSpawning = false;
 		ticks = 0;
@@ -52,6 +52,7 @@ public class SpawnSystem {
 		Main.handler.removeBlood();
 		Main.handler.removeDeadZeds();
 		Main.handler.removeBrass();
+		Main.handler.removeGrenades();
 		Main.handler.removeProjectiles();
 		Main.handler.removeZombies();
 		Main.handler.removeObstacles();
@@ -139,4 +140,5 @@ public class SpawnSystem {
 	public int getLevel() {return lvNum;}
 	public void setLevel(int level) {this.lvNum = level;}
 	public boolean zedsDead() {return zedsDead;}
+	public boolean sidearmsOnly() {return lvNum >=21 && lvNum <= 25;}
 }

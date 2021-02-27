@@ -9,8 +9,8 @@ public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y) {
 		super(x, y);
-		this.health = 40 + 4 * Main.spawnSys.getLevel();
-		this.speed = 1.9 + Main.spawnSys.getLevel() * 0.015;
+		this.health = 40 + 4 * currLevelOrMax(20);
+		this.speed = 1.9 + currLevelOrMax(20) * 0.015;
 		this.moneyValue = 27;
 		this.zombieSprites = Zombie.spriteSheets[2];
 		this.maxAngleChangeDegrees = 3;
@@ -27,7 +27,7 @@ public class FastZombie extends Zombie {
 		if (ticks++ % 4 == 0) spriteNum++;
 		
 		speed *= 1.0005;
-		speed = Math.max(speed, 2.5);
+		speed = Math.max(speed, 2.375);
 		if (ticks % 30 == 0) findPathIfNeeded();
 	}
 	
