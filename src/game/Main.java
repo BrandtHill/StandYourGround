@@ -21,6 +21,7 @@ import game.Inputs.MouseInput;
 import game.Inputs.Store;
 import game.Pieces.DeadZed;
 import game.Pieces.GameObject;
+import game.Pieces.Bomb;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 import game.Pieces.Enemies.Zombie;
@@ -113,6 +114,7 @@ public class Main extends Canvas implements Runnable {
 		DeadZed.loadAssets();
 		Store.loadAssets();
 		Reticle.loadAssets();
+		Bomb.loadAssets();
 		try {
 			background1 = ImageIO.read(new File("./res/GrassBackground.png"));
 			background2 = ImageIO.read(new File("./res/StreetBackground.png"));

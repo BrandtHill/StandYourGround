@@ -23,6 +23,7 @@ public class SaveData implements Serializable {
 	
 	private int money;
 	private int level;
+	private boolean bomb;
 	private ArrayList<GunBean> gunBeans;
 
 	class GunBean implements Serializable {
@@ -58,6 +59,7 @@ public class SaveData implements Serializable {
 			
 			money = player.getMoneyAtRoundStart();
 			level = spawnSys.getLevel();
+			bomb = player.ownsBomb();
 			gunBeans.clear();
 			for (int i = 0; i < arsenal.size(); i++) {
 				Gun g = arsenal.get(i);
@@ -114,6 +116,7 @@ public class SaveData implements Serializable {
 			g.resetAmmo();
 		}
 		Main.player.autoEquip(Main.spawnSys.sidearmsOnly());
+		Main.player.setOwnsBomb(bomb);
 		
 		System.out.println(MessageFormat.format("Level: {0}, Money: {1}, GunsOwned: {2}", level, money, gunBeans.stream().filter(g -> g.GunOwned).count()));
 		Main.gameState = STATE.StoreMenu;

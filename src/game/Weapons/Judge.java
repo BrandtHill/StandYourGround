@@ -11,7 +11,7 @@ public class Judge extends Gun {
 
 	public Judge() {
 		super(GUN.Judge);
-		reloadSound = AudioPlayer.getSound("ReloadJudge");
+		reloadSound = "ReloadJudge";
 		reloadTime = 3500;
 		chamberTime = 250;
 		gunName = "Judge";
@@ -32,9 +32,9 @@ public class Judge extends Gun {
 			for (int i = 0; i < 4; i++) {
 				Main.handler.addObjectAsync(new Projectile(this));
 			}
-			if (ammoLoaded > 1) AudioPlayer.getSound("CockJudge").play();
+			if (ammoLoaded > 1) AudioPlayer.playSound("CockJudge");
 			onShotFired();
-			AudioPlayer.getSound("Pistol2").play(0.75f, 0.85f);
+			AudioPlayer.playSound("Pistol2", 0.75f, 0.85f);
 		}
 	}
 	

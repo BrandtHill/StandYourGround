@@ -11,7 +11,7 @@ public class AKM extends Gun {
 
 	public AKM() {
 		super(GUN.AKM);
-		reloadSound = AudioPlayer.getSound("ReloadAKM");
+		reloadSound = "ReloadAKM";
 		reloadTime = 3000;
 		chamberTime = 95;
 		gunName = "AKM";
@@ -38,7 +38,7 @@ public class AKM extends Gun {
 				Main.player.getAngle() - Math.PI / 1.8,
 				new Color(94, 85, 58)));
 			onShotFired();
-			AudioPlayer.getSound("AKM").play(1.0f, 0.8f);
+			AudioPlayer.playSound("AKM", 1.0f, 0.8f);
 		}
 	}
 	

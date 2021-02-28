@@ -11,7 +11,7 @@ public class AR15 extends Gun {
 
 	public AR15() {
 		super(GUN.AR15);
-		reloadSound = AudioPlayer.getSound("ReloadAR15");
+		reloadSound = "ReloadAR15";
 		reloadTime = 2750;
 		chamberTime = 66;
 		gunName = "AR-15";
@@ -37,7 +37,7 @@ public class AR15 extends Gun {
 				7 + 2 * r.nextDouble(),
 				Main.player.getAngle() - Math.PI / 1.8));
 			onShotFired();
-			AudioPlayer.getSound("Rifle").play(1.0f, 0.3f);
+			AudioPlayer.playSound("Rifle", 1.0f, 0.3f);
 		}
 	}
 	

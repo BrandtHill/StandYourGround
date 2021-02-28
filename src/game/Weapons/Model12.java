@@ -2,8 +2,6 @@ package game.Weapons;
 
 import java.awt.Color;
 
-import org.newdawn.slick.Sound;
-
 import game.Main;
 import game.Audio.AudioPlayer;
 import game.Pieces.Brass;
@@ -11,17 +9,17 @@ import game.Pieces.Projectile;
 
 public class Model12 extends Gun {
 
-	private Sound cycleSound;
-	private Sound reloadEmptySound;
+	private String cycleSound;
+	private String reloadEmptySound;
 	private int ejTicks;
 	private int reloadTimeBase;
 	private int reloadTimeEmpty;
 	
 	public Model12() {
 		super(GUN.Model12);
-		reloadSound = AudioPlayer.getSound("ReloadModel12");
-		reloadEmptySound = AudioPlayer.getSound("ReloadEmptyModel12");
-		cycleSound = AudioPlayer.getSound("CycleModel12");
+		reloadSound = "ReloadModel12";
+		reloadEmptySound = "ReloadEmptyModel12";
+		cycleSound = "CycleModel12";
 		reloadTimeBase = 900;
 		reloadTimeEmpty = 1250;
 		reloadTime = reloadTimeBase;
@@ -44,10 +42,10 @@ public class Model12 extends Gun {
 			for (int i = 0; i < (specialRounds ? 6 : 8); i++) {
 				Main.handler.addObjectAsync(new Projectile(this));
 			}
-			if (ammoLoaded > 1) cycleSound.play(1f, 0.60f);
+			if (ammoLoaded > 1) AudioPlayer.playSound(cycleSound, 1f, 0.60f);
 			ejTicks = 0;
 			onShotFired();
-			AudioPlayer.getSound("Shotgun2").play(1f, 0.275f);
+			AudioPlayer.playSound("Shotgun2", 1f, 0.275f);
 		}
 	}
 
@@ -55,11 +53,10 @@ public class Model12 extends Gun {
 	public void reload() {
 		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
 			if (ammoLoaded > 0) {
-				reloadSound.play(1f, 1f);
+				AudioPlayer.playSound(reloadSound);
 				reloadTime = reloadTimeBase;
-			}
-			else {
-				reloadEmptySound.play(1f, 1f);
+			} else {
+				AudioPlayer.playSound(reloadEmptySound);
 				reloadTime = reloadTimeEmpty;
 			}
 			reloading = true;
@@ -93,8 +90,8 @@ public class Model12 extends Gun {
 		}
 		if (shooting) {
 			if (reloading && ammoLoaded > 0) {
-				if (reloadSound.playing()) reloadSound.stop();
-				if (reloadEmptySound.playing()) reloadEmptySound.stop();
+				AudioPlayer.stopSound(reloadSound);
+				AudioPlayer.stopSound(reloadEmptySound);
 				reloading = false;
 				chamberTicks = reloadTicks = 0;
 			}

@@ -11,7 +11,7 @@ public class OverUnder extends Gun {
 
 	public OverUnder() {
 		super(GUN.OverUnder);
-		reloadSound = AudioPlayer.getSound("ReloadOverUnder");
+		reloadSound = "ReloadOverUnder";
 		reloadTime = 2750;
 		chamberTime = 250;
 		gunName = "Over-Under";
@@ -32,7 +32,7 @@ public class OverUnder extends Gun {
 				Main.handler.addObjectAsync(new Projectile(this));
 			}
 			onShotFired();
-			AudioPlayer.getSound("Shotgun").play(1.0f, 0.30f);
+			AudioPlayer.playSound("Shotgun", 1.0f, 0.30f);
 		}
 	}
 	

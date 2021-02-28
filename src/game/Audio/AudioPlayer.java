@@ -1,8 +1,6 @@
 package game.Audio;
 
-import java.io.File;
 import java.time.Duration;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -113,7 +111,26 @@ public class AudioPlayer {
 		storeMusic.setPosition(posS);
 	}
 	
-	public static Sound getSound(String key) {
+	private static Sound getSound(String key) {
 		return soundMap.get(key);
+	}
+	
+	public static void playSound(String key, float pitch, float volume) {
+		try {
+			getSound(key).play(pitch, volume);
+		} catch(Exception e) {
+			System.out.println("Exception while playing a sound " + key);
+		}
+	}
+	
+	public static void playSound(String key) {playSound(key, 1f, 1f);}
+	
+	public static void stopSound(String key) {
+		try {
+			Sound s = getSound(key);
+			if (s.playing()) s.stop();
+		} catch(Exception e) {
+			System.out.println("Exception while stopping sound " + key);
+		}
 	}
 }

@@ -11,8 +11,8 @@ public class Model57 extends Gun {
 	
 	public Model57() {
 		super(GUN.Model57);
-		reloadSound = AudioPlayer.getSound("ReloadModel57");
-		speedReloadSound = AudioPlayer.getSound("SpeedReloadModel57");
+		reloadSound = "ReloadModel57";
+		speedReloadSound = "SpeedReloadModel57";
 		reloadTime = 4000;
 		reloadFactor = 0.50;
 		chamberTime = 200;
@@ -33,8 +33,8 @@ public class Model57 extends Gun {
 	public void shoot() {
 		if (canShoot()) {
 			Main.handler.addObjectAsync(new Projectile(this));
-			AudioPlayer.getSound("Pistol").play(0.50f,0.45f);
-			if (ammoLoaded > 1) AudioPlayer.getSound("CockModel57").play();
+			AudioPlayer.playSound("Pistol", 0.50f, 0.45f);
+			if (ammoLoaded > 1) AudioPlayer.playSound("CockModel57");
 			onShotFired();
 		}
 	}

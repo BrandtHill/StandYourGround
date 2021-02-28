@@ -61,7 +61,8 @@ public class Store extends MouseAdapter {
 				buyGun(b.getGun(), b.getPrice());
 				break;
 			case BuyAmmo:
-				upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
+				if (b.getFirstLine().contains("Buy")) buyBomb(b.getPrice()); 
+				else upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
 				break;
 			case BuyUpgrades:
 				if (b.getFirstLine().contains("Mags")) upgradeMagSize(b.getGun(), b.getAmount(), b.getPrice());
@@ -72,14 +73,17 @@ public class Store extends MouseAdapter {
 			case SelectSidearm:
 				player.equipSidearm(b.getGun());
 				player.switchToSidearm();
+				playBlipMajor();
 				break;
 			case SelectPrimary:
 				player.equipPrimary(b.getGun());
 				player.switchToPrimary();
+				playBlipMajor();
 				break;
 			case SelectSecondary:
 				player.equipSecondary(b.getGun());
 				player.switchToSecondary();
+				playBlipMajor();
 				break;
 			default:
 				break;
@@ -174,8 +178,8 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Buy", "Over-Under", "$575", "Double-Barreled Shotgun_12 Gauge, 2rd");
 			buttonHelper(i++, true, "Buy", "Model 57", "$525", "S&W Magnum Revolver_.41 Magnum, 6rd");			
 			buttonHelper(i++, true, "Buy", "PX4 Compact", "$425", "Modern Handgun -_Compact PX4 Storm_9x19mm, 15rd");
-			buttonHelper(i++, true, "Buy", "Judge", "$350", "Revolver that can shoot_.410 shot shells_.410 Bore, 5rd");
-			buttonHelper(i++, true, "Buy", "Security 9", "$325", "Ruger Handgun with nice_Tiffany Blue Cerakote_9x19mm, 15rd");
+			buttonHelper(i++, true, "Buy", "Security 9", "$350", "Ruger Handgun with nice_Tiffany Blue Cerakote_9x19mm, 15rd");
+			buttonHelper(i++, true, "Buy", "Judge", "$325", "Revolver that can shoot_.410 shot and .45 Colt_.410 Bore, 5rd");
 			buttonHelper(i++, true, "Buy", "Titan", "", "Pocket Pistol -_Better than nothing_.25 ACP, 7rd");
 			break;
 		case BuyAmmo:
@@ -186,9 +190,10 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Increase Ammo", "Over-Under", "$200", "6 more shells", 6);
 			buttonHelper(i++, true, "Increase Ammo", "Model 57", "$250", "12 more rounds", 12);
 			buttonHelper(i++, true, "Increase Ammo", "PX4 Compact", "$175", "15 more rounds", 15);
-			buttonHelper(i++, true, "Increase Ammo", "Judge", "$200", "10 more shells", 10);
-			buttonHelper(i++, true, "Increase Ammo", "Security 9", "$125", "15 more rounds", 15);
+			buttonHelper(i++, true, "Increase Ammo", "Security 9", "$150", "15 more rounds", 15);
+			buttonHelper(i++, true, "Increase Ammo", "Judge", "$125", "10 more shells", 10);
 			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
+			buttonHelper(i++, true, "Buy", "Bomb", "$900", "High explosive stick_of dynamite._Right click, One per level");
 			break;
 		case BuyUpgrades:
 			buttonHelper(i++, true, "RPK Mags", "AKM", "$600", "40-round RPK_magazines", 10);
@@ -254,7 +259,7 @@ public class Store extends MouseAdapter {
 			if ((b = hover) != null) {
 				b.renderTooltip(g);
 				g.setFont(new Font("Arial", 1, 24));
-				g.drawString(MessageFormat.format("{0} : {1} (+ {2})", b.getGun().getName(), b.getGun().getMagSize(), b.getGun().getAmmoCapacity()), 300, 450);
+				if (b.getGun() != null) g.drawString(MessageFormat.format("{0} : {1} (+ {2})", b.getGun().getName(), b.getGun().getMagSize(), b.getGun().getAmmoCapacity()), 300, 450);
 			}
 			break;
 		case BuyUpgrades:
@@ -307,6 +312,7 @@ public class Store extends MouseAdapter {
 		g.drawString("Primary   :  " + (player.getGunPrimary()   != null ? player.getGunPrimary().getName()   : "-"), 60, 390);
 		g.drawString("Secondary :  " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : "-"), 60, 405);
 		g.drawString("Sidearm   :  " + (player.getGunSidearm()   != null ? player.getGunSidearm().getName()   : "-"), 60, 420);
+		g.drawString("Bombs     :  " + (player.ownsBomb() ? 1 : 0), 60, 435);
 	}
 	
 	private void drawEquippedFinal(Graphics g) {
@@ -325,7 +331,7 @@ public class Store extends MouseAdapter {
 	
 	private void upgradeCapacity(Gun gun, int ammo, int money) {
 		if (gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			AudioPlayer.playSound("BlipMajor", 1f, 0.7f);
 			gun.setAmmoCapacity(ammo + gun.getAmmoCapacity());
 			player.setMoney(player.getMoney() - money);
 		}
@@ -333,7 +339,7 @@ public class Store extends MouseAdapter {
 	
 	private void upgradeMagSize(Gun gun, int ammo, int money) {
 		if (gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			playBlipMajor();
 			int mag = gun.getMagSize();
 			int cap = gun.getAmmoCapacity();
 			int m = player.getMoney();
@@ -346,7 +352,7 @@ public class Store extends MouseAdapter {
 	
 	private void upgradeReload(Gun gun, int money) {
 		if (gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			playBlipMajor();
 			gun.setReloadImproved(true);
 			player.setMoney(player.getMoney() - money);
 		}
@@ -354,7 +360,7 @@ public class Store extends MouseAdapter {
 	
 	private void upgradeRounds(Gun gun, int money) {
 		if (gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			playBlipMajor();
 			gun.setSpecialRounds(true);
 			player.setMoney(player.getMoney() - money);
 		}
@@ -362,7 +368,7 @@ public class Store extends MouseAdapter {
 	
 	private void upgradeFireMode(Gun gun, int money) {
 		if (gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			playBlipMajor();
 			gun.setFullAuto(true);
 			player.setMoney(player.getMoney() - money);
 		}
@@ -370,8 +376,16 @@ public class Store extends MouseAdapter {
 	
 	private void buyGun(Gun gun, int money) {
 		if (!gun.isOwned() && player.getMoney() >= money) {
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
+			playBlipMajor();
 			gun.setOwned(true);
+			player.setMoney(player.getMoney() - money);
+		}
+	}
+	
+	private void buyBomb(int money) {
+		if (!player.ownsBomb() && player.getMoney() >= money) {
+			playBlipMajor();
+			player.setOwnsBomb(true);
 			player.setMoney(player.getMoney() - money);
 		}
 	}
@@ -394,7 +408,7 @@ public class Store extends MouseAdapter {
 			
 			if (hover == null || !hover.isActive()) return;
 			
-			if (hover.isClickable() && hover.isMainColor()) AudioPlayer.getSound("BlipMinor").play(1f, 0.7f);
+			if (hover.isClickable() && hover.isMainColor()) playBlipMinor();
 			hover.updateHoverDisplay();
 		}
 	}
@@ -409,5 +423,13 @@ public class Store extends MouseAdapter {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private void playBlipMajor() {
+		AudioPlayer.playSound("BlipMajor", 1f, 0.7f);
+	}
+	
+	private void playBlipMinor() {
+		AudioPlayer.playSound("BlipMinor", 1f, 0.7f);
 	}
 }

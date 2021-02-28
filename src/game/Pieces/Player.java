@@ -18,10 +18,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
-import javax.sound.sampled.UnsupportedAudioFileException;
 
 import game.Main;
-import game.Audio.AudioPlayer;
 import game.Main.STATE;
 import game.Weapons.Gun;
 import game.Weapons.Gun.GUN;
@@ -45,6 +43,8 @@ public class Player extends GameObject{
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
 	private int spriteNum, gunNum;
+	private int numBombs;
+	private boolean ownsBomb;
 	
 	public Player(double x, double y) {
 		super(x, y);
@@ -135,6 +135,8 @@ public class Player extends GameObject{
 	public double getYOffset() {return yOffset;}
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
+	public int getNumBombs() {return numBombs;}
+	public boolean ownsBomb() {return ownsBomb;}
 	public boolean isReloading() {return gunWielded != null && gunWielded.isReloading();}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
@@ -145,6 +147,7 @@ public class Player extends GameObject{
 	public void setSpeed(double speed) {this.speed = speed;}
 	public void setMoney(int money) {this.money = money;}
 	public void setMoneyAtRoundStart(int money) {this.moneyAtRoundStart = money;}
+	public void setOwnsBomb(boolean ownsBomb) {this.ownsBomb = ownsBomb;}
 	
 	public void switchToPrimary() {switchToGun(gunPrimary);}
 	public void switchToSecondary() {switchToGun(gunSecondary);}
@@ -172,6 +175,7 @@ public class Player extends GameObject{
 	
 	public void resetAllAmmo() {
 		arsenal.forEach(g -> g.resetAmmo());
+		if (ownsBomb) numBombs = 1;
 	}
 	
 	public void autoEquip(boolean sidearmsOnly) {
@@ -234,7 +238,6 @@ public class Player extends GameObject{
 			if (ref == 0) gunPrimary = g;
 			if (ref == 1) gunSecondary = g;
 			if (ref == 2) gunSidearm = g;
-			AudioPlayer.getSound("BlipMajor").play(1f, 0.7f);
 		}
 	}
 	
@@ -267,6 +270,13 @@ public class Player extends GameObject{
 		if (g == gunSecondary) return 1;
 		if (g == gunSidearm) return 2;
 		return -1;
+	}
+	
+	public void throwBomb() {
+		if (numBombs > 0) {
+			Main.handler.addObjectAsync(new Bomb(x, y, angle));
+			numBombs--;
+		}
 	}
 	
 	public Rectangle getGridNode() {

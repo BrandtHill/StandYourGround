@@ -6,7 +6,6 @@ import java.awt.event.MouseWheelEvent;
 
 import game.Main.STATE;
 import game.Main;
-import game.Pieces.Grenade;
 import game.Pieces.Player;
 import game.Pieces.Reticle;
 import game.Weapons.Gun;
@@ -29,9 +28,8 @@ public class MouseInput extends MouseAdapter {
 				gun.setShooting(true);
 				if (gun.isFullAuto()) gun.resetTickDivier();
 				else gun.shoot();
-			} else if (button == MouseEvent.BUTTON3) {
-				//Main.handler.addObjectAsync(new Grenade(reticle.getX()/(Main.SCALE * Main.getXScale()) - player.getXOffset(), reticle.getY()/(Main.SCALE * Main.getYScale()) - player.getYOffset()));
-			}
+			} 
+			else if (button == MouseEvent.BUTTON3) player.throwBomb();
 		}
 		else if(Main.gameState == STATE.GameOver);
 		else if(Main.gameState == STATE.PauseMenu);
@@ -48,7 +46,7 @@ public class MouseInput extends MouseAdapter {
 	public void mouseWheelMoved(MouseWheelEvent e) {
 		if (Main.gameState == STATE.InGame) {
 			if (e.getWheelRotation() == -1) {player.switchToPrevious();}
-			if (e.getWheelRotation() == 1) {player.switchToNext();}
+			else if (e.getWheelRotation() == 1) {player.switchToNext();}
 		}
 	}
 

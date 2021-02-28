@@ -11,7 +11,7 @@ public class Security9 extends Gun {
 
 	public Security9() {
 		super(GUN.Security9);
-		reloadSound = AudioPlayer.getSound("ReloadPX4");
+		reloadSound = "ReloadPX4";
 		reloadTime = 1600;
 		chamberTime = 85;
 		gunName = "Security 9";
@@ -37,7 +37,7 @@ public class Security9 extends Gun {
 				4 + 2 * r.nextDouble(),
 				Main.player.getAngle() - Math.PI / 2));
 			onShotFired();
-			AudioPlayer.getSound("Pistol").play(1f, 0.3f);
+			AudioPlayer.playSound("Pistol", 1f, 0.3f);
 		}
 	}
 

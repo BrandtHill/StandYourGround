@@ -11,7 +11,7 @@ public class PX4Compact extends Gun {
 
 	public PX4Compact() {
 		super(GUN.PX4Compact);
-		reloadSound = AudioPlayer.getSound("ReloadPX4");
+		reloadSound = "ReloadPX4";
 		reloadTime = 1600;
 		chamberTime = 50;
 		gunName = "PX4 Compact";
@@ -37,7 +37,7 @@ public class PX4Compact extends Gun {
 				4 + 2 * r.nextDouble(),
 				Main.player.getAngle() - Math.PI / 2));
 			onShotFired();
-			AudioPlayer.getSound("Pistol").play(0.95f, 0.35f);
+			AudioPlayer.playSound("Pistol", 0.95f, 0.35f);
 		}
 	}
 

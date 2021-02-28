@@ -1,7 +1,5 @@
 package game.Pieces.Enemies;
 
-import game.Main;
-
 public class DodgingZombie extends Zombie {
 	private int dodgeTicks = 0;
 	private boolean isDodging;

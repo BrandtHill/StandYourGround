@@ -21,6 +21,7 @@ public class Projectile extends GameObject {
 	// public variables because I'm not about to make all these getters and setters
 	public double magnitude, angle, xScale, yScale, xPrev, yPrev, damage, knockBack, angleMulti;
 	public int hits;
+	public int ticks = 150;
 	public Color color;
 	private Set<Zombie> hitZombies;
 	
@@ -42,7 +43,7 @@ public class Projectile extends GameObject {
 		if (g.isSpecialRounds()) g.makeRoundSpecial(this);
 	}
 	
-	public Projectile(Grenade g, double angle) {
+	public Projectile(Bomb g, double angle) {
 		super(g.getX(), g.getY());
 		this.angle = angle;
 		this.xScale = sin(angle);
@@ -53,7 +54,8 @@ public class Projectile extends GameObject {
 		this.knockBack = g.getKnock();
 		this.magnitude = g.getVelocity();
 		this.hits = 1;
-		this.color = Color.YELLOW;
+		this.ticks = 5;
+		this.color = new Color(200, 150, 30, 127);
 		this.hitZombies = new HashSet<Zombie>();
 	}
 	
@@ -68,8 +70,11 @@ public class Projectile extends GameObject {
 		yPrev = y;
 		x += velX;
 		y += velY;
+		damage -= (5 - Math.min(5, ticks)) * 2;
+		knockBack -= (5 - Math.min(5, ticks));
+		ticks--;
 		
-		if (hits <= 0 || x < -100 || x > Main.WIDTH + 100 || y < -100 || y > Main.HEIGHT + 100) handler.removeObjectAsync(this);
+		if (hits <= 0 || x < -100 || x > Main.WIDTH + 100 || y < -100 || y > Main.HEIGHT + 100 || ticks < 0) handler.removeObjectAsync(this);
 		else detectCollision();
 	}
 	

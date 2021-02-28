@@ -9,7 +9,7 @@ public class Titan extends Gun {
 
 	public Titan() {
 		super(GUN.Titan);
-		reloadSound = AudioPlayer.getSound("ReloadTitan");
+		reloadSound = "ReloadTitan";
 		reloadTime = 2000;
 		chamberTime = 100;
 		gunName = "Titan";
@@ -36,7 +36,7 @@ public class Titan extends Gun {
 				3 + 2 * r.nextDouble(),
 				Main.player.getAngle() - Math.PI / 2));
 			onShotFired();
-			AudioPlayer.getSound("Pistol4").play(1.0f, 0.75f);
+			AudioPlayer.playSound("Pistol4", 1.0f, 0.75f);
 		}
 	}
 

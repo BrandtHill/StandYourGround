@@ -62,6 +62,11 @@ public class Button {
 			break;
 
 		case BuyAmmo:
+			if (this.gun == null) {
+				this.clickable = active && !Main.player.ownsBomb();
+				this.mainColor = Main.player.ownsBomb() ? COLOR_RED_GRAY : Color.WHITE;
+				break;
+			}
 		case BuyUpgrades:
 			this.clickable = active && gun.isOwned() 
 					&&(line1.contains("Ammo")
@@ -86,7 +91,7 @@ public class Button {
 								  COLOR_DEEP_PURPLE 
 								: COLOR_LIGHT_PURPLE)
 								: Color.WHITE))
-								: Color.GRAY;			
+								: Color.GRAY;
 			break;
 		}
 	}

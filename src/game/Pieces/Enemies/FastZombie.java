@@ -3,8 +3,6 @@ package game.Pieces.Enemies;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
 
-import game.Main;
-
 public class FastZombie extends Zombie {
 
 	public FastZombie(double x, double y) {

@@ -38,7 +38,7 @@ public class SpawnSystem {
 				delayMillis = 2000;
 				ticks = 0;
 				zedsDead = true;
-				AudioPlayer.getSound("LevelEnd").play(1.0f, 1.0f);
+				AudioPlayer.playSound("LevelEnd");
 			}
 			if (zedsDead && ticks > delayTicks()) completeLevel();
 		}

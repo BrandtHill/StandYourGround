@@ -14,9 +14,8 @@ import javax.imageio.ImageIO;
 
 import static java.lang.Math.cos;
 
-import org.newdawn.slick.Sound;
-
 import game.Main;
+import game.Audio.AudioPlayer;
 import game.Pieces.Projectile;
 
 public abstract class Gun {
@@ -30,8 +29,8 @@ public abstract class Gun {
 	protected boolean isFullAuto, specialRounds, isMagIncreased, isReloadImproved;
 	protected long reloadTime, chamberTime;
 	protected String gunName;
-	protected Sound reloadSound;
-	protected Sound speedReloadSound;
+	protected String reloadSound;
+	protected String speedReloadSound;
 	protected float reloadSoundPosition;
 	protected long ticks;
 	protected long reloadTicks, chamberTicks;
@@ -61,8 +60,8 @@ public abstract class Gun {
 	public static List<Gun> constructGuns() {
 		List<Gun> guns = Arrays.asList(
 				new Titan(),
-				new Security9(),
 				new Judge(),
+				new Security9(),
 				new PX4Compact(),
 				new Model57(),
 				new OverUnder(),
@@ -94,8 +93,8 @@ public abstract class Gun {
 	
 	public void reload() {
 		if (!reloading && ammoExtra > 0 && ammoLoaded < magSize) {
-			if (isReloadImproved) speedReloadSound.play(1f, 1f);
-			else reloadSound.play(1f, 1f);
+			if (isReloadImproved) AudioPlayer.playSound(speedReloadSound);
+			else AudioPlayer.playSound(reloadSound);
 			reloading = true;
 		}
 	}
@@ -148,8 +147,8 @@ public abstract class Gun {
 	
 	
 	protected void stopReloadSound() {
-		if (reloadSound != null && reloadSound.playing()) reloadSound.stop();
-		if (speedReloadSound != null && speedReloadSound.playing()) speedReloadSound.stop();
+		if (reloadSound != null) AudioPlayer.stopSound(reloadSound);
+		if (speedReloadSound != null) AudioPlayer.stopSound(speedReloadSound);
 	}
 	/**
 	 * This function takes in the location of the muzzle of the gun 
