@@ -43,6 +43,8 @@ public class Main extends Canvas implements Runnable {
 	private static BufferedImage background4;
 	private static BufferedImage background5;
 	private static JFrame frame;
+	public static SaveData defaultSave = new SaveData();
+	public static SaveData currentSave = new SaveData();
 	public static SpawnSystem spawnSys;
 	public static Reticle reticle;
 	public static Player player;
@@ -84,8 +86,8 @@ public class Main extends Canvas implements Runnable {
 		addMouseListener(store);
 		addMouseMotionListener(store);
 		
-		SaveData.saveToFile("./res/saves/newgame.syg");
-		SaveData.saveToFile("./res/saves/autosave.syg");
+		defaultSave.syncToGameState();
+		currentSave.syncToGameState();
 		
 		setupJFrame();
 		start();
@@ -283,15 +285,15 @@ public class Main extends Canvas implements Runnable {
 		switch (gameState) {
 		case InGame:
 			if (prevState != STATE.PauseMenu) spawnSys.commence();
-			if (prevState == STATE.StoreMenu) SaveData.saveToFile("./res/saves/autosave.syg");
+			if (prevState == STATE.StoreMenu) currentSave.syncToGameState();
 			removeMouseMotionListener(store);
 			break;
 		case StoreMenu:
 			addMouseMotionListener(store);
-			SaveData.saveToFile("./res/saves/autosave.syg");
+			currentSave.syncToGameState();
 			Store.menu = Store.Menu.BuyGuns;
-			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			store.onMenuUpdate();
+			backgroundSlice = background.getSubimage(0, 20, 120, 40);
 			break;
 		case GameOver:
 		case PauseMenu:

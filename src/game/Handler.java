@@ -101,7 +101,7 @@ public class Handler {
 		asyncQueue.removeIf(b -> b instanceof Brass);
 	}
 	
-	public void removeGrenades() {
+	public void removeBombs() {
 		gameObjs.removeIf(g -> g instanceof Bomb);
 		asyncQueue.removeIf(g -> g instanceof Bomb);
 	}

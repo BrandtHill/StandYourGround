@@ -42,9 +42,8 @@ public class Player extends GameObject{
 	private static BufferedImage spriteSheet;
 	private static BufferedImage[][] playerSprites = new BufferedImage [NUMSPRITECYCLES][NUMGUNS];
 	private int money, moneyAtRoundStart;
+	private int bombs, bombsAtRoundStart;
 	private int spriteNum, gunNum;
-	private int numBombs;
-	private boolean ownsBomb;
 	
 	public Player(double x, double y) {
 		super(x, y);
@@ -89,7 +88,7 @@ public class Player extends GameObject{
 		xOffset = Main.clamp(-x + ((Main.WIDTH + Main.YTBOUND)/2), Main.XTBOUND, 0);
 		yOffset = Main.clamp(-y + ((Main.HEIGHT + Main.XTBOUND)/2), Main.YTBOUND, 0);
 		
-		angle = atan2(Main.reticle.getX()/(Main.SCALE * Main.getXScale()) - (x + 10) - xOffset, Main.reticle.getY()/(Main.SCALE * Main.getYScale()) - (y + 10) - yOffset);
+		angle = atan2(Main.reticle.getBoardX() - (x + 10), Main.reticle.getBoardY() - (y + 10));
 		
 		gunWielded.tick();
 		
@@ -135,8 +134,8 @@ public class Player extends GameObject{
 	public double getYOffset() {return yOffset;}
 	public int getMoney() {return money;}
 	public int getMoneyAtRoundStart() {return moneyAtRoundStart;}
-	public int getNumBombs() {return numBombs;}
-	public boolean ownsBomb() {return ownsBomb;}
+	public int getBombs() {return bombs;}
+	public int getBombsAtRoundStart() {return bombsAtRoundStart;}
 	public boolean isReloading() {return gunWielded != null && gunWielded.isReloading();}
 	
 	public void setGunPrimary(Gun g) {this.gunPrimary = g;}
@@ -147,7 +146,8 @@ public class Player extends GameObject{
 	public void setSpeed(double speed) {this.speed = speed;}
 	public void setMoney(int money) {this.money = money;}
 	public void setMoneyAtRoundStart(int money) {this.moneyAtRoundStart = money;}
-	public void setOwnsBomb(boolean ownsBomb) {this.ownsBomb = ownsBomb;}
+	public void setBombs(int bombs) {this.bombs = bombs;}
+	public void setBombsAtRoundStart(int bombs) {this.bombsAtRoundStart = bombs;}
 	
 	public void switchToPrimary() {switchToGun(gunPrimary);}
 	public void switchToSecondary() {switchToGun(gunSecondary);}
@@ -175,7 +175,6 @@ public class Player extends GameObject{
 	
 	public void resetAllAmmo() {
 		arsenal.forEach(g -> g.resetAmmo());
-		if (ownsBomb) numBombs = 1;
 	}
 	
 	public void autoEquip(boolean sidearmsOnly) {
@@ -273,9 +272,11 @@ public class Player extends GameObject{
 	}
 	
 	public void throwBomb() {
-		if (numBombs > 0) {
-			Main.handler.addObjectAsync(new Bomb(x, y, angle));
-			numBombs--;
+		if (bombs > 0) {
+			double distance = Main.distance(x, y, Main.reticle.getBoardX(), Main.reticle.getBoardY());
+			double throwSpeed = Math.min(distance/10, 20.0);
+			Main.handler.addObjectAsync(new Bomb(x + 10, y + 10, angle, throwSpeed));
+			bombs--;
 		}
 	}
 	

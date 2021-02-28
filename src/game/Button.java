@@ -63,8 +63,8 @@ public class Button {
 
 		case BuyAmmo:
 			if (this.gun == null) {
-				this.clickable = active && !Main.player.ownsBomb();
-				this.mainColor = Main.player.ownsBomb() ? COLOR_RED_GRAY : Color.WHITE;
+				this.clickable = active;
+				this.mainColor = Color.WHITE;
 				break;
 			}
 		case BuyUpgrades:
@@ -108,9 +108,9 @@ public class Button {
 		return p.getX() > x && p.getX() < (x + w) && p.getY() > y && p.getY() < (y + h);
 	}
 	
-	public String getFirstLine() {
-		return line1;
-	}
+	public String getFirstLine() {return line1;}
+	public String getSecondLine() {return line2;}
+	public String getThirdLine() {return line3;}
 
 	public void renderTooltip(Graphics g) {
 		if (tooltip == null || tooltip.isEmpty()) return;

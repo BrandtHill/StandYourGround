@@ -33,6 +33,9 @@ public class Reticle extends GameObject {
 		if (ticks++ % 4 == 0) spriteIndex++;
 	}
 	
+	public double getBoardX() {return x/(Main.SCALE * Main.getXScale()) - player.getXOffset();}
+	public double getBoardY() {return y/(Main.SCALE * Main.getYScale()) - player.getYOffset();}
+	
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
 		if (player.isReloading()) {

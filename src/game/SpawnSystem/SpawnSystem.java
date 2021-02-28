@@ -52,7 +52,7 @@ public class SpawnSystem {
 		Main.handler.removeBlood();
 		Main.handler.removeDeadZeds();
 		Main.handler.removeBrass();
-		Main.handler.removeGrenades();
+		Main.handler.removeBombs();
 		Main.handler.removeProjectiles();
 		Main.handler.removeZombies();
 		Main.handler.removeObstacles();
@@ -61,6 +61,7 @@ public class SpawnSystem {
 		Main.player.resetAllAmmo();
 		Main.player.autoWield();
 		Main.player.setMoneyAtRoundStart(Main.player.getMoney());
+		Main.player.setBombsAtRoundStart(Main.player.getBombs());
 	}
 	
 	public void completeLevel() {

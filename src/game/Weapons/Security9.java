@@ -44,7 +44,9 @@ public class Security9 extends Gun {
 	@Override
 	public void makeRoundSpecial(Projectile p) {
 		p.color = new Color(243, 144, 0);
-		p.damage *= 1.85;
-		p.knockBack *= 1.15;
+		p.damage *= 1.20;
+		p.magnitude *= 1.20;
+		p.hits += r.nextDouble() > 0.3 ? 2 : 1;
+		p.knockBack *= 1.1;
 	}
 }

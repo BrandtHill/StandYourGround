@@ -40,7 +40,7 @@ public class ChargingZombie extends Zombie {
 		double tempSpeed = 10 * (chargeTicks / 60f);
 		if (ticksSinceCharge < 55) tempSpeed = 0;
 		else spriteNum++;
-		angle = getAdjustedAngle(getAngleToPlayer(), 12);
+		angle = getAdjustedAngle(getAngleToPlayer(), 8);
 		velX = tempSpeed * Math.sin(angle);
 		velY = tempSpeed * Math.cos(angle);
 		move();

@@ -52,9 +52,7 @@ public class AR15 extends Gun {
 	
 	@Override
 	public int getHits() {
-		int h = r.nextDouble() > 0.833 ? 2 : 1; 
-		if (specialRounds) h += 2 + r.nextDouble() > 0.4 ? 1 : 0;
-		return h;
+		return r.nextDouble() > 0.833 ? 2 : 1;
 	}
 
 	@Override
@@ -63,5 +61,6 @@ public class AR15 extends Gun {
 		p.damage *= 1.325;
 		p.magnitude *= 1.25;
 		p.angleMulti *= 0.5;
+		p.hits += r.nextDouble() > 0.4 ? 3 : 2;
 	}
 }

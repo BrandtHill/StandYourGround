@@ -16,7 +16,7 @@ public class HUD {
 	private int selectedIndex;
 	private double alpha, endAlpha;
 	private Gun gun;
-	private boolean drawBomb;
+	private int bombs;
 	
 	public HUD() {
 		player = Main.player;
@@ -29,7 +29,7 @@ public class HUD {
 		gunInfo = gun.getName() + "    " + gun.getAmmoLoaded() + "/" + gun.getMagSize() + "   " + gun.getAmmoExtra();
 		levelInfo = "Level " + spawnSys.getLevel() + "    " + "Zombies Remaining: " + spawnSys.getRemaining() +	"     $"+ player.getMoney();
 		selectedIndex = player.getGunWeildedIndex();
-		drawBomb = player.getNumBombs() > 0;
+		bombs = player.getBombs();
 		alpha = calcAlpha();
 		endAlpha = spawnSys.zedsDead() ? endAlpha + 1 : 0;
 	}
@@ -55,7 +55,10 @@ public class HUD {
 		
 		g.drawImage(gun.getSprite(), 240, 20, 60, 30, null);
 		
-		if (drawBomb) g.drawImage(Bomb.getSprite(), 220, 32, 20, 8, null);
+		g.setColor(new Color(255, 255, 255, 192));
+		g.setFont(new Font("Arial", 1, 8));
+		g.drawString(String.valueOf(bombs), 226, 49);
+		g.drawImage(Bomb.getSprite(), 210, 45, 10, 4, null);
 		
 		if (spawnSys.zedsDead()) {
 			g.setColor(new Color(0, 0, 0, (int)endAlpha));

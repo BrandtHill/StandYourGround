@@ -53,9 +53,7 @@ public class AKM extends Gun {
 
 	@Override
 	public int getHits() {
-		int h = r.nextDouble() > 0.4 ? 2 : 1;
-		if (specialRounds) h += 1 + r.nextDouble() > 0.3 ? 1 : 0;
-		return h;
+		return r.nextDouble() > 0.4 ? 2 : 1;
 	}
 	
 	@Override
@@ -63,6 +61,7 @@ public class AKM extends Gun {
 		p.color = new Color(243, 144, 0);
 		p.damage *= 1.4;
 		p.knockBack *= 1.10;
+		p.hits += r.nextDouble() > 0.3 ? 2 : 1;
 	}
 
 }

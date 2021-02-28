@@ -54,7 +54,7 @@ public class Projectile extends GameObject {
 		this.knockBack = g.getKnock();
 		this.magnitude = g.getVelocity();
 		this.hits = 1;
-		this.ticks = 5;
+		this.ticks = 6;
 		this.color = new Color(200, 150, 30, 127);
 		this.hitZombies = new HashSet<Zombie>();
 	}

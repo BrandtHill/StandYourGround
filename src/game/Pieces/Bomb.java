@@ -3,6 +3,7 @@ package game.Pieces;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 
@@ -17,13 +18,13 @@ public class Bomb extends GameObject {
 	private double velocity, damage, knock, angle;
 	private static BufferedImage sprite;
 	
-	public Bomb(double x, double y, double angle) {
+	public Bomb(double x, double y, double angle, double speed) {
 		super(x, y);
 		this.angle = angle;
-		this.velX = 12 * Math.sin(angle);
-		this.velY = 12 * Math.cos(angle);
+		this.velX = speed * Math.sin(angle);
+		this.velY = speed * Math.cos(angle);
 		this.knock = 15;
-		this.damage = 40;
+		this.damage = 45;
 		this.velocity = 22;
 	}
 	
@@ -31,6 +32,10 @@ public class Bomb extends GameObject {
 	public void tick() {
 		x += velX;
 		y += velY;
+		if (handler.hitsObstacle(getBounds())) {
+			velX *= -1;
+			velY *= -1;
+		}
 		velX *= 0.9;
 		velY *= 0.9;
 		if (ticks == 90) detonate();
@@ -59,6 +64,10 @@ public class Bomb extends GameObject {
 		for (int i = 0; i < num; i++) {
 			Main.handler.addObjectAsync(new Projectile(this, 2 * Math.PI * (i / num)));
 		}
+	}
+	
+	public Rectangle getBounds() {
+		return new Rectangle((int)x, (int)y, 10, 10);
 	}
 
 	public double getVelocity() {return velocity;}

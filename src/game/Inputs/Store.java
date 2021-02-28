@@ -61,7 +61,7 @@ public class Store extends MouseAdapter {
 				buyGun(b.getGun(), b.getPrice());
 				break;
 			case BuyAmmo:
-				if (b.getFirstLine().contains("Buy")) buyBomb(b.getPrice()); 
+				if (b.getFirstLine().contains("Buy")) buyBomb(b.getPrice());
 				else upgradeCapacity(b.getGun(), b.getAmount(), b.getPrice());
 				break;
 			case BuyUpgrades:
@@ -92,6 +92,7 @@ public class Store extends MouseAdapter {
 			Arrays.stream(buttons).filter(x -> x != null).forEach(x -> x.update());
 			
 			player.setMoneyAtRoundStart(player.getMoney());
+			player.setBombsAtRoundStart(player.getBombs());
 			
 			mouseMoved(e);
 		}
@@ -193,7 +194,7 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Increase Ammo", "Security 9", "$150", "15 more rounds", 15);
 			buttonHelper(i++, true, "Increase Ammo", "Judge", "$125", "10 more shells", 10);
 			buttonHelper(i++, true, "Increase Ammo", "Titan", "$75", "21 more rounds", 21);
-			buttonHelper(i++, true, "Buy", "Bomb", "$900", "High explosive stick_of dynamite._Right click, One per level");
+			buttonHelper(i++, true, "Buy", "Bomb", "$290", "High explosive stick_of dynamite._1 more bomb", 1);
 			break;
 		case BuyUpgrades:
 			buttonHelper(i++, true, "RPK Mags", "AKM", "$600", "40-round RPK_magazines", 10);
@@ -204,6 +205,7 @@ public class Store extends MouseAdapter {
 			buttonHelper(i++, true, "Drop-In Auto Sear", "AR-15", "$1100", "Give AR-15 Select Fire_Capability");
 			buttonHelper(i++, true, "Extended Mags", "PX4 Compact", "$500", "Use full-size PX4_Storm 20-round_extended magazsines", 5);
 			buttonHelper(i++, true, "Hollow Points", "PX4 Compact", "$350", "Anti-Zombie Hollow_Point rounds");
+			buttonHelper(i++, true, "Penetrator Rounds", "Security 9", "$375", "Underwood Xtreme_Penetrator solid_copper +P rounds");
 			buttonHelper(i++, true, "Bear Loads", "Model 57", "$450", "Powerful rounds suitable_for stopping bears");
 			buttonHelper(i++, true, "Speed Loaders", "Model 57", "$400", "Load cylinder with six_rounds at once");
 			buttonHelper(i++, true, "Hand Loads", "M77", "$500", "High pressure, High_penetration, hand-loaded_ammunition");
@@ -249,7 +251,7 @@ public class Store extends MouseAdapter {
 			drawComponents(g, true, false, true, null);
 			if ((b = hover) != null) b.renderTooltip(g);
 			g.drawImage(pegboard, 220, 340, 384, 192, null);
-			if ((b = hover) != null) {
+			if ((b = hover) != null && b.getGun() != null) {
 				g.drawImage(b.getGun().getSprite(), 220, 340, 384, 192, null);
 				b.renderTooltip(g);
 			}
@@ -260,6 +262,7 @@ public class Store extends MouseAdapter {
 				b.renderTooltip(g);
 				g.setFont(new Font("Arial", 1, 24));
 				if (b.getGun() != null) g.drawString(MessageFormat.format("{0} : {1} (+ {2})", b.getGun().getName(), b.getGun().getMagSize(), b.getGun().getAmmoCapacity()), 300, 450);
+				else g.drawString(MessageFormat.format("{0} : {1}", "Bombs", player.getBombs()), 300, 450);
 			}
 			break;
 		case BuyUpgrades:
@@ -289,7 +292,7 @@ public class Store extends MouseAdapter {
 			MenuHelpers.renderCommand(g, 225, 500, "3", "Save Current State to Save 3");
 		default:
 			break;
-		}	
+		}
 	}
 	
 	private void drawComponents(Graphics g, boolean doMoney, boolean doBack, boolean doForward, String header) {
@@ -312,7 +315,7 @@ public class Store extends MouseAdapter {
 		g.drawString("Primary   :  " + (player.getGunPrimary()   != null ? player.getGunPrimary().getName()   : "-"), 60, 390);
 		g.drawString("Secondary :  " + (player.getGunSecondary() != null ? player.getGunSecondary().getName() : "-"), 60, 405);
 		g.drawString("Sidearm   :  " + (player.getGunSidearm()   != null ? player.getGunSidearm().getName()   : "-"), 60, 420);
-		g.drawString("Bombs     :  " + (player.ownsBomb() ? 1 : 0), 60, 435);
+		g.drawString("Bombs     :  " + player.getBombs(), 60, 435);
 	}
 	
 	private void drawEquippedFinal(Graphics g) {
@@ -383,9 +386,9 @@ public class Store extends MouseAdapter {
 	}
 	
 	private void buyBomb(int money) {
-		if (!player.ownsBomb() && player.getMoney() >= money) {
+		if (player.getMoney() >= money) {
 			playBlipMajor();
-			player.setOwnsBomb(true);
+			player.setBombs(player.getBombs() + 1);
 			player.setMoney(player.getMoney() - money);
 		}
 	}

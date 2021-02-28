@@ -55,21 +55,18 @@ public class KeyInput extends KeyAdapter {
 		case GameOver:
 			switch (key) {
 			case KeyEvent.VK_R:
-				SaveData.loadFromFile("./res/saves/autosave.syg");
+				Main.currentSave.setGameState();
 				Main.gameState = STATE.StoreMenu;
 				break;
 			case KeyEvent.VK_N:
-				SaveData.loadFromFile("./res/saves/newgame.syg");
+				Main.defaultSave.setGameState();
 				Main.gameState = STATE.StartMenu;
 				break;
-			case KeyEvent.VK_1:
-				SaveData.saveToFile("./res/saves/save1.syg");
+			case KeyEvent.VK_1:	Main.currentSave.writeToFile("./res/saves/save1.syg");
 				break;
-			case KeyEvent.VK_2:
-				SaveData.saveToFile("./res/saves/save2.syg");
+			case KeyEvent.VK_2:	Main.currentSave.writeToFile("./res/saves/save2.syg");
 				break;
-			case KeyEvent.VK_3:
-				SaveData.saveToFile("./res/saves/save3.syg");
+			case KeyEvent.VK_3:	Main.currentSave.writeToFile("./res/saves/save3.syg");
 				break;	
 			default:
 				break;
@@ -87,22 +84,26 @@ public class KeyInput extends KeyAdapter {
 			break;
 		
 		case StartMenu:
+			SaveData s = null;
 			switch (key) {
-			case KeyEvent.VK_SPACE:
+			case KeyEvent.VK_SPACE:	
 				Main.gameState = STATE.InGame;
 				break;
-			case KeyEvent.VK_1:
-				SaveData.loadFromFile("./res/saves/save1.syg");
+			case KeyEvent.VK_1:	s = SaveData.readFromFile("./res/saves/save1.syg");
 				break;
-			case KeyEvent.VK_2:
-				SaveData.loadFromFile("./res/saves/save2.syg");
+			case KeyEvent.VK_2:	s = SaveData.readFromFile("./res/saves/save2.syg");
 				break;
-			case KeyEvent.VK_3:
-				SaveData.loadFromFile("./res/saves/save3.syg");
+			case KeyEvent.VK_3:	s = SaveData.readFromFile("./res/saves/save3.syg");
 				break;
 			default:
 				break;
 			}
+			
+			if (s != null) {
+				Main.currentSave = s;
+				Main.currentSave.setGameState();
+			}
+			
 			break;
 		
 		case StoreMenu:
@@ -114,13 +115,16 @@ public class KeyInput extends KeyAdapter {
 				store.prevMenu();
 				break;
 			case KeyEvent.VK_1:
-				SaveData.saveToFile("./res/saves/save1.syg");
+				Main.currentSave.syncToGameState();
+				Main.currentSave.writeToFile("./res/saves/save1.syg");
 				break;
 			case KeyEvent.VK_2:
-				SaveData.saveToFile("./res/saves/save2.syg");
+				Main.currentSave.syncToGameState();
+				Main.currentSave.writeToFile("./res/saves/save2.syg");
 				break;
 			case KeyEvent.VK_3:
-				SaveData.saveToFile("./res/saves/save3.syg");
+				Main.currentSave.syncToGameState();
+				Main.currentSave.writeToFile("./res/saves/save3.syg");
 				break;
 			default:
 				break;
