@@ -11,8 +11,8 @@ public class Security9 extends Gun {
 
 	public Security9() {
 		super(GUN.Security9);
-		reloadSound = "ReloadPX4";
-		reloadTime = 1600;
+		reloadSound = "ReloadSec9";
+		reloadTime = 1700;
 		chamberTime = 85;
 		gunName = "Security 9";
 		ammoLoaded = magSize = 15;
