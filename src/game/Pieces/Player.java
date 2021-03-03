@@ -57,6 +57,7 @@ public class Player extends GameObject{
 		gunSidearm.setOwned(true);
 		gunWielded = gunSidearm;
 		//money = moneyAtRoundStart = 100_000; //For debugging
+		//bombs = bombsAtRoundStart = 100_000;
 		speed = 2;
 	}
 	

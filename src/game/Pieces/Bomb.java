@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.geom.Line2D;
 import java.awt.image.BufferedImage;
 import java.io.FileInputStream;
 
@@ -32,10 +33,12 @@ public class Bomb extends GameObject {
 	public void tick() {
 		x += velX;
 		y += velY;
-		if (handler.hitsObstacle(getBounds())) {
-			velX *= -1;
-			velY *= -1;
-		}
+		
+		if (velX > 0 && handler.hitsObstacle(getRightBounds())) velX *= -1;
+		else if (velX < 0 && handler.hitsObstacle(getLeftBounds())) velX *= -1;
+		else if (velY > 0 && handler.hitsObstacle(getDownBounds())) velY *= -1;
+		else if (velY < 0 && handler.hitsObstacle(getUpBounds())) velY *= -1;
+		
 		velX *= 0.9;
 		velY *= 0.9;
 		if (ticks == 90) detonate();
@@ -46,10 +49,14 @@ public class Bomb extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
+		g2d.draw(getRightBounds());
+		g2d.draw(getLeftBounds());
+		g2d.draw(getUpBounds());
+		g2d.draw(getDownBounds());
 		if (ticks < 90) {
-			g2d.rotate(-angle, x, y);
-			g2d.drawImage(sprite, (int)x, (int)y, null);
-			g2d.rotate(angle, x, y);
+			g2d.rotate(-angle, x - 0, y - 0);
+			g2d.drawImage(sprite, (int)(x-10), (int)(y-4), null);
+			g2d.rotate(angle, x - 0, y - 0);
 		} else {
 			g2d.setColor(new Color(200, 150, 30, 255 - (ticks - 85) * 15));
 			int diameter = ticks;
@@ -68,6 +75,22 @@ public class Bomb extends GameObject {
 	
 	public Rectangle getBounds() {
 		return new Rectangle((int)x, (int)y, 10, 10);
+	}
+	
+	public Line2D.Double getLeftBounds() {
+		return new Line2D.Double(x, y, x-10, y);
+	}
+	
+	public Line2D.Double getRightBounds() {
+		return new Line2D.Double(x, y, x+10, y);
+	}
+	
+	public Line2D.Double getUpBounds() {
+		return new Line2D.Double(x, y, x, y-10);
+	}
+	
+	public Line2D.Double getDownBounds() {
+		return new Line2D.Double(x, y, x, y+10);
 	}
 
 	public double getVelocity() {return velocity;}
