@@ -49,10 +49,6 @@ public class Bomb extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		Graphics2D g2d = (Graphics2D)g;
-		g2d.draw(getRightBounds());
-		g2d.draw(getLeftBounds());
-		g2d.draw(getUpBounds());
-		g2d.draw(getDownBounds());
 		if (ticks < 90) {
 			g2d.rotate(-angle, x - 0, y - 0);
 			g2d.drawImage(sprite, (int)(x-10), (int)(y-4), null);
